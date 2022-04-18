@@ -15,17 +15,17 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 
-@Api(value = "À¯Àú API", tags = {"User"})
+@Api(value = "íšŒì›ê´€ë¦¬ API", tags = {"User"})
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 	
 	@PostMapping()
-    @ApiOperation(value = "È¸¿ø °¡ÀÔ", notes = "<strong>¾ÆÀÌµğ¿Í ÆĞ½º¿öµå</strong>¸¦ ÅëÇØ È¸¿ø°¡ÀÔ ÇÑ´Ù.")
+    @ApiOperation(value = "ë¡œê·¸ì¸", notes = "<strong>ë¡œê·¸ì¸</strong>ì„ ì§„í–‰í•©ë‹ˆë‹¤. .")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "È¸¿ø°¡ÀÔ ¼º°ø"),
-            @ApiResponse(code = 401, message = "È¸¿ø°¡ÀÔ ½ÇÆĞ"),
-            @ApiResponse(code = 500, message = "¼­¹ö ¿À·ù")
+            @ApiResponse(code = 200, message = "ë¡œê·¸ì¸ ì„±ê³µ"),
+            @ApiResponse(code = 401, message = "ë¡œê·¸ì¸ ì‹¤íŒ¨"),
+            @ApiResponse(code = 500, message = "ì„œë²„ ì˜¤ë¥˜")
     })
     public ResponseEntity<Map<String, Object>> userAdd(){
 
