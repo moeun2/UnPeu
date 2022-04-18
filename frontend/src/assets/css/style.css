@@ -24,10 +24,11 @@
   }
   
   main {
-    display: flex;
+    display: flex !important;
     justify-content: center;
     align-items: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
   }
   
   aside {
@@ -38,7 +39,7 @@
   .profile-section,
   .main-section {
     height: 600px;
-    background-color: #4bb6d6;
+    background-color: #FFD232;
   }
   
   .profile-section {
@@ -77,7 +78,7 @@
     margin: 10px 0 10px 10px;
     width: 220px;
     height: 540px;
-    border: 2px solid black;
+    border: 2px solid #8C8C8C;
     border-right: none;
     border-radius: 15px;
     background-color: #fff;
@@ -101,7 +102,7 @@
     margin: 10px 10px 10px 0px;
     width: 670px;
     height: 540px;
-    border: 2px solid black;
+    border: 2px solid #8C8C8C;
     border-left: none;
     border-radius: 15px;
     background-color: #fff;
