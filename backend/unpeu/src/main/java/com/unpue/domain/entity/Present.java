@@ -1,5 +1,6 @@
 package com.unpue.domain.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,15 +27,14 @@ public class Present {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty(name="id", example="1")
-	private long id;
+	@Column(name="present_id")
+	private long presentId;
 
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	private User user;
+	private User userId;
 
-	@ApiModelProperty(name="presentName", example="앙꼬인형")
 	private String presentName;
 
 	private String presentImg;
