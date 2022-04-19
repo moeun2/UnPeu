@@ -1,5 +1,7 @@
 package com.unpue.service.iface;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,9 @@ public interface IPresentService {
 
 	// @Transactional
 	// Present updatePresent(Long presentId,PresentPostReq present);
+
+	@Transactional
+	List<Present> getPresentListByUserId(Long userId);
 
 
 }

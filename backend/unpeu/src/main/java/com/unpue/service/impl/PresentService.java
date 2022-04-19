@@ -3,6 +3,8 @@ package com.unpue.service.impl;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.checkerframework.checker.units.qual.A;
@@ -18,6 +20,7 @@ import com.unpue.config.media.GlobalConfig;
 import com.unpue.domain.entity.Present;
 import com.unpue.domain.entity.User;
 import com.unpue.domain.repository.IPresentRepository;
+import com.unpue.domain.repository.IUserRepository;
 import com.unpue.domain.request.PresentPostReq;
 import com.unpue.service.iface.IPresentService;
 
@@ -29,9 +32,11 @@ public class PresentService implements IPresentService {
 	private static final Logger logger = LoggerFactory.getLogger(PresentService.class);
 
 	private IPresentRepository presentRepository;
+	private IUserRepository userRepository;
 
-	public PresentService(IPresentRepository presentRepository) {
+	public PresentService(IPresentRepository presentRepository, IUserRepository userRepository) {
 		this.presentRepository = presentRepository;
+		this.userRepository = userRepository;
 	}
 
 	/**
@@ -42,8 +47,10 @@ public class PresentService implements IPresentService {
 	@Override
 	public Present createPresent(PresentPostReq present) {
 		// User 완성되면 user 객체 넣기 or accessToken에서 가져오기
+		// User user = new userRepository.findById(present.getUserId());
+		Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
 		Present newPresent = Present.builder()
-			.userId(null)
+			.userId(user.get())
 			.presentImg(present.getPresentImgUrl())
 			.presentName(present.getPresentName())
 			.presentPrice(present.getPresentPrice())
@@ -61,5 +68,15 @@ public class PresentService implements IPresentService {
 	@Override
 	public void deletePresent(Long presentId) {
 		presentRepository.deleteById(presentId);
+	}
+
+	/**
+	 * userId에 따라 선물 리스트 전체 조회
+	 * @param userId
+	 * @return
+	 */
+	@Override
+	public List<Present> getPresentListByUserId(Long userId) {
+		return presentRepository.getPresentListByUserId(userId);
 	}
 }

@@ -1,5 +1,7 @@
 package com.unpue.api.present;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -58,31 +60,37 @@ public class PresentController {
 	@ApiOperation(value = "선물 수정 Controller")
 	@RequestMapping(value = "/{presentId}", method = RequestMethod.PATCH, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Present updatePresent(@Valid @PathVariable("presentId") Long presentId, @RequestBody PresentPostReq present) {
+		logger.info("updatePresent - 호출");
 		return null;
 	}
 
 	@ApiOperation(value = "선물 삭제 Controller")
 	@RequestMapping(value = "/present/{presentId}", method = RequestMethod.DELETE)
 	public ResponseEntity<? extends BaseResponseBody> deletePresent(@Valid @PathVariable("presentId") Long presentId) {
+		logger.info("deletePresent - 호출");
 		this.presentService.deletePresent(presentId);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Delete Present Success"));
 	}
 
 	@ApiOperation(value = "선물 리스트 조회 Controller")
 	@RequestMapping(value = "/present/{userId}", method = RequestMethod.GET, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public Present getPresent(@Valid @ModelAttribute PresentPostReq present) {
-		return null;
+	public List<Present> getPresent(@Valid @PathVariable("userId") Long userId) {
+		logger.info("getPresent - 호출");
+		return presentService.getPresentListByUserId(userId);
 	}
 
 	@ApiOperation(value = "선물 & 메세지 보내기 Controller")
 	@RequestMapping(value = "/present/message", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Present sendMessageAndPresent(@Valid @ModelAttribute PresentPostReq present) {
+		logger.info("sendMessageAndPresent - 호출");
 		return null;
 	}
 
 	@ApiOperation(value = "엿보기 Controller")
 	@RequestMapping(value = "/present/meesage/money", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Present peekMoney(@Valid @ModelAttribute PresentPostReq present) {
+		logger.info("peekMoney - 호출");
+
 		return null;
 	}
 
