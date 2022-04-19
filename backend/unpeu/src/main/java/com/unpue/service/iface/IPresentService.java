@@ -16,8 +16,8 @@ public interface IPresentService {
 	@Transactional
 	void deletePresent(Long presentId);
 
-	// @Transactional
-	// Present updatePresent(Long presentId,PresentPostReq present);
+	@Transactional
+	Present updatePresent(Long presentId,PresentPostReq present);
 
 	@Transactional
 	List<Present> getPresentListByUserId(Long userId);

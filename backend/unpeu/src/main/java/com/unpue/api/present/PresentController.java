@@ -56,12 +56,15 @@ public class PresentController {
 		return this.presentService.createPresent(present);
 	}
 
-
 	@ApiOperation(value = "선물 수정 Controller")
-	@RequestMapping(value = "/{presentId}", method = RequestMethod.PATCH, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public Present updatePresent(@Valid @PathVariable("presentId") Long presentId, @RequestBody PresentPostReq present) {
+	@RequestMapping(value = "/{presentId}", method = RequestMethod.PUT, consumes = {
+		MediaType.MULTIPART_FORM_DATA_VALUE})
+	public Present updatePresent(@Valid @PathVariable("presentId") Long presentId,
+		@RequestBody PresentPostReq present) {
 		logger.info("updatePresent - 호출");
-		return null;
+		String url = mediaService.save(present.getPresentImg());
+		present.setPresentImgUrl(url);
+		return this.presentService.updatePresent(presentId, present);
 	}
 
 	@ApiOperation(value = "선물 삭제 Controller")
@@ -73,21 +76,24 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "선물 리스트 조회 Controller")
-	@RequestMapping(value = "/present/{userId}", method = RequestMethod.GET, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	@RequestMapping(value = "/present/{userId}", method = RequestMethod.GET, consumes = {
+		MediaType.MULTIPART_FORM_DATA_VALUE})
 	public List<Present> getPresent(@Valid @PathVariable("userId") Long userId) {
 		logger.info("getPresent - 호출");
 		return presentService.getPresentListByUserId(userId);
 	}
 
 	@ApiOperation(value = "선물 & 메세지 보내기 Controller")
-	@RequestMapping(value = "/present/message", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	@RequestMapping(value = "/present/message", method = RequestMethod.POST, consumes = {
+		MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Present sendMessageAndPresent(@Valid @ModelAttribute PresentPostReq present) {
 		logger.info("sendMessageAndPresent - 호출");
 		return null;
 	}
 
 	@ApiOperation(value = "엿보기 Controller")
-	@RequestMapping(value = "/present/meesage/money", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	@RequestMapping(value = "/present/meesage/money", method = RequestMethod.POST, consumes = {
+		MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Present peekMoney(@Valid @ModelAttribute PresentPostReq present) {
 		logger.info("peekMoney - 호출");
 

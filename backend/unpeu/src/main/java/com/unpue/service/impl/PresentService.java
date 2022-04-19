@@ -24,6 +24,8 @@ import com.unpue.domain.repository.IUserRepository;
 import com.unpue.domain.request.PresentPostReq;
 import com.unpue.service.iface.IPresentService;
 
+import antlr.StringUtils;
+
 /**
  * IPresentServie를 implements 하여 구현합니다.
  */
@@ -68,6 +70,24 @@ public class PresentService implements IPresentService {
 	@Override
 	public void deletePresent(Long presentId) {
 		presentRepository.deleteById(presentId);
+	}
+
+	/**
+	 * presentId에 맞는 present 수정
+	 * @param presentId
+	 * @param present
+	 * @return
+	 */
+	@Override
+	public Present updatePresent(Long presentId, PresentPostReq present) {
+		Optional<Present> oPresent = presentRepository.findById(presentId);
+		Present prevPresent = oPresent.get();
+		prevPresent.setPresentPrice(present.getPresentPrice());
+		prevPresent.setPresentName(present.getPresentName());
+		prevPresent.setPresentImg(present.getPresentImgUrl());
+		prevPresent.setReceivedPrice(Integer.parseInt(present.getReceivedPrice()));
+		presentRepository.save(prevPresent);
+		return prevPresent;
 	}
 
 	/**
