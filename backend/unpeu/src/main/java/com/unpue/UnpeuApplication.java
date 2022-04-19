@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UnpueApplication {
+public class UnpeuApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UnpueApplication.class, args);
+		SpringApplication.run(UnpeuApplication.class, args);
 	}
 
 }
