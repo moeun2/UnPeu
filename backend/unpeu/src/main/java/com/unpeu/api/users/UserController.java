@@ -2,37 +2,58 @@ package com.unpeu.api.users;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.unpeu.config.auth.JwtTokenUtil;
+import com.unpeu.domain.entity.User;
+import com.unpeu.service.iface.IUserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 
-@Api(value = "회원관리 API", tags = {"User"})
+@Api("User 관련 기능")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class UserController {
 	
-	@PostMapping()
-    @ApiOperation(value = "로그인", notes = "<strong>로그인</strong>을 진행합니다. .")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "로그인 성공"),
-            @ApiResponse(code = 401, message = "로그인 실패"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<Map<String, Object>> userAdd(){
+	private final IUserService userService;
 
-     
+	@Autowired
+	public UserController(IUserService userService,PasswordEncoder passwordEncoder) {
+		this.userService = userService;
+	}
+	
+	
+	@ApiOperation(value = "카카오 로그인/회원가입 Controller")
+	@RequestMapping(value = "/auth/kakao", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> kakaoLoginAndSignup(@RequestParam String code){
+        String token=userService.getKakaoAccessToken(code);
+        Map<String, String> userInfo=userService.getKakaoUserInfo(token);
+        
         Map<String, Object> resultMap = new HashMap<>();
         
-        resultMap.put("message", "success");
+        if(!userService.chkDplByUserLogin(userInfo.get("userLogin"))) {
+        	System.out.println("없는 회원입니다. 회원가입을 진행합니다.");
+            User signUser = userService.addUser(userInfo,"kakao");
+        }
+        
+		try {
+			userService.findUserByUserLogin(userInfo.get("userLogin"));
+		} catch (NoSuchElementException e) {
+	        return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+		}
+		
+		resultMap.put("accessToken",JwtTokenUtil.getToken(userInfo.get("userLogin")));
         return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
     }
 	
