@@ -1,5 +1,7 @@
 package com.unpeu.domain.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,24 +22,21 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="present")
-public class Present {
+@Table(name = "message")
+public class Message {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="present_id")
-	private long presentId;
-
+	@Column(name = "message_id")
+	private long messageId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "present_id")
+	private Present present;
 
-	private String presentName;
-
-	private String presentImg;
-
-	private String presentPrice;
-
-	private int receivedPrice;
+	private String sender;
+	private String content;
+	private String category;
+	private int price;
+	private LocalDate created_at;
 }
