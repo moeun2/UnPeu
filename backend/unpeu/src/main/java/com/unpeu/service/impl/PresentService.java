@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.checkerframework.checker.nullness.Opt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.unpeu.config.exception.ApplicationException;
 import com.unpeu.config.exception.EmptyResultDataAccessException;
 import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
@@ -70,6 +72,17 @@ public class PresentService implements IPresentService {
 	 */
 	@Override
 	public void deletePresent(Long presentId) {
+		// 해당 선물에 이미 메세지(선물 or 돈)을 받았다면
+		Optional<Present> oPresent = presentRepository.findById(presentId);
+		if (oPresent.isEmpty()) {
+			throw new NoSuchElementException("presentId가 " + presentId + " 인 선물을 찾을 수 없습니다");
+		}
+		Optional<Message> oMessage = messageRepository.findFirstByPresent(oPresent.get());
+		if (!oMessage.isEmpty()) {
+			System.out.println(oMessage.get());
+			throw new ApplicationException("presentId가 " + presentId + " 인 선물에 돈/메세지가 이미 들어가 있습니다.");
+		}
+
 		try {
 			presentRepository.deleteById(presentId);
 		} catch (Exception e) {
