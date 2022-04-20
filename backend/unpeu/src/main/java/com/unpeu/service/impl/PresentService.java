@@ -2,9 +2,9 @@ package com.unpeu.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.aspectj.bridge.IMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -46,10 +46,13 @@ public class PresentService implements IPresentService {
 	 */
 	@Override
 	public Present createPresent(PresentPostReq present) {
-		// User 완성되면 user 객체 넣기 or accessToken에서 가져오기
-		// Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
+		Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
+		if (user.isEmpty()) {
+			throw new NoSuchElementException("userId가 " + present.getUserId() + " 인 유저를 찾을 수 없습니다");
+		}
+
 		Present newPresent = Present.builder()
-			.userId(/*user.get()*/null)
+			.userId(user.get()) //Test시 null로 테스트 했음
 			.presentImg(present.getPresentImgUrl())
 			.presentName(present.getPresentName())
 			.presentPrice(present.getPresentPrice())
@@ -117,8 +120,6 @@ public class PresentService implements IPresentService {
 			.created_at(LocalDate.now())
 			.present(present)
 			.build();
-
-		System.out.println(newMessage);
 		return messageRepository.save(newMessage);
 	}
 }

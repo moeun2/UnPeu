@@ -50,6 +50,9 @@ public class PresentController {
 	@RequestMapping(value = "/present", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Present createPresent(@Valid @ModelAttribute PresentPostReq present) {
 		logger.info("createPresent - 호출");
+		// Access Token을 받으면 PresentPostReq userId 항목에 id 집어넣기
+
+		// 이미지 url 변경
 		String url = mediaService.save(present.getPresentImg());
 		logger.info("media Saved Url : " + url);
 		present.setPresentImgUrl(url);
