@@ -1,16 +1,21 @@
 package com.unpeu.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.aspectj.bridge.IMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
 import com.unpeu.domain.entity.User;
+import com.unpeu.domain.repository.IMessageRepository;
 import com.unpeu.domain.repository.IPresentRepository;
 import com.unpeu.domain.repository.IUserRepository;
+import com.unpeu.domain.request.MessagePostReq;
 import com.unpeu.domain.request.PresentPostReq;
 import com.unpeu.service.iface.IPresentService;
 
@@ -23,10 +28,15 @@ public class PresentService implements IPresentService {
 
 	private IPresentRepository presentRepository;
 	private IUserRepository userRepository;
+	private IMessageRepository messageRepository;
 
-	public PresentService(IPresentRepository presentRepository, IUserRepository userRepository) {
+	private static final String CATEGORY = "2022_어른이날";
+
+	public PresentService(IPresentRepository presentRepository, IUserRepository userRepository,
+		IMessageRepository messageRepository) {
 		this.presentRepository = presentRepository;
 		this.userRepository = userRepository;
+		this.messageRepository = messageRepository;
 	}
 
 	/**
@@ -37,10 +47,9 @@ public class PresentService implements IPresentService {
 	@Override
 	public Present createPresent(PresentPostReq present) {
 		// User 완성되면 user 객체 넣기 or accessToken에서 가져오기
-		// User user = new userRepository.findById(present.getUserId());
-		Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
+		// Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
 		Present newPresent = Present.builder()
-			.userId(user.get())
+			.userId(/*user.get()*/null)
 			.presentImg(present.getPresentImgUrl())
 			.presentName(present.getPresentName())
 			.presentPrice(present.getPresentPrice())
@@ -86,5 +95,30 @@ public class PresentService implements IPresentService {
 	@Override
 	public List<Present> getPresentListByUserId(Long userId) {
 		return presentRepository.getPresentListByUserId(userId);
+	}
+
+	/**
+	 * Message(메세지와 선물) 내역 기록
+	 * @param message
+	 * @return
+	 */
+	@Override
+	public Message sendMessageAndPresent(MessagePostReq message) {
+		Optional<Present> oPresent = presentRepository.findById(Long.parseLong(message.getPresent_id()));
+		Present present = oPresent.get();
+		present.setReceivedPrice(present.getReceivedPrice() + message.getPrice());
+		presentRepository.save(present);
+
+		Message newMessage = Message.builder()
+			.sender(message.getSender())
+			.content(message.getContent())
+			.category(message.getCategory())
+			.price(message.getPrice())
+			.created_at(LocalDate.now())
+			.present(present)
+			.build();
+
+		System.out.println(newMessage);
+		return messageRepository.save(newMessage);
 	}
 }

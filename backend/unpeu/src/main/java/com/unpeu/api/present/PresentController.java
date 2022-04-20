@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unpeu.config.media.MediaService;
+import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
+import com.unpeu.domain.request.MessagePostReq;
 import com.unpeu.domain.request.PresentPostReq;
 import com.unpeu.domain.response.BaseResponseBody;
 import com.unpeu.service.iface.IPresentService;
@@ -82,17 +84,15 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "선물 & 메세지 보내기 Controller")
-	@RequestMapping(value = "/present/message", method = RequestMethod.POST, consumes = {
-		MediaType.MULTIPART_FORM_DATA_VALUE})
-	public Present sendMessageAndPresent(@Valid @ModelAttribute PresentPostReq present) {
+	@RequestMapping(value = "/present/message", method = RequestMethod.POST)
+	public Message sendMessageAndPresent(@Valid @RequestBody MessagePostReq message) {
 		logger.info("sendMessageAndPresent - 호출");
-		return null;
+		return presentService.sendMessageAndPresent(message);
 	}
 
 	@ApiOperation(value = "엿보기 Controller")
-	@RequestMapping(value = "/present/meesage/money", method = RequestMethod.POST, consumes = {
-		MediaType.MULTIPART_FORM_DATA_VALUE})
-	public Present peekMoney(@Valid @ModelAttribute PresentPostReq present) {
+	@RequestMapping(value = "/present/meesage/money", method = RequestMethod.POST)
+	public Message peekMoney(@Valid @ModelAttribute PresentPostReq present) {
 		logger.info("peekMoney - 호출");
 
 		return null;
