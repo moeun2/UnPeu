@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.unpeu.config.exception.EmptyResultDataAccessException;
 import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
 import com.unpeu.domain.entity.User;
@@ -69,7 +70,11 @@ public class PresentService implements IPresentService {
 	 */
 	@Override
 	public void deletePresent(Long presentId) {
-		presentRepository.deleteById(presentId);
+		try {
+			presentRepository.deleteById(presentId);
+		} catch (Exception e) {
+			throw new EmptyResultDataAccessException("presentId : " + presentId + " 에 맞는 데이터가 없습니다.");
+		}
 	}
 
 	/**
