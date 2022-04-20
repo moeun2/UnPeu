@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.checkerframework.checker.nullness.Opt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.unpeu.config.exception.ApplicationException;
@@ -20,6 +21,7 @@ import com.unpeu.domain.repository.IPresentRepository;
 import com.unpeu.domain.repository.IUserRepository;
 import com.unpeu.domain.request.MessagePostReq;
 import com.unpeu.domain.request.PresentPostReq;
+import com.unpeu.domain.response.BaseResponseBody;
 import com.unpeu.service.iface.IPresentService;
 
 /**
@@ -32,8 +34,6 @@ public class PresentService implements IPresentService {
 	private IPresentRepository presentRepository;
 	private IUserRepository userRepository;
 	private IMessageRepository messageRepository;
-
-	private static final String CATEGORY = "2022_어른이날";
 
 	public PresentService(IPresentRepository presentRepository, IUserRepository userRepository,
 		IMessageRepository messageRepository) {
@@ -49,13 +49,13 @@ public class PresentService implements IPresentService {
 	 */
 	@Override
 	public Present createPresent(PresentPostReq present) {
-		Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
-		if (user.isEmpty()) {
-			throw new NoSuchElementException("userId가 " + present.getUserId() + " 인 유저를 찾을 수 없습니다");
-		}
+		// Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
+		// if (user.isEmpty()) {
+		// 	throw new NoSuchElementException("userId가 " + present.getUserId() + " 인 유저를 찾을 수 없습니다");
+		// }
 
 		Present newPresent = Present.builder()
-			.userId(user.get()) //Test시 null로 테스트 했음
+			.user(/*user.get()*/null) //Test시 null로 테스트 했음
 			.presentImg(present.getPresentImgUrl())
 			.presentName(present.getPresentName())
 			.presentPrice(present.getPresentPrice())
@@ -121,7 +121,8 @@ public class PresentService implements IPresentService {
 	 */
 	@Override
 	public List<Present> getPresentListByUserId(Long userId) {
-		return presentRepository.getPresentListByUserId(userId);
+		// return presentRepository.getPresentListByUserId(userId);
+		return presentRepository.findByUser_Id(null);
 	}
 
 	/**
@@ -145,5 +146,14 @@ public class PresentService implements IPresentService {
 			.present(present)
 			.build();
 		return messageRepository.save(newMessage);
+	}
+
+	/**
+	 * user가 지금까지 받은 돈을 엿볼 수 있다.
+	 * @return
+	 */
+	@Override
+	public String peekMoney(Long userId) {
+		return messageRepository.sumPeekMoney(userId);
 	}
 }

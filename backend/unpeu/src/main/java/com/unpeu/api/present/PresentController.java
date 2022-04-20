@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.unpeu.config.media.MediaService;
 import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
+import com.unpeu.domain.entity.User;
 import com.unpeu.domain.request.MessagePostReq;
 import com.unpeu.domain.request.PresentPostReq;
 import com.unpeu.domain.response.BaseResponseBody;
+import com.unpeu.domain.response.PresentPeekPostRes;
 import com.unpeu.service.iface.IPresentService;
 
 import io.swagger.annotations.Api;
@@ -81,8 +83,7 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "선물 리스트 조회 Controller")
-	@RequestMapping(value = "/present/{userId}", method = RequestMethod.GET, consumes = {
-		MediaType.MULTIPART_FORM_DATA_VALUE})
+	@RequestMapping(value = "/present/{userId}", method = RequestMethod.GET)
 	public List<Present> getPresent(@Valid @PathVariable("userId") Long userId) {
 		logger.info("getPresent - 호출");
 		return presentService.getPresentListByUserId(userId);
@@ -97,10 +98,11 @@ public class PresentController {
 
 	@ApiOperation(value = "엿보기 Controller")
 	@RequestMapping(value = "/present/meesage/money", method = RequestMethod.POST)
-	public Message peekMoney(@Valid @ModelAttribute PresentPostReq present) {
+	public ResponseEntity<? extends BaseResponseBody> peekMoney() {
 		logger.info("peekMoney - 호출");
-
-		return null;
+		User user = new User();
+		String money = presentService.peekMoney(/**userId**/ 1l);
+		return ResponseEntity.status(200).body(PresentPeekPostRes.of(200, "Success Peek Money", money));
 	}
 
 }
