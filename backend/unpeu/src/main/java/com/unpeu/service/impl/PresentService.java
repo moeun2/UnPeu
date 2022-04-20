@@ -86,13 +86,19 @@ public class PresentService implements IPresentService {
 	@Override
 	public Present updatePresent(Long presentId, PresentPostReq present) {
 		Optional<Present> oPresent = presentRepository.findById(presentId);
+		if (oPresent.isEmpty()) {
+			throw new NoSuchElementException("presentId가 " + presentId + " 인 선물을 찾을 수 없습니다");
+		}
 		Present prevPresent = oPresent.get();
-		prevPresent.setPresentPrice(present.getPresentPrice());
-		prevPresent.setPresentName(present.getPresentName());
-		prevPresent.setPresentImg(present.getPresentImgUrl());
-		prevPresent.setReceivedPrice(Integer.parseInt(present.getReceivedPrice()));
-		presentRepository.save(prevPresent);
-		return prevPresent;
+
+		if (present.getPresentName() != null) // presentName 수정
+			prevPresent.setPresentName(present.getPresentName());
+		if (present.getPresentPrice() != null) // presentPrice 수정
+			prevPresent.setPresentPrice(present.getPresentPrice());
+		if (present.getPresentImgUrl() != null) // Image 수정
+			prevPresent.setPresentImg(present.getPresentImgUrl());
+
+		return presentRepository.save(prevPresent);
 	}
 
 	/**

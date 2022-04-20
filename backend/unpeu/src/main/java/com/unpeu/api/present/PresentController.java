@@ -60,13 +60,15 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "선물 수정 Controller")
-	@RequestMapping(value = "/{presentId}", method = RequestMethod.PUT, consumes = {
+	@RequestMapping(value = "/present/{presentId}", method = RequestMethod.PUT, consumes = {
 		MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Present updatePresent(@Valid @PathVariable("presentId") Long presentId,
-		@RequestBody PresentPostReq present) {
+		@ModelAttribute PresentPostReq present) {
 		logger.info("updatePresent - 호출");
-		String url = mediaService.save(present.getPresentImg());
-		present.setPresentImgUrl(url);
+		if (present.getPresentImg() != null) {
+			String url = mediaService.save(present.getPresentImg());
+			present.setPresentImgUrl(url);
+		}
 		return this.presentService.updatePresent(presentId, present);
 	}
 
