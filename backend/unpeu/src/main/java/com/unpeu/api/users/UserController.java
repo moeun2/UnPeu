@@ -2,11 +2,11 @@ package com.unpeu.api.users;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unpeu.config.auth.JwtTokenUtil;
+import com.unpeu.config.auth.UnpeuUserDetails;
 import com.unpeu.domain.entity.User;
 import com.unpeu.service.iface.IUserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 @Api("User 관련 기능")
@@ -39,21 +41,23 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> kakaoLoginAndSignup(@RequestParam String code){
         String token=userService.getKakaoAccessToken(code);
         Map<String, String> userInfo=userService.getKakaoUserInfo(token);
-        
         Map<String, Object> resultMap = new HashMap<>();
         
         if(!userService.chkDplByUserLogin(userInfo.get("userLogin"))) {
-        	System.out.println("없는 회원입니다. 회원가입을 진행합니다.");
             User signUser = userService.addUser(userInfo,"kakao");
         }
-        
-		try {
-			userService.findUserByUserLogin(userInfo.get("userLogin"));
-		} catch (NoSuchElementException e) {
-	        return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
-		}
-		
 		resultMap.put("accessToken",JwtTokenUtil.getToken(userInfo.get("userLogin")));
+        return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+    }
+	
+	@ApiOperation(value = "유저 정보 조회")
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, Object>> getUserInfo(@ApiIgnore Authentication authentication){
+		Map<String, Object> resultMap = new HashMap<>();
+        UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
+        User user =userDetails.getUser();
+        
+		resultMap.put("User",user);
         return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
     }
 	

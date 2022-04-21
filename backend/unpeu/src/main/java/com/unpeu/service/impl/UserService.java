@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class UserService implements IUserService{
 
 	@Override
 	public User findUserByUserLogin(String userLogin) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = userRepository.findUserByUserLogin(userLogin).get();
+		return user;
 	}
 	
 	@Override
@@ -47,8 +48,8 @@ public class UserService implements IUserService{
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=c0ad1801cdf80282754cf18e79556743");
-            sb.append("&redirect_uri=http://localhost:8081/?Oauth=kakao");
+            sb.append("&client_id=c0ad1801cdf80282754cf18e79556743");//kakao restapi키
+            sb.append("&redirect_uri=http://localhost:8081/?Oauth=kakao");//redirect 경로
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -122,7 +123,6 @@ public class UserService implements IUserService{
 	    	   Map<String,Object> profile=(Map<String,Object>) kakao_account.get("profile");
 	    	   nickname=(String) profile.get("nickname");
 	    	   id=Long.toString((long)map.get("id"));
-	    	   
 	       } catch (IOException e) {
 	    	   e.printStackTrace(); 
 	    	   return null;
