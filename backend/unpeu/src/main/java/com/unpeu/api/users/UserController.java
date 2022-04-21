@@ -43,11 +43,13 @@ public class UserController {
 	@ApiOperation(value = "카카오 로그인/회원가입  Controller")
 	@RequestMapping(value = "/auth/kakao", method = RequestMethod.POST)
     public ResponseEntity<Map<String, Object>> kakaoLoginAndSignup(@RequestParam String code){
+		logger.info("kakaoLoginAndSignup - 호출");
         String token=userService.getKakaoAccessToken(code);
         Map<String, String> userInfo=userService.getKakaoUserInfo(token);
         Map<String, Object> resultMap = new HashMap<>();
         
         if(!userService.chkDplByUserLogin(userInfo.get("userLogin"))) {
+        	logger.info("kakaoLoginAndSignup - 회원가입 진행");
             User signUser = userService.addUser(userInfo,"kakao");
         }
 		resultMap.put("accessToken",JwtTokenUtil.getToken(userInfo.get("userLogin")));
@@ -58,7 +60,8 @@ public class UserController {
 	
 	@ApiOperation(value = "유저 정보 조회(회원) Controller")
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, Object>> getUserInfoUByToken(@ApiIgnore Authentication authentication){
+    public ResponseEntity<Map<String, Object>> getUserInfoByToken(@ApiIgnore Authentication authentication){
+		logger.info("getUserInfoByToken - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
         UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
         User user =userDetails.getUser();
@@ -72,6 +75,7 @@ public class UserController {
 	@ApiOperation(value = "유저 정보 조회(비회원) Controller")
 	@RequestMapping(value = "/users/{user_id}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> getUserInfoByUserId(@PathVariable("user_id") Long userId){
+		logger.info("getUserInfoByUserId - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
         User user =userService.findUserById(userId);
         
@@ -84,6 +88,7 @@ public class UserController {
 	@ApiOperation(value = "유저 타이틀 수정 Controller")
 	@RequestMapping(value = "/users/title", method = RequestMethod.PATCH)
     public ResponseEntity<Map<String, Object>> updateUserTitle(@ApiIgnore Authentication authentication,@RequestParam String userTitle){
+		logger.info("updateUserTitle - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
         UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
         User user =userDetails.getUser();
@@ -99,6 +104,7 @@ public class UserController {
 	@ApiOperation(value = "유저 info 수정 Controller")
 	@RequestMapping(value = "/users/info", method = RequestMethod.PATCH)
     public ResponseEntity<Map<String, Object>> updateUserInfo(@ApiIgnore Authentication authentication,@RequestParam String userInfo){
+		logger.info("updateUserInfo - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
         UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
         User user =userDetails.getUser();
@@ -115,11 +121,13 @@ public class UserController {
 	@RequestMapping(value = "/users/img", method = RequestMethod.PATCH)
     public ResponseEntity<Map<String, Object>> updateUserImg(@ApiIgnore Authentication authentication,
     		@RequestPart(value = "file") final MultipartFile userImg){
+		logger.info("updateUserImg - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
         UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
         User user =userDetails.getUser();
         
         if (userImg != null) {
+        	logger.info("updateUserImg - 이미지 없음");
 			String url = mediaService.save(userImg);
 			user=userService.updateUserImg(user.getId(), url);
 		}
