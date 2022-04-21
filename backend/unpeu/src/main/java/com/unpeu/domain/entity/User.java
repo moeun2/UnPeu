@@ -23,7 +23,7 @@ public class User {
 	@Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private long id;
+    private Long id;
 	
 	private String userLogin;
 	private String socialDomain;
@@ -33,8 +33,8 @@ public class User {
     private String userInfo;
     private String userMusic;
     
-    private long todayVisit;
-    private long totalVisit;
+    private Long todayVisit;
+    private Long totalVisit;
 
     private String userImg;
     

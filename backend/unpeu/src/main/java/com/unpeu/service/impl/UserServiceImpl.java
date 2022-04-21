@@ -9,7 +9,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import com.unpeu.domain.repository.IUserRepository;
 import com.unpeu.service.iface.IUserService;
 
 @Service("userService")
-public class UserService implements IUserService{
+public class UserServiceImpl implements IUserService{
 	
 	@Autowired
 	IUserRepository userRepository;
@@ -127,7 +126,6 @@ public class UserService implements IUserService{
 	    	   e.printStackTrace(); 
 	    	   return null;
 	       }
-	       
 	       userInfo.put("name", nickname);
 	       userInfo.put("userLogin",id);
 	      
@@ -153,11 +151,17 @@ public class UserService implements IUserService{
 		user.setUserLogin(userInfo.get("userLogin"));
 		user.setUserName(userInfo.get("name"));
 		user.setSocialDomain(socialDomain);
-		user.setTodayVisit(0);
-		user.setTotalVisit(0);
+		user.setTodayVisit(0L);
+		user.setTotalVisit(0L);
 		user.setCreateDate(LocalDateTime.now());
 		
 		return userRepository.save(user);
+	}
+
+	@Override
+	public User findUserById(Long userId) {
+		User user= userRepository.findById(userId).get();
+		return user;
 	}
 
 }
