@@ -13,17 +13,22 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.unpeu.domain.entity.Present;
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.repository.IUserRepository;
 import com.unpeu.service.iface.IUserService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service("userService")
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class UserServiceImpl implements IUserService{
 	
-	@Autowired
-	IUserRepository userRepository;
+	private final IUserRepository userRepository;
 
 	@Override
 	public User findUserByUserLogin(String userLogin) {
@@ -31,6 +36,12 @@ public class UserServiceImpl implements IUserService{
 		return user;
 	}
 	
+
+	/**
+	 * 인가코드로 엑세스토큰 가져오기
+	 * @param code
+	 * @return
+	 */
 	@Override
 	public String getKakaoAccessToken (String code) {
         String access_Token = "";
@@ -85,6 +96,11 @@ public class UserServiceImpl implements IUserService{
         return access_Token;
     }
 	
+	/**
+	 * 토큰으로 카카오 유저정보 얻어오기
+	 * @param token
+	 * @return
+	 */
 	@Override
 	public Map<String, String> getKakaoUserInfo(String token) {
 		System.out.println(token);
@@ -138,6 +154,11 @@ public class UserServiceImpl implements IUserService{
 	    return userInfo;
 	 }
 
+	/**
+	 * 중복된 userLogin값을 가지는 유저가 있는지 확인
+	 * @param userLogin
+	 * @return
+	 */
 	@Override
 	public boolean chkDplByUserLogin(String userLogin) {
 		if(userRepository.findUserByUserLogin(userLogin).isPresent())
@@ -145,6 +166,12 @@ public class UserServiceImpl implements IUserService{
 		else return false;
 	}
 
+	/**
+	 * 유저 회원가입 
+	 * @param userInfo
+	 * @param socialDomain
+	 * @return
+	 */
 	@Override
 	public User addUser(Map<String, String> userInfo, String socialDomain) {
 		User user = new User();
@@ -158,10 +185,55 @@ public class UserServiceImpl implements IUserService{
 		return userRepository.save(user);
 	}
 
+	/**
+	 * 해당하는 id의 유저 찾기
+	 * @param userId
+	 * @return
+	 */
 	@Override
 	public User findUserById(Long userId) {
 		User user= userRepository.findById(userId).get();
-		return user;
+		return userRepository.save(user);
+	}
+
+	/**
+	 * 유저의 title수정 
+	 * @param userId
+	 * @param userTitle
+	 * @return
+	 */
+	@Override
+	public User updateUserTitle(Long userId,String userTitle) {
+		User user= userRepository.findById(userId).get();
+		user.setUserTitle(userTitle);
+		return userRepository.save(user);
+	}
+
+	/**
+	 * 유저의 info 수정
+	 * @param userId
+	 * @param userInfo
+	 * @return
+	 */
+	@Override
+	public User updateUserInfo(Long userId,String userInfo) {
+		User user= userRepository.findById(userId).get();
+		user.setUserInfo(userInfo);
+		return userRepository.save(user);
+	}
+
+	
+	/**
+	 * 유저의 프로필 이미지 수정
+	 * @param userId
+	 * @param userImg
+	 * @return
+	 */
+	@Override
+	public User updateUserImg(Long userId,String userImg) {
+		User user= userRepository.findById(userId).get();
+		user.setUserImg(userImg);
+		return userRepository.save(user);
 	}
 
 }

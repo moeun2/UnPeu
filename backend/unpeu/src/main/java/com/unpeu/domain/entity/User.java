@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
