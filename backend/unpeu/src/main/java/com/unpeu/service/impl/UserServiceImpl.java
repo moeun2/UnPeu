@@ -30,6 +30,11 @@ public class UserServiceImpl implements IUserService{
 	
 	private final IUserRepository userRepository;
 
+	/**
+	 * userLogin정보로 사용자 조회
+	 * @param userLogin
+	 * @return
+	 */
 	@Override
 	public User findUserByUserLogin(String userLogin) {
 		User user = userRepository.findUserByUserLogin(userLogin).get();

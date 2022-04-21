@@ -27,23 +27,18 @@ import com.unpeu.service.iface.IUserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
-
 
 @Api("User 관련 기능")
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class UserController {
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	private final IUserService userService;
 	private final MediaService mediaService;
-
-	@Autowired
-	public UserController(IUserService userService,PasswordEncoder passwordEncoder,MediaService mediaService) {
-		this.userService = userService;
-		this.mediaService = mediaService;
-	}
 	
 	@ApiOperation(value = "카카오 로그인/회원가입  Controller")
 	@RequestMapping(value = "/auth/kakao", method = RequestMethod.POST)

@@ -7,30 +7,26 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unpeu.domain.entity.User;
 
 public interface IUserService {
-	@Transactional
 	User findUserByUserLogin(String userLogin);
 	
-	@Transactional
 	User findUserById(Long userId);
 	
-	@Transactional
 	boolean chkDplByUserLogin(String userLogin);
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	User addUser(Map<String, String> userInfo,String socialDomain);
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	User updateUserTitle(Long userId,String userTitle);
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	User updateUserInfo(Long userId,String userInfo);
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	User updateUserImg(Long userId,String userImg);
 	
 	String getKakaoAccessToken (String code);
 	
 	Map<String, String> getKakaoUserInfo(String token);
 	
-
 }
