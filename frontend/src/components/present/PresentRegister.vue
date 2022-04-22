@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+import { presentStore } from '@/store/modules/presentStore';
   export default {
     data: () => ({
       present: null,
@@ -46,8 +48,13 @@
       
     }),
     methods:{
-      registPresent(){
+      ...mapActions(presentStore,["registPresent"]),
+      async registPresent(){
         console.log(this.present);
+        let fd=new FormData();
+        fd.append('files',this.files);
+        fd.append('present',this.present);
+        // Todo : userId 추가되면 작성
       }
     }
   }
