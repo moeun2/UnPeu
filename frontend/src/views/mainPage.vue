@@ -61,7 +61,7 @@
                   <div class="nav">
                     <ul>
                       <li class="menu-item mi-1 menu-checked">홈</li>
-                      <li class="menu-item mi-3">다이어리</li>
+                      <li class="menu-item mi-3"><router-link :to="{ name: 'Diary' }">다이어리</router-link></li>
                     </ul>
                   </div>
                   <div class="title-wrap">
