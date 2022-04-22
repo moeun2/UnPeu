@@ -28,7 +28,7 @@ public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "message_id")
-	private long messageId;
+	private Long messageId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "present_id")

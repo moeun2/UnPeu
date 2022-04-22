@@ -20,6 +20,6 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ApiModelProperty(name = "id", example = "1")
-	private long id;
+	private Long id;
 
 }

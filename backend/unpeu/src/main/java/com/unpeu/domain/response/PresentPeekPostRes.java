@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @ApiModel("PresentPeekRes")
 public class PresentPeekPostRes extends BaseResponseBody{
-	String money;
+	private String money;
 
 	public static PresentPeekPostRes of(Integer statusCode, String message, String money) {
 		PresentPeekPostRes res = new PresentPeekPostRes();

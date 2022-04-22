@@ -5,43 +5,42 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.checkerframework.checker.nullness.Opt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.unpeu.config.exception.ApplicationException;
 import com.unpeu.config.exception.EmptyResultDataAccessException;
 import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
-import com.unpeu.domain.entity.User;
 import com.unpeu.domain.repository.IMessageRepository;
 import com.unpeu.domain.repository.IPresentRepository;
 import com.unpeu.domain.repository.IUserRepository;
 import com.unpeu.domain.request.MessagePostReq;
 import com.unpeu.domain.request.PresentPostReq;
-import com.unpeu.domain.response.BaseResponseBody;
 import com.unpeu.service.iface.IPresentService;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * IPresentServie를 implements 하여 구현합니다.
  */
 @Service
-public class PresentService implements IPresentService {
-	private static final Logger logger = LoggerFactory.getLogger(PresentService.class);
+@RequiredArgsConstructor
+public class PresentServiceImpl implements IPresentService {
+	private static final Logger logger = LoggerFactory.getLogger(PresentServiceImpl.class);
 
-	private IPresentRepository presentRepository;
-	private IUserRepository userRepository;
-	private IMessageRepository messageRepository;
+	private final IPresentRepository presentRepository;
+	private final IUserRepository userRepository;
+	private final IMessageRepository messageRepository;
 
-	public PresentService(IPresentRepository presentRepository, IUserRepository userRepository,
-		IMessageRepository messageRepository) {
-		this.presentRepository = presentRepository;
-		this.userRepository = userRepository;
-		this.messageRepository = messageRepository;
-	}
-	/** TEst **/
+	// public PresentService(IPresentRepository presentRepository, IUserRepository userRepository,
+	// 	IMessageRepository messageRepository) {
+	// 	this.presentRepository = presentRepository;
+	// 	this.userRepository = userRepository;
+	// 	this.messageRepository = messageRepository;
+	// }
+
 	/**
 	 * 선물리스트에 선물 등록
 	 * @param present

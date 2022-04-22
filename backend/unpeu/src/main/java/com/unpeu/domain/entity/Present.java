@@ -26,8 +26,7 @@ public class Present {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="present_id")
-	private long presentId;
-
+	private Long presentId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
