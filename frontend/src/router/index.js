@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import eventRoom from "@/components/EventRoom.vue"
-import Home from "@/views/MainPage";
+import Home from "@/views/mainPage";
 
 import Diary from "@/views/DiaryPage.vue"
 import BoardList from "@/components/diary/BoardList.vue"

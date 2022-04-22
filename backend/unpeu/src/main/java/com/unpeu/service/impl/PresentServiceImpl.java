@@ -1,14 +1,13 @@
 package com.unpeu.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.checkerframework.checker.nullness.Opt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.unpeu.config.exception.ApplicationException;
@@ -21,27 +20,29 @@ import com.unpeu.domain.repository.IPresentRepository;
 import com.unpeu.domain.repository.IUserRepository;
 import com.unpeu.domain.request.MessagePostReq;
 import com.unpeu.domain.request.PresentPostReq;
-import com.unpeu.domain.response.BaseResponseBody;
 import com.unpeu.service.iface.IPresentService;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * IPresentServie를 implements 하여 구현합니다.
  */
 @Service
-public class PresentService implements IPresentService {
-	private static final Logger logger = LoggerFactory.getLogger(PresentService.class);
+@RequiredArgsConstructor
+public class PresentServiceImpl implements IPresentService {
+	private static final Logger logger = LoggerFactory.getLogger(PresentServiceImpl.class);
 
-	private IPresentRepository presentRepository;
-	private IUserRepository userRepository;
-	private IMessageRepository messageRepository;
+	private final IPresentRepository presentRepository;
+	private final IUserRepository userRepository;
+	private final IMessageRepository messageRepository;
 
-	public PresentService(IPresentRepository presentRepository, IUserRepository userRepository,
-		IMessageRepository messageRepository) {
-		this.presentRepository = presentRepository;
-		this.userRepository = userRepository;
-		this.messageRepository = messageRepository;
-	}
-	/** TEst **/
+	// public PresentService(IPresentRepository presentRepository, IUserRepository userRepository,
+	// 	IMessageRepository messageRepository) {
+	// 	this.presentRepository = presentRepository;
+	// 	this.userRepository = userRepository;
+	// 	this.messageRepository = messageRepository;
+	// }
+
 	/**
 	 * 선물리스트에 선물 등록
 	 * @param present
@@ -61,7 +62,6 @@ public class PresentService implements IPresentService {
 			.presentPrice(present.getPresentPrice())
 			.receivedPrice(0)
 			.build();
-
 		return presentRepository.save(newPresent);
 	}
 
@@ -132,17 +132,31 @@ public class PresentService implements IPresentService {
 	 */
 	@Override
 	public Message sendMessageAndPresent(MessagePostReq message) {
-		Optional<Present> oPresent = presentRepository.findById(Long.parseLong(message.getPresent_id()));
-		Present present = oPresent.get();
-		present.setReceivedPrice(present.getReceivedPrice() + message.getPrice());
-		presentRepository.save(present);
+
+		Present present = null;
+		if (message.getPresentId() != null) {
+			Optional<Present> oPresent = presentRepository.findById(Long.parseLong(message.getPresentId()));
+			if (oPresent.isEmpty()) {
+				throw new NoSuchElementException("presentId가 " + message.getPresentId() + " 인 선물을 찾을 수 없습니다");
+			}
+			present = oPresent.get();
+			present.setReceivedPrice(present.getReceivedPrice() + message.getPrice());
+			presentRepository.save(present);
+		}
+
+		/*
+		Optional<User> user = userRepository.findById(Long.parseLong(message.getUserId()));
+		if (user.isEmpty()) {
+			throw new NoSuchElementException("userId가 " + message.getUserId() + " 인 유저를 찾을 수 없습니다");
+		}*/
 
 		Message newMessage = Message.builder()
+			.user(/*user.get()*/ null)
 			.sender(message.getSender())
 			.content(message.getContent())
 			.category(message.getCategory())
 			.price(message.getPrice())
-			.created_at(LocalDate.now())
+			.createdAt(LocalDateTime.now())
 			.present(present)
 			.build();
 		return messageRepository.save(newMessage);
