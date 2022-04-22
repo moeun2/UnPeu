@@ -5,7 +5,7 @@ import PresentPage from "@/views/PresentPage.vue";
 import PresentPayment from "@/components/PresentPayment.vue";
 import PresentManage from "@/components/PresentManage.vue";
 import eventRoom from "@/components/EventRoom.vue"
-import Home from "@/views/MainPage";
+import Home from "@/views/mainPage";
 
 import Diary from "@/views/DiaryPage.vue"
 import BoardList from "@/components/diary/BoardList.vue"

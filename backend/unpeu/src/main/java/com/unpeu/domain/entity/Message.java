@@ -1,6 +1,7 @@
 package com.unpeu.domain.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,31 +13,62 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.Hibernate;
+import org.jetbrains.annotations.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "message")
 public class Message {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "message_id")
-	private long messageId;
+	private Long messageId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "present_id")
+	@ToString.Exclude
 	private Present present;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@ToString.Exclude
+	private User user;
+
+	@NotNull
 	private String sender;
 	private String content;
 	private String category;
 	private int price;
-	private LocalDate created_at;
+	private LocalDateTime createdAt;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+			return false;
+		Message message = (Message)o;
+		return messageId != null && Objects.equals(messageId, message.messageId);
+	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }

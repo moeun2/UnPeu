@@ -1,7 +1,5 @@
 package com.unpeu.config.security;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,47 +17,45 @@ import com.unpeu.config.auth.JwtAuthenticationFilter;
 import com.unpeu.config.auth.UnpeuUserDetailService;
 import com.unpeu.service.iface.IUserService;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UnpeuUserDetailService unpeuUserDetailService;
-    
-    @Autowired
-    private IUserService userService;
+	@Autowired
+	private UnpeuUserDetailService unpeuUserDetailService;
 
+	@Autowired
+	private IUserService userService;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-//        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(this.unpeuUserDetailService);
-        return daoAuthenticationProvider;
-    }
+	@Bean
+	DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+		//        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+		daoAuthenticationProvider.setUserDetailsService(this.unpeuUserDetailService);
+		return daoAuthenticationProvider;
+	}
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(authenticationProvider());
-    }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) {
+		auth.authenticationProvider(authenticationProvider());
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService))
-                .authorizeRequests()
-                .antMatchers("/api/users/password").authenticated()
-//                .antMatchers(HttpMethod.DELETE,"/api/users/{userEmail}").authenticated()
-                .and().cors();
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+			.httpBasic().disable()
+			.csrf().disable()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+			.addFilter(new JwtAuthenticationFilter(authenticationManager(), userService))
+			.authorizeRequests()
+			.antMatchers("/api/users/password").authenticated()
+			//                .antMatchers(HttpMethod.DELETE,"/api/users/{userEmail}").authenticated()
+			.and().cors();
+	}
 }

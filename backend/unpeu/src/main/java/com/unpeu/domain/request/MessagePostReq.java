@@ -13,8 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessagePostReq {
-	// @ApiModelProperty(name = "user_id", example = "1")
-	// private String user_id;
+	@ApiModelProperty(name = "user_id", example = "1")
+	private String userId;
 	@ApiModelProperty(name = "sender", example = "guest")
 	private String sender;
 	@ApiModelProperty(name = "content", example = "Happy Adult's Day!")
@@ -24,7 +24,7 @@ public class MessagePostReq {
 	@ApiModelProperty(name = "price", example = "10000")
 	private int price;
 	@ApiModelProperty(name = "present_id", example = "1")
-	private String present_id;
+	private String presentId;
 
 
 }
