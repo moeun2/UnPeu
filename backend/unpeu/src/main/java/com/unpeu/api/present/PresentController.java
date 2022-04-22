@@ -19,9 +19,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unpeu.config.media.MediaService;
+import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
+import com.unpeu.domain.entity.User;
+import com.unpeu.domain.request.MessagePostReq;
 import com.unpeu.domain.request.PresentPostReq;
 import com.unpeu.domain.response.BaseResponseBody;
+import com.unpeu.domain.response.PresentPeekPostRes;
 import com.unpeu.service.iface.IPresentService;
 
 import io.swagger.annotations.Api;
@@ -48,6 +52,9 @@ public class PresentController {
 	@RequestMapping(value = "/present", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Present createPresent(@Valid @ModelAttribute PresentPostReq present) {
 		logger.info("createPresent - 호출");
+		// Access Token을 받으면 PresentPostReq userId 항목에 id 집어넣기
+
+		// 이미지 url 변경
 		String url = mediaService.save(present.getPresentImg());
 		logger.info("media Saved Url : " + url);
 		present.setPresentImgUrl(url);
@@ -55,13 +62,15 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "선물 수정 Controller")
-	@RequestMapping(value = "/{presentId}", method = RequestMethod.PUT, consumes = {
+	@RequestMapping(value = "/present/{presentId}", method = RequestMethod.PUT, consumes = {
 		MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Present updatePresent(@Valid @PathVariable("presentId") Long presentId,
-		@RequestBody PresentPostReq present) {
+		@ModelAttribute PresentPostReq present) {
 		logger.info("updatePresent - 호출");
-		String url = mediaService.save(present.getPresentImg());
-		present.setPresentImgUrl(url);
+		if (present.getPresentImg() != null) {
+			String url = mediaService.save(present.getPresentImg());
+			present.setPresentImgUrl(url);
+		}
 		return this.presentService.updatePresent(presentId, present);
 	}
 
@@ -74,28 +83,26 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "선물 리스트 조회 Controller")
-	@RequestMapping(value = "/present/{userId}", method = RequestMethod.GET, consumes = {
-		MediaType.MULTIPART_FORM_DATA_VALUE})
+	@RequestMapping(value = "/present/{userId}", method = RequestMethod.GET)
 	public List<Present> getPresent(@Valid @PathVariable("userId") Long userId) {
 		logger.info("getPresent - 호출");
 		return presentService.getPresentListByUserId(userId);
 	}
 
 	@ApiOperation(value = "선물 & 메세지 보내기 Controller")
-	@RequestMapping(value = "/present/message", method = RequestMethod.POST, consumes = {
-		MediaType.MULTIPART_FORM_DATA_VALUE})
-	public Present sendMessageAndPresent(@Valid @ModelAttribute PresentPostReq present) {
+	@RequestMapping(value = "/present/message", method = RequestMethod.POST)
+	public Message sendMessageAndPresent(@Valid @RequestBody MessagePostReq message) {
 		logger.info("sendMessageAndPresent - 호출");
-		return null;
+		return presentService.sendMessageAndPresent(message);
 	}
 
 	@ApiOperation(value = "엿보기 Controller")
-	@RequestMapping(value = "/present/meesage/money", method = RequestMethod.POST, consumes = {
-		MediaType.MULTIPART_FORM_DATA_VALUE})
-	public Present peekMoney(@Valid @ModelAttribute PresentPostReq present) {
+	@RequestMapping(value = "/present/meesage/money", method = RequestMethod.POST)
+	public ResponseEntity<? extends BaseResponseBody> peekMoney() {
 		logger.info("peekMoney - 호출");
-
-		return null;
+		User user = new User();
+		String money = presentService.peekMoney(/**userId**/ 1l);
+		return ResponseEntity.status(200).body(PresentPeekPostRes.of(200, "Success Peek Money", money));
 	}
 
 }

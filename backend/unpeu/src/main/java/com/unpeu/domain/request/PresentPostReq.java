@@ -30,7 +30,6 @@ public class PresentPostReq {
 	@ApiModelProperty(name = "receivedPrice", example = "10000")
 	private String receivedPrice;
 
-	// AccessToken 받으면 없어질 항목
 	@ApiModelProperty(name = "userId", example = "user_id")
 	private String userId;
 }

@@ -1,17 +1,27 @@
 package com.unpeu.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.checkerframework.checker.nullness.Opt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.unpeu.config.exception.ApplicationException;
+import com.unpeu.config.exception.EmptyResultDataAccessException;
+import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
 import com.unpeu.domain.entity.User;
+import com.unpeu.domain.repository.IMessageRepository;
 import com.unpeu.domain.repository.IPresentRepository;
 import com.unpeu.domain.repository.IUserRepository;
+import com.unpeu.domain.request.MessagePostReq;
 import com.unpeu.domain.request.PresentPostReq;
+import com.unpeu.domain.response.BaseResponseBody;
 import com.unpeu.service.iface.IPresentService;
 
 /**
@@ -23,12 +33,15 @@ public class PresentService implements IPresentService {
 
 	private IPresentRepository presentRepository;
 	private IUserRepository userRepository;
+	private IMessageRepository messageRepository;
 
-	public PresentService(IPresentRepository presentRepository, IUserRepository userRepository) {
+	public PresentService(IPresentRepository presentRepository, IUserRepository userRepository,
+		IMessageRepository messageRepository) {
 		this.presentRepository = presentRepository;
 		this.userRepository = userRepository;
+		this.messageRepository = messageRepository;
 	}
-
+	/** TEst **/
 	/**
 	 * 선물리스트에 선물 등록
 	 * @param present
@@ -36,11 +49,13 @@ public class PresentService implements IPresentService {
 	 */
 	@Override
 	public Present createPresent(PresentPostReq present) {
-		// User 완성되면 user 객체 넣기 or accessToken에서 가져오기
-		// User user = new userRepository.findById(present.getUserId());
-		Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
+		// Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
+		// if (user.isEmpty()) {
+		// 	throw new NoSuchElementException("userId가 " + present.getUserId() + " 인 유저를 찾을 수 없습니다");
+		// }
+
 		Present newPresent = Present.builder()
-			.userId(user.get())
+			.user(/*user.get()*/null) //Test시 null로 테스트 했음
 			.presentImg(present.getPresentImgUrl())
 			.presentName(present.getPresentName())
 			.presentPrice(present.getPresentPrice())
@@ -57,7 +72,22 @@ public class PresentService implements IPresentService {
 	 */
 	@Override
 	public void deletePresent(Long presentId) {
-		presentRepository.deleteById(presentId);
+		// 해당 선물에 이미 메세지(선물 or 돈)을 받았다면
+		Optional<Present> oPresent = presentRepository.findById(presentId);
+		if (oPresent.isEmpty()) {
+			throw new NoSuchElementException("presentId가 " + presentId + " 인 선물을 찾을 수 없습니다");
+		}
+		Optional<Message> oMessage = messageRepository.findFirstByPresent(oPresent.get());
+		if (!oMessage.isEmpty()) {
+			System.out.println(oMessage.get());
+			throw new ApplicationException("presentId가 " + presentId + " 인 선물에 돈/메세지가 이미 들어가 있습니다.");
+		}
+
+		try {
+			presentRepository.deleteById(presentId);
+		} catch (Exception e) {
+			throw new EmptyResultDataAccessException("presentId : " + presentId + " 에 맞는 데이터가 없습니다.");
+		}
 	}
 
 	/**
@@ -69,13 +99,19 @@ public class PresentService implements IPresentService {
 	@Override
 	public Present updatePresent(Long presentId, PresentPostReq present) {
 		Optional<Present> oPresent = presentRepository.findById(presentId);
+		if (oPresent.isEmpty()) {
+			throw new NoSuchElementException("presentId가 " + presentId + " 인 선물을 찾을 수 없습니다");
+		}
 		Present prevPresent = oPresent.get();
-		prevPresent.setPresentPrice(present.getPresentPrice());
-		prevPresent.setPresentName(present.getPresentName());
-		prevPresent.setPresentImg(present.getPresentImgUrl());
-		prevPresent.setReceivedPrice(Integer.parseInt(present.getReceivedPrice()));
-		presentRepository.save(prevPresent);
-		return prevPresent;
+
+		if (present.getPresentName() != null) // presentName 수정
+			prevPresent.setPresentName(present.getPresentName());
+		if (present.getPresentPrice() != null) // presentPrice 수정
+			prevPresent.setPresentPrice(present.getPresentPrice());
+		if (present.getPresentImgUrl() != null) // Image 수정
+			prevPresent.setPresentImg(present.getPresentImgUrl());
+
+		return presentRepository.save(prevPresent);
 	}
 
 	/**
@@ -85,6 +121,39 @@ public class PresentService implements IPresentService {
 	 */
 	@Override
 	public List<Present> getPresentListByUserId(Long userId) {
-		return presentRepository.getPresentListByUserId(userId);
+		// return presentRepository.getPresentListByUserId(userId);
+		return presentRepository.findByUser_Id(null);
+	}
+
+	/**
+	 * Message(메세지와 선물) 내역 기록
+	 * @param message
+	 * @return
+	 */
+	@Override
+	public Message sendMessageAndPresent(MessagePostReq message) {
+		Optional<Present> oPresent = presentRepository.findById(Long.parseLong(message.getPresent_id()));
+		Present present = oPresent.get();
+		present.setReceivedPrice(present.getReceivedPrice() + message.getPrice());
+		presentRepository.save(present);
+
+		Message newMessage = Message.builder()
+			.sender(message.getSender())
+			.content(message.getContent())
+			.category(message.getCategory())
+			.price(message.getPrice())
+			.created_at(LocalDate.now())
+			.present(present)
+			.build();
+		return messageRepository.save(newMessage);
+	}
+
+	/**
+	 * user가 지금까지 받은 돈을 엿볼 수 있다.
+	 * @return
+	 */
+	@Override
+	public String peekMoney(Long userId) {
+		return messageRepository.sumPeekMoney(userId);
 	}
 }

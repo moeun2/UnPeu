@@ -5,6 +5,7 @@
     <v-col cols="5">
         <v-file-input
       :rules="rules"
+      v-model="files"
       accept="image/png, image/jpeg, image/bmp"
       placeholder="이미지 등록하기"
       prepend-icon="mdi-camera"
@@ -41,6 +42,8 @@
       rules: [
         value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
       ],
+      files:[],
+      
     }),
     methods:{
       registPresent(){
