@@ -23,27 +23,30 @@
             </button>
             </div>
             <div class="pocket-area">
-                <!-- modal 창 -->
-                <div id="pocket" class="modal-window">
-                    <a href="#">
-                    <button class="btn_red_cancel">
-                        <span>X</span>
-                    </button>
-                    </a>
-                    <img src="https://i.imgur.com/vaBFer6.png" alt="">
-                    <p>나는 최고의 친구^-^!</p>
-                </div>
-                <div>
+                <div class="item" v-for="message in messages" :key="message">
                     <a href="#pocket">
                         <button>
-                            <img src="https://i.imgur.com/l7hm5F4.png" class="pocket" alt="">
+                            <img src="@/assets/img/pocket.png" class="pocket" alt="">
                         </button>
                     </a>
-                    <img src="https://i.imgur.com/l7hm5F4.png" class="pocket" alt="">
                 </div>
             </div>
 
-            
+            <!-- modal 창 -->
+                <div id="pocket" class="modal-window">
+                    <div class="modal-message">
+                        <a href="#">
+                        <button class="btn_red_cancel">
+                            <span>X</span>
+                        </button>
+                        </a>
+                        <div class="modal-content">
+                            <img src="https://i.imgur.com/vaBFer6.png" alt="" class="modal-img" > 
+                            <p class="message-user">영등포 마취총</p>
+                            <div class="message-box">나는 최고의 친구^-^!</div>
+                        </div>
+                    </div>
+                </div>
         </div>
     </v-app>
 </template>
@@ -53,8 +56,21 @@ export default {
     name: "MainPage",
     data() {
         return {
-
+            messages: [
+                {
+                    content: 'hi',
+                },
+                {
+                    content: 'hello'
+                },
+                {
+                    content: 'bye'
+                },
+            ]
         }
+    },
+    created() {
+
     },
     methods: {
         eventBtn() {
@@ -71,13 +87,21 @@ export default {
 
 <style lang="scss">
 .pocket-area {
-    margin-top: 45%;
+    margin-top: 40%;
     margin-left: 20px;
     padding-right: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(90px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    width: 550px;
+    height: 230px;
+}
+.item {
+    display: flex;
+
 }
 .pocket {
-    width: 60px;
+    width: 75px;
     height: 70px;
 }
 .gift-img {
@@ -163,8 +187,6 @@ ul.myMenu > li ul.submenu > li:hover {
     pointer-events: auto;
   }
   & > div {
-    width: 350px;
-    height: 170px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -197,5 +219,29 @@ ul.myMenu > li ul.submenu > li:hover {
   }
 }
 
+.modal-message {
+    background-color: #fff;
+    border-radius: 15px;
+    width: 300px;
+}
 
+.modal-content {
+    text-align: center;
+}
+
+.modal-img {
+    width: 200px;
+    height: 200px;
+}
+
+.message-user {
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.message-box {
+    border: 1px solid rgb(221, 239, 165);
+    border-radius: 15px;
+}
 </style>

@@ -60,8 +60,8 @@
                 <div class="main-wrap">
                   <div class="nav">
                     <ul>
-                      <li class="menu-item mi-1 menu-checked">홈</li>
-                      <li class="menu-item mi-3"><router-link :to="{ name: 'Diary' }">다이어리</router-link></li>
+                      <li :class="[activeCheckClass]" @click="checkHome()"><router-link :to="{ name: 'eventRoom' }">홈</router-link></li>
+                      <li :class="[activeClass]" @click="checkDiary()"><router-link :to="{ name: 'Diary' }">다이어리</router-link></li>
                     </ul>
                   </div>
                   <div class="title-wrap">
@@ -83,7 +83,12 @@
 <script>
 export default {
   name: 'App',
-
+  data() {
+      return {
+          activeCheckClass: 'menu-item mi-1 menu-checked',
+          activeClass: 'menu-item mi-3',
+      }
+  },
   components: {
   },
   methods: {
@@ -94,6 +99,22 @@ export default {
       gift_leave() {
         document.getElementById("gift-msg").innerHTML =
         '' 
+      },
+      checkHome() {
+          if(this.activeClass === 'menu-item mi-1 menu-checked') {
+              this.activeClass = 'menu-item mi-3';
+          }
+          if(this.activeCheckClass === 'menu-item mi-3') {
+              this.activeCheckClass = 'menu-item mi-1 menu-checked';
+          }
+      },
+      checkDiary() {
+          if(this.activeClass === 'menu-item mi-3') {
+              this.activeClass = 'menu-item mi-1 menu-checked';
+          }
+          if(this.activeCheckClass === 'menu-item mi-1 menu-checked') {
+              this.activeCheckClass = 'menu-item mi-3';
+          }
       }
     }
 };
