@@ -1,7 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Home from "@/views/mainPage.vue"
+import PresentPage from "@/views/PresentPage.vue";
+import PresentPayment from "@/components/PresentPayment.vue";
+import PresentManage from "@/components/PresentManage.vue";
 import eventRoom from "@/components/EventRoom.vue"
-import Home from "@/views/mainPage";
 
 import Diary from "@/views/DiaryPage.vue"
 import BoardList from "@/components/diary/BoardList.vue"
@@ -50,7 +53,25 @@ const routes = [
                         component: BoardDetail,
                     }
                 ]
-            }
+            },
+            {
+                path: "/present",
+                name: "Present",
+                component: PresentPage,
+                redirect : "/present/manage",
+                children:[
+                    {
+                        path: "manage",
+                        name: "PresentManage",
+                        component: PresentManage,
+                    },
+                    {
+                        path: "payment",
+                        name: "PresentPayment",
+                        component : PresentPayment,
+                    }
+                ]
+            },
         ]
     },
 ]
