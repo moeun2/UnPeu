@@ -1,6 +1,7 @@
 package com.unpeu.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -60,7 +61,6 @@ public class PresentServiceImpl implements IPresentService {
 			.presentPrice(present.getPresentPrice())
 			.receivedPrice(0)
 			.build();
-
 		return presentRepository.save(newPresent);
 	}
 
@@ -141,7 +141,7 @@ public class PresentServiceImpl implements IPresentService {
 			.content(message.getContent())
 			.category(message.getCategory())
 			.price(message.getPrice())
-			.created_at(LocalDate.now())
+			.createdAt(LocalDateTime.now())
 			.present(present)
 			.build();
 		return messageRepository.save(newMessage);

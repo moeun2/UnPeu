@@ -31,5 +31,5 @@ public class PresentPostReq {
 	private String receivedPrice;
 
 	@ApiModelProperty(name = "userId", example = "user_id")
-	private String userId;
+	private Long userId;
 }

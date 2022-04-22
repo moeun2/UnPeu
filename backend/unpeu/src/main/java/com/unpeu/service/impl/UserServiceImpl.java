@@ -186,7 +186,6 @@ public class UserServiceImpl implements IUserService{
 		user.setTodayVisit(0L);
 		user.setTotalVisit(0L);
 		user.setCreateDate(LocalDateTime.now());
-		
 		return userRepository.save(user);
 	}
 
