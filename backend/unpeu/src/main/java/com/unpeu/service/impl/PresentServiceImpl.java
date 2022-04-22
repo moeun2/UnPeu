@@ -14,6 +14,7 @@ import com.unpeu.config.exception.ApplicationException;
 import com.unpeu.config.exception.EmptyResultDataAccessException;
 import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
+import com.unpeu.domain.entity.User;
 import com.unpeu.domain.repository.IMessageRepository;
 import com.unpeu.domain.repository.IPresentRepository;
 import com.unpeu.domain.repository.IUserRepository;
@@ -131,12 +132,26 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public Message sendMessageAndPresent(MessagePostReq message) {
-		Optional<Present> oPresent = presentRepository.findById(Long.parseLong(message.getPresent_id()));
-		Present present = oPresent.get();
-		present.setReceivedPrice(present.getReceivedPrice() + message.getPrice());
-		presentRepository.save(present);
+
+		Present present = null;
+		if (message.getPresentId() != null) {
+			Optional<Present> oPresent = presentRepository.findById(Long.parseLong(message.getPresentId()));
+			if (oPresent.isEmpty()) {
+				throw new NoSuchElementException("presentId가 " + message.getPresentId() + " 인 선물을 찾을 수 없습니다");
+			}
+			present = oPresent.get();
+			present.setReceivedPrice(present.getReceivedPrice() + message.getPrice());
+			presentRepository.save(present);
+		}
+
+		/*
+		Optional<User> user = userRepository.findById(Long.parseLong(message.getUserId()));
+		if (user.isEmpty()) {
+			throw new NoSuchElementException("userId가 " + message.getUserId() + " 인 유저를 찾을 수 없습니다");
+		}*/
 
 		Message newMessage = Message.builder()
+			.user(/*user.get()*/ null)
 			.sender(message.getSender())
 			.content(message.getContent())
 			.category(message.getCategory())

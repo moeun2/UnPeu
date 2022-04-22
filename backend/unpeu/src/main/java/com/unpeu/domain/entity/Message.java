@@ -43,6 +43,11 @@ public class Message {
 	@ToString.Exclude
 	private Present present;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@ToString.Exclude
+	private User user;
+
 	private String sender;
 	private String content;
 	private String category;
