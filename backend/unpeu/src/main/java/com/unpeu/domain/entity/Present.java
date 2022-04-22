@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.Hibernate;
+import org.jetbrains.annotations.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ import lombok.ToString;
 @Entity
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "present")
 public class Present {
 	@Id
@@ -42,8 +44,10 @@ public class Present {
 	@ToString.Exclude
 	private User user;
 
+	@NotNull
 	private String presentName;
 	private String presentImg;
+	@NotNull
 	private String presentPrice;
 	private int receivedPrice;
 

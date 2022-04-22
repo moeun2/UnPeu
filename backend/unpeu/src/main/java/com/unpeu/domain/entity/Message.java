@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.Hibernate;
+import org.jetbrains.annotations.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +32,7 @@ import lombok.ToString;
 @Entity
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "message")
 public class Message {
 	@Id
@@ -48,7 +50,7 @@ public class Message {
 	@ToString.Exclude
 	private User user;
 
-	@Column(nullable = false)
+	@NotNull
 	private String sender;
 	private String content;
 	private String category;
