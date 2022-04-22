@@ -32,14 +32,14 @@ public class Board {
     private String content;
 
     @Column(nullable = false)
-    private LocalDateTime createAt = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder
-    public Board(String category, String title, String content, LocalDateTime createAt) {
+    public Board(String category, String title, String content, LocalDateTime createdAt) {
         this.category = category;
         this.title = title;
         this.content = content;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
     }
 
     // === 연관관계 편의 메소드 ===
