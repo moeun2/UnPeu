@@ -36,7 +36,7 @@ public class UserServiceImpl implements IUserService{
 	 * @return
 	 */
 	@Override
-	public User findUserByUserLogin(String userLogin) {
+	public User getUserByUserLogin(String userLogin) {
 		User user = userRepository.findUserByUserLogin(userLogin).get();
 		return user;
 	}
@@ -165,7 +165,7 @@ public class UserServiceImpl implements IUserService{
 	 * @return
 	 */
 	@Override
-	public boolean chkDplByUserLogin(String userLogin) {
+	public boolean chkDplUser(String userLogin) {
 		if(userRepository.findUserByUserLogin(userLogin).isPresent())
 			return true;
 		else return false;
@@ -185,7 +185,7 @@ public class UserServiceImpl implements IUserService{
 		user.setSocialDomain(socialDomain);
 		user.setTodayVisit(0L);
 		user.setTotalVisit(0L);
-		user.setCreateDate(LocalDateTime.now());
+		user.setCreatedAt(LocalDateTime.now());
 		
 		return userRepository.save(user);
 	}
@@ -196,9 +196,9 @@ public class UserServiceImpl implements IUserService{
 	 * @return
 	 */
 	@Override
-	public User findUserById(Long userId) {
+	public User getUserById(Long userId) {
 		User user= userRepository.findById(userId).get();
-		return userRepository.save(user);
+		return user;
 	}
 
 	/**

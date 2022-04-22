@@ -37,7 +37,7 @@ public class User {
 
     private String userImg;
     
-    private LocalDateTime createDate;
+    private LocalDateTime createdAt;
 
 
 }

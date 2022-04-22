@@ -7,11 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unpeu.domain.entity.User;
 
 public interface IUserService {
-	User findUserByUserLogin(String userLogin);
+	User getUserByUserLogin(String userLogin);
 	
-	User findUserById(Long userId);
+	User getUserById(Long userId);
 	
-	boolean chkDplByUserLogin(String userLogin);
+	boolean chkDplUser(String userLogin);
 	
 	@Transactional(rollbackFor = Exception.class)
 	User addUser(Map<String, String> userInfo,String socialDomain);
