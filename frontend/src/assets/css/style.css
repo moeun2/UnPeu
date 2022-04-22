@@ -14,8 +14,8 @@
     /* background-image: url(../img/background-pattern2.png); */
     background-size: 15px;
     background-position: center;
-    width: 1280px;
-    height: 720px;
+    /* width: 1280px;
+    height: 720px; */
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -29,11 +29,6 @@
     align-items: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 15px;
-  }
-  
-  aside {
-    width: 200px;
-    height: 300px;
   }
   
   .profile-section,
@@ -112,7 +107,7 @@
   .visitor-counter {
     font-size: 14px;
     text-align: center;
-    padding-bottom: 12px;
+    padding-bottom: 6px;
   }
   
   .text-today,
@@ -321,7 +316,7 @@
   
   .text-desc {
     text-align: center;
-    padding-bottom: 60px;
+    padding-bottom: 30px;
   }
   
   .link-history {
@@ -390,19 +385,19 @@
   
   .hd1 {
     top: 200px;
-    left: 405px;
+    left: 520px;
   }
   .hd2 {
     top: 240px;
-    left: 405px;
+    left: 520px;
   }
   .hd3 {
     top: 500px;
-    left: 405px;
+    left: 520px;
   }
   .hd4 {
     top: 540px;
-    left: 405px;
+    left: 520px;
   }
   
   table {
@@ -693,9 +688,13 @@
 
   .main-room {
      background-image: url("https://i.imgur.com/TwohuQB.jpg"); 
-     background-size: cover;
+     background-size: contain;
      width: 100%;
-     height:100%;
+     height:79%;
      border-radius: 15px;
      
+  }
+
+  .v-application p {
+    margin-bottom: 0px !important;
   }
