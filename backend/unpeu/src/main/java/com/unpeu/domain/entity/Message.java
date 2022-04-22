@@ -48,6 +48,7 @@ public class Message {
 	@ToString.Exclude
 	private User user;
 
+	@Column(nullable = false)
 	private String sender;
 	private String content;
 	private String category;
