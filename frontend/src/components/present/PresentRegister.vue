@@ -1,18 +1,19 @@
 <template>
+<div>
 <v-form @submit.prevent="registPresent">
 <v-container fluid>
   <v-row>
     <v-col cols="5">
-        <v-file-input
-      :rules="rules"
-      v-model="files"
-      accept="image/png, image/jpeg, image/bmp"
-      placeholder="이미지 등록하기"
-      prepend-icon="mdi-camera"
-    ></v-file-input>
-      </v-col>
-      <v-col cols="5">
-        <v-text-field
+      <v-file-input
+        :rules="rules"
+        v-model="files"
+        accept="image/png, image/jpeg, image/bmp"
+        placeholder="이미지 등록하기"
+        prepend-icon="mdi-camera"
+      ></v-file-input>
+    </v-col>
+    <v-col cols="5">
+      <v-text-field
           v-model="present"
           label="Amount"
           value="10.00"
@@ -30,9 +31,10 @@
     </v-btn>
       </v-col>
 
-  </v-row>
-</v-container>
+        </v-row>
+      </v-container>
     </v-form>
+</div>
 </template>
 
 <script>
