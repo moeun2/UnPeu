@@ -1,5 +1,4 @@
 <template>
-  <v-app>
     <div class="view">
       <div class="background">
         <main>
@@ -77,7 +76,6 @@
         </main>
       </div>
     </div>
-  </v-app>
 </template>
 
 <script>
@@ -133,7 +131,7 @@ export default {
   font-weight: 400;
 }
 
-body {
+.view {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
 }
