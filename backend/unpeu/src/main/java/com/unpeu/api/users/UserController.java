@@ -38,10 +38,10 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequiredArgsConstructor
 public class UserController {
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
-	
+
 	private final IUserService userService;
 	private final MediaService mediaService;
-	
+
 	@ApiOperation(value = "카카오 로그인/회원가입  Controller")
 	@RequestMapping(value = "/auth/kakao", method = RequestMethod.POST)
     public ResponseEntity<Map<String, Object>> kakaoLoginAndSignup(@RequestParam @NotNull String code){
@@ -65,15 +65,13 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> getUserInfoByToken(@ApiIgnore @NotNull Authentication authentication){
 		logger.info("getUserInfoByToken - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
-        UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
-        User user =userDetails.getUser();
-        
-		resultMap.put("User",user);
-        return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
-    }
-	
-	
-	
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+
+		resultMap.put("User", user);
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+	}
+
 	@ApiOperation(value = "유저 정보 조회(비회원) Controller")
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> getUserInfoByUserId(@PathVariable("userId") @NotNull Long userId){
@@ -92,50 +90,45 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> updateUserTitle(@ApiIgnore @NotNull Authentication authentication,@RequestParam @NotNull String userTitle){
 		logger.info("updateUserTitle - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
-        UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
-        User user =userDetails.getUser();
-        
-        User updateUser=userService.updateUserTitle(user.getId(), userTitle);
-        
-		resultMap.put("User",updateUser);
-        return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
-    }
-	
-	
-	
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+
+		User updateUser = userService.updateUserTitle(user.getId(), userTitle);
+
+		resultMap.put("User", updateUser);
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+	}
+
 	@ApiOperation(value = "유저 info 수정 Controller")
 	@RequestMapping(value = "/users/info", method = RequestMethod.PATCH)
     public ResponseEntity<Map<String, Object>> updateUserInfo(@ApiIgnore @NotNull Authentication authentication,@RequestParam @NotNull String userInfo){
 		logger.info("updateUserInfo - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
-        UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
-        User user =userDetails.getUser();
-        
-        User updateUser=userService.updateUserInfo(user.getId(), userInfo);
-        
-		resultMap.put("User",updateUser);
-        return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
-    }
-	
-	
-	
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+
+		User updateUser = userService.updateUserInfo(user.getId(), userInfo);
+
+		resultMap.put("User", updateUser);
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+	}
+
 	@ApiOperation(value = "유저 이미지 수정 Controller")
 	@RequestMapping(value = "/users/img", method = RequestMethod.PATCH)
     public ResponseEntity<Map<String, Object>> updateUserImg(@ApiIgnore @NotNull Authentication authentication,
     		@RequestPart(value = "file") @NotNull final MultipartFile userImg){
 		logger.info("updateUserImg - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
-        UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
-        User user =userDetails.getUser();
-        
-        if (userImg != null) {
-        	logger.info("updateUserImg - 이미지 없음");
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+
+		if (userImg != null) {
+			logger.info("updateUserImg - 이미지 없음");
 			String url = mediaService.save(userImg);
-			user=userService.updateUserImg(user.getId(), url);
+			user = userService.updateUserImg(user.getId(), url);
 		}
-		resultMap.put("User",user);
-        return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
-    }
-	
-	
+		resultMap.put("User", user);
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+	}
+
 }

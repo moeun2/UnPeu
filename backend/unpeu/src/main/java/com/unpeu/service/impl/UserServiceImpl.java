@@ -185,8 +185,8 @@ public class UserServiceImpl implements IUserService{
 		user.setSocialDomain(socialDomain);
 		user.setTodayVisit(0L);
 		user.setTotalVisit(0L);
+
 		user.setCreatedAt(LocalDateTime.now());
-		
 		return userRepository.save(user);
 	}
 
