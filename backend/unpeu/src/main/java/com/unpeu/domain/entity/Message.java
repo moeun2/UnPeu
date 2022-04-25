@@ -3,6 +3,7 @@ package com.unpeu.domain.entity;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,16 +43,14 @@ public class Message {
 	@Column(name = "message_id")
 	private Long messageId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "present_id")
 	@ToString.Exclude
-	@JsonIgnore
 	private Present present;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	@ToString.Exclude
-	@JsonIgnore
 	private User user;
 
 	@NotNull

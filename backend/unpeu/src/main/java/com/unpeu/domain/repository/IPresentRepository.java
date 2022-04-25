@@ -13,4 +13,5 @@ public interface IPresentRepository extends JpaRepository<Present, Long> {
 	// @Query(value = "SELECT * FROM present where user_id = :userId", nativeQuery = true)
 	// List<Present> getPresentListByUserId(@Param("userId") Long userId);
 	List<Present> findPresentByUser_id(Long userId);
+	void deleteAllByUserId(Long userId);
 }
