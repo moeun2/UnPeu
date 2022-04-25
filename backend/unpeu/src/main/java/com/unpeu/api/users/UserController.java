@@ -46,19 +46,28 @@ public class UserController {
 	@RequestMapping(value = "/auth/kakao", method = RequestMethod.POST)
     public ResponseEntity<Map<String, Object>> kakaoLoginAndSignup(@RequestParam @NotNull String code){
 		logger.info("kakaoLoginAndSignup - 호출");
+		Map<String, Object> resultMap = new HashMap<>();
         String token=userService.getKakaoAccessToken(code);
+        if(token==null) {
+        	resultMap.put("message","token doesn't exist");
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+        }
+        
         Map<String, String> userInfo=userService.getKakaoUserInfo(token);
-        Map<String, Object> resultMap = new HashMap<>();
+        if(userInfo==null) {
+        	resultMap.put("message","userInfo doesn't exist");
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+        }
         
         if(!userService.chkDplUser(userInfo.get("userLogin"))) {
         	logger.info("kakaoLoginAndSignup - 회원가입 진행");
             User signUser = userService.addUser(userInfo,"kakao");
         }
+        
 		resultMap.put("accessToken",JwtTokenUtil.getToken(userInfo.get("userLogin")));
         return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
     }
-	
-	
+
 	
 	@ApiOperation(value = "유저 정보 조회(회원) Controller")
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
