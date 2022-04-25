@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import org.hibernate.Hibernate;
 import org.jetbrains.annotations.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,11 +45,13 @@ public class Message {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "present_id")
 	@ToString.Exclude
+	@JsonIgnore
 	private Present present;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@ToString.Exclude
+	@JsonIgnore
 	private User user;
 
 	@NotNull
