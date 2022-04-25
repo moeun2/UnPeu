@@ -1,19 +1,18 @@
 <template>
-    <v-app>
-        <div class="main-room">
-            <div class="event-tab">
-                <ul class="myMenu">
-                    <li class="menu2">
-                        MENU
-                        <ul class="menu2_s submenu">
-                            <li>컨셉 변경</li>
-                            <li>초기화 설정</li>
-                            <li>메세지 저장</li>
-                        </ul>   
-                    </li>
-                </ul>
-            </div>
-            <div class="gift-box">
+    <div class="main-room">
+        <div class="event-tab">
+            <ul class="myMenu">
+                <li class="menu2">
+                    MENU
+                    <ul class="menu2_s submenu">
+                        <li>컨셉 변경</li>
+                        <li>초기화 설정</li>
+                        <li>메세지 저장</li>
+                    </ul>   
+                </li>
+            </ul>
+        </div>
+        <div class="gift-box">
             <button class="reg-gift">
                 <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="">
                 <p>어른이날을 축하해주세요
@@ -21,34 +20,33 @@
                     콩주머니 메세지 &amp; 선물 등록하러 가기!
                 </p>
             </button>
-            </div>
-            <div class="pocket-area">
-                <div class="item" v-for="message in messages" :key="message">
-                    <a href="#pocket">
-                        <button>
-                            <img src="@/assets/img/pocket.png" class="pocket" alt="">
-                        </button>
-                    </a>
-                </div>
-            </div>
-
-            <!-- modal 창 -->
-                <div id="pocket" class="modal-window">
-                    <div class="modal-message">
-                        <a href="#">
-                        <button class="btn_red_cancel">
-                            <span>X</span>
-                        </button>
-                        </a>
-                        <div class="modal-content">
-                            <img src="https://i.imgur.com/vaBFer6.png" alt="" class="modal-img" > 
-                            <p class="message-user">영등포 마취총</p>
-                            <div class="message-box">나는 최고의 친구^-^!</div>
-                        </div>
-                    </div>
-                </div>
         </div>
-    </v-app>
+        <div class="pocket-area">
+            <div class="item" v-for="message in messages" :key="message">
+                <a href="#pocket">
+                    <button @click="modal(message)">
+                        <img src="@/assets/img/pocket.png" class="pocket" alt="">
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <!-- modal 창 -->
+        <div id="pocket" class="modal-window">
+            <div class="modal-message">
+                <a href="#">
+                        <button class="btn_red_cancel">
+                        <span>X</span>
+                    </button>
+                </a>
+                <div class="modal-content">
+                    <img src="https://i.imgur.com/vaBFer6.png" alt="" class="modal-img" > 
+                    <p class="message-user">{{ user }}</p>
+                    <div class="message-box">{{ con}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -58,28 +56,29 @@ export default {
         return {
             messages: [
                 {
+                    username: '세연',
                     content: 'hi',
                 },
                 {
+                    username: '모은',
                     content: 'hello'
                 },
                 {
+                    username: '싸피',
                     content: 'bye'
                 },
-            ]
+            ],
+            user: '',
+            con: ''
         }
     },
     created() {
 
     },
     methods: {
-        eventBtn() {
-            let tab = document.getElementById("menubars");
-            if(tab.style.display === "none") {
-                tab.style.display = "block";
-            }else {
-                tab.style.display = "none";
-            }
+        modal(message) {
+            this.con = message.content;
+            this.user = message.username;
         }
     }
 }
@@ -243,5 +242,12 @@ ul.myMenu > li ul.submenu > li:hover {
 .message-box {
     border: 1px solid rgb(221, 239, 165);
     border-radius: 15px;
+}
+
+#pocket_user {
+    position: absolute;
+    padding-top: 20px;
+    padding-left: 12px;
+    text-align: center;
 }
 </style>
