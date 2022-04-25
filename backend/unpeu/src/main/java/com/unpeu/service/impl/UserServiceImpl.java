@@ -64,7 +64,7 @@ public class UserServiceImpl implements IUserService{
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=c0ad1801cdf80282754cf18e79556743");//kakao restapi키
-            sb.append("&redirect_uri=http://localhost:8081/?Oauth=kakao");//redirect 경로
+            sb.append("&redirect_uri=http://localhost:8081/login/kakao");//redirect 경로
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
