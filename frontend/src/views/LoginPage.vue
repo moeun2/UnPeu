@@ -1,15 +1,15 @@
 <template>
     <v-container>
         <div class="landing"> 
-            <span style = "font-size:1.5em; font-weight: bold ;">
+            <span style = "font-size:2em; font-weight: bold ;">
               당신을 위한 조그마한 기록 그리고 선물<br><br>Un Peu : 앙뿌<br><br>
              </span>
             <img width="450px" src="@/assets/moeun 2.png"/><br>
             <img class="google_login_btn" src="@/assets/btn_google_signin_light_normal_web@2x.png" v-on:click="GoogleLoginBtn"/><br>
             <div id="my-signin2" style="display: none"></div>
-            <img class='kakao_login_btn' src="@/assets/kakao_login_large_narrow.png" v-on:click="login"/>
+            <img class='kakao_login_btn' src="@/assets/kakao_login_large_narrow.png" v-on:click="KakaoLogin"/>
         </div>
-        <div id="google_login_btn" v-on:click="logout">logout</div>
+        <div id="google_login_btn" v-on:click="KakaoLogout">logout</div>
         <router-view/>
     </v-container>
 </template>
@@ -22,14 +22,6 @@ export default {
   },
 
   methods: {
-      gift_mouse() {
-        document.getElementById("gift-msg").innerHTML =
-        '<div class="gift-msg"> 받고 싶은 선물 등록!</div>' 
-      },
-      gift_leave() {
-        document.getElementById("gift-msg").innerHTML =
-        '' 
-      },
       GoogleLoginBtn:function(){
       var self = this;
 
@@ -64,12 +56,12 @@ export default {
       console.log(error);
     },
 
-    login(){
+    KakaoLogin(){
       window.location.replace(
         "https://kauth.kakao.com/oauth/authorize?client_id=c0ad1801cdf80282754cf18e79556743&redirect_uri=http://localhost:8081/login/kakao&response_type=code"
       );
     },
-    logout(){
+    KakaoLogout(){
       window.location.replace(
         "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri=http://localhost:8081/login/kakao"
       );
@@ -85,14 +77,12 @@ export default {
 @import url("@/assets/css/reset.css");
 @import url("@/assets/css/style.css");
 
-.view {
-  margin-left: 120px;
-}
+
 body {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
 }
- 
+
  .test{
     display:flex; 
     justify-content: center; 
@@ -131,7 +121,6 @@ body {
 
   .landing{
     text-align: center;
-    margin-top: 280px;
-
+    margin-top: 200px;
   }
 </style>

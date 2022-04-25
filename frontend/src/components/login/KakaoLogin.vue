@@ -13,9 +13,11 @@ export default {
     if(this.searchParam('code')){
         console.log(this.searchParam('code'))
         //axios 로그인 진행 
-        loginUser(this.searchParam('code'),(res) => { 
+        loginUser(this.searchParam('code'),
+        (res) => { 
             localStorage.setItem("accessToken",res.data.accessToken)
-        },()=>{
+        },
+        ()=>{
             console.log("fail")
         });
       this.$router.push("/") //메인 페이지로 이동
