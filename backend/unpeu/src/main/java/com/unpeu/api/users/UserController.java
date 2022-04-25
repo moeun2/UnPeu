@@ -50,13 +50,13 @@ public class UserController {
         String token=userService.getKakaoAccessToken(code);
         if(token==null) {
         	resultMap.put("message","token doesn't exist");
-            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
         }
         
         Map<String, String> userInfo=userService.getKakaoUserInfo(token);
         if(userInfo==null) {
         	resultMap.put("message","userInfo doesn't exist");
-            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
         }
         
         if(!userService.chkDplUser(userInfo.get("userLogin"))) {
