@@ -50,13 +50,13 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public Present createPresent(PresentPostReq present) {
-		// Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
-		// if (user.isEmpty()) {
-		// 	throw new NoSuchElementException("userId가 " + present.getUserId() + " 인 유저를 찾을 수 없습니다");
-		// }
+		Optional<User> user = userRepository.findById(Long.parseLong(/*present.getUserId()*/"1"));
+		if (user.isEmpty()) {
+			throw new NoSuchElementException("userId가 " + present.getUserId() + " 인 유저를 찾을 수 없습니다");
+		}
 
 		Present newPresent = Present.builder()
-			.user(/*user.get()*/null) //Test시 null로 테스트 했음
+			.user(user.get()) //Test시 null로 테스트 했음
 			.presentImg(present.getPresentImgUrl())
 			.presentName(present.getPresentName())
 			.presentPrice(present.getPresentPrice())
@@ -121,8 +121,7 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public List<Present> getPresentListByUserId(Long userId) {
-		// return presentRepository.getPresentListByUserId(userId);
-		return presentRepository.findByUser_Id(null);
+		return presentRepository.findPresentByUserId(userId);
 	}
 
 	/**
@@ -144,14 +143,13 @@ public class PresentServiceImpl implements IPresentService {
 			presentRepository.save(present);
 		}
 
-		/*
-		Optional<User> user = userRepository.findById(Long.parseLong(message.getUserId()));
+		Optional<User> user = userRepository.findById(Long.parseLong(/*message.getUserId())*/"1"));
 		if (user.isEmpty()) {
 			throw new NoSuchElementException("userId가 " + message.getUserId() + " 인 유저를 찾을 수 없습니다");
-		}*/
+		}
 
 		Message newMessage = Message.builder()
-			.user(/*user.get()*/ null)
+			.user(user.get())
 			.sender(message.getSender())
 			.content(message.getContent())
 			.category(message.getCategory())
@@ -168,6 +166,14 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public String peekMoney(Long userId) {
+		Optional<User> user = userRepository.findById(Long.parseLong(/*message.getUserId())*/"1"));
+		if (user.isEmpty()) {
+			throw new NoSuchElementException("userId가 " +userId + " 인 유저를 찾을 수 없습니다");
+		}
+		Optional<Message> oMessage = messageRepository.findFirstByUserId(userId);
+		if (oMessage.isEmpty()) {
+			throw new NoSuchElementException("userId가 " + userId + " 인 메세지를 찾을 수 없습니다");
+		}
 		return messageRepository.sumPeekMoney(userId);
 	}
 }

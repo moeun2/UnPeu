@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "@/views/mainPage.vue"
+import Home from "@/views/MainPage.vue"
 import PresentPage from "@/views/PresentPage.vue";
 import PresentPayment from "@/components/PresentPayment.vue";
 import PresentManage from "@/components/PresentManage.vue";
