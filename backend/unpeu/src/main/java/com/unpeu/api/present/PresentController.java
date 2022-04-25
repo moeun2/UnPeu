@@ -125,7 +125,7 @@ public class PresentController {
 	public ResponseEntity<Map<String, Object>> peekMoney() {
 		logger.info("peekMoney - 호출");
 		User user = new User();
-		String money = presentService.peekMoney(/**userId**/1l);
+		String money = presentService.peekMoney(/**userId**/1L);
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("Money", money);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);

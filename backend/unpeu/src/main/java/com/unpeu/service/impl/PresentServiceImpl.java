@@ -166,6 +166,14 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public String peekMoney(Long userId) {
+		Optional<User> user = userRepository.findById(Long.parseLong(/*message.getUserId())*/"1"));
+		if (user.isEmpty()) {
+			throw new NoSuchElementException("userId가 " +userId + " 인 유저를 찾을 수 없습니다");
+		}
+		Optional<Message> oMessage = messageRepository.findFirstByUser_Id(userId);
+		if (oMessage.isEmpty()) {
+			throw new NoSuchElementException("userId가 " + userId + " 인 메세지를 찾을 수 없습니다");
+		}
 		return messageRepository.sumPeekMoney(userId);
 	}
 }
