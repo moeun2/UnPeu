@@ -41,10 +41,9 @@ public class Present {
 	@Column(name = "present_id")
 	private Long presentId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	@ToString.Exclude
-	@JsonIgnore
 	private User user;
 
 	@NotNull
