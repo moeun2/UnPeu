@@ -25,7 +25,7 @@
             <div class="pocket-area">
                 <div class="item" v-for="message in messages" :key="message">
                     <a href="#pocket">
-                        <button>
+                        <button @click="modal(message)">
                             <img src="@/assets/img/pocket.png" class="pocket" alt="">
                         </button>
                     </a>
@@ -42,8 +42,8 @@
                         </a>
                         <div class="modal-content">
                             <img src="https://i.imgur.com/vaBFer6.png" alt="" class="modal-img" > 
-                            <p class="message-user">영등포 마취총</p>
-                            <div class="message-box">나는 최고의 친구^-^!</div>
+                            <p class="message-user">{{user }}</p>
+                            <div class="message-box">{{con}}</div>
                         </div>
                     </div>
                 </div>
@@ -58,15 +58,20 @@ export default {
         return {
             messages: [
                 {
+                    username: '세연',
                     content: 'hi',
                 },
                 {
+                    username: '모은',
                     content: 'hello'
                 },
                 {
+                    username: '싸피',
                     content: 'bye'
                 },
-            ]
+            ],
+            user: '',
+            con: ''
         }
     },
     created() {
@@ -80,6 +85,18 @@ export default {
             }else {
                 tab.style.display = "none";
             }
+        },
+        pocket_mouse() {
+        document.getElementById("pocket_user").innerHTML =
+        this.messages.username 
+        },
+        pocket_leave() {
+            document.getElementById("pocket_user").innerHTML =
+            '' 
+        },
+        modal(message) {
+            this.con = message.content;
+            this.user = message.username;
         }
     }
 }
