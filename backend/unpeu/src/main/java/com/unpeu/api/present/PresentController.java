@@ -60,7 +60,7 @@ public class PresentController {
 	public ResponseEntity<Map<String, Object>> createPresent(/*@ApiIgnore @NotNull Authentication authentication,*/
 		@ModelAttribute PresentPostReq present) {
 		logger.info("createPresent - 호출");
-		// userId 설정
+		// userId 설정 -> 현재 userId: 1로만 테스트 중
 		// UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
 		// User user = userDetails.getUser();
 		// present.setUserId(user.getId());
@@ -125,7 +125,7 @@ public class PresentController {
 	public ResponseEntity<Map<String, Object>> peekMoney() {
 		logger.info("peekMoney - 호출");
 		User user = new User();
-		String money = presentService.peekMoney(/**userId**/1l);
+		String money = presentService.peekMoney(/**userId**/1L);
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("Money", money);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);

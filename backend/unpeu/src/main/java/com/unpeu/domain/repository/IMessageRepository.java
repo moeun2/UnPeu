@@ -16,4 +16,7 @@ public interface IMessageRepository extends JpaRepository<Message, Long> {
 	Optional<Message> findFirstByPresent(Present present);
 	@Query(value = "SELECT SUM(price) FROM message, present where user_id = :userId", nativeQuery = true)
 	String sumPeekMoney(@Param("userId") Long userId);
+	List<Message> findMessageByUserId(Long userId);
+	Optional<Message> findFirstByUserId(Long userId);
+	void deleteAllByUserId(Long userId);
 }

@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import org.hibernate.Hibernate;
 import org.jetbrains.annotations.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,6 +44,7 @@ public class Present {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@ToString.Exclude
+	@JsonIgnore
 	private User user;
 
 	@NotNull
