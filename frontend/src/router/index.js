@@ -12,6 +12,10 @@ import BoardWrite from "@/components/diary/BoardWrite.vue"
 import BoardEdit from "@/components/diary/BoardEdit.vue";
 import BoardDetail from "@/components/diary/BoardDetail.vue"
 
+import Login from "@/views/LoginPage.vue"
+import KakaoLogin from "@/components/login/KakaoLogin.vue"
+import GoogleLogin from "@/components/login/GoogleLogin.vue"
+
 
 Vue.use(VueRouter);
 
@@ -74,6 +78,24 @@ const routes = [
             },
         ]
     },
+    {
+        path: "/login",
+        name: "Login",
+        component: Login,
+        children: [
+            {
+                path: "kakao",
+                name: "KakaoLogin",
+                component: KakaoLogin
+            },
+            {
+                path: "google",
+                name: "GoogleLogin",
+                component: GoogleLogin
+            },
+        ]
+
+    }
 ]
 const router = new VueRouter({
     mode: "history",
