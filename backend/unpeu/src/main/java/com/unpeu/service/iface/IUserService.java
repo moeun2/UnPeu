@@ -29,4 +29,8 @@ public interface IUserService {
 	
 	Map<String, String> getKakaoUserInfo(String token);
 	
+	String getGoogleAccessToken (String code);
+	
+	Map<String, String> getGoogleUserInfo(String token);
+	
 }

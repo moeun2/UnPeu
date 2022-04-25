@@ -101,6 +101,61 @@ public class UserServiceImpl implements IUserService{
         return access_Token;
     }
 	
+	@Override
+	public String getGoogleAccessToken (String code) {
+        String access_Token = "";
+        String refresh_Token = "";
+        String reqURL = "https://oauth2.googleapis.com/token";
+
+        try {
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            StringBuilder sb = new StringBuilder();
+            sb.append("grant_type=authorization_code");
+            sb.append("&client_id=530350751299-fbiks9onutpnvmgebr0fc5uvllj5fidn.apps.googleusercontent.com");//kakao restapi키
+            sb.append("&client_secret=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");
+            sb.append("&redirect_uri=http://localhost:8081/login/google");//redirect 경로
+            sb.append("&code=" + code);
+            bw.write(sb.toString());
+            bw.flush();
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode : " + responseCode);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = "";
+            String result = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+            System.out.println("response body : " + result);
+            
+            ObjectMapper mapper = new ObjectMapper(); 
+            
+            try 
+            {
+            	Map<String, String> map = mapper.readValue(result, Map.class);
+            	access_Token=(String)map.get("access_token");
+            	refresh_Token=(String)map.get("refresh_token");
+            } catch (IOException e) {
+            	e.printStackTrace(); 
+            }
+
+            br.close();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+
+        return access_Token;
+    }
+	
 	/**
 	 * 토큰으로 카카오 유저정보 얻어오기
 	 * @param token
@@ -147,6 +202,62 @@ public class UserServiceImpl implements IUserService{
 	    	   e.printStackTrace(); 
 	    	   return null;
 	       }
+	       userInfo.put("name", nickname);
+	       userInfo.put("userLogin",id);
+	      
+	       br.close();
+
+	       } catch (IOException e) {
+	            e.printStackTrace();
+	            return null;
+	       }
+	    return userInfo;
+	 }
+	
+	/**
+	 * 토큰으로 구글 유저정보 얻어오기
+	 * @param token
+	 * @return
+	 */
+	@Override
+	public Map<String, String> getGoogleUserInfo(String token) {
+		System.out.println(token);
+		String reqURL = "https://www.googleapis.com/oauth2/v2/userinfo";
+		
+		Map<String, String> userInfo = new HashMap<>();
+
+	    try {
+	       URL url = new URL(reqURL);
+	       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+	       conn.setRequestMethod("GET");
+	       conn.setDoOutput(true);
+	       conn.setRequestProperty("Authorization", "Bearer " + token);
+
+	       int responseCode = conn.getResponseCode();
+	       System.out.println("responseCode : " + responseCode);
+
+	       BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	       String line = "";
+	       String result = "";
+
+	       while ((line = br.readLine()) != null) {
+	           result += line;
+	       }
+	       System.out.println("response body : " + result);
+	       
+	       ObjectMapper mapper = new ObjectMapper(); 
+	       String nickname=null;
+	       String id=null;
+
+	       try 
+           {
+           	Map<String, String> map = mapper.readValue(result, Map.class);
+           	nickname=(String)map.get("name");
+           	id=(String)map.get("id");
+           } catch (IOException e) {
+           	e.printStackTrace(); 
+           }
 	       userInfo.put("name", nickname);
 	       userInfo.put("userLogin",id);
 	      

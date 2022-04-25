@@ -67,6 +67,32 @@ public class UserController {
 		resultMap.put("accessToken",JwtTokenUtil.getToken(userInfo.get("userLogin")));
         return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
     }
+	
+	@ApiOperation(value = "구글 로그인/회원가입  Controller")
+	@RequestMapping(value = "/auth/google", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> googleLoginAndSignup(@RequestParam @NotNull String code){
+		logger.info("googleLoginAndSignup - 호출");
+		Map<String, Object> resultMap = new HashMap<>();
+        String token=userService.getGoogleAccessToken(code);
+        if(token==null) {
+        	resultMap.put("message","token doesn't exist");
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+        }
+        
+        Map<String, String> userInfo=userService.getGoogleUserInfo(token);
+        
+        if(userInfo==null) {
+        	resultMap.put("message","userInfo doesn't exist");
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+        }
+        
+        if(!userService.chkDplUser(userInfo.get("userLogin"))) {
+        	logger.info("googleLoginAndSignup - 회원가입 진행");
+            User signUser = userService.addUser(userInfo,"google");
+        }       
+		resultMap.put("accessToken",JwtTokenUtil.getToken(userInfo.get("userLogin")));
+        return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+    }
 
 	
 	@ApiOperation(value = "유저 정보 조회(회원) Controller")
