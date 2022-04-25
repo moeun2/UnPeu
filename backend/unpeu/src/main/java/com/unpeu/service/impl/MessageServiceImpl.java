@@ -27,7 +27,7 @@ public class MessageServiceImpl implements IMessageService {
 	 */
 	@Override
 	public List<Message> getMessageListByUserId(Long userId) {
-		return messageRepository.findMessageByUser_Id(userId);
+		return messageRepository.findMessageByUserId(userId);
 	}
 
 	/**

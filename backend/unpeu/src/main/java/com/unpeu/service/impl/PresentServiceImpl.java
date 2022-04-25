@@ -121,7 +121,7 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public List<Present> getPresentListByUserId(Long userId) {
-		return presentRepository.findPresentByUser_id(userId);
+		return presentRepository.findPresentByUserId(userId);
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class PresentServiceImpl implements IPresentService {
 		if (user.isEmpty()) {
 			throw new NoSuchElementException("userId가 " +userId + " 인 유저를 찾을 수 없습니다");
 		}
-		Optional<Message> oMessage = messageRepository.findFirstByUser_Id(userId);
+		Optional<Message> oMessage = messageRepository.findFirstByUserId(userId);
 		if (oMessage.isEmpty()) {
 			throw new NoSuchElementException("userId가 " + userId + " 인 메세지를 찾을 수 없습니다");
 		}
