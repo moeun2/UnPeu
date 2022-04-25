@@ -1,12 +1,12 @@
 package com.unpeu.service.impl;
 
+import com.unpeu.config.exception.ApplicationException;
 import com.unpeu.domain.entity.Board;
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.repository.IBoardRepository;
 import com.unpeu.domain.request.BoardPostReq;
 import com.unpeu.domain.response.BoardGetRes;
 import com.unpeu.service.iface.IBoardService;
-import com.unpeu.service.iface.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,6 @@ public class BoardServiceImpl implements IBoardService {
     private static final Logger logger = LoggerFactory.getLogger(BoardServiceImpl.class);
 
     private final IBoardRepository boardRepository;
-    private final IUserService userService;
 
     /**
      * userId에 맞는 category 리스트 조회
@@ -37,6 +36,7 @@ public class BoardServiceImpl implements IBoardService {
      */
     @Override
     public List<String> getCategoryList(Long userId) {
+        logger.info("getCategoryList - 호출");
         List<String> categories = boardRepository.findCategoryByUserId(userId);
         return categories;
     }
@@ -49,6 +49,7 @@ public class BoardServiceImpl implements IBoardService {
      */
     @Override
     public List<BoardGetRes> getBoardList(Long userId, String category) {
+        logger.info("getBoardList - 호출");
         List<Board> boards = boardRepository.findByUserIdAndCategory(userId, category);
         return boards.stream()
                 .map(BoardGetRes::new)
@@ -62,6 +63,7 @@ public class BoardServiceImpl implements IBoardService {
      */
     @Override
     public BoardGetRes getBoardInfo(Long boardId) {
+        logger.info("getBoardInfo - 호출");
         Optional<Board> oBoard = boardRepository.findById(boardId);
         return new BoardGetRes(oBoard.get());
     }
@@ -74,13 +76,14 @@ public class BoardServiceImpl implements IBoardService {
      */
     @Override
     public Board createBoard(User user, BoardPostReq board) {
+        logger.info("createBoard - 호출");
         Board newboard = Board.builder()
+                .user(user)
                 .title(board.getTitle())
-                .content(board.getContents())
+                .content(board.getContent())
                 .category(board.getCategory())
                 .build();
 
-        newboard.setUser(user);
         return boardRepository.save(newboard);
     }
 
@@ -91,20 +94,25 @@ public class BoardServiceImpl implements IBoardService {
      * @return
      */
     @Override
-    public boolean updateBoard(Long boardId, BoardPostReq board) {
+    public void updateBoard(User user, Long boardId, BoardPostReq board) {
+        logger.info("updateBoard - 호출");
         Optional<Board> oBoard = boardRepository.findById(boardId);
 
         if (oBoard.isEmpty()) {
             throw new NoSuchElementException("boardId가" + boardId + " 인 게시글을 찾을 수 없습니다");
         }
 
+        if(!user.getId().equals(oBoard.get().getUser().getId())) {
+            throw new ApplicationException("작성한 유저 " + oBoard.get().getUser().getUserLogin() + "와 요청한 유저 "
+                    + user.getUserLogin() + "가 서로 다르기 때문에 수정할 수 없습니다.");
+        }
+
         Board prevBoard = oBoard.get();
 
-        if(board.getCategory() != null && board.getTitle() != null && board.getContents() != null)
-            prevBoard.updateBoardInfo(board.getCategory(), board.getTitle(), board.getContents());
-        Board updateBoard = boardRepository.save(prevBoard);
+        if(board.getCategory() != null && board.getTitle() != null && board.getContent() != null)
+            prevBoard.updateBoardInfo(board.getCategory(), board.getTitle(), board.getContent());
 
-        return true;
+        Board updateBoard = boardRepository.save(prevBoard);
     }
 
     /**
@@ -113,14 +121,19 @@ public class BoardServiceImpl implements IBoardService {
      * @return
      */
     @Override
-    public boolean deleteBoard(Long boardId) {
+    public void deleteBoard(User user, Long boardId) {
+        logger.info("deleteBoard - 호출");
         Optional<Board> oBoard = boardRepository.findById(boardId);
 
         if(oBoard.isEmpty()) {
             throw new NoSuchElementException("boardId가 " + boardId + " 인 게시글을 찾을 수 없습니다.");
         }
 
+        if(!user.getId().equals(oBoard.get().getUser().getId())) {
+            throw new ApplicationException("작성한 유저 " + oBoard.get().getUser().getUserLogin() + "와 요청한 유저 "
+                    + user.getUserLogin() + "가 서로 다르기 때문에 삭제할 수 없습니다.");
+        }
+
         boardRepository.delete(oBoard.get());
-        return true;
     }
 }

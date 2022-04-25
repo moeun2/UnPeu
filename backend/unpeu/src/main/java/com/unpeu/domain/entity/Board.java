@@ -3,6 +3,7 @@ package com.unpeu.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,37 +19,30 @@ public class Board {
     @Column(name = "board_id")
     private Long boardId;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
+    @NotNull(message = "카테고리를 입력해주세요")
     private String category;
 
-    @Column(length = 50, nullable = false)
+    @NotNull(message = "제목을 입력해주세요")
+    @Column(length = 50)
     private String title;
 
-    @Column(nullable = false)
+    @NotNull(message = "내용을 입력해주세요")
     private String content;
 
-    @Column(nullable = false)
+    @NotNull
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder
-    public Board(String category, String title, String content, LocalDateTime createdAt) {
+    public Board(User user, String category, String title, String content) {
+        this.user = user;
         this.category = category;
         this.title = title;
         this.content = content;
-        this.createdAt = createdAt;
-    }
-
-    // === 연관관계 편의 메소드 ===
-    public void setUser(User user) {
-        if (this.user != null) { // 기존에 이미 유저가 존재한다면
-            this.user.getReviews().remove(this); // 관계를 끊는다.
-        }
-        this.user = user;
-        user.getReviews().add(this);
     }
 
     // 게시글을 삭제하면 달려있는 댓글 모두 삭제

@@ -1,10 +1,11 @@
 package com.unpeu.api.diary;
 
 import com.unpeu.config.auth.UnpeuUserDetails;
+import com.unpeu.config.exception.ApplicationException;
+import com.unpeu.domain.entity.Board;
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.request.BoardPostReq;
 import com.unpeu.service.iface.IBoardService;
-import com.unpeu.service.impl.BoardServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -27,7 +29,7 @@ import java.util.Map;
 @RequestMapping("/api/board")
 @RequiredArgsConstructor
 public class BoardController {
-    private static final Logger logger = LoggerFactory.getLogger(BoardServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
     private final IBoardService boardService;
 
@@ -61,44 +63,61 @@ public class BoardController {
 
     @ApiOperation(value = "게시글 추가 Controller")
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Map<String, Object>> createBoard(
+    public ResponseEntity<Map<String, Object>> createBoard (
             @ApiIgnore Authentication authentication, @Valid @RequestBody BoardPostReq board) {
         logger.info("createBoard - 호출");
         Map<String, Object> resultMap = new HashMap<>();
 
         UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
-        User user =userDetails.getUser();
+        User user = userDetails.getUser();
 
-        resultMap.put("boardInfo", boardService.createBoard(user, board));
+        boardService.createBoard(user, board);
+
+        resultMap.put("message", "success");
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @ApiOperation(value = "게시글 수정 Controller")
     @RequestMapping(value = "/{boardId}", method = RequestMethod.PUT)
-    public ResponseEntity<Map<String, Object>> updateBoard(
+    public ResponseEntity<Map<String, Object>> updateBoard(@ApiIgnore Authentication authentication,
             @NotNull @PathVariable("boardId") Long boardId, @Valid @RequestBody BoardPostReq board) {
         logger.info("updateBoard - 호출");
-
         Map<String, Object> resultMap = new HashMap<>();
-        if(boardService.updateBoard(boardId, board)) {
+
+        UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+
+        try {
+            boardService.updateBoard(user, boardId, board);
             resultMap.put("message", "success");
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
+
+        } catch (ApplicationException e) {
+            // 권한이 없는 사용자가 게시글을 수정하는 경우
+            resultMap.put("message", e.getMessage());
+            return new ResponseEntity<>(resultMap, HttpStatus.FORBIDDEN); // 403
         }
-        resultMap.put("message", "fail");
-        return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
     }
 
     @ApiOperation(value = "게시글 삭제 Controller")
     @RequestMapping(value = "/{boardId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Map<String, Object>> deleteBoard(@NotNull @PathVariable("boardId") Long boardId) {
+    public ResponseEntity<Map<String, Object>> deleteBoard(
+            @ApiIgnore Authentication authentication, @NotNull @PathVariable("boardId") Long boardId) {
         logger.info("deleteBoard - 호출");
-
         Map<String, Object> resultMap = new HashMap<>();
-        if(boardService.deleteBoard(boardId)) {
+
+        UnpeuUserDetails userDetails = (UnpeuUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+
+        try {
+            boardService.deleteBoard(user, boardId);
             resultMap.put("message", "success");
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
+
+        } catch (ApplicationException e) {
+            // 권한이 없는 사용자가 게시글을 삭제하는 경우
+            resultMap.put("message", e.getMessage());
+            return new ResponseEntity<>(resultMap, HttpStatus.FORBIDDEN); // 403
         }
-        resultMap.put("message", "fail");
-        return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
     }
 }

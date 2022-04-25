@@ -20,8 +20,8 @@ public interface IBoardService {
     Board createBoard(User user, BoardPostReq board);
 
     @Transactional(rollbackFor = Exception.class)
-    boolean updateBoard(Long boardId, BoardPostReq boardPostReq);
+    void updateBoard(User user, Long boardId, BoardPostReq boardPostReq);
 
     @Transactional(rollbackFor = Exception.class)
-    boolean deleteBoard(Long boardId);
+    void deleteBoard(User user, Long boardId);
 }
