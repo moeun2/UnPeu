@@ -5,11 +5,11 @@
               당신을 위한 조그마한 기록 그리고 선물<br><br>Un Peu : 앙뿌<br><br>
              </span>
             <img width="450px" src="@/assets/moeun 2.png"/><br>
-            <img class="google_login_btn" src="@/assets/btn_google_signin_light_normal_web@2x.png" v-on:click="GoogleLoginBtn"/><br>
+            <img class="google_login_btn" src="@/assets/btn_google_signin_light_normal_web@2x.png" v-on:click="GoogleLogin"/><br>
             <div id="my-signin2" style="display: none"></div>
             <img class='kakao_login_btn' src="@/assets/kakao_login_large_narrow.png" v-on:click="KakaoLogin"/>
         </div>
-        <div id="google_login_btn" v-on:click="KakaoLogout">logout</div>
+        <div id="google_login_btn" v-on:click="logout">logout</div>
         <router-view/>
     </v-container>
 </template>
@@ -22,38 +22,10 @@ export default {
   },
 
   methods: {
-      GoogleLoginBtn:function(){
-      var self = this;
-
-      window.gapi.signin2.render('my-signin2', {
-        scope: 'profile email',
-        width: 240,
-        height: 50,
-        longtitle: true,
-        theme: 'dark',
-        onsuccess: this.GoogleLoginSuccess,
-        onfailure: this.GoogleLoginFailure,
-      });
-
-      setTimeout(function () {
-        if (!self.googleLoginCheck) {
-          const auth = window.gapi.auth2.getAuthInstance();
-          auth.isSignedIn.get();
-          document.querySelector('.abcRioButton').click();
-        }
-      }, 1500)
-
-    },
-    async GoogleLoginSuccess(googleUser) {
-      const googleEmail = googleUser.getBasicProfile().getEmail();
-      if (googleEmail !== 'undefined') {
-        console.log(googleEmail);
-        this.$router.go();//새로고침
-      }
-    },
-    //구글 로그인 콜백함수 (실패)
-    GoogleLoginFailure(error) {
-      console.log(error);
+    GoogleLogin(){
+        window.location.replace(
+        "https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile%20openid&response_type=code&client_id=530350751299-fbiks9onutpnvmgebr0fc5uvllj5fidn.apps.googleusercontent.com&redirect_uri=http://localhost:8081/login/google"
+      );
     },
 
     KakaoLogin(){
@@ -61,10 +33,13 @@ export default {
         "https://kauth.kakao.com/oauth/authorize?client_id=c0ad1801cdf80282754cf18e79556743&redirect_uri=http://localhost:8081/login/kakao&response_type=code"
       );
     },
-    KakaoLogout(){
-      window.location.replace(
+    logout(){
+        //acctoken 통신해서 카카오인지 구글인지 판단
+        //카카오 로그아웃
+        window.localStorage.removeItem("accessToken")
+        window.location.replace(
         "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri=http://localhost:8081/login/kakao"
-      );
+        );
     },
     searchParam(key) {
       return new URLSearchParams(location.search).get(key);

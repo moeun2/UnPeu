@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import {loginUser} from '@/api/user.js';
+import {kakaoLogin} from '@/api/user.js';
 
 export default {
   name: "KakaoLogin",
@@ -13,7 +13,7 @@ export default {
     if(this.searchParam('code')){
         console.log(this.searchParam('code'))
         //axios 로그인 진행 
-        loginUser(this.searchParam('code'),
+        kakaoLogin(this.searchParam('code'),
         (res) => { 
             localStorage.setItem("accessToken",res.data.accessToken)
         },
