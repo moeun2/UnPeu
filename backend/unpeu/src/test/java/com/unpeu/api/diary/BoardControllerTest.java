@@ -89,11 +89,8 @@ public class BoardControllerTest {
                 .userName("김싸피")
                 .userTitle("오늘은 어른이날")
                 .userInfo("선물 주는 사람 착한 사람")
-                .userMusic("Music is My Life")
                 .todayVisit(10L)
                 .totalVisit(100L)
-                .userImg("img")
-                .createDate(LocalDateTime.now())
                 .build());
         clear();
     }
