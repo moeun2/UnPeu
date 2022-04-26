@@ -126,6 +126,11 @@ export default {
 .view {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
+  /* 수직 정렬 위해서 사용 */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .v-application--wrap {
