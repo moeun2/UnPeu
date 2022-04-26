@@ -21,18 +21,18 @@ public class RestApiControllerAdvisor {
 	/**
 	 * @valid로 유효성 검사했을 때 발생하는 에러 처리
 	 */
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<Object> methodValidationException(MethodArgumentNotValidException e) {
-		log.warn("MethodArgumentNotValidException 발생");
-		BindingResult bindingResult = e.getBindingResult();
-
-		StringBuilder builder = new StringBuilder();
-		for (FieldError fieldError : bindingResult.getFieldErrors()) {
-			builder.append(fieldError.getField()).append(" : ");
-			builder.append(fieldError.getDefaultMessage());
-			builder.append(", ");
-		}
-		return new ResponseEntity<>(builder.toString(), HttpStatus.BAD_REQUEST);
-	}
+	// @ExceptionHandler(MethodArgumentNotValidException.class)
+	// public ResponseEntity<Object> methodValidationException(MethodArgumentNotValidException e) {
+	// 	log.warn("MethodArgumentNotValidException 발생");
+	// 	BindingResult bindingResult = e.getBindingResult();
+	//
+	// 	StringBuilder builder = new StringBuilder();
+	// 	for (FieldError fieldError : bindingResult.getFieldErrors()) {
+	// 		builder.append(fieldError.getField()).append(" : ");
+	// 		builder.append(fieldError.getDefaultMessage());
+	// 		builder.append(", ");
+	// 	}
+	// 	return new ResponseEntity<>(builder.toString(), HttpStatus.BAD_REQUEST);
+	// }
 
 }
