@@ -40,9 +40,9 @@
                     </button>
                 </a>
                 <div class="modal-content">
-                    <img src="https://i.imgur.com/vaBFer6.png" alt="" class="modal-img" > 
-                    <p class="message-user">{{ user }}</p>
-                    <div class="message-box">{{ con}}</div>
+                    <img :src="API_BASE_URL+ imgUrl" alt="" class="modal-img" > 
+                    <p class="message-user">{{ sender }}</p>
+                    <div class="message-box">{{ content }}</div>
                 </div>
             </div>
         </div>
@@ -50,35 +50,38 @@
 </template>
 
 <script>
+import { getMessage } from '@/api/event.js';
+import {API_BASE_URL} from "@/config/index.js";
+
 export default {
-    name: "MainPage",
+    name: "EventRoom",
     data() {
         return {
-            messages: [
-                {
-                    username: '세연',
-                    content: 'hi',
-                },
-                {
-                    username: '모은',
-                    content: 'hello'
-                },
-                {
-                    username: '싸피',
-                    content: 'bye'
-                },
-            ],
-            user: '',
-            con: ''
+            messages: [],
+            sender: '',
+            content: '',
+            imgUrl: '',
+            API_BASE_URL: API_BASE_URL,
         }
     },
     created() {
-
+        getMessage(
+            (res) => {
+                console.log(res.data.Message);
+                this.messages = res.data.Message;
+                console.log(this.messages);
+            },
+            () => {
+                console.log("fail")
+            }
+        );
     },
     methods: {
         modal(message) {
-            this.con = message.content;
-            this.user = message.username;
+            console.log(message);
+            this.content = message.content;
+            this.sender = message.sender;
+            this.imgUrl = message.present.presentImg;
         }
     }
 }
