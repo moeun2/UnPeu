@@ -24,7 +24,7 @@ public class UnpeuUserDetailService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String userLogin) throws UsernameNotFoundException {
-    		User user = userService.findUserByUserLogin(userLogin);
+    		User user = userService.getUserByUserLogin(userLogin);
     		if(user != null) {
     			UnpeuUserDetails userDetails = new UnpeuUserDetails(user);
     			return userDetails;

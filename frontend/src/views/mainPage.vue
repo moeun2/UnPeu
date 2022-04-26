@@ -135,4 +135,8 @@ export default {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
 }
+
+.v-application--wrap {
+    min-height: 100%;
+}
 </style>
