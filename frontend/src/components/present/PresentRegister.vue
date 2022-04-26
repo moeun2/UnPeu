@@ -1,6 +1,6 @@
 <template>
 <div>
-<v-form @submit.prevent="registPresent">
+<v-form @submit="regist">
 <v-container fluid>
   <v-row>
     <v-col cols="5">
@@ -39,7 +39,7 @@
 
 <script>
 import {mapActions} from "vuex";
-import { presentStore } from '@/store/modules/presentStore';
+const presentStore="presentStore";
   export default {
     data: () => ({
       present: null,
@@ -49,14 +49,32 @@ import { presentStore } from '@/store/modules/presentStore';
       files:[],
       
     }),
+    computed:{
+    },
     methods:{
-      ...mapActions(presentStore,["registPresent"]),
-      async registPresent(){
+      ...mapActions(presentStore,["registerPresent"]),
+       regist(){
         console.log(this.present);
+        
         let fd=new FormData();
-        fd.append('files',this.files);
-        fd.append('present',this.present);
-        // Todo : userId 추가되면 작성
+        fd.append('presentImg',this.files);
+        fd.append('presentPrice',this.present);
+        fd.append('userId',0);
+        fd.append('presentName',this.files.name);
+
+        for (var key of fd.keys()) {
+
+        console.log(key);
+
+      }
+
+        for (var value of fd.values()) {
+
+          console.log(value);
+
+        }
+
+         this.registerPresent(fd);
       }
     }
   }
