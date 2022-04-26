@@ -6,6 +6,7 @@ import com.unpeu.domain.entity.User;
 import com.unpeu.domain.repository.IBoardRepository;
 import com.unpeu.domain.request.BoardPostReq;
 import com.unpeu.domain.response.BoardGetRes;
+import com.unpeu.domain.response.BoardInfoGetRes;
 import com.unpeu.service.iface.IBoardService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -62,10 +63,10 @@ public class BoardServiceImpl implements IBoardService {
      * @return
      */
     @Override
-    public BoardGetRes getBoardInfo(Long boardId) {
+    public BoardInfoGetRes getBoardInfo(Long boardId) {
         logger.info("getBoardInfo - 호출");
         Optional<Board> oBoard = boardRepository.findById(boardId);
-        return new BoardGetRes(oBoard.get());
+        return new BoardInfoGetRes(oBoard.get());
     }
 
     /**
