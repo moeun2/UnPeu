@@ -25,8 +25,9 @@ export default {
       alert(a)
     },
     getMessage(data){
+      alert(data)
       alert(data.sender + "\n" + data.contents);
-      this.checkPay();
+      // this.checkPay();
     },
     
     /**

@@ -20,13 +20,13 @@
         </v-carousel-item>
       </v-carousel>
       <v-text-field
-        v-model="nickname"
+        v-model="message.nickname"
         solo
         label="닉네임"
         clearable
       ></v-text-field>
       <v-textarea
-        v-model="content"
+        v-model="message.content"
         solo
         name="input-7-4"
         label="메시지 내용"
@@ -62,8 +62,8 @@ const presentStore="presentStore";
 export default {
   data: () =>({
     message: {
-      nickname: null,
-      content: null,
+      nickname: "",
+      content: "",
     },
   }),
   methods:{
@@ -71,7 +71,7 @@ export default {
     sendMessage(){
       //TODO : 결제창 띄우기
       this.$emit("message", {sender:this.message.nickname, contents:this.message.content});
-      this.sendPresentMessage(this.message);
+      // this.sendPresentMessage(this.message);
     },
   }
 }

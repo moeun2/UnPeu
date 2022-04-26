@@ -43,7 +43,7 @@ export default {
   methods:{
     ...mapActions(presentStore,["searchList"]),
     search(){
-      this.searchList(0);
+      this.searchList(1);
       this.cardList=this.presentList.Present;
       this.cardListCount=Math.ceil(this.cardList.length/3);
     }
