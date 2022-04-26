@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-text-field
-            v-model="message2"
+            v-model="sender"
             solo
             label="닉네임"
             clearable
@@ -10,6 +10,7 @@
           solo
           name="input-7-4"
           label="메시지 내용"
+          v-model = "contents"
         ></v-textarea>
     <v-row
     justify="space-around"
@@ -23,10 +24,11 @@
     <v-btn
       tile
       color="success"
+      @click="sendMessage"
     >
       <v-icon left>
         mdi-email-edit
-      </v-icon>
+      </v-icon >
       보내기
     </v-btn>
     
@@ -36,7 +38,18 @@
 
 <script>
 export default {
-
+  data() {
+    return {
+      sender:"",
+      contents:"",
+    }
+},
+methods:{
+  sendMessage(){
+    // alert("click 보내기")
+    this.$emit("message", {sender:this.sender, contents:this.contents});
+  }
+}
 }
 </script>
 

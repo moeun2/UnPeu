@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.Hibernate;
-import org.jetbrains.annotations.NotNull;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -33,7 +33,6 @@ import lombok.ToString;
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "present")
 public class Present {
 	@Id
@@ -46,11 +45,14 @@ public class Present {
 	@ToString.Exclude
 	private User user;
 
-	@NotNull
+	@NotNull(message = "presentName을 입력해주세요")
 	private String presentName;
+	
 	private String presentImg;
-	@NotNull
+
+	@NotNull(message = "presentPrice를 입력해주세요")
 	private String presentPrice;
+	
 	private int receivedPrice;
 
 	@Override

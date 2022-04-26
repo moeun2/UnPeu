@@ -1,17 +1,16 @@
 package com.unpeu.service.impl;
 
-import java.time.LocalDate;
+import static com.unpeu.config.exception.ErrorCode.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.unpeu.config.exception.ApplicationException;
-import com.unpeu.config.exception.EmptyResultDataAccessException;
+import com.unpeu.config.exception.CustomException;
 import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
 import com.unpeu.domain.entity.User;
@@ -31,17 +30,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PresentServiceImpl implements IPresentService {
 	private static final Logger logger = LoggerFactory.getLogger(PresentServiceImpl.class);
-
+	
 	private final IPresentRepository presentRepository;
 	private final IUserRepository userRepository;
 	private final IMessageRepository messageRepository;
-
-	// public PresentService(IPresentRepository presentRepository, IUserRepository userRepository,
-	// 	IMessageRepository messageRepository) {
-	// 	this.presentRepository = presentRepository;
-	// 	this.userRepository = userRepository;
-	// 	this.messageRepository = messageRepository;
-	// }
 
 	/**
 	 * 선물리스트에 선물 등록
@@ -50,13 +42,14 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public Present createPresent(PresentPostReq present) {
+		logger.info("createPreset-호출");
 		Optional<User> user = userRepository.findById(Long.parseLong(/*present.getUserId()*/"1"));
 		if (user.isEmpty()) {
-			throw new NoSuchElementException("userId가 " + present.getUserId() + " 인 유저를 찾을 수 없습니다");
+			throw new CustomException(MEMBER_NOT_FOUND);
 		}
 
 		Present newPresent = Present.builder()
-			.user(user.get()) //Test시 null로 테스트 했음
+			.user(user.get())
 			.presentImg(present.getPresentImgUrl())
 			.presentName(present.getPresentName())
 			.presentPrice(present.getPresentPrice())
@@ -72,21 +65,21 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public void deletePresent(Long presentId) {
+		logger.info("deletePresent-호출");
 		// 해당 선물에 이미 메세지(선물 or 돈)을 받았다면
 		Optional<Present> oPresent = presentRepository.findById(presentId);
 		if (oPresent.isEmpty()) {
-			throw new NoSuchElementException("presentId가 " + presentId + " 인 선물을 찾을 수 없습니다");
+			throw new CustomException(PRESENT_NOT_FOUND);
 		}
 		Optional<Message> oMessage = messageRepository.findFirstByPresent(oPresent.get());
 		if (!oMessage.isEmpty()) {
 			System.out.println(oMessage.get());
-			throw new ApplicationException("presentId가 " + presentId + " 인 선물에 돈/메세지가 이미 들어가 있습니다.");
+			throw new CustomException(DUPLICATE_RESOURCE);
 		}
-
 		try {
 			presentRepository.deleteById(presentId);
 		} catch (Exception e) {
-			throw new EmptyResultDataAccessException("presentId : " + presentId + " 에 맞는 데이터가 없습니다.");
+			throw new CustomException(MEMBER_NOT_FOUND);
 		}
 	}
 
@@ -98,9 +91,10 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public Present updatePresent(Long presentId, PresentPostReq present) {
+		logger.info("updatePresent-호출");
 		Optional<Present> oPresent = presentRepository.findById(presentId);
 		if (oPresent.isEmpty()) {
-			throw new NoSuchElementException("presentId가 " + presentId + " 인 선물을 찾을 수 없습니다");
+			throw new CustomException(PRESENT_NOT_FOUND);
 		}
 		Present prevPresent = oPresent.get();
 
@@ -121,6 +115,11 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public List<Present> getPresentListByUserId(Long userId) {
+		logger.info("getPresentListByUserId-호출");
+		Optional<User> user = userRepository.findById(userId);
+		if (user.isEmpty()) {
+			throw new CustomException(MEMBER_NOT_FOUND);
+		}
 		return presentRepository.findPresentByUserId(userId);
 	}
 
@@ -131,12 +130,12 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public Message sendMessageAndPresent(MessagePostReq message) {
-
+		logger.info("sendMessageAndPresent-호출");
 		Present present = null;
 		if (message.getPresentId() != null) {
 			Optional<Present> oPresent = presentRepository.findById(Long.parseLong(message.getPresentId()));
 			if (oPresent.isEmpty()) {
-				throw new NoSuchElementException("presentId가 " + message.getPresentId() + " 인 선물을 찾을 수 없습니다");
+				throw new CustomException(PRESENT_NOT_FOUND);
 			}
 			present = oPresent.get();
 			present.setReceivedPrice(present.getReceivedPrice() + message.getPrice());
@@ -145,7 +144,7 @@ public class PresentServiceImpl implements IPresentService {
 
 		Optional<User> user = userRepository.findById(Long.parseLong(/*message.getUserId())*/"1"));
 		if (user.isEmpty()) {
-			throw new NoSuchElementException("userId가 " + message.getUserId() + " 인 유저를 찾을 수 없습니다");
+			throw new CustomException(MEMBER_NOT_FOUND);
 		}
 
 		Message newMessage = Message.builder()
@@ -166,13 +165,14 @@ public class PresentServiceImpl implements IPresentService {
 	 */
 	@Override
 	public String peekMoney(Long userId) {
+		logger.info("peekMoney-호출");
 		Optional<User> user = userRepository.findById(Long.parseLong(/*message.getUserId())*/"1"));
 		if (user.isEmpty()) {
-			throw new NoSuchElementException("userId가 " +userId + " 인 유저를 찾을 수 없습니다");
+			throw new CustomException(MEMBER_NOT_FOUND);
 		}
 		Optional<Message> oMessage = messageRepository.findFirstByUserId(userId);
 		if (oMessage.isEmpty()) {
-			throw new NoSuchElementException("userId가 " + userId + " 인 메세지를 찾을 수 없습니다");
+			throw new CustomException(MESSAGE_NOT_FOUND_BY_USER);
 		}
 		return messageRepository.sumPeekMoney(userId);
 	}
