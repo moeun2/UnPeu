@@ -1,21 +1,34 @@
 <template>
   <div>
       <div class="message-title">콩주머니 보내기</div>
-      <present-list-search/>
-      <present-message/>
+      <present-select-list-search @test="testF"/>
+      <present-message @message="getMessage"/>
   </div>
 </template>
 
 <script>
-import PresentListSearch from './present/PresentListSearch.vue'
+import PresentSelectListSearch from './present/PresentSelectListSearch.vue'
 import PresentMessage from './present/PresentMessage.vue'
 export default {
-  components: { PresentListSearch, PresentMessage },
+  components: { PresentSelectListSearch, PresentMessage },
   data() {
     return {
+      presentId : '',
+      amount : 1000,
+      sender : "front_guest",
+      contents :"hello_world",
+      test:"",
     }
   },
   methods : {
+    testF(a){
+      alert(a)
+    },
+    getMessage(data){
+      alert(data.sender + "\n" + data.contents);
+      this.checkPay();
+    },
+    
     /**
      * 아임포트 이용 결제시스템 호출 함수
      */
@@ -52,9 +65,10 @@ export default {
 
       if (success) {
         alert('결제 성공');
-        
+        this.$router.push({ name: "eventRoom" });
       } else {
         alert(`결제 실패: ${error_msg}`);
+        
         
       }
     },
