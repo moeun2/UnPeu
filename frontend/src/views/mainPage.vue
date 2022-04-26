@@ -30,16 +30,16 @@
                       <a class="info-name" href="#">김싸피</a>
                       <p class="text-email">ssafykim@ssafy.com</p>
                       <div style="display: flex">
-                      <button>
-                        <img src="https://i.imgur.com/nupfePY.png" 
-                        @mouseover="gift_mouse" @mouseleave="gift_leave">
+                      <router-link :to="{ name: 'PresentManage' }">
+                      <button class="item">
+                        <img src="https://i.imgur.com/nupfePY.png" >
+                        <p class="arrow_box">받고 싶은 선물 등록!</p>
                       </button>
-                      <div id="gift-msg"></div>
-                      <button>
-                        <img src="https://i.imgur.com/Fqfvown.png" 
-                        @mouseover="gift_mouse" @mouseleave="gift_leave">
+                      </router-link>
+                      <button class="item">
+                        <img src="https://i.imgur.com/Fqfvown.png" >
+                        <p class="arrow_box">로그인/로그아웃</p>
                       </button>
-                      <div id="gift-msg"></div>
                       </div>
                     </div>
                   </div>
@@ -59,8 +59,8 @@
                 <div class="main-wrap">
                   <div class="nav">
                     <ul>
-                      <li :class="[activeCheckClass]" @click="checkHome()"><router-link :to="{ name: 'eventRoom' }">홈</router-link></li>
-                      <li :class="[activeClass]" @click="checkDiary()"><router-link :to="{ name: 'Diary' }">다이어리</router-link></li>
+                      <router-link :to="{ name: 'eventRoom' }"><li :class="[activeCheckClass]" @click="checkHome()">홈</li></router-link>
+                      <router-link :to="{ name: 'Diary' }"><li :class="[activeClass]" @click="checkDiary()">다이어리</li></router-link>
                     </ul>
                   </div>
                   <div class="title-wrap">
@@ -90,14 +90,6 @@ export default {
   components: {
   },
   methods: {
-      gift_mouse() {
-        document.getElementById("gift-msg").innerHTML =
-        '<div class="gift-msg"> 받고 싶은 선물 등록!</div>' 
-      },
-      gift_leave() {
-        document.getElementById("gift-msg").innerHTML =
-        '' 
-      },
       checkHome() {
           if(this.activeClass === 'menu-item mi-1 menu-checked') {
               this.activeClass = 'menu-item mi-3';
@@ -138,5 +130,28 @@ export default {
 
 .v-application--wrap {
     min-height: 100%;
+}
+.item {
+  position: relative;
+  display: inline-block;
+}
+
+.arrow_box {
+  display: none;
+  position: absolute;
+  width: 100px;
+  padding: 8px;
+  left: 0;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;  
+  border-radius: 8px;
+  background: #85b9eaef;
+  color: #fff;
+  font-weight: bold;
+  z-index: 1;
+}
+
+img:hover + p.arrow_box {
+  display: block;
 }
 </style>
