@@ -133,6 +133,9 @@ public class BoardControllerTest {
         Assertions.assertThat(categories).contains(saveBoard2.getCategory());
     }
 
+    /**
+     * userId에 맞는 category별 게시글 목록 조회
+     */
     @Test
     public void 게시판_글_전체조회() throws Exception {
         // given
@@ -168,6 +171,9 @@ public class BoardControllerTest {
         Assertions.assertThat(boardList.get(1).getBoardId()).isEqualTo(saveBoard2.getBoardId());
     }
 
+    /**
+     * boardId에 맞는 게시글 상세 조회
+     */
     @Test
     public void 게시판_글_상세조회() throws Exception {
         // given
