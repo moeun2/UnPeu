@@ -1,5 +1,6 @@
 package com.unpeu.domain.request;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.ApiModelProperty;

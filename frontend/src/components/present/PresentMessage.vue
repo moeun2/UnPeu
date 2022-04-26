@@ -1,6 +1,5 @@
 <template>
   <div>
-    <v-form @submit="sendMessage">
       <v-carousel hide-delimiters style="height:350px">
         <v-carousel-item v-for="i in cardListCount" :key="i">
           <v-layout row>
@@ -45,6 +44,7 @@
       tile
       color="success"
       type="submit"
+      @click="sendMessage"
     >
       <v-icon left>
         mdi-email-edit
@@ -53,7 +53,6 @@
     </v-btn>
     
   </v-row>
-    </v-form>
   </div>
 </template>
 
@@ -71,10 +70,10 @@ export default {
     ...mapActions(presentStore,["sendPresentMessage"]),
     sendMessage(){
       //TODO : 결제창 띄우기
+      this.$emit("message", {sender:this.message.nickname, contents:this.message.content});
       this.sendPresentMessage(this.message);
-    }
+    },
   }
-
 }
 </script>
 

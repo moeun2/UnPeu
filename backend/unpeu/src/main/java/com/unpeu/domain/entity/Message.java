@@ -13,9 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.Hibernate;
-import org.jetbrains.annotations.NotNull;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,7 +36,6 @@ import lombok.ToString;
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "message")
 public class Message {
 	@Id
@@ -53,8 +53,10 @@ public class Message {
 	@ToString.Exclude
 	private User user;
 
-	@NotNull
+	
+	@NotNull(message = "sender를 입력해주세요")
 	private String sender;
+	
 	private String content;
 	private String category;
 	private int price;

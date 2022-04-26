@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,20 +22,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.unpeu.config.auth.UnpeuUserDetails;
 import com.unpeu.config.media.MediaService;
 import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.request.MessagePostReq;
 import com.unpeu.domain.request.PresentPostReq;
-import com.unpeu.domain.response.BaseResponseBody;
-import com.unpeu.domain.response.PresentPeekPostRes;
 import com.unpeu.service.iface.IPresentService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import springfox.documentation.annotations.ApiIgnore;
 
 @Api("Present 관련 기능")
 @CrossOrigin(origins = "*")
@@ -58,7 +53,7 @@ public class PresentController {
 	@ApiOperation(value = "선물 등록 Controller")
 	@RequestMapping(value = "/present", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<Map<String, Object>> createPresent(/*@ApiIgnore @NotNull Authentication authentication,*/
-		@ModelAttribute PresentPostReq present) {
+		@Valid @ModelAttribute @NotNull PresentPostReq present) {
 		logger.info("createPresent - 호출");
 		// userId 설정 -> 현재 userId: 1로만 테스트 중
 		// UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
