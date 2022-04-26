@@ -1,10 +1,18 @@
-import { createStore } from "vuex";
-import {presentStore} from "@/store/modules/presentStore.js";
+import Vue from 'vue'
+import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 
-export default createStore({
+Vue.use(Vuex);
+
+import {presentStore} from "@/store/modules/presentStore.js";
+
+export default new Vuex.Store({
 	modules: {
-		presentStore : presentStore,
+		presentStore,
 	},
-	plugins: [createPersistedState()],
+	plugins: [createPersistedState(
+    {
+        Storage : sessionStorage,
+    }
+    )],
 });
