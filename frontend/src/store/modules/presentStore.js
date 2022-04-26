@@ -1,4 +1,4 @@
-import { regist, search, sendMessage } from "@/api/present";
+import { register, search, sendMessage } from "@/api/present";
 
 export const presentStore={
     namespaced : true,
@@ -16,8 +16,8 @@ export const presentStore={
         
     },
     actions:{
-         registPresent({commit}, fd){
-             regist(
+         registerPresent({commit}, fd){
+             register(
                 fd,
                 (response) => {
                     if(response.data.message === "success") {

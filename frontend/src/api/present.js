@@ -2,7 +2,7 @@ import { createInstance } from "./index.js";
 const api = createInstance();
 
 // 유저 선물 등록
-function regist(present, success, fail){
+function register(present, success, fail){
     api.post(`api/present`,present,{headers : {'Content-Type': 'multipart/form-data'}}).then(success).catch(fail);
 }
 
@@ -17,7 +17,7 @@ function sendMessage(message, success, fail){
 }
 
 export{
-    regist,
+    register,
     search,
     sendMessage,
 }

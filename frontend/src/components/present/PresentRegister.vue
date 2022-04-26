@@ -52,7 +52,7 @@ const presentStore="presentStore";
     computed:{
     },
     methods:{
-      ...mapActions(presentStore,["registPresent"]),
+      ...mapActions(presentStore,["registerPresent"]),
        regist(){
         console.log(this.present);
         
@@ -74,7 +74,7 @@ const presentStore="presentStore";
 
         }
 
-         this.registPresent(fd);
+         this.registerPresent(fd);
       }
     }
   }
