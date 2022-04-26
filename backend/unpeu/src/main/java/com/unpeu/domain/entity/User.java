@@ -2,11 +2,7 @@ package com.unpeu.domain.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,24 +11,26 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id")
-	private Long id;
-
+	
+	@Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Long id;
+	
 	private String userLogin;
 	private String socialDomain;
 
-	private String userName;
-	private String userTitle;
-	private String userInfo;
-	private String userMusic;
-
-	private Long todayVisit;
-	private Long totalVisit;
+    private String userName;
+    private String userTitle;
+    private String userInfo;
+    private String userMusic;
+    
+    private Long todayVisit;
+    private Long totalVisit;
 
 	private String userImg;
 
