@@ -32,9 +32,11 @@ public class User {
     private Long todayVisit;
     private Long totalVisit;
 
-    private String userImg;
-    
-    private LocalDateTime createDate;
+	private String userImg;
+
+	private LocalDateTime createdAt;
 }
+
+
 
 

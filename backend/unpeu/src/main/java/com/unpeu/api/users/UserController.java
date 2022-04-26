@@ -3,6 +3,8 @@ package com.unpeu.api.users;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,23 +44,60 @@ public class UserController {
 
 	@ApiOperation(value = "카카오 로그인/회원가입  Controller")
 	@RequestMapping(value = "/auth/kakao", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> kakaoLoginAndSignup(@RequestParam String code) {
+    public ResponseEntity<Map<String, Object>> kakaoLoginAndSignup(@RequestParam @NotNull String code){
 		logger.info("kakaoLoginAndSignup - 호출");
-		String token = userService.getKakaoAccessToken(code);
-		Map<String, String> userInfo = userService.getKakaoUserInfo(token);
 		Map<String, Object> resultMap = new HashMap<>();
+        String token=userService.getKakaoAccessToken(code);
+        if(token==null) {
+        	resultMap.put("message","token doesn't exist");
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+        }
+        
+        Map<String, String> userInfo=userService.getKakaoUserInfo(token);
+        if(userInfo==null) {
+        	resultMap.put("message","userInfo doesn't exist");
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+        }
+        
+        if(!userService.chkDplUser(userInfo.get("userLogin"))) {
+        	logger.info("kakaoLoginAndSignup - 회원가입 진행");
+            User signUser = userService.addUser(userInfo,"kakao");
+        }
+        
+		resultMap.put("accessToken",JwtTokenUtil.getToken(userInfo.get("userLogin")));
+        return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+    }
+	
+	@ApiOperation(value = "구글 로그인/회원가입  Controller")
+	@RequestMapping(value = "/auth/google", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> googleLoginAndSignup(@RequestParam @NotNull String code){
+		logger.info("googleLoginAndSignup - 호출");
+		Map<String, Object> resultMap = new HashMap<>();
+        String token=userService.getGoogleAccessToken(code);
+        if(token==null) {
+        	resultMap.put("message","token doesn't exist");
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+        }
+        
+        Map<String, String> userInfo=userService.getGoogleUserInfo(token);
+        
+        if(userInfo==null) {
+        	resultMap.put("message","userInfo doesn't exist");
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+        }
+        
+        if(!userService.chkDplUser(userInfo.get("userLogin"))) {
+        	logger.info("googleLoginAndSignup - 회원가입 진행");
+            User signUser = userService.addUser(userInfo,"google");
+        }       
+		resultMap.put("accessToken",JwtTokenUtil.getToken(userInfo.get("userLogin")));
+        return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+    }
 
-		if (!userService.chkDplByUserLogin(userInfo.get("userLogin"))) {
-			logger.info("kakaoLoginAndSignup - 회원가입 진행");
-			User signUser = userService.addUser(userInfo, "kakao");
-		}
-		resultMap.put("accessToken", JwtTokenUtil.getToken(userInfo.get("userLogin")));
-		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
-	}
-
+	
 	@ApiOperation(value = "유저 정보 조회(회원) Controller")
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getUserInfoByToken(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> getUserInfoByToken(@ApiIgnore @NotNull Authentication authentication){
 		logger.info("getUserInfoByToken - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
@@ -69,20 +108,21 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "유저 정보 조회(비회원) Controller")
-	@RequestMapping(value = "/users/{user_id}", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getUserInfoByUserId(@PathVariable("user_id") Long userId) {
+	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, Object>> getUserInfoByUserId(@PathVariable("userId") @NotNull Long userId){
 		logger.info("getUserInfoByUserId - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
-		User user = userService.findUserById(userId);
-
-		resultMap.put("User", user);
-		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
-	}
-
+        User user =userService.getUserById(userId);
+        
+		resultMap.put("User",user);
+        return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+    }
+	
+	
+	
 	@ApiOperation(value = "유저 타이틀 수정 Controller")
 	@RequestMapping(value = "/users/title", method = RequestMethod.PATCH)
-	public ResponseEntity<Map<String, Object>> updateUserTitle(@ApiIgnore Authentication authentication,
-		@RequestParam String userTitle) {
+    public ResponseEntity<Map<String, Object>> updateUserTitle(@ApiIgnore @NotNull Authentication authentication,@RequestParam @NotNull String userTitle){
 		logger.info("updateUserTitle - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
@@ -96,8 +136,7 @@ public class UserController {
 
 	@ApiOperation(value = "유저 info 수정 Controller")
 	@RequestMapping(value = "/users/info", method = RequestMethod.PATCH)
-	public ResponseEntity<Map<String, Object>> updateUserInfo(@ApiIgnore Authentication authentication,
-		@RequestParam String userInfo) {
+    public ResponseEntity<Map<String, Object>> updateUserInfo(@ApiIgnore @NotNull Authentication authentication,@RequestParam @NotNull String userInfo){
 		logger.info("updateUserInfo - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
@@ -111,8 +150,8 @@ public class UserController {
 
 	@ApiOperation(value = "유저 이미지 수정 Controller")
 	@RequestMapping(value = "/users/img", method = RequestMethod.PATCH)
-	public ResponseEntity<Map<String, Object>> updateUserImg(@ApiIgnore Authentication authentication,
-		@RequestPart(value = "file") final MultipartFile userImg) {
+    public ResponseEntity<Map<String, Object>> updateUserImg(@ApiIgnore @NotNull Authentication authentication,
+    		@RequestPart(value = "file") @NotNull final MultipartFile userImg){
 		logger.info("updateUserImg - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
