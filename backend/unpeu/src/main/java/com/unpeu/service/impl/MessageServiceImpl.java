@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl implements IMessageService {
-	private static final Logger logger = LoggerFactory.getLogger(PresentServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(MessageServiceImpl.class);
 
 	private final IMessageRepository messageRepository;
 	private final IPresentRepository presentRepository;
