@@ -45,11 +45,14 @@ public class Present {
 	@ToString.Exclude
 	private User user;
 
-	@NotNull
+	@NotNull(message = "presentName을 입력해주세요")
 	private String presentName;
+	
 	private String presentImg;
-	@NotNull
+
+	@NotNull(message = "presentPrice를 입력해주세요")
 	private String presentPrice;
+	
 	private int receivedPrice;
 
 	@Override
