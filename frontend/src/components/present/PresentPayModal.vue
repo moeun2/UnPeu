@@ -17,10 +17,10 @@
               class="modal-img"
             />
             <br />
-            <p>
+            <h4>
               헉 너무 큰 금액이야 <br />
               가격을 다시 한 번 생각해봐~!
-            </p>
+            </h4>
             <br />
             <table class="dabo_table">
               <tr>
@@ -30,7 +30,7 @@
                     type="radio"
                     name="radio"
                     value="10000"
-                    v-model="selectAmount"
+                    v-model="selectedPrice"
                     @click="closeInputText"
                   />
                   <label for="radio-1">10000원</label>
@@ -41,7 +41,7 @@
                     type="radio"
                     name="radio"
                     value="20000"
-                    v-model="selectAmount"
+                    v-model="selectedPrice"
                     @click="closeInputText"
                   />
                   <label for="radio-2">20000원</label>
@@ -52,7 +52,7 @@
                     type="radio"
                     name="radio"
                     value="30000"
-                    v-model="selectAmount"
+                    v-model="selectedPrice"
                     @click="closeInputText"
                   />
                   <label for="radio-3">30000원</label>
@@ -65,7 +65,7 @@
                     type="radio"
                     name="radio"
                     value="40000"
-                    v-model="selectAmount"
+                    v-model="selectedPrice"
                     @click="closeInputText"
                   />
                   <label for="radio-4">40000원</label>
@@ -76,7 +76,7 @@
                     type="radio"
                     name="radio"
                     value="50000"
-                    v-model="selectAmount"
+                    v-model="selectedPrice"
                     @click="closeInputText"
                   />
                   <label for="radio-5">50000원</label>
@@ -87,7 +87,7 @@
                     type="radio"
                     name="radio"
                     value="-1"
-                    v-model="selectAmount"
+                    v-model="selectedPrice"
                   />
                   <label for="radio-6" @click="textbox">직접입력</label>
                   <div id="unpeu_input"></div>
@@ -128,7 +128,7 @@
 export default {
   data() {
     return {
-      selectAmount: 0,
+      selectedPrice: 0,
     }
   },
   methods: {
@@ -143,7 +143,8 @@ export default {
         console.log("직접입력 값 : "+inputNumber+"")
         this.selectAmount = inputNumber;
       }
-      console.log("selectAmount : " ,this.selectAmount);
+      console.log("selectedPrice : " ,this.selectedPrice);
+      this.$emit("selectedPrice", this.selectedPrice);
     },
     closeInputText(){
       document.getElementById("unpeu_input").style.display = "none";

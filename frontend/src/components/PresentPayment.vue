@@ -1,7 +1,7 @@
 <template>
   <div>
       <div class="message-title">콩주머니 보내기</div>
-      <present-select-list-search @test="testF"/>
+      <present-select-list-search @present="getPresent"/>
       <present-message @message="getMessage"/>
   </div>
 </template>
@@ -9,25 +9,43 @@
 <script>
 import PresentSelectListSearch from './present/PresentSelectListSearch.vue'
 import PresentMessage from './present/PresentMessage.vue'
+import {mapActions} from "vuex";
+const presentStore="presentStore";
 export default {
   components: { PresentSelectListSearch, PresentMessage },
   data() {
     return {
-      presentId : '',
-      amount : 1000,
-      sender : "front_guest",
-      contents :"hello_world",
-      test:"",
+      message:{
+        selectedPresentId :'',
+        selectedPresentPrice :'',
+        sender:'',
+        content:''
+      }
     }
   },
   methods : {
-    testF(a){
-      alert(a)
+    ...mapActions(presentStore,["sendPresentMessage"]),
+    getPresent(data){
+      alert(data)
+      this.message.selectedPresentId= data.selectedPresentId;
+      this.message.selectedPresentPrice = data.selectedPresentPrice;
     },
     getMessage(data){
       alert(data)
-      alert(data.sender + "\n" + data.contents);
-      // this.checkPay();
+      alert(data.sender + "\n" + data.content);
+      this.message.sender = data.sender;
+      this.message.content = data.content;
+      if(this.message.sender != null && this.message.content != null){
+         // this.checkPay();
+      }
+      else{
+        if(this.message.sender == null){
+          alert("nickname을 써주세요")
+        }else if(this.message.content == null){
+          alert("메세지를 적어주세요")
+        }
+      }
+     
     },
     
     /**
@@ -66,6 +84,7 @@ export default {
 
       if (success) {
         alert('결제 성공');
+        this.sendPresentMessage(this.message);
         this.$router.push({ name: "eventRoom" });
       } else {
         alert(`결제 실패: ${error_msg}`);

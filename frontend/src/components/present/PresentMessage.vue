@@ -57,8 +57,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
-const presentStore="presentStore";
+
 export default {
   data: () =>({
     message: {
@@ -67,9 +66,7 @@ export default {
     },
   }),
   methods:{
-    ...mapActions(presentStore,["sendPresentMessage"]),
     sendMessage(){
-      //TODO : 결제창 띄우기
       this.$emit("message", {sender:this.message.nickname, contents:this.message.content});
       // this.sendPresentMessage(this.message);
     },

@@ -4,7 +4,7 @@
     <v-carousel-item v-for="i in cardListCount" :key="i">
       <v-layout row id="cards">
         <v-flex  sm4 v-for="(card,idx) in cardList" :key="idx" pl-2 pr-2>
-          <v-card  class="card" @click="checkModal(card,idx)">
+          <v-card  class="card" @click="checkCardBeforeSelection(card,idx)">
             <v-img
               :src="API_BASE_URL+card.presentImg"
               aspect-ratio="0.8"
@@ -19,8 +19,7 @@
       </v-layout>
     </v-carousel-item>
   </v-carousel>
-  <v-btn @click="testEmit">test!!!!!!!!!!!</v-btn>
-  <PresentPayModal v-if="showModal"  @close="showModal = false"></PresentPayModal>
+  <PresentPayModal v-if="showModal"  @close="checkCardAfterClosing" @selectedAmount="saveSelectedPresentPrice"></PresentPayModal>
   </div>
 </template>
 
@@ -57,15 +56,17 @@ export default {
       this.cardList=this.presentList.Present;
       this.cardListCount=Math.ceil(this.cardList.length/3);
     },
-    testEmit(){
-    this.$emit("test", 3);
-  },
-  checkModal(card, idx){
+    
+  
+  checkCardBeforeSelection(card, idx){
     console.log(card)
     console.log(idx)
     this.selectedPresentId = card.presentId;
-    this.selectedPresentPrice = 1000
-    document.getElementById("cards").classList.remove('v-card--disabled');
+    const length = document.getElementById("cards").children.length;
+    for(let i=0; i< length; i++){
+        document.getElementById("cards").children[i].classList.remove('v-card--disabled');
+    }
+    // document.getElementById("cards").classList.remove('v-card--disabled');
     document.getElementById("cards").children[idx].classList.add('v-card--disabled');
     this.showModal = true;
     // document.getElementById("cards").children[idx].style.backgroundColor = "aquamarine !important";
@@ -73,6 +74,19 @@ export default {
     //document.getElementById("cards").children[2].classList.remove('v-card--disabled');
     //document.getElementById("cards").classList.add('v-card--disabled');
 
+  },
+  checkCardAfterClosing(){
+    this.showModal=false;
+    const length = document.getElementById("cards").children.length;
+    for(let i=0; i< length; i++){
+        document.getElementById("cards").children[i].classList.remove('v-card--disabled');
+    }
+  },
+  saveSelectedPresentPrice(data){
+    this.showModal=false;
+    console.log("payModal에서 받아온 selectedPrice : " + data)
+    this.selectedPresentPrice = data;
+    this.$emit("present", {selectedPresentId:this.selectedPresentId, selectedPresentPrice:this.selectedPresentPrice})
   }
 
   
