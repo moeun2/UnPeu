@@ -2,14 +2,14 @@
     <v-container>
         <div class="landing"> 
             <span style = "font-size:2em; font-weight: bold ;">
-              당신을 위한 조그마한 기록 그리고 선물<br><br>Un Peu : 앙뿌<br><br>
+              당신을 위한 조그마한 기록 그리고 선물<br>Un Peu : 앙뿌<br>
              </span>
             <img width="450px" src="@/assets/moeun 2.png"/><br>
             <img class="google_login_btn" src="@/assets/btn_google_signin_light_normal_web@2x.png" v-on:click="GoogleLogin"/><br>
             <div id="my-signin2" style="display: none"></div>
-            <img class='kakao_login_btn' src="@/assets/kakao_login_large_narrow.png" v-on:click="KakaoLogin"/>
+            <img class='kakao_login_btn' src="@/assets/kakao_login_large_narrow.png" v-on:click="KakaoLogin"/><br>
+            <v-btn @click="logout">로그아웃</v-btn>
         </div>
-        <div id="google_login_btn" v-on:click="logout">logout</div>
         <router-view/>
     </v-container>
 </template>
@@ -17,6 +17,11 @@
 <script>
 export default {
   name: 'LoginPage',
+  created() {
+    if(window.localStorage.getItem("accessToken")){
+      this.$router.push("/")
+    }
+   },
 
   components: {
   },
@@ -75,15 +80,7 @@ body {
     justify-content: center; 
     cursor:pointer; 
     }
-  .google_login_btn{
-    width: 200px; 
-    height:40px; 
-    cursor:pointer; 
-    object-fit: cover;     
-    object-position: center;
-    margin-top: 10px;
-    
-  }
+  
   .kakao_login_btn{
     width: 195px; 
     height:40px; 
@@ -93,9 +90,16 @@ body {
     box-shadow : 1px 1px 1px  rgb(226, 225, 225);
     margin-top: 10px;
   }
-
+  .google_login_btn{
+    width: 200px; 
+    height:40px; 
+    cursor:pointer; 
+    object-fit: cover;     
+    margin-top: 10px;
+    
+  }
   .landing{
     text-align: center;
-    margin-top: 200px;
+    justify-content: center;
   }
 </style>

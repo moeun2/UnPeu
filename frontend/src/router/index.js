@@ -15,6 +15,7 @@ import BoardDetail from "@/components/diary/BoardDetail.vue"
 import Login from "@/views/LoginPage.vue"
 import KakaoLogin from "@/components/login/KakaoLogin.vue"
 import GoogleLogin from "@/components/login/GoogleLogin.vue"
+import Landing from "@/views/LandingPage.vue"
 
 
 Vue.use(VueRouter);
@@ -95,6 +96,11 @@ const routes = [
             },
         ]
 
+    },
+    {
+        path: "/landing",
+        name: "Landing",
+        component: Landing,
     }
 ]
 const router = new VueRouter({
