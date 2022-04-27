@@ -201,6 +201,7 @@ public class BoardControllerTest {
         Assertions.assertThat(boardInfo.getCategory()).isEqualTo(createBoard.getCategory());
         Assertions.assertThat(boardInfo.getTitle()).isEqualTo(createBoard.getTitle());
         Assertions.assertThat(boardInfo.getContent()).isEqualTo(createBoard.getContent());
+        Assertions.assertThat(boardInfo.getCommentList()).isEqualTo(createBoard.getComments());
     }
 
     /**

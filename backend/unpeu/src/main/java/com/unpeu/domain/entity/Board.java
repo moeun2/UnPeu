@@ -1,10 +1,11 @@
 package com.unpeu.domain.entity;
 
-import lombok.*;
 
+import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class Board {
     private String content;
 
     @NotNull
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String createdAt;
 
     // 게시글을 삭제하면 달려있는 댓글 모두 삭제
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -47,6 +48,11 @@ public class Board {
         this.category = category;
         this.title = title;
         this.content = content;
+    }
+
+    @PrePersist
+    public void onPrePersist(){
+        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     // ==== 비즈니스 로직 ====

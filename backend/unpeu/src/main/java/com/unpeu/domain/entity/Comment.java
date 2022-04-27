@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -32,7 +33,8 @@ public class Comment {
     @NotNull(message = "댓글 내용을 작성해주세요")
     private String content;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @NotNull
+    private String createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
@@ -43,6 +45,11 @@ public class Comment {
         this.writer = writer;
         this.password = password;
         this.content = content;
+    }
+
+    @PrePersist
+    public void onPrePersist(){
+        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     // ==== 연관 관계 편의 메소드 ====

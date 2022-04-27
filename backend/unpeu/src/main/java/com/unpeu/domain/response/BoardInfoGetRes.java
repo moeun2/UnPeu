@@ -21,10 +21,7 @@ public class BoardInfoGetRes {
     private String title;
     private String content;
     private String category;
-
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class) // 역직렬화 오류 해결
-    private LocalDateTime createdAt;
-
+    private String createdAt;
     private List<CommentInfoGetRes> commentList;
 
     public BoardInfoGetRes(Board board) {

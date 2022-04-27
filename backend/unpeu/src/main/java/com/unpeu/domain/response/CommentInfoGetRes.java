@@ -15,11 +15,13 @@ public class CommentInfoGetRes {
     private String writer;
     private String password;
     private String content;
+    private String createdAt;
 
     public CommentInfoGetRes(Comment comment) {
         this.commentId = comment.getCommentId();
         this.writer = comment.getWriter();
         this.password = comment.getPassword();
         this.content = comment.getContent();
+        this.createdAt = comment.getCreatedAt();
     }
 }
