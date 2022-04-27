@@ -43,18 +43,16 @@
                       <router-link :to="{ name: 'Login' }">
                       <button class="item">
                         <img src="https://i.imgur.com/Fqfvown.png" >
-                        <p class="arrow_box">로그인/로그아웃</p>
+                        <p class="arrow_box">로그인</p>
                       </button>
                       </router-link>
+                      <button class="item" @click="logout">
+                        <img src="https://i.imgur.com/Fqfvown.png" >
+                        <p class="arrow_box">로그아웃</p>
+                      </button>
                       </div>
                     </div>
                   </div>
-                  <!-- <div>
-                    <div class="holder hd1"></div>
-                    <div class="holder hd2"></div>
-                    <div class="holder hd3"></div>
-                    <div class="holder hd4"></div>
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -111,7 +109,16 @@ export default {
           if(this.activeCheckClass === 'menu-item mi-1 menu-checked') {
               this.activeCheckClass = 'menu-item mi-3';
           }
-      }
+      },
+
+      logout(){
+        //acctoken 통신해서 카카오인지 구글인지 판단
+        //카카오 로그아웃
+        if(confirm("로그아웃 하시겠습니까?")){
+          window.localStorage.removeItem("accessToken")
+          this.$router.go
+        }
+    },
     }
 };
 </script>
