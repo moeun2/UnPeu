@@ -107,16 +107,19 @@
 
           <div class="modal-footer">
             <slot name="footer">
-              <div style="display: flex; justify-content: flex-end;">
-              <v-btn depressed color="primary" style="margin-right : 5px;"
-                @click="saveAmount">가격선택
-              </v-btn>
-              <v-btn depressed color="warning" @click="$emit('close')"
-                >닫기
-              </v-btn>
+              <div style="display: flex; justify-content: flex-end">
+                <v-btn
+                  depressed
+                  color="primary"
+                  style="margin-right: 5px"
+                  @click="saveAmount"
+                  >가격선택
+                </v-btn>
+                <v-btn depressed color="warning" @click="closeModal"
+                  >닫기
+                </v-btn>
               </div>
             </slot>
-            
           </div>
         </div>
       </div>
@@ -129,7 +132,7 @@ export default {
   data() {
     return {
       selectedPrice: 0,
-    }
+    };
   },
   methods: {
     textbox() {
@@ -138,17 +141,28 @@ export default {
       document.getElementById("unpeu_input").style.display = "";
     },
     saveAmount() {
-      if(this.selectAmount == -1){
+      if (this.selectedPrice == 0) {
+        this.$swal.fire(
+          "가격을 선택하세요",
+          "조그맣지만 소중한 마음을 선택해보세요",
+          "warning"
+        );
+      } else if (this.selectedPrice == -1) {
         const inputNumber = document.getElementById("inputNumber").value;
-        console.log("직접입력 값 : "+inputNumber+"")
-        this.selectAmount = inputNumber;
+        console.log("직접입력 값 : " + inputNumber + "");
+        this.selectedPrice = inputNumber;
+      } else {
+        console.log("selectedPrice : ", this.selectedPrice);
+        this.$emit("selectedPrice", this.selectedPrice);
       }
-      console.log("selectedPrice : " ,this.selectedPrice);
-      this.$emit("selectedPrice", this.selectedPrice);
     },
-    closeInputText(){
+    closeInputText() {
       document.getElementById("unpeu_input").style.display = "none";
-    }
+    },
+    closeModal() {
+      this.selectedPrice = 0;
+      this.$emit("close");
+    },
   },
 };
 </script>
@@ -181,7 +195,6 @@ export default {
 }
 .modal-footer {
   font-family: sans-serif;
-
 }
 .modal-header {
   display: flex;
