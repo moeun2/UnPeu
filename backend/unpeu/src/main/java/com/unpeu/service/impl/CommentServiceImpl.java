@@ -36,6 +36,7 @@ public class CommentServiceImpl implements ICommentService {
      * @param comment
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void createComment(Long boardId, CommentPostReq comment) {
         logger.info("createComment - 호출");
         Optional<Board> oBoard = boardRepository.findById(boardId);
@@ -58,6 +59,7 @@ public class CommentServiceImpl implements ICommentService {
      * @param comment
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateComment(Long commentId, CommentPostReq comment) {
         logger.info("updateComment - 호출");
         Optional<Comment> oComment = commentRepository.findById(commentId);
@@ -82,6 +84,7 @@ public class CommentServiceImpl implements ICommentService {
      * @param password
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteComment(Long commentId, String password) {
         logger.info("deleteComment - 호출");
         Optional<Comment> oComment = commentRepository.findById(commentId);

@@ -17,12 +17,9 @@ public interface IBoardService {
 
     BoardInfoGetRes getBoardInfo(Long boardId);
 
-    @Transactional(rollbackFor = Exception.class)
     Board createBoard(User user, BoardPostReq board);
 
-    @Transactional(rollbackFor = Exception.class)
     void updateBoard(User user, Long boardId, BoardPostReq boardPostReq);
 
-    @Transactional(rollbackFor = Exception.class)
     void deleteBoard(User user, Long boardId);
 }
