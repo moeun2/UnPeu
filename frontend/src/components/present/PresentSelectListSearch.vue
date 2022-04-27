@@ -19,7 +19,7 @@
       </v-layout>
     </v-carousel-item>
   </v-carousel>
-  <PresentPayModal v-if="showModal"  @close="checkCardAfterClosing" @selectedAmount="saveSelectedPresentPrice"></PresentPayModal>
+  <PresentPayModal v-if="showModal"  @close="checkCardAfterClosing" @selectedPrice="saveSelectedPresentPrice"></PresentPayModal>
   </div>
 </template>
 

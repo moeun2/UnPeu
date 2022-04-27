@@ -37,6 +37,8 @@ export default {
       this.message.content = data.content;
       if(this.message.sender != null && this.message.content != null){
          // this.checkPay();
+         this.sendPresentMessage(this.message);
+        this.$router.push({ name: "eventRoom" });
       }
       else{
         if(this.message.sender == null){
@@ -62,12 +64,12 @@ export default {
         pg: 'html5_inicis',                           // PG사
         pay_method: 'card',                           // 결제수단
         merchant_uid: `mid_${new Date().getTime()}`,   // 주문번호
-        amount:1000 ,                                 // 결제금액
+        amount:10,                                 // 결제금액
         name: 'Unpeu 선물 구매',                  // 주문명
-        buyer_name: '홍길동',                           // 구매자 이름
+        buyer_name: 'Unpeu Guest',                           // 구매자 이름
         buyer_tel: '01012341234',                     // 구매자 전화번호
         buyer_email: 'example@example.com',               // 구매자 이메일
-        buyer_addr: '신사동 661-16',                    // 구매자 주소
+        buyer_addr: 'Unpeu',                    // 구매자 주소
         buyer_postcode: '06018',                      // 구매자 우편번호
       };
 
@@ -84,8 +86,7 @@ export default {
 
       if (success) {
         alert('결제 성공');
-        this.sendPresentMessage(this.message);
-        this.$router.push({ name: "eventRoom" });
+        
       } else {
         alert(`결제 실패: ${error_msg}`);
         

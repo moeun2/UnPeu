@@ -38,7 +38,8 @@
       dense
       type="info"
     >
-      선물을 <strong>선택</strong>할 시 결제 후 메시지가 보내집니다
+    선물을 <strong>선택</strong>할 시 결제 후 완료 메시지가 보내집니다<br/>
+    <strong>현재, 선물 결제시 10원만 가결제되며, 이는 24시 이전에 취소됩니다.</strong>
     </v-alert>
     <v-btn
       tile
@@ -67,7 +68,7 @@ export default {
   }),
   methods:{
     sendMessage(){
-      this.$emit("message", {sender:this.message.nickname, contents:this.message.content});
+      this.$emit("message", {sender:this.message.nickname, content:this.message.content});
       // this.sendPresentMessage(this.message);
     },
   }
