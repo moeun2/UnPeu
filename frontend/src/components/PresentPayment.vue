@@ -1,16 +1,14 @@
 <template>
   <div>
       <div class="message-title">콩주머니 보내기</div>
-      <present-select-list-search @test="testF"/>
       <present-message @message="getMessage"/>
   </div>
 </template>
 
 <script>
-import PresentSelectListSearch from './present/PresentSelectListSearch.vue'
 import PresentMessage from './present/PresentMessage.vue'
 export default {
-  components: { PresentSelectListSearch, PresentMessage },
+  components: {  PresentMessage },
   data() {
     return {
       presentId : '',
