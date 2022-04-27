@@ -2,6 +2,10 @@
     <div class="view">
       <div class="background">
         <main>
+          <div class="holder hd1"></div>
+          <div class="holder hd2"></div>
+          <div class="holder hd3"></div>
+          <div class="holder hd4"></div>
           <section class="profile-section">
             <div class="profile-dot">
               <div class="profile-paper">
@@ -36,19 +40,21 @@
                         <p class="arrow_box">받고 싶은 선물 등록!</p>
                       </button>
                       </router-link>
+                      <router-link :to="{ name: 'Login' }">
                       <button class="item">
                         <img src="https://i.imgur.com/Fqfvown.png" >
                         <p class="arrow_box">로그인/로그아웃</p>
                       </button>
+                      </router-link>
                       </div>
                     </div>
                   </div>
-                  <div>
+                  <!-- <div>
                     <div class="holder hd1"></div>
                     <div class="holder hd2"></div>
                     <div class="holder hd3"></div>
                     <div class="holder hd4"></div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>

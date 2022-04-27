@@ -29,6 +29,7 @@
     align-items: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 15px;
+    position:relative;
   }
   
   .profile-section,
@@ -384,20 +385,20 @@
   }
   
   .hd1 {
-    top: 200px;
-    left: 520px;
+    top: 130px;
+    left: 235px
   }
   .hd2 {
-    top: 240px;
-    left: 520px;
+    top: 170px;
+    left: 235px
   }
   .hd3 {
-    top: 500px;
-    left: 520px;
+    top: 470px;
+    left: 235px
   }
   .hd4 {
-    top: 540px;
-    left: 520px;
+    top: 510px;
+    left: 235px
   }
   
   table {
