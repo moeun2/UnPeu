@@ -8,18 +8,28 @@
             <img class="google_login_btn" src="@/assets/btn_google_signin_light_normal_web@2x.png" v-on:click="GoogleLogin"/><br>
             <div id="my-signin2" style="display: none"></div>
             <img class='kakao_login_btn' src="@/assets/kakao_login_large_narrow.png" v-on:click="KakaoLogin"/><br>
-            <v-btn @click="logout">로그아웃</v-btn>
         </div>
         <router-view/>
     </v-container>
 </template>
 
 <script>
+import {getUserDetailUseToken} from '@/api/user.js';
 export default {
   name: 'LoginPage',
   created() {
     if(window.localStorage.getItem("accessToken")){
-      this.$router.push("/")
+      getUserDetailUseToken(window.localStorage.getItem("accessToken"),
+      (res)=>{
+        console.log(res.data.User);
+        this.$store.commit("userStore/setUser",res.data.User)//store에 user 저장
+        this.$router.push({ name: 'eventRoom', params: {userid:this.$store.state.userStore.user.id}})
+            },
+      ()=>{
+        console.log("getUserDetailUseToken fail")
+        window.localStorage.removeItem("accessToken")
+        this.$router.go
+      } )
     }
    },
 
