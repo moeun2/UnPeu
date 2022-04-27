@@ -2,6 +2,8 @@ package com.unpeu.api.diary;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.unpeu.config.auth.JwtTokenUtil;
 import com.unpeu.domain.entity.Board;
 import com.unpeu.domain.entity.User;
@@ -77,6 +79,10 @@ public class BoardControllerTest {
 
     @Before
     public void setUp() {
+        // LocalDateTime 직렬화 오류 해결
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))  // 한글 깨짐 방지
                 .apply(springSecurity()) // Spring Security를 Spring MVC 테스트와 통합할 때 필요한 모든 초기 세팅을 수행
