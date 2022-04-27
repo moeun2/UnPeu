@@ -9,6 +9,7 @@ import com.unpeu.domain.repository.IBoardRepository;
 import com.unpeu.domain.repository.IUserRepository;
 import com.unpeu.domain.request.BoardPostReq;
 import com.unpeu.domain.response.BoardGetRes;
+import com.unpeu.domain.response.BoardInfoGetRes;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -194,7 +195,7 @@ public class BoardControllerTest {
         String content = result.getResponse().getContentAsString();
         Map<String, Object> jsonObject = objectMapper.readValue(content, Map.class);
         String jsonString = objectMapper.writeValueAsString(jsonObject.get("boardInfo"));
-        BoardGetRes boardInfo = objectMapper.readValue(jsonString, BoardGetRes.class);
+        BoardInfoGetRes boardInfo = objectMapper.readValue(jsonString, BoardInfoGetRes.class);
 
         // then
         Assertions.assertThat(boardInfo.getCategory()).isEqualTo(createBoard.getCategory());
