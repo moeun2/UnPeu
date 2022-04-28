@@ -3,23 +3,23 @@ import { createInstance} from "./index.js";
 const api = createInstance();
 
 function kakaoLogin(code, success, fail){
-    api.post(`/api/auth/kakao?code=`+code)
+    api.post(`/auth/kakao?code=`+code)
     .then(success).catch(fail)
 }
 
 function googleLogin(code, success, fail){
-    api.post(`/api/auth/google?code=`+code)
+    api.post(`/auth/google?code=`+code)
     .then(success).catch(fail)
 }
 
 function getUserDetail(userId, success, fail){
-    api.get(`/api/users/`+userId)
+    api.get(`/users/`+userId)
     .then(success).catch(fail)
     console.log("getUserDetail 실행됨")
 }
 
 function getUserDetailUseToken(token,success, fail){
-    api.get(`/api/users`,{
+    api.get(`/users`,{
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem("accessToken")
         }
@@ -29,19 +29,19 @@ function getUserDetailUseToken(token,success, fail){
 }
 
 function updateUserImg(img,success,fail){
-    api.patch(`/api/users/img`)
+    api.patch(`/users/img`)
     .then(success).catch(fail)
     console.log("updateUserImg 실행됨")
 }
 
 function updateUserInfo(userInfo,success,fail){
-    api.patch(`/api/users/info?userInfo=`+userInfo)
+    api.patch(`/users/info?userInfo=`+userInfo)
     .then(success).catch(fail)
     console.log("updateUserInfo 실행됨")
 }
 
 function updateUserTitle(userTitle,success,fail){
-    api.patch(`/api/users/info?userInfo=`+userTitle)
+    api.patch(`/users/info?userInfo=`+userTitle)
     .then(success).catch(fail)
     console.log("updateUserTitle 실행됨")
 }
