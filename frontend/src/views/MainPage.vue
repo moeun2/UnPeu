@@ -260,6 +260,12 @@ export default {
         document.execCommand('copy');
         document.body.removeChild(t);
         //복사완료 다이얼로그
+        this.$swal.fire({
+          icon: 'success',
+          title: '링크가 저장되었습니다.',
+          showConfirmButton: false,
+          timer: 800
+        })
 
     }
 
