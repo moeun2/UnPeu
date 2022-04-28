@@ -27,11 +27,6 @@
                       <div class="text-desc" >
                         {{this.userInfo}}
                       </div>
-                      <!-- <p class="text-desc">
-                        선물 주는 バr람 <br />
-                        착ㅎŁ バr람 <br />
-                        ^-^
-                      </p> -->
                     </div>
                     <div class="info-wrap">
                       <a class="info-name" href="#">{{this.userName}}</a><br/>
@@ -93,11 +88,10 @@ export default {
       return {
           activeCheckClass: 'menu-item mi-1 menu-checked',
           activeClass: 'menu-item mi-3',
-          userName: "김싸피",
+          userName: "이름을 변경해주세요",
           userInfo: "선물주는 사람 차칸 사람",
           userTitle: "오늘은 어른이날, 선물사주라주",
           userImg: "https://i.imgur.com/nupfePY.png",
-
       }
   },
 
@@ -163,10 +157,9 @@ export default {
           window.localStorage.removeItem("accessToken")
           if(this.$store.state.userStore.user.socialDomain=="kakao"){
             window.location.replace(
-              "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri=http://localhost:8081/login"
+              "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri=http://localhost:8081"
             );
           }
-          this.$router.go
         }
     },
     }

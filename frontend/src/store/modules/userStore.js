@@ -1,19 +1,20 @@
 export const userStore={
     namespaced : true,
     state:{
-        user: null,
+        loginUser: null,
+
     },
     getters:{
 
     },
     mutations:{
         setUser(state, user){
-            state.user=user;
-            console.log(state.user);
+            state.loginUser=user;
+            console.log(state.loginUser);
         },
         setUSerNull(state){
-            state.user=null;
-            console.log(state.user);
+            state.loginUser=null;
+            console.log(state.loginUser);
         },
         
     },

@@ -29,19 +29,31 @@ function getUserDetailUseToken(token,success, fail){
 }
 
 function updateUserImg(img,success,fail){
-    api.patch(`/api/users/img`)
+    api.patch(`/api/users/img`,{
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+        }
+       })
     .then(success).catch(fail)
     console.log("updateUserImg 실행됨")
 }
 
 function updateUserInfo(userInfo,success,fail){
-    api.patch(`/api/users/info?userInfo=`+userInfo)
+    api.patch(`/api/users/info?userInfo=`+userInfo,{
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+        }
+       })
     .then(success).catch(fail)
     console.log("updateUserInfo 실행됨")
 }
 
 function updateUserTitle(userTitle,success,fail){
-    api.patch(`/api/users/info?userInfo=`+userTitle)
+    api.patch(`/api/users/info?userInfo=`+userTitle,{
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+        }
+       })
     .then(success).catch(fail)
     console.log("updateUserTitle 실행됨")
 }

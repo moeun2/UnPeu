@@ -19,7 +19,7 @@ export default {
             getUserDetailUseToken(res.data.accessToken,(res)=>{
               console.log(res.data.User);
               this.$store.commit("userStore/setUser",res.data.User)//store에 user 저장
-              this.$router.push({ name: 'eventRoom', params: {userid:this.$store.state.userStore.user.id}})
+              this.$router.push({ name: 'eventRoom', params: {userid:this.$store.state.userStore.loginUser.id}})
             },)
         },
         ()=>{
