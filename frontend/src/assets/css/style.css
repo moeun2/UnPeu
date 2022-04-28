@@ -320,6 +320,7 @@
   .text-desc {
     text-align: center;
     padding-bottom: 30px;
+    height: 120px;
   }
   
   .link-history {
@@ -355,7 +356,7 @@
   }
   
   .info-name:after {
-    content: "(♂) 1996.10.31+";
+    /* content: "(♂) 1996.10.31+"; */
     color: #a5a8aa;
     font-size: 10px;
     margin-left: 5px;
