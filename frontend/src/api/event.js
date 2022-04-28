@@ -1,9 +1,9 @@
-import { createInstance } from "./index.js";
+import { tokenInstance } from "./index.js";
 
-const api = createInstance();
+const tokenApi = tokenInstance();
 
 function getMessage(success, fail){
-    api.get(`/api/message`)
+    tokenApi.get(`/api/message`)
     .then(success)
     .catch(fail)
     console.log("실행됨")

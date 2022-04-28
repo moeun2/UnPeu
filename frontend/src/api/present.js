@@ -1,9 +1,10 @@
-import { createInstance } from "./index.js";
-const api = createInstance();
+import * as Instance from "./index.js";
+const api = Instance.createInstance();
+const tokenApi = Instance.tokenInstance();
 
 // 유저 선물 등록
 function register(present, success, fail){
-    api.post(`api/present`,present,{headers : {'Content-Type': 'multipart/form-data'}}).then(success).catch(fail);
+    tokenApi.post(`api/present`,present,{headers : {'Content-Type': 'multipart/form-data'}}).then(success).catch(fail);
 }
 
 // 유저 선물 리스트 찾기

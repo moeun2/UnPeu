@@ -43,7 +43,7 @@ public class PresentServiceImpl implements IPresentService {
 	@Override
 	public Present createPresent(PresentPostReq present) {
 		logger.info("createPreset-호출");
-		Optional<User> user = userRepository.findById(Long.parseLong(/*present.getUserId()*/"1"));
+		Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
 		if (user.isEmpty()) {
 			throw new CustomException(MEMBER_NOT_FOUND);
 		}
@@ -142,7 +142,7 @@ public class PresentServiceImpl implements IPresentService {
 			presentRepository.save(present);
 		}
 
-		Optional<User> user = userRepository.findById(Long.parseLong(/*message.getUserId())*/"1"));
+		Optional<User> user = userRepository.findById(Long.parseLong(message.getUserId()));
 		if (user.isEmpty()) {
 			throw new CustomException(MEMBER_NOT_FOUND);
 		}

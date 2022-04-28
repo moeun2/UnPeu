@@ -12,6 +12,7 @@ import PresentMessage from "./present/PresentMessage.vue";
 import PresentSelectListSearch from "@/components/present/PresentSelectListSearch.vue";
 import { mapActions } from "vuex";
 import * as Alert from "@/api/alert"; //api 폴더 안에 넣어놓는 것이 맞는지는 모르겠음. But, 넣어놓을 곳이 딱히 없어서 넣어놓음
+import {sendMessage} from '@/api/present';
 const presentStore = "presentStore";
 export default {
   components: { PresentMessage, PresentSelectListSearch },
@@ -23,15 +24,15 @@ export default {
         price: null,
         sender: "",
         content: "",
-        userId: 1,
+        userId: this.$store.state.userStore.user.id,
       },
-      currentIdx: "",
+      currentIdx: null,
     };
   },
   methods: {
     ...mapActions(presentStore, ["sendPresentMessage"]),
-    testAlert(){
-      this.checkPay();
+    testAlert() {
+      this.$router.push({ name: "eventRoom" });
     },
     /**
      * 선물결제에 관해 Alert로 물어보고 sendPresentMessage API를 실행
@@ -39,14 +40,21 @@ export default {
     checkPresent() {
       if (this.presentId == null) {
         this.$swal.fire(Alert.notSelectPresentBody).then((result) => {
-          if (result.dismiss === this.$swal.DismissReason.cancel) {
+          if (result.dismiss === this.$swal.DismissReason.cancel) { //메세지만 보낼래요!
             this.changeCardColor(false);
-          } 
+            const vm = this;
+            sendMessage(this.message, function(response){
+              console.log(response)
+              vm.$router.push({ name: "eventRoom" });
+              this.Alert.sendMessageSuccess(this);
+            },function(err){
+              console.log(err)
+              this.Alert.sendMessageFailure(this);
+            });
+          }
         });
-      }else{
-        this.$swal
-        .fire(Alert.agreePaymentBody)
-        .then((result) => {
+      } else {
+        this.$swal.fire(Alert.agreePaymentBody).then((result) => {
           if (result.isConfirmed) {
             this.checkPay();
           } else if (result.dismiss === this.$swal.DismissReason.cancel) {
@@ -117,27 +125,29 @@ export default {
         Alert.paymentFailure(this);
       }
     },
-  },
-  /**
-   * 선택된 카드 색상을 바꿔주는 함수
-   * 현재 노란색으로 지정해놓았으며, 나중에 색깔을 통일할 예정(style : .selectedCard 참고)
-   */
-  changeCardColor(reverse) {
-    if (reverse) {
-      document
-        .getElementById("rootCards")
-        .children[this.currentIdx].children[0].classList.add("selectedCard");
-      document
-        .getElementById("rootCards")
-        .children[this.currentIdx].children[0].classList.remove("card");
-    } else {
-      document
-        .getElementById("rootCards")
-        .children[this.currentIdx].children[0].classList.remove("selectedCard");
-      document
-        .getElementById("rootCards")
-        .children[this.currentIdx].children[0].classList.add("card");
-    }
+    /**
+     * 선택된 카드 색상을 바꿔주는 함수
+     * 현재 노란색으로 지정해놓았으며, 나중에 색깔을 통일할 예정(style : .selectedCard 참고)
+     */
+    changeCardColor(reverse) {
+      if (reverse && this.currentIdx != null) {
+        document
+          .getElementById("rootCards")
+          .children[this.currentIdx].children[0].classList.add("selectedCard");
+        document
+          .getElementById("rootCards")
+          .children[this.currentIdx].children[0].classList.remove("card");
+      } else if (!reverse && this.currentIdx != null) {
+        document
+          .getElementById("rootCards")
+          .children[this.currentIdx].children[0].classList.remove(
+            "selectedCard"
+          );
+        document
+          .getElementById("rootCards")
+          .children[this.currentIdx].children[0].classList.add("card");
+      }
+    },
   },
 };
 </script>
