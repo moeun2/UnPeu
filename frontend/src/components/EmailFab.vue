@@ -4,7 +4,8 @@
       <header>
         <h1>당신을 위한 조그마한 기록 그리고 선물<br />UnPeu:앙뿌</h1>
       </header>
-      <form v-on:submit="submitEmail">
+      <!-- <form v-on:submit="submitEmail"> -->
+          <div class="formControl">
         <textarea
           name="email"
           placeholder="피드백 부탁드려요♥"
@@ -12,9 +13,9 @@
           value=""
           v-model="content"
         /><br />
-        <input class="logo-ani" name="submit" type="submit" />
-        <input name="uri" type="hidden" value="barreldotim" />
-      </form>
+        <input class="logo-ani" name="submit" type="submit" @click="submitEmail" />
+      <!-- </form> -->
+    </div>
     </div>
     <div class="ba-we-love-subscribers-fab" @click="clcickFab">
       <div class="wrap">
@@ -131,7 +132,7 @@ export default {
   box-sizing: border-box;
   line-height: normal;
 }
-.ba-we-love-subscribers form {
+.formControl {
   padding: 5px 30px 0;
   margin-bottom: 15px;
 }
