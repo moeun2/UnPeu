@@ -10,7 +10,7 @@ function getMessage(success, fail){
 }
 
 function saveMessage(messages, success, fail){
-    api.post(`/api/message/messageToDiary`,messages)
+    tokenApi.post(`/message/messageToDiary`,messages)
     .then(success)
     .catch(fail)
     console.log("실행됨")
@@ -18,5 +18,5 @@ function saveMessage(messages, success, fail){
 
 export{
     getMessage,
-    saveMessage
+    saveMessage,
 }

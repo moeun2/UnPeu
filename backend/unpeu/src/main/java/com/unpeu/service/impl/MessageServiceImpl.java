@@ -80,9 +80,9 @@ public class MessageServiceImpl implements IMessageService {
 	 * @return
 	 */
 	@Override
-	public void saveMessage(List<MessagePostReq> messages) {
+	public void saveMessage(Long userId, List<MessagePostReq> messages) {
 		logger.info("saveMessage-호출");
-		Optional<User> user = userRepository.findById(Long.parseLong(/*message.getUserId()*/"1"));
+		Optional<User> user = userRepository.findById(userId);
 		if (user.isEmpty()) {
 			throw new CustomException(MEMBER_NOT_FOUND);
 		}

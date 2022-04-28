@@ -6,7 +6,7 @@
                     MENU
                     <ul class="menu2_s submenu">
                         <li><button>컨셉 변경</button></li>
-                        <li><button @click="resetMessage">메세지 삭제</button></li>
+                        <li><button @click="resetMessage">컨셉 초기화</button></li>
                         <li><button @click="saveMessage">메세지 저장</button></li>
                     </ul>   
                 </li>
@@ -40,7 +40,7 @@
                     </button>
                 </a>
                 <div class="modal-content">
-                    <img :src="API_BASE_URL+ imgUrl" alt="" class="modal-img" > 
+                    <img :src="API_BASE_URL+ imgUrl" alt="" class="modal-img" v-if="imgUrl"> 
                     <p class="message-user">{{ sender }}</p>
                     <div class="message-box">{{ content }}</div>
                 </div>
@@ -64,8 +64,8 @@ export default {
             API_BASE_URL: API_BASE_URL,
         }
     },
-    created() {
-        getMessage(
+    async created() {
+        await getMessage(
             (res) => {
                 console.log(res.data.Message);
                 this.messages = res.data.Message;
@@ -81,21 +81,25 @@ export default {
             console.log(message);
             this.content = message.content;
             this.sender = message.sender;
-            this.imgUrl = message.present.presentImg;
+            if(message.present != null){
+                this.imgUrl = message.present.presentImg;
+            }
+            else {
+                this.imgUrl = '';
+            }
         },
         resetMessage() {
-            alert('메세지가 전부 사라집니다. 실행시 돌아갈 수 없으니 신중히 선택하세요.');
-            // 임시
-            this.messages = [];
+            alert('해당 컨셉과 관련된 모든 데이터가 초기화됩니다. 실행시 돌아갈 수 없으니 신중히 선택하세요!');
+            
         },
         saveMessage() {
 
             // 메세지가 없을 경우
             if(this.messages.length == 0) {
-                alert('저장할 메세지가 없습니다.');
+                alert('저장할 메세지가 없어요!');
             }
             else {
-                alert('메세지가 다이어리에 저장되고 해당 메세지는 자동으로 삭제됩니다. ');
+                alert('메세지가 다이어리에 저장되고, 해당 컨셉과 관련된 모든 데이터가 자동으로 초기화됩니다. 확인하셨다면 계속 진행해주세요!');
 
                 saveMessage(this.messages,
                 (res) => {
@@ -126,8 +130,8 @@ export default {
 
 }
 .pocket {
-    width: 75px;
-    height: 70px;
+    width: 85px;
+    height: 80px;
 }
 .gift-img {
     width: 35px;
