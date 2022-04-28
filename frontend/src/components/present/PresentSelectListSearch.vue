@@ -1,65 +1,164 @@
 <template>
-<div class="present-carousel">
-  <v-carousel hide-delimiters style="height:350px">
-    <v-carousel-item v-for="i in 3" :key="i">
-      <v-layout row>
-        <v-flex sm4 v-for="j in 3" :key="j" pl-2 pr-2 >
-          <v-card class="card" @click="showModal=true">
-            <v-img
-              src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-              aspect-ratio="0.8"
-            ></v-img>
-            <v-card-title primary-title>
-              <div>
-                <div> 가격 </div>
-              </div>
-            </v-card-title>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-carousel-item>
-  </v-carousel>
-  <v-btn @click="testEmit">test!!!!!!!!!!!</v-btn>
-  <PresentPayModal v-if="showModal"  @close="showModal = false"></PresentPayModal>
+  <div class="present-carousel">
+    <v-carousel hide-delimiters style="height: 350px">
+      <template v-for="(card, index) in cardList">
+        <v-carousel-item
+          v-if="(index + 1) % columns === 1 || columns === 1"
+          :key="index"
+        >
+          <v-row class="flex-nowrap" id="rootCards">
+            <template v-for="(n, i) in columns">
+              <template v-if="+index + i - 1 <= cardList.length">
+                <v-col :key="i">
+                  <v-card
+                    v-if="+index + i < cardList.length"
+                    class="card"
+                    @click="openPayModal(cardList[+index + i], +index + i)"
+                  >
+                    <v-img
+                      :src="API_BASE_URL + cardList[+index + i].presentImg"
+                      aspect-ratio="0.8"
+                    ></v-img>
+                    <v-card-title primary-title>
+                      <div>
+                        <div>가격</div>
+                      </div>
+                    </v-card-title>
+                  </v-card>
+                </v-col>
+              </template>
+            </template>
+          </v-row>
+        </v-carousel-item>
+      </template>
+    </v-carousel>
+    <PresentPayModal
+      v-if="showModal"
+      @close="closePayModal"
+      @selectedPrice="saveSelectedPresent"
+    ></PresentPayModal>
   </div>
 </template>
 
 <script>
+import { API_BASE_URL } from "@/config/index.js";
+import { mapActions, mapState } from "vuex";
 import PresentPayModal from "@/components/present/PresentPayModal";
+const presentStore = "presentStore";
 export default {
-components: {
+  components: {
     PresentPayModal,
   },
-data() {
-    return {
-      showModal: false,
-    }
-},
-methods:{
-  testEmit(){
-    this.$emit("test", 3);
-  }
-}
-}
+  data: () => ({
+    cardList: [],
+    API_BASE_URL: API_BASE_URL,
+    showModal: false,
+    selectedPresentId: "",
+    selectedPresentPrice: 0,
+    currentIdx: "",
+  }),
+  mounted() {
+    this.search();
+  },
+  computed: {
+    ...mapState(presentStore, ["presentList"]),
+    columns() {
+      return 3; // 카드 개수 3개로 고정
+    },
+  },
+  methods: {
+    ...mapActions(presentStore, ["searchList"]),
+    /**
+     * BackEnd에서 getPresentListByUserId 호출 함수
+     */
+    search() {
+      // To Do: User State에서 가져오기
+      this.searchList(1);
+      this.cardList = this.presentList.Present;
+      this.cardListCount = Math.ceil(this.cardList.length / 3);
+    },
+    /**
+     * PayModal Open시 실행되는 함수
+     */
+    openPayModal(card, idx) {
+      console.log(card);
+      console.log(idx);
+      this.selectedPresentId = card.presentId;
+      this.currentIdx = idx;
+      this.changeCardColor(true);
+      this.showModal = true;
+    },
+    /**
+     * PayModal close시 실행되는 함수
+     */
+    closePayModal() {
+      this.showModal = false;
+      this.changeCardColor(false);
+    },
+    /**
+     * PayModal에서 가격선택 시 넘어오는 함수
+     * Present component로 선택된 Present 정보 Emit
+     */
+    saveSelectedPresent(data) {
+      console.log("payModal에서 받아온 selectedPrice : " + data);
+      this.showModal = false;
+      this.selectedPresentPrice = data;
+      this.$emit("present", {
+        selectedPresentId: this.selectedPresentId,
+        selectedPresentPrice: this.selectedPresentPrice,
+        selectedCardIdx: this.currentIdx,
+      });
+    },
+
+    /**
+     * 선택된 카드 색상을 바꿔주는 함수
+     * 현재 노란색으로 지정해놓았으며, 나중에 색깔을 통일할 예정(style : .selectedCard 참고)
+     */
+    changeCardColor(reverse) {
+      if (reverse) {
+        document
+          .getElementById("rootCards")
+          .children[this.currentIdx].children[0].classList.add("selectedCard");
+        document
+          .getElementById("rootCards")
+          .children[this.currentIdx].children[0].classList.remove("card");
+      } else {
+        document
+          .getElementById("rootCards")
+          .children[this.currentIdx].children[0].classList.remove(
+            "selectedCard"
+          );
+        document
+          .getElementById("rootCards")
+          .children[this.currentIdx].children[0].classList.add("card");
+      }
+    },
+  },
+};
 </script>
 
 <style>
 .card {
   margin: 5px;
+  background-color: white !important;
+}
+.selectedCard {
+  margin: 5px;
+  background-color: yellow !important;
 }
 
-.present-carousel{
-  padding-top:5px;
+.present-carousel {
+  padding-top: 5px;
 }
 .present-carousel .v-window__next {
-        background:rgba(0,0,0,0.15);
-        height:35px;
-        width:35px;
-    }
+  background: rgba(0, 0, 0, 0.15);
+  height: 35px;
+  width: 35px;
+}
 .present-carousel .v-window__prev {
-        background:rgba(0,0,0,0.15);
-        height:35px;
-        width:35px;
-        top:calc(50% - 20px);
-    }
+  background: rgba(0, 0, 0, 0.15);
+  height: 35px;
+  width: 35px;
+  top: calc(50% - 20px);
+}
 </style>

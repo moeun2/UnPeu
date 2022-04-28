@@ -39,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class MessageController {
-	public static final Logger logger = LoggerFactory.getLogger(PresentController.class);
+	public static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
 	private final IUserService userService;
 	private final IMessageService messageService;
