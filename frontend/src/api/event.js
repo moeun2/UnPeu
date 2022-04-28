@@ -16,7 +16,15 @@ function saveMessage(messages, success, fail){
     console.log("실행됨")
 }
 
+function resetMessage(success, fail){
+    tokenApi.delete(`/message`)
+    .then(success)
+    .catch(fail)
+    console.log("실행됨")
+}
+
 export{
     getMessage,
     saveMessage,
+    resetMessage
 }

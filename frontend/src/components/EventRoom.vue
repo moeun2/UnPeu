@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { getMessage, saveMessage } from '@/api/event.js';
+import { getMessage, saveMessage, resetMessage } from '@/api/event.js';
 import {API_BASE_URL} from "@/config/index.js";
 
 export default {
@@ -64,8 +64,8 @@ export default {
             API_BASE_URL: API_BASE_URL,
         }
     },
-    async created() {
-        await getMessage(
+    created() {
+        getMessage(
             (res) => {
                 console.log(res.data.Message);
                 this.messages = res.data.Message;
@@ -90,7 +90,18 @@ export default {
         },
         resetMessage() {
             alert('해당 컨셉과 관련된 모든 데이터가 초기화됩니다. 실행시 돌아갈 수 없으니 신중히 선택하세요!');
-            
+             if(this.messages.length == 0) {
+                alert('삭제할 메세지가 없어요!');
+            }
+            else {
+                resetMessage(
+                (res) => {
+                    console.log(res);
+                },
+                () => {
+                    console.log("fail")
+                });
+            }
         },
         saveMessage() {
 
