@@ -134,7 +134,7 @@ export default {
                     Alert.resetMessageCancel(this);
                 }else {
                     if(this.messages.length == 0) {
-                        this.$swal.fire("Oops...!", "삭제할 메세지가 없어요!", "error");
+                        Alert.resetMessageFail(this);
                     }
                     else {
                         resetMessage(
@@ -165,7 +165,7 @@ export default {
                     Alert.saveMessageCancel(this);
                 }else {
                     if(this.messages.length == 0) {
-                        this.$swal.fire("Oops...!", "저장할 메세지가 없어요!", "error");
+                        Alert.saveMessageFail(this);
                     }
                     else {
                         saveMessage(this.messages,

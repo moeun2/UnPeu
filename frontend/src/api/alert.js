@@ -69,7 +69,7 @@ const agreePaymentBody = {
 /* EventRoom */
 const resetMessageCheck = {
   title: "컨셉 초기화",
-  text: "해당 컨셉과 관련된 모든 데이터가 초기화됩니다. 실행시 돌아갈 수 없으니 신중히 선택하세요!",
+  text: "선물리스트와 메세지가 초기화됩니다. 실행시 돌아갈 수 없으니 신중히 선택하세요!",
   icon: "warning",
   showCancelButton: true,
   confirmButtonText: "할래요!",
@@ -85,6 +85,14 @@ function resetMessageCancel(vm){
     );
 }
 
+function resetMessageFail(vm){
+  vm.$swal.fire(
+      "Oops...!",
+      "삭제할 메세지가 없어요!",
+      "error"
+    );
+}
+
 function resetMessageSuccess(vm){
   vm.$swal.fire(
       "초기화 성공!",
@@ -95,7 +103,7 @@ function resetMessageSuccess(vm){
 
 const saveMessageCheck = {
   title: "메세지 저장",
-  text: "메세지가 다이어리에 저장되고, 해당 컨셉과 관련된 모든 데이터는 자동으로 초기화됩니다.",
+  text: "메세지가 다이어리에 저장되고, 메세지와 선물리스트가 포함된 데이터는 자동으로 초기화됩니다.",
   icon: "warning",
   showCancelButton: true,
   confirmButtonText: "할래요!",
@@ -107,6 +115,14 @@ function saveMessageCancel(vm){
   vm.$swal.fire(
       "Cancelled",
       "메세지 저장을 취소합니다. ",
+      "error"
+    );
+}
+
+function saveMessageFail(vm){
+  vm.$swal.fire(
+      "Oops...!",
+      "저장할 메세지가 없어요!",
       "error"
     );
 }
@@ -131,8 +147,10 @@ export{
     sendFeedbackFailure,
     resetMessageCheck,
     resetMessageCancel,
+    resetMessageFail,
     resetMessageSuccess,
     saveMessageCheck,
     saveMessageCancel,
+    saveMessageFail,
     saveMessageSuccess
 }
