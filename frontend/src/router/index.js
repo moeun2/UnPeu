@@ -61,10 +61,10 @@ const routes = [
                 ]
             },
             {
-                path: "/present",
+                path: "/present/:userid",
                 name: "Present",
                 component: PresentPage,
-                redirect : "/present/manage",
+                redirect : "/present/:userid/manage",
                 children:[
                     {
                         path: "manage",

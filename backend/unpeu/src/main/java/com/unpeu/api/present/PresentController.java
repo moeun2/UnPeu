@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
 
+import com.unpeu.config.auth.UnpeuUserDetails;
 import com.unpeu.config.media.MediaService;
 import com.unpeu.domain.entity.Message;
 import com.unpeu.domain.entity.Present;
@@ -32,6 +34,7 @@ import com.unpeu.service.iface.IPresentService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api("Present 관련 기능")
 @CrossOrigin(origins = "*")
@@ -52,13 +55,13 @@ public class PresentController {
 
 	@ApiOperation(value = "선물 등록 Controller")
 	@RequestMapping(value = "/present", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public ResponseEntity<Map<String, Object>> createPresent(/*@ApiIgnore @NotNull Authentication authentication,*/
+	public ResponseEntity<Map<String, Object>> createPresent(@ApiIgnore @NotNull Authentication authentication,
 		@Valid @ModelAttribute @NotNull PresentPostReq present) {
 		logger.info("createPresent - 호출");
 		// userId 설정 -> 현재 userId: 1로만 테스트 중
-		// UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
-		// User user = userDetails.getUser();
-		// present.setUserId(user.getId());
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+		present.setUserId(String.valueOf(user.getId()));
 		// 이미지 -> url로 변경 설정
 		String url = mediaService.save(present.getPresentImg());
 		logger.info("media Saved Url : " + url);
@@ -120,7 +123,7 @@ public class PresentController {
 	public ResponseEntity<Map<String, Object>> peekMoney() {
 		logger.info("peekMoney - 호출");
 		User user = new User();
-		String money = presentService.peekMoney(/**userId**/1L);
+		String money = presentService.peekMoney(user.getId());
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("Money", money);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
