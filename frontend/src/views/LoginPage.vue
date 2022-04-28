@@ -2,21 +2,36 @@
     <v-container>
         <div class="landing"> 
             <span style = "font-size:2em; font-weight: bold ;">
-              당신을 위한 조그마한 기록 그리고 선물<br><br>Un Peu : 앙뿌<br><br>
+              당신을 위한 조그마한 기록 그리고 선물<br>Un Peu : 앙뿌<br>
              </span>
             <img width="450px" src="@/assets/moeun 2.png"/><br>
             <img class="google_login_btn" src="@/assets/btn_google_signin_light_normal_web@2x.png" v-on:click="GoogleLogin"/><br>
             <div id="my-signin2" style="display: none"></div>
-            <img class='kakao_login_btn' src="@/assets/kakao_login_large_narrow.png" v-on:click="KakaoLogin"/>
+            <img class='kakao_login_btn' src="@/assets/kakao_login_large_narrow.png" v-on:click="KakaoLogin"/><br>
         </div>
-        <div id="google_login_btn" v-on:click="logout">logout</div>
         <router-view/>
     </v-container>
 </template>
 
 <script>
+import {getUserDetailUseToken} from '@/api/user.js';
 export default {
   name: 'LoginPage',
+  created() {
+    if(window.localStorage.getItem("accessToken")){
+      getUserDetailUseToken(window.localStorage.getItem("accessToken"),
+      (res)=>{
+        console.log(res.data.User);
+        this.$store.commit("userStore/setUser",res.data.User)//store에 user 저장
+        this.$router.push({ name: 'eventRoom', params: {userid:this.$store.state.userStore.user.id}})
+      },
+      ()=>{
+        console.log("getUserDetailUseToken fail")
+        window.localStorage.removeItem("accessToken")
+        this.$router.go
+      } )
+    }
+   },
 
   components: {
   },
@@ -33,14 +48,7 @@ export default {
         "https://kauth.kakao.com/oauth/authorize?client_id=c0ad1801cdf80282754cf18e79556743&redirect_uri=http://localhost:8081/login/kakao&response_type=code"
       );
     },
-    logout(){
-        //acctoken 통신해서 카카오인지 구글인지 판단
-        //카카오 로그아웃
-        window.localStorage.removeItem("accessToken")
-        window.location.replace(
-        "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri=http://localhost:8081/login/kakao"
-        );
-    },
+    
     searchParam(key) {
       return new URLSearchParams(location.search).get(key);
     }
@@ -75,15 +83,7 @@ body {
     justify-content: center; 
     cursor:pointer; 
     }
-  .google_login_btn{
-    width: 200px; 
-    height:40px; 
-    cursor:pointer; 
-    object-fit: cover;     
-    object-position: center;
-    margin-top: 10px;
-    
-  }
+  
   .kakao_login_btn{
     width: 195px; 
     height:40px; 
@@ -93,9 +93,16 @@ body {
     box-shadow : 1px 1px 1px  rgb(226, 225, 225);
     margin-top: 10px;
   }
-
+  .google_login_btn{
+    width: 200px; 
+    height:40px; 
+    cursor:pointer; 
+    object-fit: cover;     
+    margin-top: 10px;
+    
+  }
   .landing{
     text-align: center;
-    margin-top: 200px;
+    justify-content: center;
   }
 </style>
