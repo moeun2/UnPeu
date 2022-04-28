@@ -33,6 +33,20 @@ function sendMessageSuccess(vm){
         "success"
       );
 }
+function sendFeedbackSuccess(vm){
+    vm.$swal.fire(
+        "피드백 보내기 성공",
+        "피드백 보내주셔서 감사해요! 당신은 천사얌 ଘ(੭ˊᵕˋ)੭* ੈ✩‧₊˚",
+        "success"
+      );
+}
+function sendFeedbackFailure(vm){
+    vm.$swal.fire(
+        "피드백 보내기 실패",
+        "다시 피드백 부탁드려요 천사님 ଘ(੭ˊᵕˋ)੭* ੈ✩‧₊˚",
+        "error"
+      );
+}
 const notSelectPresentBody ={
     title: "선물을 선택하지 않으셨어요!",
     text: "메세지만 보내시겠어요?",
@@ -60,5 +74,7 @@ export{
     agreePaymentBody,
     paymentCancel,
     sendMessageFailure,
-    sendMessageSuccess
+    sendMessageSuccess,
+    sendFeedbackSuccess,
+    sendFeedbackFailure
 }

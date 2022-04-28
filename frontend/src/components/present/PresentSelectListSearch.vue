@@ -172,7 +172,7 @@ export default {
 }
 .selectedCard {
   margin: 5px;
-  background-color: yellow !important;
+  background-color: #B9E2FA !important;
 }
 
 .present-carousel {
