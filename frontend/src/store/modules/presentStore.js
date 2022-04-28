@@ -1,4 +1,4 @@
-import { register, search, sendMessage } from "@/api/present";
+import { register, remove, search, sendMessage, update } from "@/api/present";
 
 export const presentStore={
     namespaced : true,
@@ -13,7 +13,12 @@ export const presentStore={
             state.presentList=presentList;
             console.log(state.presentList);
         },
-        
+        REMOVE_PRESENT_FROM_ARRAY(state, presentId){
+            console.log(state.presentList.Present)
+            const i=state.presentList.Present.map(item => item.presentId).indexOf(presentId);
+            console.log(i,presentId);
+            state.presentList.Present.splice(i, 1);
+        }
     },
     actions:{
          registerPresent({commit}, fd){
@@ -42,6 +47,24 @@ export const presentStore={
                 (response)=>{
                     console.log(response.data);
                     commit;
+                }
+            )
+        },
+        updatePresent({commit}, present){
+            update(
+                present,
+                (response)=>{
+                    console.log(response.data);
+                    commit;
+                }
+            )
+        },
+        deletePresent({commit}, presentId){
+            remove(
+                presentId,
+                (response)=>{
+                    console.log(response.data);
+                    commit("REMOVE_PRESENT_FROM_ARRAY",presentId);
                 }
             )
         }
