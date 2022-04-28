@@ -5,7 +5,7 @@
         <h1>당신을 위한 조그마한 기록 그리고 선물<br />UnPeu:앙뿌</h1>
       </header>
       <!-- <form v-on:submit="submitEmail"> -->
-          <div class="formControl">
+      <div class="formControl">
         <textarea
           name="email"
           placeholder="피드백 부탁드려요♥"
@@ -13,9 +13,14 @@
           value=""
           v-model="content"
         /><br />
-        <input class="logo-ani" name="submit" type="submit" @click="submitEmail" />
-      <!-- </form> -->
-    </div>
+        <input
+          class="logo-ani"
+          name="submit"
+          type="submit"
+          @click="submitEmail"
+        />
+        <!-- </form> -->
+      </div>
     </div>
     <div class="ba-we-love-subscribers-fab" @click="clcickFab">
       <div class="wrap">
@@ -27,7 +32,7 @@
 <script>
 import $ from "jquery";
 import { sendMail } from "@/api/mail.js";
-
+import * as Alert from "@/api/alert";
 export default {
   data: () => ({
     content: null,
@@ -40,13 +45,18 @@ export default {
     },
     submitEmail() {
       if (this.content != null) {
-        alert(this.content)
+        alert(this.content);
+        const vm = this;
         sendMail(
           this.content,
           function (response) {
+            Alert.sendFeedbackSuccess(vm);
             console.log(response);
+            vm.content = null;
+            vm.clcickFab();
           },
           function (err) {
+            Alert.sendFeedbackFailure(this);
             console.log(err);
           }
         );

@@ -5,29 +5,43 @@
                 <li class="menu2">
                     MENU
                     <ul class="menu2_s submenu">
-                        <li>컨셉 변경</li>
-                        <li>초기화 설정</li>
-                        <li>메세지 저장</li>
+                        <li><button>컨셉 변경</button></li>
+                        <li><button @click="resetMessage">컨셉 초기화</button></li>
+                        <li><button @click="saveMessage">메세지 저장</button></li>
                     </ul>   
                 </li>
             </ul>
         </div>
-        <div class="gift-box">
-            <button class="reg-gift">
-                <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="">
-                <p>어른이날을 축하해주세요
-                    <br/>
-                    콩주머니 메세지 &amp; 선물 등록하러 가기!
-                </p>
-            </button>
+        <router-link :to="{ name: 'PresentPayment' }">
+            <div class="gift-box">
+                <button class="reg-gift">
+                    <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="">
+                    <p>어른이날을 축하해주세요
+                        <br/>
+                        콩주머니 메세지 &amp; 선물 등록하러 가기!
+                    </p>
+                </button>
+            </div>
+        </router-link>
+        <div v-if="this.messages.length == 0">
+            <img src="@/assets/img/none.png" class="none-pocket" alt="">
         </div>
-        <div class="pocket-area">
-            <div class="item" v-for="message in messages" :key="message">
+        <div class="pocket-area" v-else>
+            <div class="item" v-for="(message, index) in messagesFor" :key="index" >
                 <a href="#pocket">
                     <button @click="modal(message)">
                         <img src="@/assets/img/pocket.png" class="pocket" alt="">
                     </button>
                 </a>
+            </div>
+            <div class="pg">
+                <v-pagination
+                    v-model="currentPage"
+                    :length="rows"  
+                    @input="perPage"
+                    color="#a0deffe8"
+                >
+                </v-pagination>
             </div>
         </div>
 
@@ -40,7 +54,7 @@
                     </button>
                 </a>
                 <div class="modal-content">
-                    <img :src="API_BASE_URL+ imgUrl" alt="" class="modal-img" > 
+                    <img :src="API_BASE_URL+ imgUrl" alt="" class="modal-img" v-if="imgUrl"> 
                     <p class="message-user">{{ sender }}</p>
                     <div class="message-box">{{ content }}</div>
                 </div>
@@ -50,8 +64,9 @@
 </template>
 
 <script>
-import { getMessage } from '@/api/event.js';
+import { getMessage, saveMessage, resetMessage } from '@/api/event.js';
 import {API_BASE_URL} from "@/config/index.js";
+import * as Alert from "@/api/alert";
 
 export default {
     name: "EventRoom",
@@ -62,10 +77,14 @@ export default {
             content: '',
             imgUrl: '',
             API_BASE_URL: API_BASE_URL,
+            // 몇개 씩 보여줄지
+            perPage: 10,
+            // 현재 페이지
+            currentPage: 1,
         }
     },
-    created() {
-        getMessage(
+    async created() {
+        await getMessage(
             (res) => {
                 console.log(res.data.Message);
                 this.messages = res.data.Message;
@@ -76,12 +95,100 @@ export default {
             }
         );
     },
+    computed: {
+        rows() {
+            let length;
+
+            if(this.messages.length%this.perPage == 0){
+                length = this.messages.length/this.perPage;
+            }
+            else {
+                length = this.messages.length/this.perPage + 1;
+            }
+            
+            return length;
+        },
+        messagesFor() {
+            const items = this.messages;
+            return items.slice(
+                (this.currentPage - 1) * this.perPage,
+                this.currentPage * this.perPage
+            );
+        }
+    },
     methods: {
         modal(message) {
             console.log(message);
             this.content = message.content;
             this.sender = message.sender;
-            this.imgUrl = message.present.presentImg;
+            if(message.present != null){
+                this.imgUrl = message.present.presentImg;
+            }
+            else {
+                this.imgUrl = '';
+            }
+        },
+        resetMessage() {
+            this.$swal.fire(Alert.resetMessageCheck).then((result) => {
+                if(result.dismiss === this.$swal.DismissReason.cancel) {
+                    Alert.resetMessageCancel(this);
+                }else {
+                    if(this.messages.length == 0) {
+                        Alert.resetMessageFail(this);
+                    }
+                    else {
+                        resetMessage(
+                        (res) => {
+                            console.log(res);
+                            Alert.resetMessageSuccess(this);
+                            getMessage(
+                                (res) => {
+                                    console.log(res.data.Message);
+                                    this.messages = res.data.Message;
+                                    console.log(this.messages);
+                                },
+                                () => {
+                                    console.log("fail")
+                                }
+                            );
+                        },
+                        () => {
+                           console.log("fail")
+                        });
+                    }
+                }
+            })
+        },
+        saveMessage() {
+            this.$swal.fire(Alert.saveMessageCheck).then((result) => {
+                if(result.dismiss === this.$swal.DismissReason.cancel) {
+                    Alert.saveMessageCancel(this);
+                }else {
+                    if(this.messages.length == 0) {
+                        Alert.saveMessageFail(this);
+                    }
+                    else {
+                        saveMessage(this.messages,
+                        (res) => {
+                            console.log(res);
+                            Alert.saveMessageSuccess(this);
+                            getMessage(
+                                (res) => {
+                                    console.log(res.data.Message);
+                                    this.messages = res.data.Message;
+                                    console.log(this.messages);
+                                },
+                                () => {
+                                    console.log("fail")
+                                }
+                            );
+                        },
+                        () => {
+                           console.log("fail")
+                        });
+                    }
+                }
+            })
         }
     }
 }
@@ -102,9 +209,12 @@ export default {
     display: flex;
 
 }
+.none-pocket {
+    width: 575px;
+}
 .pocket {
-    width: 75px;
-    height: 70px;
+    width: 85px;
+    height: 80px;
 }
 .gift-img {
     width: 35px;
@@ -245,6 +355,18 @@ ul.myMenu > li ul.submenu > li:hover {
 .message-box {
     border: 1px solid rgb(221, 239, 165);
     border-radius: 15px;
+}
+/* pagination css */
+.pg {
+    width: 550px;
+    bottom: -22%;
+    position:absolute;
+}
+
+.v-pagination__item {
+    border-radius: 20px !important;
+    height: 31px !important;
+    min-width: 31px !important;
 }
 
 #pocket_user {

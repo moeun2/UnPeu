@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -23,6 +25,8 @@ public class MessagePostReq {
 	private String category;
 	@ApiModelProperty(name = "price", example = "10000")
 	private int price;
+	@ApiModelProperty(name = "create_at")
+	private LocalDateTime createdAt;
 	@ApiModelProperty(name = "present_id", example = "1")
 	private String presentId;
 

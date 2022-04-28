@@ -33,6 +33,20 @@ function sendMessageSuccess(vm){
         "success"
       );
 }
+function sendFeedbackSuccess(vm){
+    vm.$swal.fire(
+        "피드백 보내기 성공",
+        "피드백 보내주셔서 감사해요! 당신은 천사얌 ଘ(੭ˊᵕˋ)੭* ੈ✩‧₊˚",
+        "success"
+      );
+}
+function sendFeedbackFailure(vm){
+    vm.$swal.fire(
+        "피드백 보내기 실패",
+        "다시 피드백 부탁드려요 천사님 ଘ(੭ˊᵕˋ)੭* ੈ✩‧₊˚",
+        "error"
+      );
+}
 const notSelectPresentBody ={
     title: "선물을 선택하지 않으셨어요!",
     text: "메세지만 보내시겠어요?",
@@ -52,6 +66,74 @@ const agreePaymentBody = {
           reverseButtons: false,
 }
 
+/* EventRoom */
+const resetMessageCheck = {
+  title: "컨셉 초기화",
+  text: "선물리스트와 메세지가 초기화됩니다. 실행시 돌아갈 수 없으니 신중히 선택하세요!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonText: "할래요!",
+  cancelButtonText: "안할래요!",
+  reverseButtons: false,
+}
+
+function resetMessageCancel(vm){
+  vm.$swal.fire(
+      "Cancelled",
+      "초기화를 취소합니다. ",
+      "error"
+    );
+}
+
+function resetMessageFail(vm){
+  vm.$swal.fire(
+      "Oops...!",
+      "삭제할 메세지가 없어요!",
+      "error"
+    );
+}
+
+function resetMessageSuccess(vm){
+  vm.$swal.fire(
+      "초기화 성공!",
+      "초기화가 완료되었습니다! ",
+      "success"
+    );
+}
+
+const saveMessageCheck = {
+  title: "메세지 저장",
+  text: "메세지가 다이어리에 저장되고, 메세지와 선물리스트가 포함된 데이터는 자동으로 초기화됩니다.",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonText: "할래요!",
+  cancelButtonText: "안할래요!",
+  reverseButtons: false,
+}
+
+function saveMessageCancel(vm){
+  vm.$swal.fire(
+      "Cancelled",
+      "메세지 저장을 취소합니다. ",
+      "error"
+    );
+}
+
+function saveMessageFail(vm){
+  vm.$swal.fire(
+      "Oops...!",
+      "저장할 메세지가 없어요!",
+      "error"
+    );
+}
+
+function saveMessageSuccess(vm){
+  vm.$swal.fire(
+      "메세지 저장 성공!",
+      "메세지를 다이어리에서 확인하실 수 있습니다! ",
+      "success"
+    );
+}
 
 export{
     paymentSuccess,
@@ -60,5 +142,15 @@ export{
     agreePaymentBody,
     paymentCancel,
     sendMessageFailure,
-    sendMessageSuccess
+    sendMessageSuccess,
+    sendFeedbackSuccess,
+    sendFeedbackFailure,
+    resetMessageCheck,
+    resetMessageCancel,
+    resetMessageFail,
+    resetMessageSuccess,
+    saveMessageCheck,
+    saveMessageCancel,
+    saveMessageFail,
+    saveMessageSuccess
 }
