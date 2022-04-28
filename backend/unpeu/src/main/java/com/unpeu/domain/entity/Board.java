@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="board")
+@Table(name="board", indexes = {@Index(name = "cate_index", columnList = "category")})
 public class Board {
 
     @Id
@@ -36,7 +36,7 @@ public class Board {
     private String content;
 
     @NotNull
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     // 게시글을 삭제하면 달려있는 댓글 모두 삭제
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -48,11 +48,6 @@ public class Board {
         this.category = category;
         this.title = title;
         this.content = content;
-    }
-
-    @PrePersist
-    public void onPrePersist(){
-        this.createdAt = LocalDateTime.now();
     }
 
     // ==== 비즈니스 로직 ====
