@@ -80,6 +80,7 @@ public class MessageServiceImpl implements IMessageService {
 	 * @return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void saveMessage(Long userId, List<MessagePostReq> messages) {
 		logger.info("saveMessage-호출");
 		Optional<User> user = userRepository.findById(userId);

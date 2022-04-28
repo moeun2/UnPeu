@@ -14,7 +14,5 @@ public interface IMessageService {
 	List<Message> getMessageListByUserId(Long userId);
 	Message getMessage(Long messageId);
 	void deleteAllMessageByUserId(long userId);
-
-	@Transactional(rollbackFor = Exception.class)
 	void saveMessage(Long userId, List<MessagePostReq> messages);
 }
