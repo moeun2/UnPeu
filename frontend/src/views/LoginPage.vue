@@ -24,7 +24,7 @@ export default {
         console.log(res.data.User);
         this.$store.commit("userStore/setUser",res.data.User)//store에 user 저장
         this.$router.push({ name: 'eventRoom', params: {userid:this.$store.state.userStore.user.id}})
-            },
+      },
       ()=>{
         console.log("getUserDetailUseToken fail")
         window.localStorage.removeItem("accessToken")
@@ -48,14 +48,7 @@ export default {
         "https://kauth.kakao.com/oauth/authorize?client_id=c0ad1801cdf80282754cf18e79556743&redirect_uri=http://localhost:8081/login/kakao&response_type=code"
       );
     },
-    logout(){
-        //acctoken 통신해서 카카오인지 구글인지 판단
-        //카카오 로그아웃
-        window.localStorage.removeItem("accessToken")
-        window.location.replace(
-        "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri=http://localhost:8081/login/kakao"
-        );
-    },
+    
     searchParam(key) {
       return new URLSearchParams(location.search).get(key);
     }
