@@ -3,7 +3,8 @@ const api = createInstance();
 
 // 이메일 보내기
 function sendMail(text, success, fail) {
-  api.post(`api/mail`, text).then(success).catch(fail);
+    console.log(text);
+  api.post(`api/mail`, JSON.stringify(text)).then(success).catch(fail);
 }
 
 export { sendMail };

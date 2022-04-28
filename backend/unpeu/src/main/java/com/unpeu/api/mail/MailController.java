@@ -17,6 +17,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,8 +42,9 @@ public class MailController {
 
 	@ApiOperation(value = "메일 보내기 Controller")
 	@RequestMapping(value = "/mail", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> createMail(String text) {
+	public ResponseEntity<Map<String, Object>> createMail(@RequestBody String text) {
 		logger.info("createMail - 호출");
+		System.out.println(text);
 		Map<String, Object> resultMap = new HashMap<>();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date now = new Date();

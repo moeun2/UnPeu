@@ -40,6 +40,7 @@ export default {
     },
     submitEmail() {
       if (this.content != null) {
+        alert(this.content)
         sendMail(
           this.content,
           function (response) {
