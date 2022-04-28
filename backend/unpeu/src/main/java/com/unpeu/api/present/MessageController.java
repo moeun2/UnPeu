@@ -39,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class MessageController {
-	public static final Logger logger = LoggerFactory.getLogger(PresentController.class);
+	public static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
 	private final IUserService userService;
 	private final IMessageService messageService;
@@ -50,13 +50,13 @@ public class MessageController {
 	 */
 	@ApiOperation(value = "메세지 목록 조회 Controller")
 	@RequestMapping(value = "/message", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getMessageListByUserId(/*@ApiIgnore @NotNull Authentication authentication*/) {
+	public ResponseEntity<Map<String, Object>> getMessageListByUserId(@ApiIgnore @NotNull Authentication authentication) {
 		logger.info("getMessageListByUserId - 호출");
 		// test 시 userId : 1로 설정하고 테스트 했음
-		/*UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
-		User user = userDetails.getUser();*/
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
 		Map<String, Object> resultMap = new HashMap<>();
-		List<Message> newMessage = messageService.getMessageListByUserId(/*user.getId()*/1L);
+		List<Message> newMessage = messageService.getMessageListByUserId(user.getId());
 		resultMap.put("Message", newMessage);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
@@ -74,15 +74,30 @@ public class MessageController {
 
 	@ApiOperation(value = "메세지 초기화 Controller")
 	@RequestMapping(value = "/message", method = RequestMethod.DELETE)
-	public ResponseEntity<Map<String, Object>> deleteAllMessageByUserId(/*@ApiIgnore @NotNull Authentication authentication*/) {
+	public ResponseEntity<Map<String, Object>> deleteAllMessageByUserId(@ApiIgnore @NotNull Authentication authentication) {
 		logger.info("deleteAllMessageByUserId - 호출");
 		// test 시 userId : 1로 설정하고 테스트 했음
-		/*UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
-		User user = userDetails.getUser();*/
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
 		Map<String, Object> resultMap = new HashMap<>();
-		messageService.deleteAllMessageByUserId(/*user.getId()*/1L);
+		messageService.deleteAllMessageByUserId(user.getId());
 		resultMap.put("Message", "Delete Messages Success");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+	}
+
+	@ApiOperation(value = "메세지 다이어리에 저장 Controller")
+	@RequestMapping(value = "/message/messageToDiary", method = RequestMethod.POST/*, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}*/)
+	public ResponseEntity<Map<String, Object>> saveMessage(@ApiIgnore @NotNull Authentication authentication,
+			@Valid @RequestBody @NotNull List<MessagePostReq> messages) {
+		logger.info("saveMessage - 호출");
+		// test 시 userId : 1로 설정하고 테스트 했음
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+		// message 내용을 board에 저장
+		messageService.saveMessage(user.getId(), messages);
+		// message 내용 삭제
+		messageService.deleteAllMessageByUserId(user.getId());
+		return new ResponseEntity<Map<String, Object>>(HttpStatus.ACCEPTED);
 	}
 
 }

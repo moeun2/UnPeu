@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import {kakaoLogin} from '@/api/user.js';
+import {kakaoLogin,getUserDetailUseToken} from '@/api/user.js';
 
 export default {
   name: "KakaoLogin",
@@ -16,11 +16,16 @@ export default {
         kakaoLogin(this.searchParam('code'),
         (res) => { 
             localStorage.setItem("accessToken",res.data.accessToken)
+            getUserDetailUseToken(res.data.accessToken,(res)=>{
+              console.log(res.data.User);
+              this.$store.commit("userStore/setUser",res.data.User)//store에 user 저장
+              this.$router.push({ name: 'eventRoom', params: {userid:this.$store.state.userStore.user.id}}) 
+            },)
         },
         ()=>{
             console.log("fail")
         });
-      this.$router.push("/") //메인 페이지로 이동
+      this.$router.push({ name: 'Login'})
     }
     },
   methods: {

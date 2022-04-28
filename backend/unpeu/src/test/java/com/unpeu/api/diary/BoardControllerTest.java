@@ -2,6 +2,8 @@ package com.unpeu.api.diary;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.unpeu.config.auth.JwtTokenUtil;
 import com.unpeu.domain.entity.Board;
 import com.unpeu.domain.entity.User;
@@ -9,6 +11,7 @@ import com.unpeu.domain.repository.IBoardRepository;
 import com.unpeu.domain.repository.IUserRepository;
 import com.unpeu.domain.request.BoardPostReq;
 import com.unpeu.domain.response.BoardGetRes;
+import com.unpeu.domain.response.BoardInfoGetRes;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,6 +79,10 @@ public class BoardControllerTest {
 
     @Before
     public void setUp() {
+        // LocalDateTime 직렬화 오류 해결
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))  // 한글 깨짐 방지
                 .apply(springSecurity()) // Spring Security를 Spring MVC 테스트와 통합할 때 필요한 모든 초기 세팅을 수행
@@ -194,12 +201,13 @@ public class BoardControllerTest {
         String content = result.getResponse().getContentAsString();
         Map<String, Object> jsonObject = objectMapper.readValue(content, Map.class);
         String jsonString = objectMapper.writeValueAsString(jsonObject.get("boardInfo"));
-        BoardGetRes boardInfo = objectMapper.readValue(jsonString, BoardGetRes.class);
+        BoardInfoGetRes boardInfo = objectMapper.readValue(jsonString, BoardInfoGetRes.class);
 
         // then
         Assertions.assertThat(boardInfo.getCategory()).isEqualTo(createBoard.getCategory());
         Assertions.assertThat(boardInfo.getTitle()).isEqualTo(createBoard.getTitle());
         Assertions.assertThat(boardInfo.getContent()).isEqualTo(createBoard.getContent());
+        Assertions.assertThat(boardInfo.getCommentList()).isEqualTo(createBoard.getComments());
     }
 
     /**

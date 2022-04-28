@@ -1,5 +1,6 @@
 package com.unpeu.domain.entity;
 
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="board")
+@Table(name="board", indexes = {@Index(name = "cate_index", columnList = "category")})
 public class Board {
 
     @Id
@@ -37,6 +38,10 @@ public class Board {
     @NotNull
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    // 게시글을 삭제하면 달려있는 댓글 모두 삭제
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<Comment>();
+
     @Builder
     public Board(User user, String category, String title, String content) {
         this.user = user;
@@ -45,10 +50,17 @@ public class Board {
         this.content = content;
     }
 
-    // 게시글을 삭제하면 달려있는 댓글 모두 삭제
-//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Comment> commentList = new ArrayList<>();
+    // Board에 message 저장하는 Builder (메세지 등록 날짜 포함)
+    @Builder(builderClassName = "saveMessage", builderMethodName = "saveMessage")
+    public Board(User user, String category, String title, String content, LocalDateTime createdAt) {
+        this.user = user;
+        this.category = category;
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
+    }
 
+    // ==== 비즈니스 로직 ====
     public void updateBoardInfo(String category, String title, String content) {
         this.category = category;
         this.title = title;
