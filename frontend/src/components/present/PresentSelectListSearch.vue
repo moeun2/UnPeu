@@ -1,6 +1,21 @@
 <template>
-  <div class="present-carousel">
-    <v-carousel hide-delimiters style="height: 350px">
+  <div class="present-carousel" >
+    <!-- <v-button >선물등록이 필요합니다</v-button> -->
+    <div v-if="showCarousel==false"      
+  >
+    <v-btn
+      tile
+      color="info"
+    >
+      <v-icon left>
+         mdi-exclamation
+      </v-icon>
+      선물이 등록되지 않았어요!<br/> 선물 등록하러 가시겠어요? :)
+    </v-btn>
+    <br/>
+    <br/>
+  </div>
+    <v-carousel hide-delimiters style="height: 350px" v-if="showCarousel">
       <template v-for="(card, index) in cardList">
         <v-carousel-item
           v-if="(index + 1) % columns === 1 || columns === 1"
@@ -49,14 +64,18 @@ export default {
   components: {
     PresentPayModal,
   },
-  data: () => ({
-    cardList: [],
-    API_BASE_URL: API_BASE_URL,
-    showModal: false,
-    selectedPresentId: "",
-    selectedPresentPrice: 0,
-    currentIdx: "",
-  }),
+  data() {
+    return {
+      cardList: [],
+      API_BASE_URL: API_BASE_URL,
+      showModal: false,
+      selectedPresentId: "",
+      selectedPresentPrice: 0,
+      currentIdx: "",
+      userId: this.$store.state.userStore.user.id,
+      showCarousel: true,
+    };
+  },
   mounted() {
     this.search();
   },
@@ -73,8 +92,17 @@ export default {
      */
     search() {
       // To Do: User State에서 가져오기
-      this.searchList(1);
+      console.log("PresentSelectListSearch_search - 호출");
+      console.log("userId: ",this.userId);
+      this.searchList(this.userId);
       this.cardList = this.presentList.Present;
+      console.log(this.cardList.length)
+      if(this.cardList.length == 0){
+        this.showCarousel = false;
+      }else{
+        this.showCarousel = true;
+
+      }
       this.cardListCount = Math.ceil(this.cardList.length / 3);
     },
     /**

@@ -3,7 +3,7 @@ import { API_BASE_URL } from "../config";
 
 function createInstance() {
   const instance = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: API_BASE_URL+"/api",
     headers: {
       "Content-Type": "application/json",
     },
@@ -13,7 +13,7 @@ function createInstance() {
 
 function tokenInstance() {
   const instance = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: API_BASE_URL+"/api",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

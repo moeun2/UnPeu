@@ -12,7 +12,5 @@ import com.unpeu.domain.request.PresentPostReq;
 public interface IMessageService {
 	List<Message> getMessageListByUserId(Long userId);
 	Message getMessage(Long messageId);
-
-	@Transactional(rollbackFor = Exception.class)
 	void deleteAllMessageByUserId(long userId);
 }
