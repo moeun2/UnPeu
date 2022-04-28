@@ -25,17 +25,18 @@ const routes = [
         path: "/",
         name: "home",
         component: Home,
+        redirect: "/landing",
         children: [
             {
-                path: "/eventRoom",
+                path: "/eventRoom/:userid",
                 name: "eventRoom",
                 component: eventRoom
             },
             {
-                path: "/diary",
+                path: "/diary/:userid",
                 name : "Diary",
                 component: Diary,
-                redirect: "/diary",
+                redirect: "/diary/:userid",
                 children: [
                     {
                         path: "/",
