@@ -308,19 +308,27 @@
   
   .profile-img {
     width: 100%;
-    margin: 10px 0 50px 0;
+    margin: 10px 0 10px 0;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    min-height: 160px;
+    object-fit: cover;
   }
   
   .desc-wrap {
     border-bottom: 1px solid #e2e0de;
     width: 100%;
+    display: table;
+    position: relative;
   }
   
   .text-desc {
     text-align: center;
-    padding-bottom: 30px;
-    height: 120px;
+    padding-bottom: 10px;
+    height: 150px;
+    /* vertical-align: middle; */
+    display: table-cell;
+    vertical-align: middle;
+    white-space: pre-line;
   }
   
   .link-history {
@@ -341,7 +349,7 @@
   
   .info-wrap {
     width: 100%;
-    margin: 10px 0;
+    /* margin: 10px 0; */
     padding: 5px 5px;
   }
   
@@ -355,13 +363,13 @@
     text-decoration: underline;
   }
   
-  .info-name:after {
-    /* content: "(♂) 1996.10.31+"; */
+  /* .info-name:after {
+    content: "(♂) 1996.10.31";
     color: #a5a8aa;
     font-size: 10px;
     margin-left: 5px;
     font-weight: 400;
-  }
+  } */
   
   .text-email {
     font-size: 10px;
