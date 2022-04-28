@@ -1,9 +1,7 @@
 package com.unpeu.domain.response;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.unpeu.domain.entity.Board;
-import com.unpeu.domain.entity.Comment;
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,7 +17,7 @@ public class BoardGetRes {
     private Long boardId;
     private String category;
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class) // 역직렬화 오류 해결
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     public BoardGetRes(Board board) {

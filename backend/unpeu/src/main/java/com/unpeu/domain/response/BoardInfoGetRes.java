@@ -1,5 +1,6 @@
 package com.unpeu.domain.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.unpeu.domain.entity.Board;
@@ -22,7 +23,7 @@ public class BoardInfoGetRes {
     private String content;
     private String category;
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class) // 역직렬화 오류 해결
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     private List<CommentInfoGetRes> commentList;

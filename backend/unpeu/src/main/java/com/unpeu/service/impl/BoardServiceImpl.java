@@ -76,6 +76,7 @@ public class BoardServiceImpl implements IBoardService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Board createBoard(User user, BoardPostReq board) {
         logger.info("createBoard - 호출");
         Board newboard = Board.builder()
@@ -95,6 +96,7 @@ public class BoardServiceImpl implements IBoardService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateBoard(User user, Long boardId, BoardPostReq board) {
         logger.info("updateBoard - 호출");
         Optional<Board> oBoard = boardRepository.findById(boardId);
@@ -122,6 +124,7 @@ public class BoardServiceImpl implements IBoardService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteBoard(User user, Long boardId) {
         logger.info("deleteBoard - 호출");
         Optional<Board> oBoard = boardRepository.findById(boardId);

@@ -1,5 +1,6 @@
 package com.unpeu.domain.entity;
 
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="board")
+@Table(name="board", indexes = {@Index(name = "cate_index", columnList = "category")})
 public class Board {
 
     @Id

@@ -32,7 +32,8 @@ public class Comment {
     @NotNull(message = "댓글 내용을 작성해주세요")
     private String content;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @NotNull
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
@@ -43,6 +44,11 @@ public class Comment {
         this.writer = writer;
         this.password = password;
         this.content = content;
+    }
+
+    @PrePersist
+    public void onPrePersist(){
+        this.createdAt = LocalDateTime.now();
     }
 
     // ==== 연관 관계 편의 메소드 ====
