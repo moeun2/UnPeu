@@ -5,6 +5,9 @@ import static com.unpeu.config.exception.ErrorCode.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.unpeu.domain.entity.Board;
+import com.unpeu.domain.repository.IBoardRepository;
+import com.unpeu.domain.request.MessagePostReq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,7 @@ public class MessageServiceImpl implements IMessageService {
 
 	private final IMessageRepository messageRepository;
 	private final IPresentRepository presentRepository;
+	private final IBoardRepository boardRepository;
 	private final IUserRepository userRepository;
 	/**
 	 * userId에 따라서 MessageList 전체 조회
@@ -66,5 +70,31 @@ public class MessageServiceImpl implements IMessageService {
 			throw new CustomException(DELETE_CONFLICT);
 		}
 
+	}
+
+	/**
+	 * message List를 받아와서 다이어리에 저장
+	 * @param messages
+	 * @return
+	 */
+	@Override
+	public void saveMessage(List<MessagePostReq> messages) {
+		logger.info("saveMessage-호출");
+		Optional<User> user = userRepository.findById(Long.parseLong(/*message.getUserId()*/"1"));
+		if (user.isEmpty()) {
+			throw new CustomException(MEMBER_NOT_FOUND);
+		}
+
+		for(MessagePostReq message : messages) {
+			Board newBoard = Board.saveMessage()
+					.user(user.get())
+					.category(message.getCategory())
+					.title(message.getSender())
+					.content(message.getContent() + " (" + message.getPrice() + "원 펀딩)")
+					.createdAt(message.getCreatedAt())
+					.build();
+			boardRepository.save(newBoard);
+			// present 이미지 추가 해야 함.
+		}
 	}
 }

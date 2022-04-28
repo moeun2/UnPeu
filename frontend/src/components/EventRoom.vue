@@ -5,9 +5,9 @@
                 <li class="menu2">
                     MENU
                     <ul class="menu2_s submenu">
-                        <li>컨셉 변경</li>
-                        <li>초기화 설정</li>
-                        <li>메세지 저장</li>
+                        <li><button>컨셉 변경</button></li>
+                        <li><button @click="resetMessage">메세지 삭제</button></li>
+                        <li><button @click="saveMessage">메세지 저장</button></li>
                     </ul>   
                 </li>
             </ul>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { getMessage } from '@/api/event.js';
+import { getMessage, saveMessage } from '@/api/event.js';
 import {API_BASE_URL} from "@/config/index.js";
 
 export default {
@@ -82,6 +82,29 @@ export default {
             this.content = message.content;
             this.sender = message.sender;
             this.imgUrl = message.present.presentImg;
+        },
+        resetMessage() {
+            alert('메세지가 전부 사라집니다. 실행시 돌아갈 수 없으니 신중히 선택하세요.');
+            // 임시
+            this.messages = [];
+        },
+        saveMessage() {
+
+            // 메세지가 없을 경우
+            if(this.messages.length == 0) {
+                alert('저장할 메세지가 없습니다.');
+            }
+            else {
+                alert('메세지가 다이어리에 저장되고 해당 메세지는 자동으로 삭제됩니다. ');
+
+                saveMessage(this.messages,
+                (res) => {
+                    console.log(res);
+                },
+                () => {
+                    console.log("fail")
+                });
+            }
         }
     }
 }

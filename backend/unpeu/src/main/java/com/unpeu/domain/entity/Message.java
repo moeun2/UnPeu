@@ -60,7 +60,7 @@ public class Message {
 	private String content;
 	private String category;
 	private int price;
-	private LocalDateTime createdAt;
+	private LocalDateTime createdAt = LocalDateTime.now();
 
 	@Override
 	public boolean equals(Object o) {

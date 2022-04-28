@@ -2,6 +2,7 @@ package com.unpeu.service.iface;
 
 import java.util.List;
 
+import com.unpeu.domain.entity.Board;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unpeu.domain.entity.Message;
@@ -15,4 +16,7 @@ public interface IMessageService {
 
 	@Transactional(rollbackFor = Exception.class)
 	void deleteAllMessageByUserId(long userId);
+
+	@Transactional(rollbackFor = Exception.class)
+	void saveMessage(List<MessagePostReq> messages);
 }

@@ -85,4 +85,16 @@ public class MessageController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 
+	@ApiOperation(value = "메세지 다이어리에 저장 Controller")
+	@RequestMapping(value = "/message/messageToDiary", method = RequestMethod.POST/*, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}*/)
+	public ResponseEntity<Map<String, Object>> saveMessage(/*@ApiIgnore @NotNull Authentication authentication,*/
+			@Valid @RequestBody @NotNull List<MessagePostReq> messages) {
+		logger.info("saveMessage - 호출");
+		// message 내용을 board에 저장
+		messageService.saveMessage(messages);
+		// message 내용 삭제
+		messageService.deleteAllMessageByUserId(/*user.getId()*/1L);
+		return new ResponseEntity<Map<String, Object>>(HttpStatus.ACCEPTED);
+	}
+
 }
