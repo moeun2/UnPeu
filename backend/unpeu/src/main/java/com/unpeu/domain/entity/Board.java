@@ -50,6 +50,16 @@ public class Board {
         this.content = content;
     }
 
+    // Board에 message 저장하는 Builder (메세지 등록 날짜 포함)
+    @Builder(builderClassName = "saveMessage", builderMethodName = "saveMessage")
+    public Board(User user, String category, String title, String content, LocalDateTime createdAt) {
+        this.user = user;
+        this.category = category;
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
+    }
+
     // ==== 비즈니스 로직 ====
     public void updateBoardInfo(String category, String title, String content) {
         this.category = category;
