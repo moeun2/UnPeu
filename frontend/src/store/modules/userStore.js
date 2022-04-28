@@ -1,7 +1,7 @@
 export const userStore={
     namespaced : true,
     state:{
-        loginUser: null,
+        user: null,
 
     },
     getters:{
@@ -9,12 +9,12 @@ export const userStore={
     },
     mutations:{
         setUser(state, user){
-            state.loginUser=user;
-            console.log(state.loginUser);
+            state.user=user;
+            console.log(state.user);
         },
         setUSerNull(state){
-            state.loginUser=null;
-            console.log(state.loginUser);
+            state.user=null;
+            console.log(state.user);
         },
         
     },
