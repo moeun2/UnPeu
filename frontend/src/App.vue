@@ -3,12 +3,15 @@
     <div class="view">
       <router-view />
     </div>
+    <email-fab></email-fab>
   </v-app>
 </template>
 
 <script>
+import EmailFab from './components/EmailFab.vue';
 
 export default {
+  components: { EmailFab },
   name: 'App'
 };
 </script>

@@ -17,10 +17,10 @@
               class="modal-img"
             />
             <br />
-            <p>
+            <h4>
               헉 너무 큰 금액이야 <br />
               가격을 다시 한 번 생각해봐~!
-            </p>
+            </h4>
             <br />
             <table class="dabo_table">
               <tr>
@@ -30,7 +30,8 @@
                     type="radio"
                     name="radio"
                     value="10000"
-                    v-model="selectDabo"
+                    v-model="selectedPrice"
+                    @click="closeInputText"
                   />
                   <label for="radio-1">10000원</label>
                 </td>
@@ -40,7 +41,8 @@
                     type="radio"
                     name="radio"
                     value="20000"
-                    v-model="selectDabo"
+                    v-model="selectedPrice"
+                    @click="closeInputText"
                   />
                   <label for="radio-2">20000원</label>
                 </td>
@@ -50,7 +52,8 @@
                     type="radio"
                     name="radio"
                     value="30000"
-                    v-model="selectDabo"
+                    v-model="selectedPrice"
+                    @click="closeInputText"
                   />
                   <label for="radio-3">30000원</label>
                 </td>
@@ -62,7 +65,8 @@
                     type="radio"
                     name="radio"
                     value="40000"
-                    v-model="selectDabo"
+                    v-model="selectedPrice"
+                    @click="closeInputText"
                   />
                   <label for="radio-4">40000원</label>
                 </td>
@@ -72,7 +76,8 @@
                     type="radio"
                     name="radio"
                     value="50000"
-                    v-model="selectDabo"
+                    v-model="selectedPrice"
+                    @click="closeInputText"
                   />
                   <label for="radio-5">50000원</label>
                 </td>
@@ -81,8 +86,8 @@
                     id="radio-6"
                     type="radio"
                     name="radio"
-                    value=""
-                    v-model="selectDabo"
+                    value="-1"
+                    v-model="selectedPrice"
                   />
                   <label for="radio-6" @click="textbox">직접입력</label>
                   <div id="unpeu_input"></div>
@@ -102,16 +107,19 @@
 
           <div class="modal-footer">
             <slot name="footer">
-              <div style="display: flex; justify-content: flex-end;">
-              <v-btn depressed color="primary" style="margin-right : 5px;"
-                >가격선택
-              </v-btn>
-              <v-btn depressed color="warning" @click="$emit('close')"
-                >닫기
-              </v-btn>
+              <div style="display: flex; justify-content: flex-end">
+                <v-btn
+                  depressed
+                  color="primary"
+                  style="margin-right: 5px"
+                  @click="saveAmount"
+                  >가격선택
+                </v-btn>
+                <v-btn depressed color="warning" @click="closeModal"
+                  >닫기
+                </v-btn>
               </div>
             </slot>
-            
           </div>
         </div>
       </div>
@@ -121,14 +129,39 @@
 
 <script>
 export default {
+  data() {
+    return {
+      selectedPrice: 0,
+    };
+  },
   methods: {
     textbox() {
       document.getElementById("unpeu_input").innerHTML =
-        '<input type="text" name="" id="" size=5 style="background-color:white; text-align:center; border: 1px solid black; margin: 1px 1px 1px 1px" >원';
+        '<input type="number" name="" id="inputNumber" size=5 style="background-color:white; text-align:center; border: 1px solid black; margin: 1px 1px 1px 1px" >원';
       document.getElementById("unpeu_input").style.display = "";
     },
-    saveBtn() {
-      alert("saveBtn");
+    saveAmount() {
+      if (this.selectedPrice == 0) {
+        this.$swal.fire(
+          "가격을 선택하세요",
+          "조그맣지만 소중한 마음을 선택해보세요",
+          "warning"
+        );
+      } else if (this.selectedPrice == -1) {
+        const inputNumber = document.getElementById("inputNumber").value;
+        console.log("직접입력 값 : " + inputNumber + "");
+        this.selectedPrice = inputNumber;
+      } else {
+        console.log("selectedPrice : ", this.selectedPrice);
+        this.$emit("selectedPrice", this.selectedPrice);
+      }
+    },
+    closeInputText() {
+      document.getElementById("unpeu_input").style.display = "none";
+    },
+    closeModal() {
+      this.selectedPrice = 0;
+      this.$emit("close");
     },
   },
 };
@@ -155,14 +188,13 @@ export default {
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
-  border-radius: 2px;
+  border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
   /* font-family: "Dancing Script", cursive; */
 }
 .modal-footer {
   font-family: sans-serif;
-
 }
 .modal-header {
   display: flex;
