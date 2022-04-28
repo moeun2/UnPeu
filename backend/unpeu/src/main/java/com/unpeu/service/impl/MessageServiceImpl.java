@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.unpeu.config.exception.CustomException;
 import com.unpeu.domain.entity.Message;
@@ -57,6 +58,7 @@ public class MessageServiceImpl implements IMessageService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteAllMessageByUserId(long userId) {
 		logger.info("deleteAllMessageByUserId-호출");
 		try {

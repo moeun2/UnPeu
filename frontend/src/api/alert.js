@@ -19,6 +19,20 @@ function paymentCancel(vm){
         "error"
       );
 }
+function sendMessageFailure(vm){
+    vm.$swal.fire(
+        "메세지 등록 실패",
+        "메세지 등록을 실패했어요. 다시 메세지 보내기를 눌러주세요 :)",
+        "error"
+      );
+}
+function sendMessageSuccess(vm){
+    vm.$swal.fire(
+        "메세지 등록 성공",
+        "메세지 등록을 성공했어요. 조그마한 마음을 같이 나눠보아요 :)",
+        "success"
+      );
+}
 const notSelectPresentBody ={
     title: "선물을 선택하지 않으셨어요!",
     text: "메세지만 보내시겠어요?",
@@ -40,5 +54,11 @@ const agreePaymentBody = {
 
 
 export{
-    paymentSuccess,paymentFailure,notSelectPresentBody,agreePaymentBody,paymentCancel
+    paymentSuccess,
+    paymentFailure,
+    notSelectPresentBody,
+    agreePaymentBody,
+    paymentCancel,
+    sendMessageFailure,
+    sendMessageSuccess
 }
