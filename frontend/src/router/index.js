@@ -15,6 +15,7 @@ import BoardDetail from "@/components/diary/BoardDetail.vue"
 import Login from "@/views/LoginPage.vue"
 import KakaoLogin from "@/components/login/KakaoLogin.vue"
 import GoogleLogin from "@/components/login/GoogleLogin.vue"
+import Landing from "@/views/LandingPage.vue"
 
 
 Vue.use(VueRouter);
@@ -24,17 +25,18 @@ const routes = [
         path: "/",
         name: "home",
         component: Home,
+        redirect: "/landing",
         children: [
             {
-                path: "/eventRoom",
+                path: "/eventRoom/:userid",
                 name: "eventRoom",
                 component: eventRoom
             },
             {
-                path: "/diary",
+                path: "/diary/:userid",
                 name : "Diary",
                 component: Diary,
-                redirect: "/diary",
+                redirect: "/diary/:userid",
                 children: [
                     {
                         path: "/",
@@ -95,6 +97,11 @@ const routes = [
             },
         ]
 
+    },
+    {
+        path: "/landing",
+        name: "Landing",
+        component: Landing,
     }
 ]
 const router = new VueRouter({
