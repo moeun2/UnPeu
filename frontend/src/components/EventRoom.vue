@@ -12,22 +12,36 @@
                 </li>
             </ul>
         </div>
-        <div class="gift-box">
-            <button class="reg-gift">
-                <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="">
-                <p>어른이날을 축하해주세요
-                    <br/>
-                    콩주머니 메세지 &amp; 선물 등록하러 가기!
-                </p>
-            </button>
+        <router-link :to="{ name: 'PresentPayment' }">
+            <div class="gift-box">
+                <button class="reg-gift">
+                    <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="">
+                    <p>어른이날을 축하해주세요
+                        <br/>
+                        콩주머니 메세지 &amp; 선물 등록하러 가기!
+                    </p>
+                </button>
+            </div>
+        </router-link>
+        <div v-if="this.messages.length == 0">
+            <img src="@/assets/img/none.png" class="none-pocket" alt="">
         </div>
-        <div class="pocket-area">
-            <div class="item" v-for="message in messages" :key="message">
+        <div class="pocket-area" v-else>
+            <div class="item" v-for="(message, index) in messagesFor" :key="index" >
                 <a href="#pocket">
                     <button @click="modal(message)">
                         <img src="@/assets/img/pocket.png" class="pocket" alt="">
                     </button>
                 </a>
+            </div>
+            <div class="pg">
+                <v-pagination
+                    v-model="currentPage"
+                    :length="rows"  
+                    @input="perPage"
+                    color="#a0deffe8"
+                >
+                </v-pagination>
             </div>
         </div>
 
@@ -52,6 +66,7 @@
 <script>
 import { getMessage, saveMessage, resetMessage } from '@/api/event.js';
 import {API_BASE_URL} from "@/config/index.js";
+import * as Alert from "@/api/alert";
 
 export default {
     name: "EventRoom",
@@ -62,10 +77,14 @@ export default {
             content: '',
             imgUrl: '',
             API_BASE_URL: API_BASE_URL,
+            // 몇개 씩 보여줄지
+            perPage: 10,
+            // 현재 페이지
+            currentPage: 1,
         }
     },
-    created() {
-        getMessage(
+    async created() {
+        await getMessage(
             (res) => {
                 console.log(res.data.Message);
                 this.messages = res.data.Message;
@@ -75,6 +94,27 @@ export default {
                 console.log("fail")
             }
         );
+    },
+    computed: {
+        rows() {
+            let length;
+
+            if(this.messages.length%this.perPage == 0){
+                length = this.messages.length/this.perPage;
+            }
+            else {
+                length = this.messages.length/this.perPage + 1;
+            }
+            
+            return length;
+        },
+        messagesFor() {
+            const items = this.messages;
+            return items.slice(
+                (this.currentPage - 1) * this.perPage,
+                this.currentPage * this.perPage
+            );
+        }
     },
     methods: {
         modal(message) {
@@ -89,37 +129,66 @@ export default {
             }
         },
         resetMessage() {
-            alert('해당 컨셉과 관련된 모든 데이터가 초기화됩니다. 실행시 돌아갈 수 없으니 신중히 선택하세요!');
-             if(this.messages.length == 0) {
-                alert('삭제할 메세지가 없어요!');
-            }
-            else {
-                resetMessage(
-                (res) => {
-                    console.log(res);
-                },
-                () => {
-                    console.log("fail")
-                });
-            }
+            this.$swal.fire(Alert.resetMessageCheck).then((result) => {
+                if(result.dismiss === this.$swal.DismissReason.cancel) {
+                    Alert.resetMessageCancel(this);
+                }else {
+                    if(this.messages.length == 0) {
+                        this.$swal.fire("Oops...!", "삭제할 메세지가 없어요!", "error");
+                    }
+                    else {
+                        resetMessage(
+                        (res) => {
+                            console.log(res);
+                            Alert.resetMessageSuccess(this);
+                            getMessage(
+                                (res) => {
+                                    console.log(res.data.Message);
+                                    this.messages = res.data.Message;
+                                    console.log(this.messages);
+                                },
+                                () => {
+                                    console.log("fail")
+                                }
+                            );
+                        },
+                        () => {
+                           console.log("fail")
+                        });
+                    }
+                }
+            })
         },
         saveMessage() {
-
-            // 메세지가 없을 경우
-            if(this.messages.length == 0) {
-                alert('저장할 메세지가 없어요!');
-            }
-            else {
-                alert('메세지가 다이어리에 저장되고, 해당 컨셉과 관련된 모든 데이터가 자동으로 초기화됩니다. 확인하셨다면 계속 진행해주세요!');
-
-                saveMessage(this.messages,
-                (res) => {
-                    console.log(res);
-                },
-                () => {
-                    console.log("fail")
-                });
-            }
+            this.$swal.fire(Alert.saveMessageCheck).then((result) => {
+                if(result.dismiss === this.$swal.DismissReason.cancel) {
+                    Alert.saveMessageCancel(this);
+                }else {
+                    if(this.messages.length == 0) {
+                        this.$swal.fire("Oops...!", "저장할 메세지가 없어요!", "error");
+                    }
+                    else {
+                        saveMessage(this.messages,
+                        (res) => {
+                            console.log(res);
+                            Alert.saveMessageSuccess(this);
+                            getMessage(
+                                (res) => {
+                                    console.log(res.data.Message);
+                                    this.messages = res.data.Message;
+                                    console.log(this.messages);
+                                },
+                                () => {
+                                    console.log("fail")
+                                }
+                            );
+                        },
+                        () => {
+                           console.log("fail")
+                        });
+                    }
+                }
+            })
         }
     }
 }
@@ -139,6 +208,9 @@ export default {
 .item {
     display: flex;
 
+}
+.none-pocket {
+    width: 575px;
 }
 .pocket {
     width: 85px;
@@ -283,6 +355,18 @@ ul.myMenu > li ul.submenu > li:hover {
 .message-box {
     border: 1px solid rgb(221, 239, 165);
     border-radius: 15px;
+}
+/* pagination css */
+.pg {
+    width: 550px;
+    bottom: -22%;
+    position:absolute;
+}
+
+.v-pagination__item {
+    border-radius: 20px !important;
+    height: 31px !important;
+    min-width: 31px !important;
 }
 
 #pocket_user {
