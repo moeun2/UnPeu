@@ -11,8 +11,8 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 faLibrary.add(faHome, faSearch, faPlus)
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 const options = {
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
+  confirmButtonColor: '#4CAF50',
+  cancelButtonColor: '#90EE90',
 };
 
 Vue.use(VueSweetalert2, options);

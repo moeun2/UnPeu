@@ -38,7 +38,7 @@ export default {
      * 선물결제에 관해 Alert로 물어보고 sendPresentMessage API를 실행
      */
     checkPresent() {
-      if (this.presentId == null) {
+      if (this.message.presentId == null) {
         this.$swal.fire(Alert.notSelectPresentBody).then((result) => {
           if (result.dismiss === this.$swal.DismissReason.cancel) { //메세지만 보낼래요!
             this.changeCardColor(false);
