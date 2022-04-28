@@ -13,19 +13,10 @@ import com.unpeu.domain.request.PresentPostReq;
 import com.unpeu.domain.response.BaseResponseBody;
 
 public interface IPresentService {
-	@Transactional(rollbackFor = Exception.class)
 	Present createPresent(PresentPostReq present);
-
-	@Transactional(rollbackFor = Exception.class)
 	void deletePresent(Long presentId);
-
-	@Transactional(rollbackFor = Exception.class)
 	Present updatePresent(Long presentId, PresentPostReq present);
-
 	List<Present> getPresentListByUserId(Long userId);
-
-	@Transactional(rollbackFor = Exception.class)
 	Message sendMessageAndPresent(MessagePostReq message);
-
 	String peekMoney(Long userId);
 }

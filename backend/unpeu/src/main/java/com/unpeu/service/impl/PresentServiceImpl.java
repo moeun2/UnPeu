@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.unpeu.config.exception.CustomException;
 import com.unpeu.domain.entity.Message;
@@ -41,6 +42,7 @@ public class PresentServiceImpl implements IPresentService {
 	 * @return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Present createPresent(PresentPostReq present) {
 		logger.info("createPreset-호출");
 		Optional<User> user = userRepository.findById(Long.parseLong(present.getUserId()));
@@ -64,6 +66,7 @@ public class PresentServiceImpl implements IPresentService {
 	 * @return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void deletePresent(Long presentId) {
 		logger.info("deletePresent-호출");
 		// 해당 선물에 이미 메세지(선물 or 돈)을 받았다면
@@ -90,6 +93,7 @@ public class PresentServiceImpl implements IPresentService {
 	 * @return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Present updatePresent(Long presentId, PresentPostReq present) {
 		logger.info("updatePresent-호출");
 		Optional<Present> oPresent = presentRepository.findById(presentId);
@@ -129,6 +133,7 @@ public class PresentServiceImpl implements IPresentService {
 	 * @return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Message sendMessageAndPresent(MessagePostReq message) {
 		logger.info("sendMessageAndPresent-호출");
 		Present present = null;
