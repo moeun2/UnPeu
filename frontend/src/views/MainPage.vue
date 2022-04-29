@@ -103,7 +103,7 @@
 
 <script>
 import {getUserDetailUseToken,getUserDetail,updateUserImg,updateUserTitle,updateUserInfo} from '@/api/user.js';
-import {BASE_URL,API_BASE_URL} from '@/config/index';
+import {FRONT_URL,API_BASE_URL} from '@/config/index';
 // import store from '@/store';
 export default {
   name: 'App',
@@ -198,7 +198,7 @@ export default {
           window.localStorage.removeItem("accessToken")
           if(this.$store.state.userStore.user.socialDomain=="kakao"){
             window.location.replace(
-              "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri="+BASE_URL
+              "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri="+FRONT_URL
             );
           }
           this.$router.push({name: "Landing"})
@@ -266,7 +266,6 @@ export default {
           showConfirmButton: false,
           timer: 800
         })
-
     }
 
     },

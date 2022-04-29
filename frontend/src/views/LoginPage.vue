@@ -15,7 +15,7 @@
 
 <script>
 import {getUserDetailUseToken} from '@/api/user.js';
-import {BASE_URL} from '@/config/index';
+import {FRONT_URL} from '@/config/index';
 export default {
   name: 'LoginPage',
   created() {
@@ -40,13 +40,13 @@ export default {
   methods: {
     GoogleLogin(){
         window.location.replace(
-        "https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile%20openid&response_type=code&client_id=530350751299-fbiks9onutpnvmgebr0fc5uvllj5fidn.apps.googleusercontent.com&redirect_uri="+BASE_URL+"/login/google"
+        "https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile%20openid&response_type=code&client_id=530350751299-fbiks9onutpnvmgebr0fc5uvllj5fidn.apps.googleusercontent.com&redirect_uri="+FRONT_URL+"/login/google"
       );
     },
 
     KakaoLogin(){
       window.location.replace(
-        "https://kauth.kakao.com/oauth/authorize?client_id=c0ad1801cdf80282754cf18e79556743&redirect_uri="+BASE_URL+"/login/kakao&response_type=code"
+        "https://kauth.kakao.com/oauth/authorize?client_id=c0ad1801cdf80282754cf18e79556743&redirect_uri="+FRONT_URL+"/login/kakao&response_type=code"
       );
     },
     
