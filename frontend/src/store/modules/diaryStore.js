@@ -48,10 +48,8 @@ export const diaryStore = {
         userId,
         (res) => {
           console.log("categoryList action");
-          if (res.status == 200) {
-            console.log("카테고리 목록 조회 성공");
-            commit("MU_CATEGORY_LIST", res.data.category);
-          }
+          console.log("카테고리 목록 조회 성공");
+          commit("MU_CATEGORY_LIST", res.data.category);
         },
         (error) => {
           console.log(error);
@@ -66,10 +64,8 @@ export const diaryStore = {
         value.category,
         (res) => {
           console.log("boardList action");
-          if (res.status == 200) {
-            console.log("게시글 목록 조회 성공");
-            commit("MU_BOARD_LIST", res.data.boardList);
-          }
+          console.log("게시글 목록 조회 성공");
+          commit("MU_BOARD_LIST", res.data.boardList);
         },
         (error) => {
           console.log(error);
@@ -82,10 +78,8 @@ export const diaryStore = {
       diaryApi.getBoardInfo(
         boardId,
         (res) => {
-          if (res.status == 200) {
-            console.log("게시글 상세 조회 성공");
+          console.log("게시글 상세 조회 성공");
             commit("MU_BOARD_DETAIL", res.data.boardInfo);
-          }
         },
         (error) => {
           console.log(error);
@@ -99,16 +93,13 @@ export const diaryStore = {
         boardInfo,
         (res) => {
           console.log("save board action");
-
-          var message = "저장을 실패하였습니다.";
-          if (res.status == 200) {
-            message = "저장을 성공하였습니다.";
-            this.$router.push({ name: "BoardList" });
-          }
-          alert(message);
+          console.log(res.data)
+          this.$router.push({ name: "BoardList" });
+          alert("저장을 성공하였습니다.");
           commit;
         },
         (error) => {
+          alert("저장을 실패하였습니다.");
           console.log(error);
         }
       );
@@ -121,15 +112,12 @@ export const diaryStore = {
         value.boardInfo,
         (res) => {
           console.log("edit board action");
-
-          var message = "수정을 실패하였습니다.";
-          if (res.status == 200) {
-            message = "수정을 성공했습니다.";
-          }
-          alert(message);
+          console.log(res.data)
+          alert("수정을 성공했습니다.");
           commit;
         },
         (error) => {
+          alert("수정을 실패하였습니다.");
           console.log(error);
         }
       );
@@ -141,15 +129,12 @@ export const diaryStore = {
         boardId,
         (res) => {
           console.log("delete board action");
-
-          var message = "삭제를 실패하였습니다.";
-          if (res.status == 200) {
-            message = "삭제가 완료되었습니다.";
-          }
-          alert(message);
+          console.log(res.data)
+          alert("삭제가 완료되었습니다.");
           commit;
         },
         (error) => {
+          alert("삭제가 실패하였습니다.");
           console.log(error);
         }
       );
@@ -164,15 +149,12 @@ export const diaryStore = {
         value.commentInfo,
         (res) => {
           console.log("register comment action");
-
-          var message = "등록을 실패하였습니다.";
-          if (res.status == 200) {
-            message = "등록을 성공하였습니다.";
-          }
-          alert(message);
+          console.log(res.data)
+          console.log("댓글 등록을 성공하였습니다.");
           commit;
         },
         (error) => {
+          console.log("등록을 실패하였습니다.")
           console.log(error);
         }
       );
@@ -185,12 +167,12 @@ export const diaryStore = {
         value.commentInfo,
         (res) => {
           console.log("edit comment action");
-          if (res.status == 200) {
-            console.log("댓글 수정 완료");
-            commit;
-          }
+          console.log(res.data)
+          alert("댓글 수정이 완료되었습니다.");
+          commit;
         },
         (error) => {
+          alert("댓글 수정을 실패하였습니다.");
           console.log(error);
         }
       );
@@ -203,16 +185,12 @@ export const diaryStore = {
         value.password,
         (res) => {
           console.log("delete comment action");
-          var message = "삭제를 실패하였습니다.";
-          if (res.status == 200) {
-            message = "삭제가 완료되었습니다.";
-          }
-          alert(message);
+          console.log(res.data)
+          alert("댓글 삭제가 완료되었습니다.");
           commit;
         },
         (error) => {
-          // 백엔드 실패 status 확인 필요
-          alert("삭제를 실패하였습니다.");
+          alert("댓글 삭제를 실패하였습니다.");
           console.log(error);
         }
       );
