@@ -70,6 +70,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
+// Setting to not build plain.jar
+tasks.named('jar') {
+    enabled = false
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
