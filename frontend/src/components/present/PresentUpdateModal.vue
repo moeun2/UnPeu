@@ -31,6 +31,7 @@
             >
               <v-text-field
                   v-model="updatedPresent.presentPrice"
+                  required
                   label="가격 설정"
                   value="0"
                   prefix="₩"
@@ -69,6 +70,7 @@
               <v-file-input
                 :rules="rules"
                 v-model="files"
+                required
                 accept="image/png, image/jpeg, image/bmp"
                 placeholder="변경하고 싶은 선물 선택!"
                 prepend-icon="mdi-camera"
@@ -119,7 +121,7 @@ const presentStore="presentStore";
           presentName : null,
           presentPrice : null,
           presentImg : null,
-          userId : 1,
+          userId : this.$store.state.userStore.user.id,
         },
         API_BASE_URL:API_BASE_URL,
         imgUrl:null,
@@ -155,7 +157,7 @@ const presentStore="presentStore";
         let fd=new FormData();
         fd.append('presentImg',this.files);
         fd.append('presentPrice',this.updatedPresent.presentPrice);
-        fd.append('userId',1);
+        fd.append('userId',this.$store.state.userStore.user.id);
         fd.append('presentName',this.updatedPresent.presentName);
 
         let presentData={
@@ -164,6 +166,7 @@ const presentStore="presentStore";
         }
         console.log(presentData);
         this.updatePresent(presentData);
+        this.$emit('close');
       },
     }
   }

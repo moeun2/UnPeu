@@ -67,7 +67,7 @@ const presentStore="presentStore";
         let fd=new FormData();
         fd.append('presentImg',this.files);
         fd.append('presentPrice',this.presentPrice);
-        fd.append('userId',0);
+        fd.append('userId', this.$store.state.userStore.user.id);
         fd.append('presentName',this.presentName);
 
         for (var key of fd.keys()) {

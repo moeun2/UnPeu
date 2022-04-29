@@ -1,5 +1,12 @@
 <template>
 <div class="present-carousel">
+  <template v-if="cardList.length===0">
+    <v-img
+    src="@/assets/img/none_present.png"
+    >
+    </v-img>
+  </template>
+  <template v-else>
   <v-carousel hide-delimiters style="height:350px">
     <template v-for="(card, index) in cardList">
     <v-carousel-item v-if="(index + 1) % columns ===1 || columns === 1" :key="index">
@@ -60,6 +67,7 @@
     </template>
   </v-carousel>
   <present-update-modal :openDialog="dialog" :present="selectedCardList" @close="closeDialog" />
+  </template>
   </div>
 </template>
 
@@ -72,7 +80,8 @@ export default {
   components:{
     PresentUpdateModal,
   },
-  data:()=>({
+  data(){
+    return{
     cardList: [],
     selectedCardList: null,
     present:{
@@ -82,7 +91,9 @@ export default {
     cardIndex:0,
     dialog:false,
     API_BASE_URL: API_BASE_URL,
-  }),
+    userId:this.$store.state.userStore.user.id,
+    }
+  },
   mounted(){
     this.search();
   },
@@ -96,9 +107,9 @@ export default {
   methods:{
     ...mapActions(presentStore,["searchList","deletePresent"]),
     search(){
-      this.searchList(1);
+      this.searchList(this.userId);
       this.cardList=this.presentList.Present;
-      console.log(this.cardList);
+      console.log(this.userId);
     },
     openDialog(index){
       this.dialog=true;
