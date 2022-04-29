@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <div class="view">
-      <router-view />
+      <!-- 같은 경로(다른 param)로 라우터 이동시 화면이 변경안되는 것 때문에 추가 -->
+      <router-view :key="$route.fullPath" />
     </div>
     <email-fab></email-fab>
   </v-app>
