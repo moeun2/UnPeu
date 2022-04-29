@@ -1,42 +1,41 @@
 <template>
   <v-container fluid>
-    <v-card height="400">
+    <v-card>
       <v-card-title>
         <span>Diary</span>
       </v-card-title>
 
       <v-card-subtitle>
-        <span>{{ today }}</span>
-        <v-btn @click="writeDiary"> 글 작성 </v-btn>
+        <v-row>
+          <v-col>
+            <span>{{ today }}</span>
+            <v-btn class="float-right" @click="writeDiary"> 글 작성 </v-btn>
+          </v-col>
+        </v-row>
       </v-card-subtitle>
 
-      <v-card-text data-app="true">
-        <v-select
-          v-model="category"
-          :items="categories"
-          label="Category"
-          return-object
-          single-line
-        ></v-select>
+      <v-card-text>
+        <v-row>
+          <v-col>
+            <v-select
+              v-model="category"
+              :items="categories"
+              label="Category"
+              clearable
+              dense
+            ></v-select>
 
-        <v-simple-table>
-          <thead>
-            <tr>
-              <th>title</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody v-if="boardList.length">
-            <tr
-              v-for="item in boardList"
-              :key="item.diaryId"
-              @click="moveDetailPage(item.diaryId)"
+            <v-data-table
+              class="elevation-1"
+              :headers="headers"
+              :items="boardList"
+              :items-per-page="10"
+              item-key="title"
+              @click:row="moveDetailPage"
             >
-              <td>{{ item.title }}</td>
-              <td>{{ item.createdAt }}</td>
-            </tr>
-          </tbody>
-        </v-simple-table>
+            </v-data-table>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
   </v-container>
@@ -44,6 +43,8 @@
 
 <script>
 import dayjs from "dayjs";
+import { mapGetters, mapActions } from "vuex";
+const diaryStore = "diaryStore";
 
 export default {
   name: "BoardList",
@@ -51,33 +52,48 @@ export default {
   data() {
     return {
       today: dayjs().format("YYYY-MM-DD"),
-      category: "",
-      // 모든 data는 restApi를 통해 값을 가져온다. (List 형태)
-      categories: ["List", "2022_어른이날"],
-      boardList: [
-        // select값에 따라 값이 변한다.
-        {
-          diaryId: 1,
-          title: "0412 일기",
-          createdAt: "2022-04-12",
-        },
-        {
-          diaryId: 2,
-          title: "0413 일기",
-          createdAt: "2022-04-13",
-        },
+      headers: [
+        { text: "Title", align: "start", value: "title" },
+        { text: "Date", align: "center", value: "createdAt" },
       ],
+      userId: this.$route.params.userid,
+      category: "Default",
     };
   },
 
+  created() {
+    this.AC_CATEGORY_LIST(this.userId);
+    this.AC_BOARD_LIST({ userId: this.userId, category: this.category });
+  },
+
+  computed: {
+    // 이름 지정해서 getters 가져오기
+    ...mapGetters(diaryStore, {
+      boardList: "GET_BOARD_LIST",
+      categories: "GET_CATEGORY_LIST",
+    }),
+  },
+
+  watch: {
+    //category값이 변할 때마다 함수실행
+    category: function () {
+      this.AC_BOARD_LIST({ userId: this.userId, category: this.category });
+    },
+  },
+
   methods: {
+    ...mapActions(diaryStore, ["AC_BOARD_LIST", "AC_CATEGORY_LIST"]),
+
     writeDiary() {
       this.$router.push({ name: "BoardWrite" });
     },
-    moveDetailPage(id) {
-      // 행의 id값을 이용하여 세부사항 조회
-      console.log(id);
-      this.$router.push({ name: "BoardDetail", params: { diaryId: id } });
+
+    moveDetailPage(data) {
+      console.log(data.boardId);
+      this.$router.push({
+        name: "BoardDetail",
+        params: { boardId: data.boardId },
+      });
     },
   },
 };

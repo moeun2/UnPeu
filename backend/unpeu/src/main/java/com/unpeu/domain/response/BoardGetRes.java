@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class BoardGetRes {
     private Long userId;
     private Long boardId;
+    private String title;
     private String category;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -23,6 +24,7 @@ public class BoardGetRes {
     public BoardGetRes(Board board) {
         this.userId = board.getUser().getId();
         this.boardId = board.getBoardId();
+        this.title = board.getTitle();
         this.category = board.getCategory();
         this.createdAt = board.getCreatedAt();
     }

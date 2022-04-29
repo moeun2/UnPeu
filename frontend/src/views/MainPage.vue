@@ -18,38 +18,52 @@
                     <p class="text-today-is">
                       BGM IS .. <span> Y - 프리스타일</span>
                     </p>
+                    <!-- <v-icon class="img-update-icon" small @click="updateUserImg" v-if="isMyPage">mdi-image-edit-outline</v-icon> -->
+                    <v-file-input class="img-update-icon"
+                      v-if="isMyPage"
+                      :rules="rules"
+                      v-model="files"
+                      hide-input
+                      accept="image/png, image/jpeg, image/bmp"
+                    ></v-file-input>
                     <img
                       class="profile-img"
                       :src="this.userImg"
-                      alt="profile"
+                      alt="profile 이미지가 없습니다"
+                      onerror="this.src='https://i.imgur.com/nupfePY.png'"
                     />
                     <div class="desc-wrap">
+                      <v-icon small class="title-update-icon" @click="updateUserInfo" v-if="isMyPage">mdi-pencil-outline</v-icon>
                       <div class="text-desc" >
                         {{this.userInfo}}
                       </div>
-                      <!-- <p class="text-desc">
-                        선물 주는 バr람 <br />
-                        착ㅎŁ バr람 <br />
-                        ^-^
-                      </p> -->
                     </div>
                     <div class="info-wrap">
-                      <a class="info-name" href="#">{{this.userName}}</a><br/>
-                      <!-- <p class="text-email">ssafykim@ssafy.com</p> -->
-                      <div style="display: flex">
-                      <router-link :to="{ name: 'PresentManage' }">
+                      <v-icon small @click="copyLink">mdi-link</v-icon>
+                      <a class="info-name" href="#" > {{this.userName}}</a>
+                      <div class="info-birth">{{this.userBirth}}</div>
+                      <br/>
+                      <p class="text-email">{{this.userEmail}}</p>
+                      <div style="display: flex; margin-top: 10px;">
+                      <router-link :to="{ name: 'PresentManage' }" v-if="isMyPage">
                       <button class="item">
                         <img src="https://i.imgur.com/nupfePY.png" >
                         <p class="arrow_box">받고 싶은 선물 등록!</p>
                       </button>
                       </router-link>
-                      <router-link :to="{ name: 'Login' }">
+                      <router-link :to="{ name: 'Login' }" v-if="!isLogin">
                       <button class="item">
                         <img src="https://i.imgur.com/Fqfvown.png" >
                         <p class="arrow_box">로그인</p>
                       </button>
                       </router-link>
-                      <button class="item" @click="logout">
+                      <router-link :to="{name: 'eventRoom',params: {userid:  $store.state.userStore.user.id}}" v-if="!isMyPage&&isLogin">
+                      <button class="item">
+                        <img src="https://i.imgur.com/Fqfvown.png" >
+                        <p class="arrow_box">마이페이지</p>
+                      </button>
+                      </router-link>
+                      <button class="item" @click="logout" v-if="isLogin">
                         <img src="https://i.imgur.com/Fqfvown.png" >
                         <p class="arrow_box">로그아웃</p>
                       </button>
@@ -71,7 +85,8 @@
                     </ul>
                   </div>
                   <div class="title-wrap">
-                    <p class="title"><a href="#">{{this.userTitle}}</a></p>
+                    
+                    <p class="title"><v-icon small @click="updateUserTitle" v-if="isMyPage">mdi-pencil-outline</v-icon><a href="#">{{this.userTitle}}</a></p>
                   </div>
                   <div class="main">
                     <router-view />
@@ -82,11 +97,14 @@
           </section>
         </main>
       </div>
+
     </div>
 </template>
 
 <script>
-import {getUserDetailUseToken,getUserDetail} from '@/api/user.js';
+import {getUserDetailUseToken,getUserDetail,updateUserImg,updateUserTitle,updateUserInfo} from '@/api/user.js';
+import {FRONT_URL,API_BASE_URL} from '@/config/index';
+// import store from '@/store';
 export default {
   name: 'App',
   data() {
@@ -94,11 +112,23 @@ export default {
           activeCheckClass: 'menu-item mi-1 menu-checked',
           activeClass: 'menu-item mi-3',
           userName: "김싸피",
-          userInfo: "선물주는 사람 차칸 사람",
+          userInfo: "선물주는 사람\n차칸 사람",
           userTitle: "오늘은 어른이날, 선물사주라주",
-          userImg: "https://i.imgur.com/nupfePY.png",
-
+          userImg: "",
+          userBirth: "1996.10.31",
+          userEmail: "ssafykim@ssafy.com",
+          isLogin: false,
+          isMyPage: false,
+          rules: [
+            value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+           ],
+          files:null,
       }
+  },
+  watch: {
+    files: function () {
+      this.updateUserImg()
+    },
   },
 
    created() {
@@ -108,33 +138,37 @@ export default {
       (res)=>{
         console.log(res.data.User);
         this.$store.commit("userStore/setUser",res.data.User)
+        this.isLogin=true;
+        if(this.$route.params.userid==res.data.User.id){
+          this.isMyPage=true
+        }
       },
       ()=>{
         console.log("getUserDetailUseToken fail")
+        this.isLogin=false;
         window.localStorage.removeItem("accessToken")
         this.$router.go
       } )
     }
+
     //지금 접속한 페이지의 user 정보 가져오기
     getUserDetail(this.$route.params.userid,
       (res)=>{
         console.log(res.data.User);
         this.userName=res.data.User.userName
         if(res.data.User.userImg){
-          this.userImg="http://localhost:8080"+res.data.User.userImg//baseurl으로 바꾸기
+          this.userImg=API_BASE_URL+res.data.User.userImg
         }
         if(res.data.User.userInfo){
           this.userInfo= res.data.User.userInfo
         }
         if(res.data.User.userTitle){
-          this.userInfo= res.data.User.userTitle
+          this.userTitle= res.data.User.userTitle
         }
-        // this.$store.commit("userStore/setUser",res.data.User)
       },
       ()=>{
         console.log("getUserDetail fail")
       })
-
 
    },
   components: {
@@ -148,6 +182,7 @@ export default {
               this.activeCheckClass = 'menu-item mi-1 menu-checked';
           }
       },
+
       checkDiary() {
           if(this.activeClass === 'menu-item mi-3') {
               this.activeClass = 'menu-item mi-1 menu-checked';
@@ -163,13 +198,79 @@ export default {
           window.localStorage.removeItem("accessToken")
           if(this.$store.state.userStore.user.socialDomain=="kakao"){
             window.location.replace(
-              "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri=http://localhost:8081/login"
+              "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri="+FRONT_URL
             );
           }
-          this.$router.go
+          this.$router.push({name: "Landing"})
         }
-    },
+      },
+
+      async updateUserTitle(){
+        const { value: title } = await this.$swal.fire({
+          title: '타이틀을 입력해주세요!',
+          input: 'text',
+          inputLabel: '오른쪽 상단의 타이틀입니다. 귀여운 어필을 해보는건 어떨까요?',
+          inputPlaceholder: 'Enter the Title'
+        })
+
+        if (title) {
+          updateUserTitle(title,
+          (res)=>{
+            this.userTitle=res.data.User.userTitle
+          },
+        )
+        }
+      },
+
+      async updateUserInfo(){
+        const { value: info } = await this.$swal.fire({
+          title: '소개글을 입력해주세요!',
+          input: 'textarea',
+          inputLabel: '프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)',
+          inputPlaceholder: 'Enter the Info'
+        })
+
+        if (info) {
+          updateUserInfo(info,
+          (res)=>{
+            this.userInfo=res.data.User.userInfo
+          })
+        }
+      },
+    
+
+      async updateUserImg(){
+        let fd=new FormData();
+        fd.append('file',this.files);
+
+        updateUserImg(fd,
+          (res)=>{
+            this.userImg=API_BASE_URL+res.data.User.userImg
+          },
+        )
+      },
+      copyLink(){
+
+        let currentUrl = window.document.location.href;
+
+        let t = document.createElement("textarea");
+        document.body.appendChild(t);
+        t.value = currentUrl;
+        t.select();
+        document.execCommand('copy');
+        document.body.removeChild(t);
+        //복사완료 다이얼로그
+        this.$swal.fire({
+          icon: 'success',
+          title: '링크가 저장되었습니다.',
+          showConfirmButton: false,
+          timer: 800
+        })
     }
+
+    },
+    
+
 };
 </script>
 
@@ -222,4 +323,24 @@ export default {
 img:hover + p.arrow_box {
   display: block;
 }
+.info-birth {
+    /* content: "(♂) 1996.10.31"; */
+    color: #a5a8aa;
+    font-size: 10px;
+    margin-left: 5px;
+    font-weight: 400;
+    display: inline;
+  }
+
+  .title-update-icon{
+    position: absolute !important;
+    left: 148px;
+    bottom: 10px;
+  }
+
+  .img-update-icon{
+    position: absolute !important;
+    left: 200px;
+    bottom: 308px;
+  }
 </style>
