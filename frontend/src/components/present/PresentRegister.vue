@@ -3,7 +3,7 @@
 <v-form @submit="regist">
 <v-container fluid>
   <v-row>
-    <v-col cols="5">
+    <v-col cols="3">
       <v-file-input
         :rules="rules"
         v-model="files"
@@ -12,9 +12,16 @@
         prepend-icon="mdi-camera"
       ></v-file-input>
     </v-col>
-    <v-col cols="5">
+    <v-col cols="3">
       <v-text-field
-          v-model="present"
+          v-model="presentName"
+          label="선물 이름 등록"
+          value="10.00"
+        ></v-text-field>
+      </v-col>
+    <v-col cols="3">
+      <v-text-field
+          v-model="presentPrice"
           label="Amount"
           value="10.00"
           prefix="₩"
@@ -42,7 +49,8 @@ import {mapActions} from "vuex";
 const presentStore="presentStore";
   export default {
     data: () => ({
-      present: null,
+      presentName: null,
+      presentPrice: null,
       rules: [
         value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
       ],
@@ -58,9 +66,9 @@ const presentStore="presentStore";
         
         let fd=new FormData();
         fd.append('presentImg',this.files);
-        fd.append('presentPrice',this.present);
-        fd.append('userId',0);
-        fd.append('presentName',this.files.name);
+        fd.append('presentPrice',this.presentPrice);
+        fd.append('userId', this.$store.state.userStore.user.id);
+        fd.append('presentName',this.presentName);
 
         for (var key of fd.keys()) {
 
