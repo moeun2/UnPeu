@@ -2,6 +2,7 @@ export const userStore={
     namespaced : true,
     state:{
         user: null,
+
     },
     getters:{
 
