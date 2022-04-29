@@ -23,9 +23,9 @@
           ></v-text-field>
           <!-- CKEditor로 수정 예정 -->
           <v-textarea
-            v-model="form.contents"
-            :rules="rules.contents"
-            label="Contents"
+            v-model="form.content"
+            :rules="rules.content"
+            label="Content"
           >
           </v-textarea>
         </v-form>
@@ -48,23 +48,25 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+const diaryStore = "diaryStore";
+
 export default {
   name: "BoardWrite",
 
   data() {
     return {
       form: {
+        userId: this.$route.params.userid,
         category: "",
         title: "",
-        contents: "",
+        content: "",
       },
       rules: {
         category: [(val) => (val || "").length > 0 || "This field is required"],
         title: [(val) => (val || "").length > 0 || "This field is required"],
-        contents: [(val) => (val || "").length > 0 || "This field is required"],
+        content: [(val) => (val || "").length > 0 || "This field is required"],
       },
-      // 모든 data는 restApi를 통해 값을 가져온다. (List 형태)
-      categories: ["List", "2022_어른이날"],
     };
   },
 
@@ -73,30 +75,58 @@ export default {
       type: String,
       default: "write",
     },
+
     value: {
       type: Object,
     },
   },
 
-  mounted() {
+  created() {
+    this.AC_CATEGORY_LIST(this.form.userId);
+
     if (this.type === "edit") {
+      console.log("edit created");
+      console.log(this.value);
       this.form = this.value;
     }
   },
 
   computed: {
+    ...mapGetters(diaryStore, {
+      categories: "GET_CATEGORY_LIST",
+    }),
+
     formIsValid() {
-      return this.form.title && this.form.contents && this.form.category;
+      return this.form.title && this.form.content && this.form.category;
     },
   },
 
   methods: {
+    ...mapActions(diaryStore, [
+      "AC_CATEGORY_LIST",
+      "AC_REGISTER_BOARD",
+      "AC_EDIT_BOARD",
+    ]),
+
     save() {
       console.log("save");
+      this.AC_REGISTER_BOARD(this.form);
+      this.$router.push({ name: "BoardList" });
     },
+
     edit() {
       console.log("edit");
+      this.AC_EDIT_BOARD({
+        boardId: this.$route.params.boardId,
+        boardInfo: this.form,
+      });
+      this.$router.push({ name: "BoardList" });
+      // this.$router.push({
+      //   name: "BoardDetail",
+      //   params: { boardId: this.$route.params.boardId },
+      // });
     },
+
     cancle() {
       console.log("cancle");
       this.$router.push({ name: "BoardList" });
