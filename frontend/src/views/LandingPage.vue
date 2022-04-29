@@ -1,5 +1,6 @@
 <template>
     <v-container>
+        <button></button>
         <div class="landing"> 
             <span style = "font-size:2em; font-weight: bold ;">
               당신을 위한 조그마한 기록 그리고 선물<br>Un Peu : 앙뿌<br>
