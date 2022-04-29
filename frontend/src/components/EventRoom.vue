@@ -83,8 +83,8 @@ export default {
             currentPage: 1,
         }
     },
-    async created() {
-        await getMessage(
+    mounted() {
+        getMessage(
             (res) => {
                 console.log(res.data.Message);
                 this.messages = res.data.Message;
@@ -93,7 +93,7 @@ export default {
             () => {
                 console.log("fail")
             }
-        );
+        )
     },
     computed: {
         rows() {
@@ -118,7 +118,7 @@ export default {
     },
     methods: {
         modal(message) {
-            console.log(message);
+            console.log("modal-message : " ,message);
             this.content = message.content;
             this.sender = message.sender;
             if(message.present != null){

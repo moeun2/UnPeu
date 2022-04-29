@@ -16,7 +16,6 @@ export const userStore={
             state.user=null;
             console.log(state.user);
         },
-        
     },
     actions:{
     }
