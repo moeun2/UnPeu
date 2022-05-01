@@ -34,9 +34,7 @@
                     />
                     <div class="desc-wrap">
                       <v-icon small class="title-update-icon" @click="updateUserInfo" v-if="isMyPage">mdi-pencil-outline</v-icon>
-                      <div class="text-desc" >
-                        {{this.userInfo}}
-                      </div>
+                      <div class="text-desc" >{{this.userInfo}}</div>
                     </div>
                     <div class="info-wrap">
                       <v-icon small @click="copyLink">mdi-link</v-icon>
@@ -87,7 +85,7 @@
                   </div>
                   <div class="title-wrap">
                     
-                    <p class="title"><v-icon small @click="updateUserTitle" v-if="isMyPage">mdi-pencil-outline</v-icon><a href="#">{{this.userTitle}}</a></p>
+                    <p class="title"><v-icon plain retain-focus-on-click small @click="updateUserTitle" v-if="isMyPage">mdi-pencil-outline</v-icon><a href="#">{{this.userTitle}}</a></p>
                   </div>
                   <div class="main">
                     <router-view />
@@ -131,7 +129,7 @@ export default {
       this.updateUserImg()
     },
     $route(to, form) {
-     if (to.path !== form.path) this.data(this.$route.params.userid)
+     if (to.path !== form.path) this.changeParams(this.$route.params.userid)
    },
 
   },
@@ -179,7 +177,7 @@ export default {
   components: {
   },
   methods: {
-    data(index) {
+    changeParams(index) {
      if(window.localStorage.getItem("accessToken")){
       //로그인 되어있는 상태 store inlogin true
       getUserDetailUseToken(window.localStorage.getItem("accessToken"),
@@ -195,6 +193,7 @@ export default {
         console.log("getUserDetailUseToken fail")
         this.isLogin=false;
         window.localStorage.removeItem("accessToken")
+        this.$store.commit("userStore/setUserNull")
         this.$router.go
       } )
     }
@@ -238,14 +237,17 @@ export default {
       },
 
       logout(){
-        //storage확인해서 도메인 확인
+        //storage확인해서 도메인 확인 //모달창 바꾸기
         if(confirm("로그아웃 하시겠습니까?")){
           window.localStorage.removeItem("accessToken")
+
           if(this.$store.state.userStore.user.socialDomain=="kakao"){
+            this.$store.commit("userStore/setUSerNull")
             window.location.replace(
               "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri="+FRONT_URL
             );
           }
+          this.$store.commit("userStore/setUSerNull")
           this.$router.push({name: "Landing"})
         }
       },
@@ -255,7 +257,10 @@ export default {
           title: '타이틀을 입력해주세요!',
           input: 'text',
           inputLabel: '오른쪽 상단의 타이틀입니다. 귀여운 어필을 해보는건 어떨까요?',
-          inputPlaceholder: 'Enter the Title'
+          inputPlaceholder: '25자 이하로 작성해주세요.',
+          inputAttributes: {
+            maxlength: 25,
+          }
         })
 
         if (title) {
@@ -271,8 +276,17 @@ export default {
         const { value: info } = await this.$swal.fire({
           title: '소개글을 입력해주세요!',
           input: 'textarea',
-          inputLabel: '프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)',
-          inputPlaceholder: 'Enter the Info'
+          inputLabel: '프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)' ,
+          inputPlaceholder: '50자 이하, 4줄 이하로 작성해주세요.',
+          inputAttributes: {
+            maxlength: 50,
+          },
+          inputValidator:(value) => {
+              if (!value) {
+                return '소개글을 한글자 이상 입력해주세요!'
+              }
+            }
+         
         })
 
         if (info) {
@@ -319,7 +333,7 @@ export default {
 };
 </script>
 
-<style>
+<style scope>
 @import url("@/assets/css/reset.css");
 @import url("@/assets/css/style.css");
 
@@ -379,13 +393,14 @@ img:hover + p.arrow_box {
 
   .title-update-icon{
     position: absolute !important;
-    left: 148px;
+    left: 142px;
     bottom: 10px;
   }
 
   .img-update-icon{
     position: absolute !important;
-    left: 200px;
-    bottom: 308px;
+    left: 197px;
+    bottom: 309px;
   }
+
 </style>
