@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-card>
+    <v-card outlined>
       <v-card-title>
         <span>Diary</span>
       </v-card-title>
@@ -9,7 +9,13 @@
         <v-row>
           <v-col>
             <span>{{ today }}</span>
-            <v-btn class="float-right" @click="writeDiary"> 글 작성 </v-btn>
+            <v-btn
+              tile
+              class="float-right success"
+              @click="writeDiary"
+              v-if="loginUser && userId == loginUser.id"
+              ><v-icon left>mdi-pencil</v-icon>글 작성
+            </v-btn>
           </v-col>
         </v-row>
       </v-card-subtitle>
@@ -56,6 +62,7 @@ export default {
         { text: "Title", align: "start", value: "title" },
         { text: "Date", align: "center", value: "createdAt" },
       ],
+      loginUser: this.$store.state.userStore.user,
       userId: this.$route.params.userid,
       category: "Default",
     };
@@ -84,10 +91,12 @@ export default {
   methods: {
     ...mapActions(diaryStore, ["AC_BOARD_LIST", "AC_CATEGORY_LIST"]),
 
+    /* 작성하기 */
     writeDiary() {
       this.$router.push({ name: "BoardWrite" });
     },
 
+    /* 상세 페이지 이동*/
     moveDetailPage(data) {
       console.log(data.boardId);
       this.$router.push({

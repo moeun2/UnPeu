@@ -37,7 +37,14 @@ export const diaryStore = {
   mutations: {
     MU_CATEGORY_LIST(state, categoryList) {
       console.log("category mutation");
-      state.categoryList = categoryList;
+
+      // 빈 배열 체크
+      if (Array.isArray(categoryList) && categoryList.length === 0) {
+        state.categoryList = ["Default"];
+      } else {
+        state.categoryList = categoryList;
+      }
+      console.log(state.categoryList)
     },
 
     MU_BOARD_LIST(state, boardList) {
@@ -112,11 +119,12 @@ export const diaryStore = {
       diaryApi.registerBoard(
         boardInfo,
         (res) => {
-          console.log("save board action");
-          console.log(res.data)
-          this.$router.push({ name: "BoardList" });
-          alert("저장을 성공하였습니다.");
+          // console.log("save board action");
+          console.log(res.data);
           commit;
+
+          router.replace({ name: "BoardList" });
+          // alert("저장을 성공하였습니다.");
         },
         (error) => {
           alert("저장을 실패하였습니다.");
@@ -131,10 +139,15 @@ export const diaryStore = {
         value.boardId,
         value.boardInfo,
         (res) => {
-          console.log("edit board action");
-          console.log(res.data)
-          alert("수정을 성공했습니다.");
+          // console.log("edit board action");
+          console.log(res.data);
           commit;
+
+          router.replace({
+            name: "BoardDetail",
+            params: { boardId: value.boardId },
+          });
+          // alert("수정을 성공했습니다.");
         },
         (error) => {
           alert("수정을 실패하였습니다.");
