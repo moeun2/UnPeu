@@ -314,7 +314,7 @@
     object-fit: cover;
   }
   
-  .desc-wrap {
+  /* .desc-wrap {
     border-bottom: 1px solid #e2e0de;
     width: 100%;
     display: table;
@@ -325,11 +325,31 @@
     text-align: center;
     padding-bottom: 10px;
     height: 150px;
-    /* vertical-align: middle; */
     display: table-cell;
     vertical-align: middle;
-    white-space: pre-line;
+    white-space: pre-wrap;
+  } */
+
+  .desc-wrap {
+    border-bottom: 1px solid #e2e0de;
+    width: 100%;
+    height: 150px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
   }
+
+
+  .text-desc {
+    text-align: center;
+    padding-bottom: 10px;
+    vertical-align: middle;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
   
   .link-history {
     text-decoration: none;
