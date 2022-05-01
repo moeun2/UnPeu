@@ -58,6 +58,7 @@
                       </button>
                       </router-link>
                       <router-link :to="{name: 'eventRoom',params: {userid:  $store.state.userStore.user.id}}" v-if="!isMyPage&&isLogin">
+                        <!-- to="{name: 'eventRoom',params: {userid:  $store.state.userStore.user.id}}" -->
                       <button class="item">
                         <img src="https://i.imgur.com/Fqfvown.png" >
                         <p class="arrow_box">마이페이지</p>
@@ -129,6 +130,10 @@ export default {
     files: function () {
       this.updateUserImg()
     },
+    $route(to, form) {
+     if (to.path !== form.path) this.data(this.$route.params.userid)
+   },
+
   },
 
    created() {
@@ -174,6 +179,46 @@ export default {
   components: {
   },
   methods: {
+    data(index) {
+     if(window.localStorage.getItem("accessToken")){
+      //로그인 되어있는 상태 store inlogin true
+      getUserDetailUseToken(window.localStorage.getItem("accessToken"),
+      (res)=>{
+        console.log(res.data.User);
+        this.$store.commit("userStore/setUser",res.data.User)
+        this.isLogin=true;
+        if(index==res.data.User.id){
+          this.isMyPage=true
+        }
+      },
+      ()=>{
+        console.log("getUserDetailUseToken fail")
+        this.isLogin=false;
+        window.localStorage.removeItem("accessToken")
+        this.$router.go
+      } )
+    }
+
+    //지금 접속한 페이지의 user 정보 가져오기
+    getUserDetail(index,
+      (res)=>{
+        console.log(res.data.User);
+        this.userName=res.data.User.userName
+        if(res.data.User.userImg){
+          this.userImg=API_BASE_URL+res.data.User.userImg
+        }
+        if(res.data.User.userInfo){
+          this.userInfo= res.data.User.userInfo
+        }
+        if(res.data.User.userTitle){
+          this.userTitle= res.data.User.userTitle
+        }
+      },
+      ()=>{
+        console.log("getUserDetail fail")
+      })
+   },
+
       checkHome() {
           if(this.activeClass === 'menu-item mi-1 menu-checked') {
               this.activeClass = 'menu-item mi-3';
