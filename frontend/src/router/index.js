@@ -16,6 +16,7 @@ import Login from "@/views/LoginPage.vue"
 import KakaoLogin from "@/components/login/KakaoLogin.vue"
 import GoogleLogin from "@/components/login/GoogleLogin.vue"
 import Landing from "@/views/LandingPage.vue"
+import NotFound from "@/views/NotFoundPage.vue"
 
 
 Vue.use(VueRouter);
@@ -102,6 +103,11 @@ const routes = [
         path: "/landing",
         name: "Landing",
         component: Landing,
+    },
+    {
+        path: "*",
+        name: "NotFound",
+        component: NotFound,
     }
 ]
 const router = new VueRouter({
