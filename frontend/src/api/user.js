@@ -42,7 +42,9 @@ function updateUserImg(img,success,fail){
 
 function updateUserInfo(userInfo,success,fail){
 
-    api.patch("/users/info?userInfo="+userInfo,null,{
+    api.patch("/users/info",{
+        userInfo: userInfo,}
+        ,{
         headers: {
           Authorization: 'Bearer ' +localStorage.getItem("accessToken")
         }

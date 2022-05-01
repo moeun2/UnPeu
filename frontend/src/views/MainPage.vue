@@ -34,7 +34,7 @@
                     />
                     <div class="desc-wrap">
                       <v-icon small class="title-update-icon" @click="updateUserInfo" v-if="isMyPage">mdi-pencil-outline</v-icon>
-                      <div class="text-desc" >{{this.userInfo}}</div>
+                      <div class="text-desc" v-html="userInfo"></div>
                     </div>
                     <div class="info-wrap">
                       <v-icon small @click="copyLink">mdi-link</v-icon>
@@ -260,7 +260,12 @@ export default {
           inputPlaceholder: '25자 이하로 작성해주세요.',
           inputAttributes: {
             maxlength: 25,
-          }
+          },
+          inputValidator:(value) => {
+              if (!value) {
+                return '타이틀을 한글자 이상 입력해주세요!'
+              }
+            }
         })
 
         if (title) {
@@ -284,15 +289,17 @@ export default {
           inputValidator:(value) => {
               if (!value) {
                 return '소개글을 한글자 이상 입력해주세요!'
+              }else if(value.match(/[\n]/g) == null ? 1 : value.match(/[\n]/g).length+1>4){
+                return '4줄 이하로 입력해주세요!'
               }
             }
-         
         })
 
         if (info) {
-          updateUserInfo(info,
+          updateUserInfo(info.replace("\"", ""),
           (res)=>{
             this.userInfo=res.data.User.userInfo
+            console.log(res.data.User.userInfo)
           })
         }
       },
@@ -308,8 +315,8 @@ export default {
           },
         )
       },
-      copyLink(){
 
+      copyLink(){
         let currentUrl = window.document.location.href;
 
         let t = document.createElement("textarea");
