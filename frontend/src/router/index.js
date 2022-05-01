@@ -50,12 +50,12 @@ const routes = [
                         component: BoardWrite,
                     },
                     {
-                        path: "edit/:diaryId",
+                        path: "edit/:boardId",
                         name: "BoardEdit",
                         component: BoardEdit,
                     },
                     {
-                        path: "detail/:diaryId",
+                        path: "detail/:boardId",
                         name: "BoardDetail",
                         component: BoardDetail,
                     }

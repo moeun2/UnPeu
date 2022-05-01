@@ -6,11 +6,13 @@ Vue.use(Vuex);
 
 import {presentStore} from "@/store/modules/presentStore.js";
 import {userStore} from "@/store/modules/userStore.js";
+import {diaryStore} from "@/store/modules/diaryStore.js";
 
 export default new Vuex.Store({
 	modules: {
 		presentStore,
         userStore,
+        diaryStore,
 	},
 	plugins: [createPersistedState(
     {
