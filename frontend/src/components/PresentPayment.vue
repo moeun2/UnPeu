@@ -3,7 +3,7 @@
     <div class="message-title">콩주머니 보내기</div>
     <present-select-list-search @present="getPresent" />
     <present-message @message="getMessage" />
-    <button @click="testAlert">Hello world</button>
+    <!-- <button @click="testAlert">Hello world</button> -->
   </div>
 </template>
 

@@ -49,7 +49,7 @@ function sendFeedbackFailure(vm){
 }
 const notSelectPresentBody ={
     title: "선물을 선택하지 않으셨어요!",
-    text: "메세지만 보내시겠어요?",
+    text: "메세지만 보내시겠어요? (주의 : 등록된 메세지는 확인하실 수 없습니다)",
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "선물도 보낼래요!",
