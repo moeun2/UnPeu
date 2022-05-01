@@ -51,7 +51,7 @@ public class BoardServiceImpl implements IBoardService {
     @Override
     public List<BoardGetRes> getBoardList(Long userId, String category) {
         logger.info("getBoardList - 호출");
-        List<Board> boards = boardRepository.findByUserIdAndCategory(userId, category);
+        List<Board> boards = boardRepository.findByUserIdAndCategoryOrderByCreatedAtDesc(userId, category);
         return boards.stream()
                 .map(BoardGetRes::new)
                 .collect(Collectors.toList());
