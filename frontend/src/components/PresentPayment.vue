@@ -12,7 +12,7 @@ import PresentMessage from "./present/PresentMessage.vue";
 import PresentSelectListSearch from "@/components/present/PresentSelectListSearch.vue";
 import { mapActions } from "vuex";
 import * as Alert from "@/api/alert"; //api 폴더 안에 넣어놓는 것이 맞는지는 모르겠음. But, 넣어놓을 곳이 딱히 없어서 넣어놓음
-import {sendMessage} from '@/api/present';
+import { sendMessage } from "@/api/present";
 const presentStore = "presentStore";
 export default {
   components: { PresentMessage, PresentSelectListSearch },
@@ -34,23 +34,32 @@ export default {
     testAlert() {
       this.$router.push({ name: "eventRoom" });
     },
+    createMessage() {
+      const vm = this;
+      sendMessage(
+        this.message,
+        function (response) {
+          console.log(response);
+          Alert.sendMessageSuccess(vm);
+          vm.$router.push({ name: "eventRoom" });
+          
+        },
+        function (err) {
+          console.log(err);
+          Alert.sendMessageFailure(vm);
+        }
+      );
+    },
     /**
      * 선물결제에 관해 Alert로 물어보고 sendPresentMessage API를 실행
      */
     checkPresent() {
       if (this.message.presentId == null) {
         this.$swal.fire(Alert.notSelectPresentBody).then((result) => {
-          if (result.dismiss === this.$swal.DismissReason.cancel) { //메세지만 보낼래요!
+          if (result.dismiss === this.$swal.DismissReason.cancel) {
+            //메세지만 보낼래요!
             this.changeCardColor(false);
-            const vm = this;
-            sendMessage(this.message, function(response){
-              console.log(response)
-              vm.$router.push({ name: "eventRoom" });
-              this.Alert.sendMessageSuccess(this);
-            },function(err){
-              console.log(err)
-              this.Alert.sendMessageFailure(this);
-            });
+            this.createMessage();
           }
         });
       } else {
@@ -106,7 +115,7 @@ export default {
         name: "Unpeu 선물 구매", // 주문명
         buyer_name: "Unpeu Guest", // 구매자 이름
         buyer_tel: "01012341234", // 구매자 전화번호
-        buyer_email: "example@example.com", // 구매자 이메일
+        buyer_email: "mo_ah@naver.com", // 구매자 이메일
         buyer_addr: "Unpeu", // 구매자 주소
         buyer_postcode: "06018", // 구매자 우편번호
       };
@@ -118,13 +127,15 @@ export default {
       /* 3. 콜백 함수 정의하기 */
       const { success, error_msg } = response;
       if (success) {
-        Alert.paymentSuccess(this);
-        this.$router.push({ name: "eventRoom" });
+        this.createMessage();
+        // Alert.paymentSuccess(this);
+        // this.$router.push({ name: "eventRoom" });
       } else {
         console.log(`결제 실패: ${error_msg}`);
         Alert.paymentFailure(this);
       }
     },
+
     /**
      * 선택된 카드 색상을 바꿔주는 함수
      * 현재 노란색으로 지정해놓았으며, 나중에 색깔을 통일할 예정(style : .selectedCard 참고)
