@@ -2,7 +2,7 @@
   <div>
     <v-row justify="space-between" style="margin:5px;">
       <v-alert dense type="info">
-        주의 : 보내진 메세지는 받는 사람만 읽을 수 있으니 보낼 때 내용을 확인해주세요
+        주의 : 보내진 메세지는 수정이 불가하며, 받는 사람만 읽을 수 있으니 보내실 때 내용을 확인해주세요
       </v-alert>
     </v-row>
     <v-text-field
