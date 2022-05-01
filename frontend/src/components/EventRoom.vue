@@ -81,10 +81,11 @@ export default {
             perPage: 10,
             // 현재 페이지
             currentPage: 1,
+            userId: this.$store.state.userStore.user.id, //url or param에서 userId를 뽑게 되면 바뀌어야 함.
         }
     },
     mounted() {
-        getMessage(
+        getMessage(this.userId,
             (res) => {
                 console.log(res.data.Message);
                 this.messages = res.data.Message;

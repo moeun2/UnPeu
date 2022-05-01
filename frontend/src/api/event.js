@@ -1,10 +1,10 @@
-import { tokenInstance } from "./index.js";
+import { createInstance, tokenInstance } from "./index.js";
 
+const api = createInstance();
 const tokenApi = tokenInstance();
 
-function getMessage(success, fail){
-    console.log(localStorage.getItem("accessToken")) // 여기서 null 뜨면 1. login 하고 들어갔는지 확인 / 2. application-localstorage에서 accessToken있는지 확인
-    tokenApi.get(`/message`)
+function getMessage(userId, success, fail){
+    api.get(`/message/list/${userId}`)
     .then(success)
     .catch(fail)
 }
