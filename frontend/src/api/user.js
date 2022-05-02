@@ -21,7 +21,17 @@ function getUserDetail(userId, success, fail){
 function getUserDetailUseToken(token,success, fail){
     api.get(`/users`,{
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+          Authorization: 'Bearer ' + localStorage.getItem("accessToken"),
+        }
+       })
+    .then(success).catch(fail)
+    console.log("getUserDetailUseToken 실행됨")
+}
+
+function getUserIdUseToken(token,success, fail){
+    api.get(`/users`,{
+        headers: {
+          Authorization: 'Bearer ' +token,
         }
        })
     .then(success).catch(fail)
@@ -63,6 +73,16 @@ function updateUserTitle(userTitle,success,fail){
     console.log("updateUserTitle 실행됨")
 }
 
+function updateUserEmailBirth(token,data,success,fail){
+    api.patch(`/users/email/birth`,data,{
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+       })
+    .then(success).catch(fail)
+    console.log("updateUserEmailBirth 실행됨")
+}
+
 export{
     kakaoLogin,
     googleLogin,
@@ -70,5 +90,7 @@ export{
     updateUserImg,
     updateUserInfo,
     updateUserTitle,
-    getUserDetailUseToken
+    getUserDetailUseToken,
+    updateUserEmailBirth,
+    getUserIdUseToken
 }
