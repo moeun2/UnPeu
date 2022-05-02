@@ -10,6 +10,7 @@
           <div class="profile-dot">
             <div class="profile-paper">
               <div class="profile-wrap">
+                
                 <div class="visitor-counter">
                   <p class="text-today">103</p>
                   <p class="text-total">13042</p>
@@ -45,6 +46,8 @@
                     <div class="text-desc" v-html="userInfo"></div>
                   </div>
                   <div class="info-wrap">
+                    <v-button class="speech-bubble">친구에게<br/>공유해보세요~!</v-button>
+
                     <v-icon small @click="copyLink">mdi-link</v-icon>
                     <a class="info-name" href="#"> {{ this.userName }}</a>
                     <div class="info-birth">{{ this.userBirth }}</div>
@@ -453,5 +456,30 @@ img:hover + p.arrow_box {
   position: absolute !important;
   left: 197px;
   bottom: 309px;
+}
+
+.speech-bubble {
+	position: absolute;
+  bottom:105px;
+  left: -30px;
+	background: #85b9eaef;
+  color: white;
+	border-radius: .4em;
+  padding: 0.3rem;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-left-color: #85b9eaef;
+	border-right: 0;
+	border-top: 0;
+	margin-top: -5px;
+	margin-right: -10px;
 }
 </style>
