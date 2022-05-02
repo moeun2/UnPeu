@@ -721,7 +721,7 @@
 
   .main-room {
      background-image: url("https://i.imgur.com/TyYsFKh.jpg"); 
-     background-size: contain;
+     background-size: cover;
      border-radius: 15px;
      
   }
