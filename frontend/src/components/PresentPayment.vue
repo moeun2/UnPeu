@@ -10,17 +10,18 @@
       v-if="checkbox==false"
     />
     <present-message @message="getMessage" />
-    <!-- <button @click="testAlert">Hello world</button> -->
+    <!-- <button @click="testAlert">getters Test: {{userId}}</button> -->
   </div>
 </template>
 
 <script>
 import PresentMessage from "./present/PresentMessage.vue";
 import PresentSelectListSearch from "@/components/present/PresentSelectListSearch.vue";
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import * as Alert from "@/api/alert"; //api 폴더 안에 넣어놓는 것이 맞는지는 모르겠음. But, 넣어놓을 곳이 딱히 없어서 넣어놓음
 import { sendMessage } from "@/api/present";
 const presentStore = "presentStore";
+const userStore = "userStore";
 export default {
   components: { PresentMessage, PresentSelectListSearch },
   data() {
@@ -32,25 +33,34 @@ export default {
         price: null,
         sender: "",
         content: "",
-        userId: this.$store.state.userStore.user.id,
+        userId: "",
       },
       currentIdx: null,
     };
   },
+  computed: {
+    ...mapGetters(userStore, {
+      curUser: "getCurUser",
+    }),
+  },
   methods: {
     ...mapActions(presentStore, ["sendPresentMessage"]),
     testAlert() {
-      this.$router.push({ name: "eventRoom" });
+      console.log("Getters TEST : getCurUser " , this.curUser.id)
+      //alert(this.userTest);
+      //this.$router.push({ name: "eventRoom" });
     },
     createMessage() {
       const vm = this;
+      this.message.userId = this.curUser.id;
+      console.log(this.curUser.id)
+      console.log(this.message)
       sendMessage(
         this.message,
         function (response) {
           console.log(response);
           Alert.sendMessageSuccess(vm);
           vm.$router.push({ name: "eventRoom" });
-          
         },
         function (err) {
           console.log(err);
