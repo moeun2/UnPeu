@@ -24,6 +24,7 @@
                       :rules="rules"
                       v-model="files"
                       hide-input
+                      prepend-icon="mdi-camera"
                       accept="image/png, image/jpeg, image/bmp"
                     ></v-file-input>
                     <img
@@ -34,9 +35,7 @@
                     />
                     <div class="desc-wrap">
                       <v-icon small class="title-update-icon" @click="updateUserInfo" v-if="isMyPage">mdi-pencil-outline</v-icon>
-                      <div class="text-desc" >
-                        {{this.userInfo}}
-                      </div>
+                      <div class="text-desc" v-html="userInfo"></div>
                     </div>
                     <div class="info-wrap">
                       <v-icon small @click="copyLink">mdi-link</v-icon>
@@ -58,6 +57,7 @@
                       </button>
                       </router-link>
                       <router-link :to="{name: 'eventRoom',params: {userid:  $store.state.userStore.user.id}}" v-if="!isMyPage&&isLogin">
+                        <!-- to="{name: 'eventRoom',params: {userid:  $store.state.userStore.user.id}}" -->
                       <button class="item">
                         <img src="https://i.imgur.com/Fqfvown.png" >
                         <p class="arrow_box">마이페이지</p>
@@ -86,7 +86,7 @@
                   </div>
                   <div class="title-wrap">
                     
-                    <p class="title"><v-icon small @click="updateUserTitle" v-if="isMyPage">mdi-pencil-outline</v-icon><a href="#">{{this.userTitle}}</a></p>
+                    <p class="title"><v-icon plain retain-focus-on-click small @click="updateUserTitle" v-if="isMyPage">mdi-pencil-outline</v-icon><a href="#">{{this.userTitle}}</a></p>
                   </div>
                   <div class="main">
                     <router-view />
@@ -129,6 +129,10 @@ export default {
     files: function () {
       this.updateUserImg()
     },
+    $route(to, form) {
+     if (to.path !== form.path) this.changeParams(this.$route.params.userid)
+   },
+
   },
 
    created() {
@@ -174,6 +178,47 @@ export default {
   components: {
   },
   methods: {
+    changeParams(index) {
+     if(window.localStorage.getItem("accessToken")){
+      //로그인 되어있는 상태 store inlogin true
+      getUserDetailUseToken(window.localStorage.getItem("accessToken"),
+      (res)=>{
+        console.log(res.data.User);
+        this.$store.commit("userStore/setUser",res.data.User)
+        this.isLogin=true;
+        if(index==res.data.User.id){
+          this.isMyPage=true
+        }
+      },
+      ()=>{
+        console.log("getUserDetailUseToken fail")
+        this.isLogin=false;
+        window.localStorage.removeItem("accessToken")
+        this.$store.commit("userStore/setUserNull")
+        this.$router.go
+      } )
+    }
+
+    //지금 접속한 페이지의 user 정보 가져오기
+    getUserDetail(index,
+      (res)=>{
+        console.log(res.data.User);
+        this.userName=res.data.User.userName
+        if(res.data.User.userImg){
+          this.userImg=API_BASE_URL+res.data.User.userImg
+        }
+        if(res.data.User.userInfo){
+          this.userInfo= res.data.User.userInfo
+        }
+        if(res.data.User.userTitle){
+          this.userTitle= res.data.User.userTitle
+        }
+      },
+      ()=>{
+        console.log("getUserDetail fail")
+      })
+   },
+
       checkHome() {
           if(this.activeClass === 'menu-item mi-1 menu-checked') {
               this.activeClass = 'menu-item mi-3';
@@ -193,14 +238,17 @@ export default {
       },
 
       logout(){
-        //storage확인해서 도메인 확인
+        //storage확인해서 도메인 확인 //모달창 바꾸기
         if(confirm("로그아웃 하시겠습니까?")){
           window.localStorage.removeItem("accessToken")
+
           if(this.$store.state.userStore.user.socialDomain=="kakao"){
+            this.$store.commit("userStore/setUSerNull")
             window.location.replace(
               "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri="+FRONT_URL
             );
           }
+          this.$store.commit("userStore/setUSerNull")
           this.$router.push({name: "Landing"})
         }
       },
@@ -210,7 +258,15 @@ export default {
           title: '타이틀을 입력해주세요!',
           input: 'text',
           inputLabel: '오른쪽 상단의 타이틀입니다. 귀여운 어필을 해보는건 어떨까요?',
-          inputPlaceholder: 'Enter the Title'
+          inputPlaceholder: '25자 이하로 작성해주세요.',
+          inputAttributes: {
+            maxlength: 25,
+          },
+          inputValidator:(value) => {
+              if (!value) {
+                return '타이틀을 한글자 이상 입력해주세요!'
+              }
+            }
         })
 
         if (title) {
@@ -226,14 +282,25 @@ export default {
         const { value: info } = await this.$swal.fire({
           title: '소개글을 입력해주세요!',
           input: 'textarea',
-          inputLabel: '프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)',
-          inputPlaceholder: 'Enter the Info'
+          inputLabel: '프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)' ,
+          inputPlaceholder: '50자 이하, 4줄 이하로 작성해주세요.',
+          inputAttributes: {
+            maxlength: 50,
+          },
+          inputValidator:(value) => {
+              if (!value) {
+                return '소개글을 한글자 이상 입력해주세요!'
+              }else if(value.match(/[\n]/g) == null ? false : value.match(/[\n]/g).length+1>4){
+                return '4줄 이하로 입력해주세요!'
+              }
+            }
         })
 
         if (info) {
-          updateUserInfo(info,
+          updateUserInfo(info.replace("\"", ""),
           (res)=>{
             this.userInfo=res.data.User.userInfo
+            console.log(res.data.User.userInfo)
           })
         }
       },
@@ -249,8 +316,8 @@ export default {
           },
         )
       },
-      copyLink(){
 
+      copyLink(){
         let currentUrl = window.document.location.href;
 
         let t = document.createElement("textarea");
@@ -274,7 +341,7 @@ export default {
 };
 </script>
 
-<style>
+<style scope>
 @import url("@/assets/css/reset.css");
 @import url("@/assets/css/style.css");
 
@@ -334,13 +401,14 @@ img:hover + p.arrow_box {
 
   .title-update-icon{
     position: absolute !important;
-    left: 148px;
+    left: 142px;
     bottom: 10px;
   }
 
   .img-update-icon{
     position: absolute !important;
-    left: 200px;
-    bottom: 308px;
+    left: 197px;
+    bottom: 309px;
   }
+
 </style>

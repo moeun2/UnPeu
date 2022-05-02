@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,7 @@ import com.unpeu.config.auth.JwtTokenUtil;
 import com.unpeu.config.auth.UnpeuUserDetails;
 import com.unpeu.config.media.MediaService;
 import com.unpeu.domain.entity.User;
+import com.unpeu.domain.request.UserPatchReq;
 import com.unpeu.service.iface.IUserService;
 
 import io.swagger.annotations.Api;
@@ -136,13 +138,13 @@ public class UserController {
 
 	@ApiOperation(value = "유저 info 수정 Controller")
 	@RequestMapping(value = "/users/info", method = RequestMethod.PATCH)
-    public ResponseEntity<Map<String, Object>> updateUserInfo(@ApiIgnore @NotNull Authentication authentication,@RequestParam @NotNull String userInfo){
+    public ResponseEntity<Map<String, Object>> updateUserInfo(@ApiIgnore @NotNull Authentication authentication,@RequestBody @NotNull UserPatchReq userPatchReq){
 		logger.info("updateUserInfo - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
 
-		User updateUser = userService.updateUserInfo(user.getId(), userInfo);
+		User updateUser = userService.updateUserInfo(user.getId(), userPatchReq.getUserInfo());
 
 		resultMap.put("User", updateUser);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);

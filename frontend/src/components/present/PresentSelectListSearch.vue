@@ -57,9 +57,10 @@
 
 <script>
 import { API_BASE_URL } from "@/config/index.js";
-import { mapActions, mapState } from "vuex";
+import { mapGetters,mapActions, mapState } from "vuex";
 import PresentPayModal from "@/components/present/PresentPayModal";
 const presentStore = "presentStore";
+const userStore = "userStore";
 export default {
   components: {
     PresentPayModal,
@@ -72,14 +73,17 @@ export default {
       selectedPresentId: "",
       selectedPresentPrice: 0,
       currentIdx: "",
-      userId: this.$store.state.userStore.user.id,
       showCarousel: true,
     };
   },
+  
   mounted() {
     this.search();
   },
   computed: {
+    ...mapGetters(userStore, {
+      curUser: "getCurUser",
+    }),
     ...mapState(presentStore, ["presentList"]),
     columns() {
       return 3; // 카드 개수 3개로 고정
@@ -93,8 +97,8 @@ export default {
     search() {
       // To Do: User State에서 가져오기
       console.log("PresentSelectListSearch_search - 호출");
-      console.log("userId: ",this.userId);
-      this.searchList(this.userId);
+      console.log("userId: ",this.curUser.id);
+      this.searchList(this.curUser.id);
       this.cardList = this.presentList.Present;
       console.log(this.cardList.length)
       if(this.cardList.length == 0){

@@ -56,8 +56,10 @@ public class Message {
 	
 	@NotNull(message = "sender를 입력해주세요")
 	private String sender;
-	
+
+	@Column(length=500)
 	private String content;
+
 	private String category;
 	private int price;
 	private LocalDateTime createdAt = LocalDateTime.now();
