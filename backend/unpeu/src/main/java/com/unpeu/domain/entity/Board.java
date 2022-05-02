@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +26,15 @@ public class Board {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Size(max = 40)
     @NotNull(message = "카테고리를 입력해주세요")
     private String category;
 
+    @Size(max = 30)
     @NotNull(message = "제목을 입력해주세요")
-    @Column(length = 50)
     private String title;
 
+    @Size(max = 10000)
     @NotNull(message = "내용을 입력해주세요")
     private String content;
 

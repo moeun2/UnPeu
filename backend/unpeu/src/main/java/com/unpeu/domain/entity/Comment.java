@@ -21,7 +21,7 @@ public class Comment {
     @Column(name = "comment_id")
     private Long commentId;
 
-    @Size(min = 2)
+    @Size(min = 2, max = 8)
     @NotNull(message = "작성자 닉네임을 작성해주세요")
     private String writer;
 
@@ -29,6 +29,7 @@ public class Comment {
     @NotNull(message = "비밀번호를 작성해주세요")
     private String password;
 
+    @Size(max = 500)
     @NotNull(message = "댓글 내용을 작성해주세요")
     private String content;
 

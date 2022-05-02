@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-card>
+    <v-card outlined>
       <v-card-title>
         <span v-if="this.type === 'write'">Write</span>
         <span v-else>Edit</span>
@@ -26,6 +26,9 @@
             v-model="form.content"
             :rules="rules.content"
             label="Content"
+            rows="6"
+            auto-grow
+            required
           >
           </v-textarea>
         </v-form>
@@ -63,9 +66,9 @@ export default {
         content: "",
       },
       rules: {
-        category: [(val) => (val || "").length > 0 || "This field is required"],
-        title: [(val) => (val || "").length > 0 || "This field is required"],
-        content: [(val) => (val || "").length > 0 || "This field is required"],
+        category: [(value) => (value && value.length <= 40) || "반드시 1자 이상, 40자 미만 작성해야 합니다."],
+        title: [(value) => (value && value.length <= 30)  || "반드시 1자 이상, 30자 미만 작성해야 합니다."],
+        content: [(value) => (value && value.length <= 10000) || "반드시 1자 이상, 10000자 미만 작성해야 합니다."],
       },
     };
   },
@@ -96,6 +99,7 @@ export default {
       categories: "GET_CATEGORY_LIST",
     }),
 
+    /* 작성 폼 유효성 검사 */
     formIsValid() {
       return this.form.title && this.form.content && this.form.category;
     },
@@ -108,28 +112,25 @@ export default {
       "AC_EDIT_BOARD",
     ]),
 
+    /* 저장 후 상세 페이지 이동 */
     save() {
       console.log("save");
       this.AC_REGISTER_BOARD(this.form);
-      this.$router.push({ name: "BoardList" });
     },
 
+    /* 편집 후 상세 페이지 이동 */
     edit() {
       console.log("edit");
       this.AC_EDIT_BOARD({
         boardId: this.$route.params.boardId,
         boardInfo: this.form,
       });
-      this.$router.push({ name: "BoardList" });
-      // this.$router.push({
-      //   name: "BoardDetail",
-      //   params: { boardId: this.$route.params.boardId },
-      // });
     },
 
+    /* 뒤로가기 */
     cancle() {
       console.log("cancle");
-      this.$router.push({ name: "BoardList" });
+      this.$router.go(-1); // 한 단계 뒤로
     },
   },
 };

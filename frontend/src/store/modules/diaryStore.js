@@ -1,4 +1,5 @@
 import * as diaryApi from "@/api/diary";
+import router from "../../router"; 
 
 export const diaryStore = {
   namespaced: true,
@@ -7,7 +8,8 @@ export const diaryStore = {
     categoryList: [],
     boardList: [],
     boardInfo: {},
-    comment: {},
+    commentInfo: {},
+    editCommentFlag: false, // 댓글 수정 여부 체크
   },
 
   getters: {
@@ -22,12 +24,27 @@ export const diaryStore = {
     GET_BOARD_DETAIL(state) {
       return state.boardInfo;
     },
+
+    GET_COMMENT_DETAIL(state) {
+      return state.commentInfo;
+    },
+
+    GET_EDIT_FLAG(state) {
+      return state.editCommentFlag;
+    },
   },
 
   mutations: {
     MU_CATEGORY_LIST(state, categoryList) {
       console.log("category mutation");
-      state.categoryList = categoryList;
+
+      // 빈 배열 체크
+      if (Array.isArray(categoryList) && categoryList.length === 0) {
+        state.categoryList = ["Default"];
+      } else {
+        state.categoryList = categoryList;
+      }
+      console.log(state.categoryList)
     },
 
     MU_BOARD_LIST(state, boardList) {
@@ -38,6 +55,16 @@ export const diaryStore = {
     MU_BOARD_DETAIL(state, boardInfo) {
       console.log("boardInfo mutation");
       state.boardInfo = boardInfo;
+    },
+
+    MU_COMMENT_DETAIL(state, commentInfo) {
+      console.log("commentInfo mutation");
+      state.commentInfo = commentInfo;
+    },
+
+    MU_EDIT_FLAG(state, editFlag) {
+      console.log("editFlag mutation");
+      state.editCommentFlag = editFlag;
     },
   },
 
@@ -79,7 +106,7 @@ export const diaryStore = {
         boardId,
         (res) => {
           console.log("게시글 상세 조회 성공");
-            commit("MU_BOARD_DETAIL", res.data.boardInfo);
+          commit("MU_BOARD_DETAIL", res.data.boardInfo);
         },
         (error) => {
           console.log(error);
@@ -92,11 +119,12 @@ export const diaryStore = {
       diaryApi.registerBoard(
         boardInfo,
         (res) => {
-          console.log("save board action");
-          console.log(res.data)
-          this.$router.push({ name: "BoardList" });
-          alert("저장을 성공하였습니다.");
+          // console.log("save board action");
+          console.log(res.data);
           commit;
+
+          router.replace({ name: "BoardList" });
+          // alert("저장을 성공하였습니다.");
         },
         (error) => {
           alert("저장을 실패하였습니다.");
@@ -111,10 +139,15 @@ export const diaryStore = {
         value.boardId,
         value.boardInfo,
         (res) => {
-          console.log("edit board action");
-          console.log(res.data)
-          alert("수정을 성공했습니다.");
+          // console.log("edit board action");
+          console.log(res.data);
           commit;
+
+          router.replace({
+            name: "BoardDetail",
+            params: { boardId: value.boardId },
+          });
+          // alert("수정을 성공했습니다.");
         },
         (error) => {
           alert("수정을 실패하였습니다.");
@@ -129,7 +162,7 @@ export const diaryStore = {
         boardId,
         (res) => {
           console.log("delete board action");
-          console.log(res.data)
+          console.log(res.data);
           alert("삭제가 완료되었습니다.");
           commit;
         },
@@ -149,12 +182,12 @@ export const diaryStore = {
         value.commentInfo,
         (res) => {
           console.log("register comment action");
-          console.log(res.data)
-          console.log("댓글 등록을 성공하였습니다.");
-          commit;
+          console.log(res.data);
+          // console.log("댓글 등록을 성공하였습니다.");
+          commit("MU_COMMENT_DETAIL", value.commentInfo);
         },
         (error) => {
-          console.log("등록을 실패하였습니다.")
+          // console.log("등록을 실패하였습니다.");
           console.log(error);
         }
       );
@@ -167,7 +200,7 @@ export const diaryStore = {
         value.commentInfo,
         (res) => {
           console.log("edit comment action");
-          console.log(res.data)
+          console.log(res.data);
           alert("댓글 수정이 완료되었습니다.");
           commit;
         },
@@ -185,7 +218,7 @@ export const diaryStore = {
         value.password,
         (res) => {
           console.log("delete comment action");
-          console.log(res.data)
+          console.log(res.data);
           alert("댓글 삭제가 완료되었습니다.");
           commit;
         },
@@ -194,6 +227,15 @@ export const diaryStore = {
           console.log(error);
         }
       );
+    },
+
+    /* 댓글 수정 요청 시 플래그와 댓글 정보 값 변경 */
+    ACT_SETTING_COMMENT({ commit }, value) {
+      commit("MU_EDIT_FLAG", value.editFlag);
+
+      if (value.commentInfo) {
+        commit("MU_COMMENT_DETAIL", value.commentInfo);
+      }
     },
   },
 };
