@@ -289,7 +289,7 @@ export default {
           inputValidator:(value) => {
               if (!value) {
                 return '소개글을 한글자 이상 입력해주세요!'
-              }else if(value.match(/[\n]/g) == null ? 1 : value.match(/[\n]/g).length+1>4){
+              }else if(value.match(/[\n]/g) == null ? false : value.match(/[\n]/g).length+1>4){
                 return '4줄 이하로 입력해주세요!'
               }
             }
