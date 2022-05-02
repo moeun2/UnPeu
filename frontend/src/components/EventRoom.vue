@@ -1,7 +1,7 @@
 <template>
     <div class="main-room">
         <div class="event-tab">
-            <ul class="myMenu">
+            <ul class="myMenu" v-if="isMyPage">
                 <li class="menu2">
                     MENU
                     <ul class="menu2_s submenu">
@@ -11,9 +11,10 @@
                     </ul>   
                 </li>
             </ul>
+            <div v-else class="hide-menu"></div>
         </div>
-        <router-link :to="{ name: 'PresentPayment' }">
-            <div class="gift-box">
+        <div class="gift-box">
+            <router-link :to="{ name: 'PresentPayment' }">
                 <button class="reg-gift">
                     <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="">
                     <p>어른이날을 축하해주세요
@@ -21,8 +22,8 @@
                         콩주머니 메세지 &amp; 선물 등록하러 가기!
                     </p>
                 </button>
-            </div>
-        </router-link>
+            </router-link>
+        </div>
         <div v-if="this.messages.length == 0">
             <img src="@/assets/img/none.png" class="none-pocket" alt="">
         </div>
@@ -66,6 +67,7 @@
 <script>
 import { getMessage, saveMessage, resetMessage } from '@/api/event.js';
 import {API_BASE_URL} from "@/config/index.js";
+import { getUserDetailUseToken } from '@/api/user.js';
 import * as Alert from "@/api/alert";
 
 export default {
@@ -81,7 +83,28 @@ export default {
             perPage: 10,
             // 현재 페이지
             currentPage: 1,
+            isMyPage: false,
             userId: this.$store.state.userStore.user.id, //url or param에서 userId를 뽑게 되면 바뀌어야 함.
+        }
+    },
+    created() {
+        if(window.localStorage.getItem("accessToken")){
+            //로그인 되어있는 상태 store inlogin true
+            getUserDetailUseToken(window.localStorage.getItem("accessToken"),
+            (res)=>{
+                console.log(res.data.User);
+                this.$store.commit("userStore/setUser",res.data.User)
+                this.isLogin=true;
+                if(this.$route.params.userid==res.data.User.id){
+                this.isMyPage=true
+                }
+            },
+            ()=>{
+                console.log("getUserDetailUseToken fail")
+                this.isLogin=false;
+                window.localStorage.removeItem("accessToken")
+                this.$router.go
+            } )
         }
     },
     mounted() {
@@ -278,6 +301,9 @@ ul.myMenu > li ul.submenu > li {
 }
 ul.myMenu > li ul.submenu > li:hover { 
     background:#fff; 
+}
+.hide-menu {
+    height: 36px;
 }
 
 /* modal창 css */
