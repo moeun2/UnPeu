@@ -1,6 +1,6 @@
 <template>
 <div class="present-carousel">
-  <template v-if="presentList.length===0">
+  <template v-if="cardList.length===0">
     <v-img
     src="@/assets/img/none_present.png"
     >
