@@ -121,16 +121,8 @@ export default {
     },
     computed: {
         rows() {
-            let length;
-
-            if(this.messages.length%this.perPage == 0){
-                length = this.messages.length/this.perPage;
-            }
-            else {
-                length = this.messages.length/this.perPage + 1;
-            }
-            
-            return length;
+            let length = this.messages.length/this.perPage;
+            return Math.ceil(length);
         },
         messagesFor() {
             const items = this.messages;
