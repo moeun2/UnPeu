@@ -1,12 +1,7 @@
 <template>
   <v-app>
     <div class="view">
-      <!-- 같은 경로(다른 param)로 라우터 이동시 화면이 변경안되는 것 때문에 추가 -->
-<<<<<<< HEAD
       <router-view />
-=======
-      <router-view/>
->>>>>>> 62288bd98de7836d4b2117fa558827400a6fd10d
     </div>
     <email-fab></email-fab>
   </v-app>
