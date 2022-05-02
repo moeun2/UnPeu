@@ -45,7 +45,7 @@ export default {
     API_BASE_URL: API_BASE_URL,
       rules: {
         content: [
-          (val) => val.length>500 || "500자 이하로 적어주세요"
+          (val) => val.length<500 || "500자 이하로 적어주세요"
         ],
       },
     };
