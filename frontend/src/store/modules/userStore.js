@@ -3,15 +3,6 @@ export const userStore = {
 
   state: {
     user: null,
-    wallet: {
-      id: 0,
-      ownerId: null,
-      address: "",
-      balance: 0,
-      payBalance: 0,
-      cash: 0,
-      receivingCount: 0,
-    },
     currentUser:{
         id:"",
         permission:""
