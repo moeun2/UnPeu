@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unpeu.domain.entity.Present;
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.repository.IUserRepository;
+import com.unpeu.domain.request.UserPatchEmailBirthReq;
+import com.unpeu.domain.request.UserPatchUserInfoReq;
 import com.unpeu.service.iface.IUserService;
 
 import lombok.RequiredArgsConstructor;
@@ -288,6 +290,7 @@ public class UserServiceImpl implements IUserService{
 	 * @param socialDomain
 	 * @return
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public User addUser(Map<String, String> userInfo, String socialDomain) {
 		User user = new User();
@@ -318,6 +321,7 @@ public class UserServiceImpl implements IUserService{
 	 * @param userTitle
 	 * @return
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public User updateUserTitle(Long userId,String userTitle) {
 		User user= userRepository.findById(userId).get();
@@ -331,6 +335,7 @@ public class UserServiceImpl implements IUserService{
 	 * @param userInfo
 	 * @return
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public User updateUserInfo(Long userId,String userInfo) {
 		User user= userRepository.findById(userId).get();
@@ -345,10 +350,27 @@ public class UserServiceImpl implements IUserService{
 	 * @param userImg
 	 * @return
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public User updateUserImg(Long userId,String userImg) {
 		User user= userRepository.findById(userId).get();
 		user.setUserImg(userImg);
+		return userRepository.save(user);
+	}
+	
+	/**
+	 * 유저의 이메일 생년월일 수정
+	 * @param userId
+	 * @param email
+	 * @param birth
+	 * @return
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public User updateUserEmailBirth(Long userId,UserPatchEmailBirthReq userPatchEmailBirthReq) {
+		User user= userRepository.findById(userId).get();
+		user.setUserBirth(userPatchEmailBirthReq.getUserBirth());
+		user.setUserEmail(userPatchEmailBirthReq.getUserEmail());
 		return userRepository.save(user);
 	}
 

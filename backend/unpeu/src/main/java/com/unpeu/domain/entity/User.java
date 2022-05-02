@@ -1,5 +1,6 @@
 package com.unpeu.domain.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 	
+	
 	private String userLogin;
 	private String socialDomain;
 
@@ -28,6 +30,9 @@ public class User {
     private String userTitle;
     private String userInfo;
     private String userMusic;
+    
+    private LocalDate userBirth;
+    private String userEmail;
     
     private Long todayVisit;
     private Long totalVisit;

@@ -5,6 +5,8 @@ import java.util.Map;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unpeu.domain.entity.User;
+import com.unpeu.domain.request.UserPatchEmailBirthReq;
+import com.unpeu.domain.request.UserPatchUserInfoReq;
 
 public interface IUserService {
 	User getUserByUserLogin(String userLogin);
@@ -13,17 +15,15 @@ public interface IUserService {
 	
 	boolean chkDplUser(String userLogin);
 	
-	@Transactional(rollbackFor = Exception.class)
 	User addUser(Map<String, String> userInfo,String socialDomain);
 	
-	@Transactional(rollbackFor = Exception.class)
 	User updateUserTitle(Long userId,String userTitle);
 	
-	@Transactional(rollbackFor = Exception.class)
 	User updateUserInfo(Long userId,String userInfo);
 	
-	@Transactional(rollbackFor = Exception.class)
 	User updateUserImg(Long userId,String userImg);
+	
+	User updateUserEmailBirth(Long userId,UserPatchEmailBirthReq userPatchEmailBirthReq);
 	
 	String getKakaoAccessToken (String code);
 	
