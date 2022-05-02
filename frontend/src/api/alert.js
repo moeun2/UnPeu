@@ -47,6 +47,13 @@ function sendFeedbackFailure(vm){
         "error"
       );
 }
+function selctAmountFailure(vm){
+    vm.$swal.fire(
+        "가격 직접입력 실패",
+        "0보다 큰 금액을 입력해주세요˚",
+        "error"
+      );
+}
 const notSelectPresentBody ={
     title: "선물을 선택하지 않으셨어요!",
     text: "메세지만 보내시겠어요?",
@@ -136,6 +143,7 @@ function saveMessageSuccess(vm){
 }
 
 export{
+    selctAmountFailure,
     paymentSuccess,
     paymentFailure,
     notSelectPresentBody,

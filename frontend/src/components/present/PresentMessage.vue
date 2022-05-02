@@ -1,5 +1,10 @@
 <template>
   <div>
+    <v-row justify="space-between" style="margin:5px;">
+      <v-alert dense type="info">
+        주의 : 보내진 메세지는 수정이 불가하며, 받는 사람만 읽을 수 있으니 보내실 때 내용을 확인해주세요
+      </v-alert>
+    </v-row>
     <v-text-field
       v-model="nickname"
       solo
@@ -11,6 +16,7 @@
       solo
       name="input-7-4"
       label="메시지 내용"
+      :rules="rules.content"
     ></v-textarea>
     <v-row justify="space-between" style="margin:5px;">
       <v-alert dense type="info">
@@ -31,12 +37,19 @@
 <script>
 import { API_BASE_URL } from "../../config/index.js";
 export default {
-  data: () => ({
-    nickname: null,
+  data() {
+    return {
+      nickname: null,
     content: null,
     cardList: [],
     API_BASE_URL: API_BASE_URL,
-  }),
+      rules: {
+        content: [
+          (val) => val.length<500 || "500자 이하로 적어주세요"
+        ],
+      },
+    };
+  },
   methods: {
     /**
      * @Click : 보내기 버튼

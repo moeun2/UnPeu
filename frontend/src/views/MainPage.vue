@@ -24,6 +24,7 @@
                       :rules="rules"
                       v-model="files"
                       hide-input
+                      prepend-icon="mdi-camera"
                       accept="image/png, image/jpeg, image/bmp"
                     ></v-file-input>
                     <img

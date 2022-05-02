@@ -1,9 +1,7 @@
 <template>
   <v-container fluid>
-    <v-card>
-      <v-card-title>
-        <span>View</span>
-      </v-card-title>
+    <v-card outlined>
+      <v-card-title> View </v-card-title>
 
       <v-card-subtitle>
         <span>{{ boardInfo.category }}</span>
@@ -17,25 +15,46 @@
           readonly
         ></v-text-field>
         <!-- CKEditor로 수정 예정 -->
-        <v-textarea v-model="boardInfo.content" label="Content" readonly>
+        <v-textarea
+          v-model="boardInfo.content"
+          label="Content"
+          readonly
+          rows="6"
+          auto-grow
+          required
+        >
         </v-textarea>
-        <div class="float-right">
-          <v-btn text @click="editDiary">edit</v-btn>
-          <!-- edit와 delete는 작성자에게만 보인다 -->
-          <v-btn text @click="deleteDiary">delete</v-btn>
-          <v-btn text @click="backMovePage">back</v-btn>
-        </div>
       </v-card-text>
 
+      <v-divider class="mx-4"></v-divider>
+
+      <v-card-title> Comment </v-card-title>
+
       <v-card-text>
-        <!-- 댓글 -->
-        <span>Comment</span>
         <comment-write> </comment-write>
-        <comment
-        :commentList="boardInfo.commentList"
-        ></comment>
-                <!-- @edit-comment="onEditComment" -->
+        <comment :commentList="boardInfo.commentList"></comment>
       </v-card-text>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+          text
+          color="warning"
+          @click="editDiary"
+          v-if="loginUser && boardInfo.userId == loginUser.id"
+          ><v-icon dark left>mdi-pencil</v-icon>edit</v-btn
+        >
+        <v-btn
+          text
+          color="error"
+          @click="deleteDiary"
+          v-if="loginUser && boardInfo.userId == loginUser.id"
+          ><v-icon dark left>mdi-delete</v-icon>delete</v-btn
+        >
+        <v-btn text color="grey darken-1" @click="backMovePage"
+          ><v-icon dark left>mdi-arrow-left</v-icon>back</v-btn
+        >
+      </v-card-actions>
     </v-card>
   </v-container>
 </template>
@@ -50,7 +69,9 @@ export default {
   name: "BoardDetail",
 
   data() {
-    return {};
+    return {
+      loginUser: this.$store.state.userStore.user,
+    };
   },
 
   components: {
@@ -81,14 +102,10 @@ export default {
       });
     },
 
-    // onEditComment(commentInfo) {
-      
-    // },
-
     /* 삭제하기 */
     deleteDiary() {
       console.log("delete");
-      if(confirm("정말로 삭제하시겠습니까?")) {
+      if (confirm("정말로 삭제하시겠습니까?")) {
         this.AC_DELETE_BOARD(this.boardInfo.boardId);
         this.$router.push({ name: "BoardList" });
       }
@@ -97,7 +114,7 @@ export default {
     /* 뒤로가기 */
     backMovePage() {
       console.log("back");
-      this.$router.push({ name: "BoardList" });
+      this.$router.go(-1);
     },
   },
 };
