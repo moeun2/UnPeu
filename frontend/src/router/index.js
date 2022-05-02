@@ -18,7 +18,8 @@ import GoogleLogin from "@/components/login/GoogleLogin.vue"
 import Landing from "@/views/LandingPage.vue"
 import NotFound from "@/views/NotFoundPage.vue"
 
-
+import Store from "@/store"
+import {getUserDetailUseToken} from '@/api/user.js';
 Vue.use(VueRouter);
 
 const routes = [
@@ -31,7 +32,8 @@ const routes = [
             {
                 path: "/eventRoom/:userid",
                 name: "eventRoom",
-                component: eventRoom
+                component: eventRoom,
+                beforeEnter: getUserInfo,
             },
             {
                 path: "/diary/:userid",
@@ -115,5 +117,35 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes,
 });
+
+function getUserInfo(to, from, next) {
+    let userId = to.params.userid;
+    console.log("Router-indx.js-getUserInfo-현재 페이지의 userId:",userId);
+    Store.commit("userStore/setCurUserId",userId);
+    const getCurUser = Store.getters['userStore/getCurUser'];
+    console.log(getCurUser);
+
+
+    let accessToken = localStorage.getItem("accessToken")
+    if(accessToken == null){
+        console.log("Permission : Guest")//2
+        Store.commit("userStore/setCurUserPermission",2);
+    }else{
+        getUserDetailUseToken(accessToken,(res)=>{
+            console.log("router-index.js-getUserInfo-getUserDetailUseToken 호출")
+            console.log(res.data.User.id);
+            let compareId = res.data.User.id;
+            if(compareId != userId){
+                console.log("Permission : Guest(Logined User)") //1
+                Store.commit("userStore/setCurUserPermission",1);
+            }else{
+                console.log("Permission : User") //0
+                Store.commit("userStore/setCurUserPermission",0);
+            }
+        });
+    }
+    
+    next();
+  }
 
 export default router;
