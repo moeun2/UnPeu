@@ -1,6 +1,6 @@
 <template>
 <div>
-<v-form @submit="regist">
+<v-form @submit.prevent="regist">
 <v-container fluid>
   <v-row>
     <v-col cols="3">
@@ -62,7 +62,17 @@ const presentStore="presentStore";
     methods:{
       ...mapActions(presentStore,["registerPresent"]),
        regist(){
-        console.log(this.present);
+         this.$swal.fire({
+        title: '등록하시겠어요?',
+        text: "작성한 선물을 등록합니다!",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '네, 등록합니다!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log(this.present);
         
         let fd=new FormData();
         fd.append('presentImg',this.files);
@@ -70,19 +80,27 @@ const presentStore="presentStore";
         fd.append('userId', this.$store.state.userStore.user.id);
         fd.append('presentName',this.presentName);
 
-        for (var key of fd.keys()) {
-
-        console.log(key);
-
-      }
-
-        for (var value of fd.values()) {
-
-          console.log(value);
-
+        let rgst=this.registerPresent(fd);
+        if(!rgst){
+          this.$swal.fire(
+            '등록 실패!',
+            '파일이 정상적으로 등록되지 않았습니다.',
+            'error'
+          )
+          
+        }else{
+          this.$swal.fire(
+            '등록 성공!',
+            '파일이 등록되었습니다.',
+            'success'
+          )
+          this.presentName= null;
+          this.presentPrice= null;
+          this.files=[];
         }
-
-         this.registerPresent(fd);
+        }
+      })
+        
       }
     }
   }
