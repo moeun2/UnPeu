@@ -16,6 +16,7 @@
       solo
       name="input-7-4"
       label="메시지 내용"
+      :rules="rules.content"
     ></v-textarea>
     <v-row justify="space-between" style="margin:5px;">
       <v-alert dense type="info">
@@ -36,12 +37,19 @@
 <script>
 import { API_BASE_URL } from "../../config/index.js";
 export default {
-  data: () => ({
-    nickname: null,
+  data() {
+    return {
+      nickname: null,
     content: null,
     cardList: [],
     API_BASE_URL: API_BASE_URL,
-  }),
+      rules: {
+        content: [
+          (val) => val.length>500 || "500자 이하로 적어주세요"
+        ],
+      },
+    };
+  },
   methods: {
     /**
      * @Click : 보내기 버튼

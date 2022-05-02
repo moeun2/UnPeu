@@ -1,7 +1,14 @@
 <template>
   <div>
     <div class="message-title">콩주머니 보내기</div>
-    <present-select-list-search @present="getPresent" />
+    <v-checkbox
+      v-model="checkbox"
+      :label="checkbox == false? '선물 없이 메세지로만 마음을 전할래요!':'선물도 보내고 싶다면 한 번 더 클릭!' "
+    ></v-checkbox>
+    <present-select-list-search 
+      @present="getPresent"
+      v-if="checkbox==false"
+    />
     <present-message @message="getMessage" />
     <!-- <button @click="testAlert">Hello world</button> -->
   </div>
@@ -18,6 +25,7 @@ export default {
   components: { PresentMessage, PresentSelectListSearch },
   data() {
     return {
+      checkbox: false,
       message: {
         category: "2022_어른이날",
         presentId: null,
@@ -54,11 +62,17 @@ export default {
      * 선물결제에 관해 Alert로 물어보고 sendPresentMessage API를 실행
      */
     checkPresent() {
+      if(this.checkbox == true){
+        this.message.presentId = null;
+        this.message.price = null;
+      }
       if (this.message.presentId == null) {
         this.$swal.fire(Alert.notSelectPresentBody).then((result) => {
           if (result.dismiss === this.$swal.DismissReason.cancel) {
             //메세지만 보낼래요!
-            this.changeCardColor(false);
+            if(this.checkbox == false){
+              this.changeCardColor(false);
+            }+
             this.createMessage();
           }
         });
