@@ -57,9 +57,10 @@
 
 <script>
 import { API_BASE_URL } from "@/config/index.js";
-import { mapActions, mapState } from "vuex";
+import { mapGetters,mapActions, mapState } from "vuex";
 import PresentPayModal from "@/components/present/PresentPayModal";
 const presentStore = "presentStore";
+const userStore = "userStore";
 export default {
   components: {
     PresentPayModal,
@@ -72,14 +73,17 @@ export default {
       selectedPresentId: "",
       selectedPresentPrice: 0,
       currentIdx: "",
-      userId: this.$store.state.userStore.user.id,
       showCarousel: true,
     };
   },
+  
   mounted() {
     this.search();
   },
   computed: {
+    ...mapGetters(userStore, {
+      userId: "getCurUser",
+    }),
     ...mapState(presentStore, ["presentList"]),
     columns() {
       return 3; // 카드 개수 3개로 고정
