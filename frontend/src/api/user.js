@@ -1,7 +1,6 @@
-import { createInstance,tokenInstance} from "./index.js";
+import { createInstance} from "./index.js";
 
 const api = createInstance();
-const headerApi=tokenInstance();
 
 function kakaoLogin(code, success, fail){
     api.post(`/auth/kakao?code=`+code)
@@ -43,7 +42,9 @@ function updateUserImg(img,success,fail){
 
 function updateUserInfo(userInfo,success,fail){
 
-    api.patch("/users/info?userInfo="+userInfo,null,{
+    api.patch("/users/info",{
+        userInfo: userInfo,}
+        ,{
         headers: {
           Authorization: 'Bearer ' +localStorage.getItem("accessToken")
         }
@@ -53,7 +54,7 @@ function updateUserInfo(userInfo,success,fail){
 }
 
 function updateUserTitle(userTitle,success,fail){
-    headerApi.patch(`/users/title?userTitle=`+userTitle,null,{
+    api.patch(`/users/title?userTitle=`+userTitle,null,{
         headers: {
           Authorization: 'Bearer ' +localStorage.getItem("accessToken")
         }
