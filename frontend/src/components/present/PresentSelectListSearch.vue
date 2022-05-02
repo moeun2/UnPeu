@@ -82,7 +82,7 @@ export default {
   },
   computed: {
     ...mapGetters(userStore, {
-      userId: "getCurUser",
+      curUser: "getCurUser",
     }),
     ...mapState(presentStore, ["presentList"]),
     columns() {
@@ -97,8 +97,8 @@ export default {
     search() {
       // To Do: User State에서 가져오기
       console.log("PresentSelectListSearch_search - 호출");
-      console.log("userId: ",this.userId);
-      this.searchList(this.userId);
+      console.log("userId: ",this.curUser.id);
+      this.searchList(this.curUser.id);
       this.cardList = this.presentList.Present;
       console.log(this.cardList.length)
       if(this.cardList.length == 0){

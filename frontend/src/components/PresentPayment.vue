@@ -40,19 +40,20 @@ export default {
   },
   computed: {
     ...mapGetters(userStore, {
-      userId: "getCurUser",
+      curUser: "getCurUser",
     }),
   },
   methods: {
     ...mapActions(presentStore, ["sendPresentMessage"]),
     testAlert() {
-      console.log("Getters TEST : getCurUser " , this.userId)
+      console.log("Getters TEST : getCurUser " , this.curUser.id)
       //alert(this.userTest);
       //this.$router.push({ name: "eventRoom" });
     },
     createMessage() {
       const vm = this;
-      this.message.userId = this.userId;
+      this.message.userId = this.curUser.id;
+      console.log(this.curUser.id)
       console.log(this.message)
       sendMessage(
         this.message,

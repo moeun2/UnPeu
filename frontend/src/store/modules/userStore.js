@@ -1,29 +1,46 @@
-export const userStore={
-    namespaced : true,
-    state:{
-        user: null,
-        curUser:null,
+export const userStore = {
+  namespaced: true,
+
+  state: {
+    user: null,
+    wallet: {
+      id: 0,
+      ownerId: null,
+      address: "",
+      balance: 0,
+      payBalance: 0,
+      cash: 0,
+      receivingCount: 0,
     },
-    getters:{
-        getCurUser(state){
-            console.log("getCurUser Getters - 호출", state.curUser)
-            return state.curUser;
-        }
+    currentUser:{
+        id:"",
+        permission:""
     },
-    mutations:{
-        setUser(state, user){
-            state.user=user;
-            console.log(state.user);
-        },
-        setUSerNull(state){
-            state.user=null;
-            console.log(state.user);
-        },
-        setCurUser(state, userId) {
-            state.curUser = userId;
-            console.log("setCurUser mutation : ", state.curUser);
-        },
+  },
+  getters: {
+    getCurUser(state) {
+      console.log("getCurUser Getters - 호출", state.currentUser);
+      console.log("0:User/1:Guest(Logined User)/2:Guest")
+      return state.currentUser;
     },
-    actions:{
-    }
-}
+  },
+  mutations: {
+    setUser(state, user) {
+      state.user = user;
+      console.log(state.user);
+    },
+    setUSerNull(state) {
+      state.user = null;
+      console.log(state.user);
+    },
+    setCurUserId(state, userId) {
+      state.currentUser.id = userId;
+      console.log("setCurUserId mutation : ", state.currentUser);
+    },
+    setCurUserPermission(state, permission) {
+      state.currentUser.permission = permission;
+      console.log("parameter mutation : ", state.currentUser);
+    },
+  },
+  actions: {},
+};

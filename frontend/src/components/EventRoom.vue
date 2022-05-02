@@ -73,7 +73,8 @@
 import { getMessage, saveMessage, resetMessage } from "@/api/event.js";
 import { API_BASE_URL } from "@/config/index.js";
 import * as Alert from "@/api/alert";
-
+import { mapGetters } from "vuex";
+const userStore = "userStore";
 export default {
   name: "EventRoom",
   data() {
@@ -87,12 +88,11 @@ export default {
       perPage: 10,
       // 현재 페이지
       currentPage: 1,
-      userId: this.$store.state.userStore.user.id, //url or param에서 userId를 뽑게 되면 바뀌어야 함.
     };
   },
   mounted() {
     getMessage(
-      this.userId,
+      this.curUser.id,
       (res) => {
         console.log(res.data.Message);
         this.messages = res.data.Message;
@@ -104,6 +104,9 @@ export default {
     );
   },
   computed: {
+    ...mapGetters(userStore, {
+      curUser: "getCurUser",
+    }),
     rows() {
       let length;
 
