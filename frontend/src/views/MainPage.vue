@@ -11,8 +11,8 @@
               <div class="profile-paper">
                 <div class="profile-wrap">
                   <div class="visitor-counter">
-                    <p class="text-today">103</p>
-                    <p class="text-total">13042</p>
+                    <p class="text-today" v-text="todayVisit"></p>
+                    <p class="text-total" v-text="totalVisit"></p>
                   </div>
                   <div class="profile">
                     <p class="text-today-is">
@@ -119,6 +119,8 @@ export default {
           userEmail: "ssafykim@ssafy.com",
           isLogin: false,
           isMyPage: false,
+          totalVisit:0,
+          todayVisit:0,
           rules: [
             value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
            ],
@@ -154,9 +156,14 @@ export default {
         this.$router.go
       } )
     }
+    this.setUserData();
 
-    //지금 접속한 페이지의 user 정보 가져오기
-    getUserDetail(this.$route.params.userid,
+   },
+  components: {
+  },
+  methods: {
+    setUserData(){
+      getUserDetail(this.$route.params.userid,
       (res)=>{
         console.log(res.data.User);
         this.userName=res.data.User.userName
@@ -169,15 +176,24 @@ export default {
         if(res.data.User.userTitle){
           this.userTitle= res.data.User.userTitle
         }
+        if(res.data.User.userEmail){
+          this.userEmail= res.data.User.userEmail
+        }
+        if(res.data.User.userBirth){
+          this.userBirth= res.data.User.userBirth[0]+"."+res.data.User.userBirth[1]+"."+res.data.User.userBirth[2]
+        }
+        if(res.data.User.todayVisit){
+          this.todayVisit= res.data.User.todayVisit
+        }
+        if(res.data.User.totalVisit){
+          this.totalVisit= res.data.User.totalVisit
+        }
       },
       ()=>{
         console.log("getUserDetail fail")
       })
+    },
 
-   },
-  components: {
-  },
-  methods: {
     changeParams(index) {
      if(window.localStorage.getItem("accessToken")){
       //로그인 되어있는 상태 store inlogin true
@@ -198,25 +214,7 @@ export default {
         this.$router.go
       } )
     }
-
-    //지금 접속한 페이지의 user 정보 가져오기
-    getUserDetail(index,
-      (res)=>{
-        console.log(res.data.User);
-        this.userName=res.data.User.userName
-        if(res.data.User.userImg){
-          this.userImg=API_BASE_URL+res.data.User.userImg
-        }
-        if(res.data.User.userInfo){
-          this.userInfo= res.data.User.userInfo
-        }
-        if(res.data.User.userTitle){
-          this.userTitle= res.data.User.userTitle
-        }
-      },
-      ()=>{
-        console.log("getUserDetail fail")
-      })
+    this.setUserData();
    },
 
       checkHome() {
