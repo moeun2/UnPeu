@@ -24,6 +24,7 @@
                       :rules="rules"
                       v-model="files"
                       hide-input
+                      prepend-icon="mdi-camera"
                       accept="image/png, image/jpeg, image/bmp"
                     ></v-file-input>
                     <img
@@ -340,7 +341,7 @@ img:hover + p.arrow_box {
 
   .img-update-icon{
     position: absolute !important;
-    left: 200px;
+    left: 190px;
     bottom: 308px;
   }
 </style>

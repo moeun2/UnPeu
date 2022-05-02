@@ -46,17 +46,15 @@ public class MessageController {
 
 	/**
 	 * userId에 따라 메세지 목록을 조회한다.
+	 * @param userId
 	 * @return
 	 */
 	@ApiOperation(value = "메세지 목록 조회 Controller")
-	@RequestMapping(value = "/message", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getMessageListByUserId(@ApiIgnore @NotNull Authentication authentication) {
+	@RequestMapping(value = "/message/list/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getMessageListByUserId(@NotNull @PathVariable("userId") Long userId) {
 		logger.info("getMessageListByUserId - 호출");
-		// test 시 userId : 1로 설정하고 테스트 했음
-		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
-		User user = userDetails.getUser();
 		Map<String, Object> resultMap = new HashMap<>();
-		List<Message> newMessage = messageService.getMessageListByUserId(user.getId());
+		List<Message> newMessage = messageService.getMessageListByUserId(userId);
 		resultMap.put("Message", newMessage);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
