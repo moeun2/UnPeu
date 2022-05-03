@@ -1,7 +1,6 @@
-import { createInstance, tokenInstance } from "./index.js";
+import { createInstance } from "./index.js";
 
 const api = createInstance();
-const tokenApi = tokenInstance();
 
 /* ====================== Baord ====================== */
 
@@ -22,17 +21,41 @@ function getBoardInfo(boardId, success, fail) {
 
 // 게시글 등록
 function registerBoard(boardInfo, success, fail) {
-  tokenApi.post(`board`, boardInfo).then(success).catch(fail);
+  api
+    .post(`board`, boardInfo, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        "Content-Type": "application/json",
+      },
+    })
+    .then(success)
+    .catch(fail);
 }
 
 // 게시글 수정
 function editBoard(boardId, boardInfo, success, fail) {
-  tokenApi.put(`board/${boardId}`, boardInfo).then(success).catch(fail);
+  api
+    .put(`board/${boardId}`, boardInfo, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        "Content-Type": "application/json",
+      },
+    })
+    .then(success)
+    .catch(fail);
 }
 
 // 게시글 삭제
 function deleteBoard(boardId, success, fail) {
-  tokenApi.delete(`board/${boardId}`).then(success).catch(fail);
+  api
+    .delete(`board/${boardId}`, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        "Content-Type": "application/json",
+      },
+    })
+    .then(success)
+    .catch(fail);
 }
 
 /* ====================== Comment ====================== */
