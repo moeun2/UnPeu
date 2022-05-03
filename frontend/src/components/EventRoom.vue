@@ -49,13 +49,14 @@
 
     <!-- modal 창 -->
     <div id="pocket" class="modal-window">
-      <div class="modal-message">
+      <div class="modal-message">  
         <a href="#">
           <button class="btn_red_cancel">
             <span>X</span>
           </button>
         </a>
-        <div class="modal-content">
+        <!-- 로그인한 user의 모달창 -->
+        <div class="modal-content" id="modal-content" v-if="isMyPage">
           <img
             :src="API_BASE_URL + imgUrl"
             alt=""
@@ -64,6 +65,10 @@
           />
           <p class="message-user">{{ sender }}</p>
           <div class="message-box">{{ content }}</div>
+        </div>
+        <!-- guest의 모달창 -->
+        <div class="modal-non-message" v-else>
+            <p> 메세지의 주인만 확인할 수 있어요 🤐 </p>
         </div>
       </div>
     </div>
@@ -146,14 +151,30 @@ export default {
   },
   methods: {
     modal(message) {
-      console.log("modal-message : ", message);
-      this.content = message.content;
-      this.sender = message.sender;
-      if (message.present != null) {
-        this.imgUrl = message.present.presentImg;
-      } else {
-        this.imgUrl = "";
-      }
+        // 날짜 처리 (5월 5일 00:00:00 열람)
+        let today = new Date();   
+        let month = today.getMonth() + 1;  // 월
+        let date = today.getDate();  // 일
+        let hours = today.getHours(); // 시
+        let minutes = today.getMinutes();  // 분
+        let seconds = today.getSeconds();  // 초
+        console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+        if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
+            console.log("modal-message : ", message);
+            this.content = message.content;
+            this.sender = message.sender;
+            if (message.present != null) {
+                this.imgUrl = message.present.presentImg;
+            } else {
+                this.imgUrl = "";
+            }
+        }
+        else {
+            // 해당 날짜가 안 됐을 경우 모달 내용 변경, class 변경
+            let noneView = document.getElementById('modal-content');
+            noneView.innerHTML = '<p>아직 오픈 기간이 아닙니다. <br/> 조금만 더 기다려 주세요~! 🤩 </p>';
+            noneView.className = 'modal-non-message';
+        }
     },
     resetMessage() {
       this.$swal.fire(Alert.resetMessageCheck).then((result) => {
@@ -168,6 +189,7 @@ export default {
                 console.log(res);
                 Alert.resetMessageSuccess(this);
                 getMessage(
+                  this.curUser.id,
                   (res) => {
                     console.log(res.data.Message);
                     this.messages = res.data.Message;
@@ -200,6 +222,7 @@ export default {
                 console.log(res);
                 Alert.saveMessageSuccess(this);
                 getMessage(
+                  this.curUser.id,
                   (res) => {
                     console.log(res.data.Message);
                     this.messages = res.data.Message;
@@ -366,6 +389,13 @@ ul.myMenu > li ul.submenu > li:hover {
   width: 300px;
 }
 
+.modal-non-message {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
 .modal-content {
   text-align: center;
 }
@@ -404,5 +434,9 @@ ul.myMenu > li ul.submenu > li:hover {
   padding-top: 20px;
   padding-left: 12px;
   text-align: center;
+}
+
+#modal-content {
+    
 }
 </style>
