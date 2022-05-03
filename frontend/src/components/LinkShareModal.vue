@@ -93,15 +93,15 @@ export default {
       });
     },
     shareTwitter() {
-      var sendText = "개발새발"; // 전달할 텍스트
-      var sendUrl = "devpad.tistory.com/"; // 전달할 URL
+      var sendText = "UnPeu"; // 전달할 텍스트
+      var sendUrl = this.url; // 전달할 URL
       window.open(
         "https://twitter.com/intent/tweet?text=" + sendText + "&url=" + sendUrl
       );
     },
 
     shareFacebook() {
-      var sendUrl = "devpad.tistory.com/"; // 전달할 URL
+      var sendUrl = this.url; // 전달할 URL
       window.open("http://www.facebook.com/sharer/sharer.php?u=" + sendUrl);
     },
     shareKakao() {

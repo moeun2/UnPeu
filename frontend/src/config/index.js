@@ -4,7 +4,7 @@
 
 const API_BASE_URL = "http://localhost:8080";
 const FRONT_URL= "http://localhost:8081";
-const KAKAO_API_KEY = "be6c5490debf8a4691b7e46ca0bbf8ee";
+const KAKAO_API_KEY = "85706c8831cc3c166937be3d85a3d8a1";
 
 export {
     API_BASE_URL,
