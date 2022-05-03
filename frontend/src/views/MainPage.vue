@@ -418,7 +418,7 @@ export default {
 }
 
 .view {
-  background-image: url("https://i.imgur.com/EI9xcZH.png");
+  background-image: url("https://i.imgur.com/JzNuJr5.png");
   background-size: cover;
   /* 수직 정렬 위해서 사용 */
   height: 100vh;
