@@ -13,8 +13,9 @@
       </ul>
       <div v-else class="hide-menu"></div>
     </div>
+    
     <div class="gift-box">
-      <router-link :to="{ name: 'PresentPayment' }">
+      <router-link :to="{ name: 'PresentPayment' ,params:{userId: this.curUser.id}}">
         <button class="reg-gift">
           <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="" />
           <p>
@@ -185,7 +186,7 @@ export default {
         else {
             // 해당 날짜가 안 됐을 경우 모달 내용 변경, class 변경
             let noneView = document.getElementById('modal-content');
-            noneView.innerHTML = '<p>아직 오픈 기간이 아닙니다. <br/> 조금만 더 기다려 주세요~! 🤩 </p>';
+            noneView.innerHTML = '<p>아직 오픈 기간이 아닙니다. <br/> 5월 5일 어른이날을 기다려 주세요~! 🤩🤩🤩 </p>';
             noneView.className = 'modal-non-message';
         }
     },
@@ -448,14 +449,10 @@ ul.myMenu > li ul.submenu > li:hover {
   padding-left: 12px;
   text-align: center;
 }
-
-#modal-content {
-    
-}
-
 .main-room2 {
     background-image: url("https://i.imgur.com/yBs2YNe.jpg"); 
     background-size: cover;
     border-radius: 15px;
 }
+
 </style>

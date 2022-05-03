@@ -46,7 +46,7 @@
                     <div class="text-desc" v-html="userInfo"></div>
                   </div>
                   <div class="info-wrap">
-                    <v-button class="speech-bubble">친구에게<br/>공유해보세요~!</v-button>
+                    <div class="speech-bubble">친구에게<br/>공유해보세요~!</div>
 
                     <v-icon small @click="copyLink">mdi-link</v-icon>
                     <a class="info-name" href="#"> {{ this.userName }}</a>
@@ -128,7 +128,7 @@
                       @click="updateUserTitle"
                       v-if="isMyPage"
                       >mdi-pencil-outline</v-icon
-                    ><a href="#">{{ this.userTitle }}</a>
+                    ><a @click="goToMainPage()">{{ this.userTitle }}</a>
                   </p>
                 </div>
                 <div class="main">
@@ -241,6 +241,9 @@ export default {
     LinkShareModal,
   },
   methods: {
+    goToMainPage(){
+      this.$router.push({ name: "eventRoom" });
+    },
     setUserData(){
       getUserDetail(this.$route.params.userid,
       (res)=>{
@@ -354,35 +357,31 @@ export default {
       }
     },
 
-    async updateUserInfo() {
-      const { value: info } = await this.$swal.fire({
-        title: "소개글을 입력해주세요!",
-        input: "textarea",
-        inputLabel: "프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)",
-        inputPlaceholder: "50자 이하, 4줄 이하로 작성해주세요.",
-        inputAttributes: {
-          maxlength: 50,
-        },
-        inputValidator: (value) => {
-          if (!value) {
-            return "소개글을 한글자 이상 입력해주세요!";
-          } else if (
-            value.match(/[\n]/g) == null
-              ? false
-              : value.match(/[\n]/g).length + 1 > 4
-          ) {
-            return "4줄 이하로 입력해주세요!";
-          }
-        },
-      });
-
-      if (info) {
-        updateUserInfo(info.replace('"', ""), (res) => {
-          this.userInfo = res.data.User.userInfo;
-          console.log(res.data.User.userInfo);
-        });
-      }
-    },
+    async updateUserInfo(){
+        const { value: info } = await this.$swal.fire({
+          title: '소개글을 입력해주세요!',
+          input: 'textarea',
+          inputLabel: '프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)' ,
+          inputPlaceholder: '50자 이하, 4줄 이하로 작성해주세요.',
+          inputAttributes: {
+            maxlength: 50,
+          },
+          inputValidator:(value) => {
+              if (!value) {
+                return '소개글을 한글자 이상 입력해주세요!'
+              }else if(value.match(/[\n]/g) == null ? false : value.match(/[\n]/g).length+1>4){
+                return '4줄 이하로 입력해주세요!'
+              }
+            }
+        })
+        if (info) {
+          updateUserInfo(info.replace("\"", ""),
+          (res)=>{
+            this.userInfo=res.data.User.userInfo
+            console.log(res.data.User.userInfo)
+          })
+        }
+      },
 
     async updateUserImg() {
       let fd = new FormData();
@@ -420,6 +419,7 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: column;
+
 }
 
 .v-application--wrap {

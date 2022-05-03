@@ -54,7 +54,7 @@
 // import * as Alert from "@/api/alert"; //api 폴더 안에 넣어놓는 것이 맞는지는 모르겠음. But, 넣어놓을 곳이 딱히 없어서 넣어놓음
 import { mapGetters } from "vuex";
 const userStore = "userStore";
-import { KAKAO_API_KEY, API_BASE_URL } from "@/config/index";
+import { KAKAO_API_KEY, FRONT_URL } from "@/config/index";
 export default {
   data() {
     return {
@@ -71,11 +71,11 @@ export default {
   },
   methods: {
     setUrl() {
-      this.url = API_BASE_URL + "/eventRoom/" + this.curUser.id;
+      this.url = FRONT_URL + "/eventRoom/" + this.curUser.id;
     },
     copyLink() {
       this.$emit("close");
-      const copiedText = API_BASE_URL + "/eventRoom/" + this.curUser.id;
+      const copiedText = FRONT_URL + "/eventRoom/" + this.curUser.id;
       navigator.clipboard
         .writeText(`${copiedText}`)
         .then(() => {
