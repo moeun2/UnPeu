@@ -188,39 +188,10 @@ public class UserController {
 	
 	@ApiOperation(value = "조회수 증가 Controller")
 	@RequestMapping(value = "/users/visit/{userId}", method = RequestMethod.PATCH)
-    public ResponseEntity<Map<String, Object>> updateVisit(@PathVariable @NotNull Long userId,HttpServletRequest request,HttpServletResponse response){
+    public ResponseEntity<Map<String, Object>> updateVisit(@PathVariable @NotNull Long userId){
 		logger.info("updateVisit - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
-		User user=null;
-		Cookie oldCookie = null;
-	    Cookie[] cookies = request.getCookies();
-	    if (cookies != null) {
-	        for (Cookie cookie : cookies) {
-	            if (cookie.getName().equals("visit")) {
-	                oldCookie = cookie;
-	            }
-	        }
-	    }
-
-	    if (oldCookie != null) {
-	        if (!oldCookie.getValue().contains("[" + userId.toString() + "]")) {
-	        	logger.info("updateVisit - 쿠키는 있으나 해당 번호가 없음");
-	        	user = userService.increseVisit(userId);
-	            oldCookie.setValue(oldCookie.getValue() + "_[" + userId + "]");
-	            oldCookie.setPath("/");
-	            oldCookie.setMaxAge(60 * 60 * 24);
-	            response.addCookie(oldCookie);
-	        }
-	    } else {
-	    	logger.info("updateVisit - 쿠키 없음");
-	    	user = userService.increseVisit(userId);
-	        Cookie newCookie = new Cookie("visit","[" + userId + "]");
-	        newCookie.setPath("/");
-	        newCookie.setMaxAge(60 * 60 * 24);
-	        response.addCookie(newCookie);
-	    }
-
-//		resultMap.put("msg", "success");
+		User user=userService.increseVisit(userId);
 		resultMap.put("User", user);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}

@@ -392,7 +392,7 @@ public class UserServiceImpl implements IUserService{
 	@Transactional(readOnly = false)
 	public User increseVisit(Long userId) {
 		userRepository.increseVisit(userId);
-		return userRepository.getById(userId);
+		return userRepository.findById(userId).get();
 	}
 
 }
