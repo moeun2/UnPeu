@@ -18,7 +18,7 @@ public class SchedulerApplication {
     private final IUserService userService;
 
     // cron = 초 분 시 일 월 요일
-    @Scheduled(cron = "0 18 10 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")//매일 00 시 00분에 일일조회수 초기화
     public void startBatch(){
         logger.info("배치 시작");
         userService.updateTodayVisit();
