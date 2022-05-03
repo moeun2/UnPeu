@@ -73,5 +73,3 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-implementation 'org.springframework.boot:spring-boot-starter-web'

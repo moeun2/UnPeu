@@ -35,10 +35,12 @@
                       aspect-ratio="0.8"
                     ></v-img>
                     <v-card-title primary-title>
-                      <div>
-                        <div>가격</div>
-                      </div>
-                    </v-card-title>
+                    {{ cardList[+index+i].presentName }}
+                  </v-card-title>
+                  <v-card-text>
+                    <p>가격 : {{cardList[+index+i].presentPrice}}</p>
+                    <p>모인 금액 : {{cardList[+index+i].receivedPrice}}</p>
+                  </v-card-text>
                   </v-card>
                 </v-col>
               </template>
