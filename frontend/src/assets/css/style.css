@@ -737,3 +737,13 @@ a {
 a.link {
   color: black;
 }
+
+.v-file-input .v-file-input__text {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  overflow: hidden;
+  max-height: 30px;
+}
