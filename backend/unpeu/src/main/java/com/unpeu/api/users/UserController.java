@@ -171,7 +171,7 @@ public class UserController {
 	@ApiOperation(value = "유저 이미지 수정 Controller")
 	@RequestMapping(value = "/users/img", method = RequestMethod.PATCH)
     public ResponseEntity<Map<String, Object>> updateUserImg(@ApiIgnore @NotNull Authentication authentication,
-    		@RequestPart(value = "file") @NotNull final MultipartFile userImg){
+    		@RequestPart(value = "file") @NotNull MultipartFile userImg){
 		logger.info("updateUserImg - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
