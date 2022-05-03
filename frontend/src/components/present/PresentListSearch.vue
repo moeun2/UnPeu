@@ -139,8 +139,6 @@ export default {
         text: "다시 한번 생각해주세요!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
         confirmButtonText: '네, 삭제합니다!'
       }).then((result) => {
         if (result.isConfirmed) {

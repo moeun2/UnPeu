@@ -67,8 +67,6 @@ const presentStore="presentStore";
         text: "작성한 선물을 등록합니다!",
         icon: 'question',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
         confirmButtonText: '네, 등록합니다!'
       }).then((result) => {
         if (result.isConfirmed) {
