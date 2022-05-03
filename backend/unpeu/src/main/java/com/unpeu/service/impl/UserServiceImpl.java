@@ -360,9 +360,7 @@ public class UserServiceImpl implements IUserService{
 	
 	/**
 	 * 유저의 이메일 생년월일 수정
-	 * @param userId
-	 * @param email
-	 * @param birth
+	 * @param userPatchEmailBirthReq
 	 * @return
 	 */
 	@Transactional(rollbackFor = Exception.class)
@@ -372,6 +370,29 @@ public class UserServiceImpl implements IUserService{
 		user.setUserBirth(userPatchEmailBirthReq.getUserBirth());
 		user.setUserEmail(userPatchEmailBirthReq.getUserEmail());
 		return userRepository.save(user);
+	}
+
+
+	/**
+	 * 일일 방문자수 초기회
+	 * @return
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public void updateTodayVisit() {
+		userRepository.updateTodayVisit();
+	}
+
+	/**
+	 * 일일 방문자수 초기회
+	 * @param userId
+	 * @return
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public User increseVisit(Long userId) {
+		userRepository.increseVisit(userId);
+		return userRepository.getById(userId);
 	}
 
 }

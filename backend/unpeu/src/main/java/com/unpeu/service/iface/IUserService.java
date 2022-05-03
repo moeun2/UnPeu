@@ -33,4 +33,8 @@ public interface IUserService {
 	
 	Map<String, String> getGoogleUserInfo(String token);
 	
+	void updateTodayVisit();
+	
+	User increseVisit(Long userId);
+	
 }
