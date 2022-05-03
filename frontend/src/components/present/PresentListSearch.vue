@@ -54,9 +54,9 @@
                     {{ cardList[+index+i].presentName }}
                   </v-card-title>
                   <v-card-text>
-                    가격 : {{cardList[+index+i].presentPrice}}
+                    <p>가격 : {{cardList[+index+i].presentPrice}}</p>
+                    <p>현재 받은 금액 : {{cardList[+index+i].receivedPrice}}</p>
                   </v-card-text>
-                  
                 </v-card>
                 </v-hover>
               </v-col>
