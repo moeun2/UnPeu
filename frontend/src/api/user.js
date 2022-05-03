@@ -83,6 +83,12 @@ function updateUserEmailBirth(token,data,success,fail){
     console.log("updateUserEmailBirth 실행됨")
 }
 
+function increaseVisit(userId, success, fail){
+    api.patch(`/users/visit/`+userId)
+    .then(success).catch(fail)
+}
+
+
 export{
     kakaoLogin,
     googleLogin,
@@ -92,5 +98,6 @@ export{
     updateUserTitle,
     getUserDetailUseToken,
     updateUserEmailBirth,
-    getUserIdUseToken
+    getUserIdUseToken,
+    increaseVisit
 }

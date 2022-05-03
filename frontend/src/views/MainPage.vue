@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import {getUserDetailUseToken,getUserDetail,updateUserImg,updateUserTitle,updateUserInfo} from '@/api/user.js';
+import {getUserDetailUseToken,getUserDetail,updateUserImg,updateUserTitle,updateUserInfo,increaseVisit} from '@/api/user.js';
 import {FRONT_URL,API_BASE_URL} from '@/config/index';
 // import store from '@/store';
 export default {
@@ -158,6 +158,22 @@ export default {
     }
     this.setUserData();
 
+    //조회수 증가
+    if(window.document.location.href==FRONT_URL+"/eventRoom/"+this.$route.params.userid){
+      increaseVisit(this.$route.params.userid,(res)=>{
+        console.log("increaseVisit 실행")
+        if(res.data.User.todayVisit){
+          this.todayVisit= res.data.User.todayVisit
+          alert(res.data.User.todayVisit)
+        }
+        if(res.data.User.totalVisit){
+          this.totalVisit= res.data.User.totalVisit
+        }
+    },()=>{
+      console.log("increaseVisit fail")
+    });
+
+    }
    },
   components: {
   },
