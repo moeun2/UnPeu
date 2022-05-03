@@ -128,6 +128,7 @@ function getUserInfo(to, from, next) {
   if (accessToken == null) {
     console.log("Permission : Guest"); //2
     Store.commit("userStore/setCurUserPermission", 2);
+    
   } else {
     getUserDetailUseToken(accessToken, (res) => {
       console.log("router-index.js-getUserInfo-getUserDetailUseToken 호출");

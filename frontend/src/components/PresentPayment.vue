@@ -82,7 +82,7 @@ export default {
             //메세지만 보낼래요!
             if(this.checkbox == false){
               this.changeCardColor(false);
-            }+
+            }
             this.createMessage();
           }
         });
@@ -94,6 +94,9 @@ export default {
             Alert.paymentCancel(this);
             this.message.presentId = null;
             this.message.price = null;
+            if(this.checkbox == false){
+              this.changeCardColor(false);
+            }
           }
         });
       }

@@ -148,8 +148,11 @@ export default {
     }
   },
   watch: {
-    $route(to, form) {//라우터 파라미터 변경 감지
-      if (to.path !== form.path) this.changeParams(this.$route.params.userid);
+    $route(to, from) {//라우터 파라미터 변경 감지
+      console.log("watch")
+      console.log(to)
+      console.log(from)
+      if (to.path !== from.path) this.changeParams(this.$route.params.userid);
     },
   },
   computed: {
