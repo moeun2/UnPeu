@@ -1,7 +1,7 @@
 <template>
   <div class="present-carousel">
     <!-- <v-button >선물등록이 필요합니다</v-button> -->
-    <div v-if="showCarousel == false">
+    <div v-if="showCarousel == false && this.curUser.permission==0">
       <v-btn tile color="info"
         @click="goToPresentManage"
       >
