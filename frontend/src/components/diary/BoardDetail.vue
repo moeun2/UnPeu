@@ -14,16 +14,10 @@
           label="Title"
           readonly
         ></v-text-field>
-        <!-- CKEditor로 수정 예정 -->
-        <v-textarea
-          v-model="boardInfo.content"
-          label="Content"
-          readonly
-          rows="6"
-          auto-grow
-          required
-        >
-        </v-textarea>
+
+        <div class= "ql-editor">
+          <p v-html="boardInfo.content"></p>
+        </div>
       </v-card-text>
 
       <v-divider class="mx-4"></v-divider>
@@ -120,5 +114,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@import "~vue2-editor/dist/vue2-editor.css";
+
+/* Import the Quill styles you want */
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
 </style>
