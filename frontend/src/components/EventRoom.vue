@@ -1,5 +1,5 @@
 <template>
-  <div class="main-room">
+  <div class="main-room" id="main-room">
     <div class="event-tab">
       <ul class="myMenu" v-if="isMyPage">
         <li class="menu2">
@@ -93,7 +93,7 @@ export default {
       imgUrl: "",
       API_BASE_URL: API_BASE_URL,
       // 몇개 씩 보여줄지
-      perPage: 10,
+      perPage: 12,
       // 현재 페이지
       currentPage: 1,
       isMyPage: false,
@@ -133,6 +133,19 @@ export default {
         console.log("fail");
       }
     );
+
+    let today = new Date();   
+    let month = today.getMonth() + 1;  // 월
+    let date = today.getDate();  // 일
+    let hours = today.getHours(); // 시
+    let minutes = today.getMinutes();  // 분
+    let seconds = today.getSeconds();  // 초
+    console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+    if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
+        let changeView = document.getElementById('main-room');
+        console.log(changeView.className);
+        changeView.className = 'main-room2';
+    }
   },
   computed: {
     ...mapGetters(userStore, {
@@ -254,7 +267,7 @@ export default {
   display: grid;
   grid-template-rows: repeat(auto-fill, minmax(90px, 1fr));
   grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  width: 550px;
+  width: 630px;
   height: 230px;
 }
 .item {
@@ -419,8 +432,8 @@ ul.myMenu > li ul.submenu > li:hover {
 }
 /* pagination css */
 .pg {
-  width: 550px;
-  bottom: -22%;
+  width: 600px;
+  bottom: -29%;
   position: absolute;
 }
 
@@ -436,8 +449,10 @@ ul.myMenu > li ul.submenu > li:hover {
   padding-left: 12px;
   text-align: center;
 }
+.main-room2 {
+    background-image: url("https://i.imgur.com/yBs2YNe.jpg"); 
+    background-size: cover;
+    border-radius: 15px;
+}
 
-// #modal-content {
-    
-// }
 </style>
