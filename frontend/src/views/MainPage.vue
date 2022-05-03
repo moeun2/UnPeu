@@ -128,7 +128,7 @@
                       @click="updateUserTitle"
                       v-if="isMyPage"
                       >mdi-pencil-outline</v-icon
-                    ><a href="#">{{ this.userTitle }}</a>
+                    ><a @click="goToMainPage()">{{ this.userTitle }}</a>
                   </p>
                 </div>
                 <div class="main">
@@ -241,6 +241,9 @@ export default {
     LinkShareModal,
   },
   methods: {
+    goToMainPage(){
+      this.$router.push({ name: "eventRoom" });
+    },
     setUserData(){
       getUserDetail(this.$route.params.userid,
       (res)=>{
