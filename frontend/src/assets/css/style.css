@@ -47,7 +47,7 @@
   }
   
   .main-section {
-    width: 700px;
+    width: 780px;
     border-left: none;
     border-radius: 15px;
     box-shadow: 1px 0 5px rgb(0 0 0 / 20%);
@@ -65,7 +65,7 @@
   
   .main-dot {
     margin: 20px 20px 20px 0px;
-    width: 680px;
+    width: 760px;
     height: 560px;
     border: 2px dashed white;
     border-left: none;
@@ -98,7 +98,7 @@
   
   .main-paper {
     margin: 10px 10px 10px 0px;
-    width: 670px;
+    width: 750px;
     height: 540px;
     border: 2px solid #8C8C8C;
     border-left: none;
@@ -205,7 +205,7 @@
     margin: 0 5px;
     border: 2px solid #bfbfc8;
     border-radius: 15px;
-    width: 650px;
+    width: 730px;
     height: 480px;
     padding: 10px 30px;
     display: flex;
