@@ -36,6 +36,18 @@ function getUserDetailUseToken(token, success, fail) {
   console.log("getUserDetailUseToken 실행됨");
 }
 
+function getUserIdUseToken(token, success, fail) {
+  api
+    .get(`/users`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then(success)
+    .catch(fail);
+  console.log("getUserDetailUseToken 실행됨");
+}
+
 function updateUserImg(img, success, fail) {
   api
     .patch(`/users/img`, img, {
@@ -79,6 +91,25 @@ function updateUserTitle(userTitle, success, fail) {
   console.log("updateUserTitle 실행됨");
 }
 
+function updateUserEmailBirth(token, data, success, fail) {
+  api
+    .patch(`/users/email/birth`, data, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then(success)
+    .catch(fail);
+  console.log("updateUserEmailBirth 실행됨");
+}
+
+function increaseVisit(userId, success, fail) {
+  api
+    .patch(`/users/visit/` + userId)
+    .then(success)
+    .catch(fail);
+}
+
 export {
   kakaoLogin,
   googleLogin,
@@ -87,4 +118,7 @@ export {
   updateUserInfo,
   updateUserTitle,
   getUserDetailUseToken,
+  updateUserEmailBirth,
+  getUserIdUseToken,
+  increaseVisit,
 };

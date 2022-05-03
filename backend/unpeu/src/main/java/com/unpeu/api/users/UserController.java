@@ -3,6 +3,9 @@ package com.unpeu.api.users;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
@@ -26,7 +29,8 @@ import com.unpeu.config.auth.JwtTokenUtil;
 import com.unpeu.config.auth.UnpeuUserDetails;
 import com.unpeu.config.media.MediaService;
 import com.unpeu.domain.entity.User;
-import com.unpeu.domain.request.UserPatchReq;
+import com.unpeu.domain.request.UserPatchEmailBirthReq;
+import com.unpeu.domain.request.UserPatchUserInfoReq;
 import com.unpeu.service.iface.IUserService;
 
 import io.swagger.annotations.Api;
@@ -138,13 +142,27 @@ public class UserController {
 
 	@ApiOperation(value = "유저 info 수정 Controller")
 	@RequestMapping(value = "/users/info", method = RequestMethod.PATCH)
-    public ResponseEntity<Map<String, Object>> updateUserInfo(@ApiIgnore @NotNull Authentication authentication,@RequestBody @NotNull UserPatchReq userPatchReq){
+    public ResponseEntity<Map<String, Object>> updateUserInfo(@ApiIgnore @NotNull Authentication authentication,@RequestBody @NotNull UserPatchUserInfoReq userPatchReq){
 		logger.info("updateUserInfo - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
 
 		User updateUser = userService.updateUserInfo(user.getId(), userPatchReq.getUserInfo());
+
+		resultMap.put("User", updateUser);
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+	}
+	
+	@ApiOperation(value = "유저 email, Birth 수정 Controller")
+	@RequestMapping(value = "/users/email/birth", method = RequestMethod.PATCH)
+    public ResponseEntity<Map<String, Object>> updateUserEmailBirth(@ApiIgnore @NotNull Authentication authentication,@RequestBody @NotNull UserPatchEmailBirthReq userPatchEmailBirthReq){
+		logger.info("updateUserEmailBirth - 호출");
+		Map<String, Object> resultMap = new HashMap<>();
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+
+		User updateUser = userService.updateUserEmailBirth(user.getId(), userPatchEmailBirthReq);
 
 		resultMap.put("User", updateUser);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
@@ -164,6 +182,16 @@ public class UserController {
 			String url = mediaService.save(userImg);
 			user = userService.updateUserImg(user.getId(), url);
 		}
+		resultMap.put("User", user);
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+	}
+	
+	@ApiOperation(value = "조회수 증가 Controller")
+	@RequestMapping(value = "/users/visit/{userId}", method = RequestMethod.PATCH)
+    public ResponseEntity<Map<String, Object>> updateVisit(@PathVariable @NotNull Long userId){
+		logger.info("updateVisit - 호출");
+		Map<String, Object> resultMap = new HashMap<>();
+		User user=userService.increseVisit(userId);
 		resultMap.put("User", user);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
