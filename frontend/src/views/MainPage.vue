@@ -338,18 +338,6 @@ export default {
           this.$router.push({name: "Landing"})
           } 
         })
-        // if(confirm("로그아웃 하시겠습니까?")){
-        //   window.localStorage.removeItem("accessToken")
-
-        //   if(this.$store.state.userStore.user.socialDomain=="kakao"){
-        //     this.$store.commit("userStore/setUSerNull")
-        //     window.location.replace(
-        //       "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri="+FRONT_URL
-        //     );
-        //   }
-        //   this.$store.commit("userStore/setUSerNull")
-        //   this.$router.push({name: "Landing"})
-        // }
       },
 
       async updateUserTitle(){
