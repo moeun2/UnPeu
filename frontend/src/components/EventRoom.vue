@@ -186,7 +186,7 @@ export default {
         else {
             // 해당 날짜가 안 됐을 경우 모달 내용 변경, class 변경
             let noneView = document.getElementById('modal-content');
-            noneView.innerHTML = '<p>아직 오픈 기간이 아닙니다. <br/> 조금만 더 기다려 주세요~! 🤩 </p>';
+            noneView.innerHTML = '<p>아직 오픈 기간이 아닙니다. <br/> 5월 5일 어른이날을 기다려 주세요~! 🤩🤩🤩 </p>';
             noneView.className = 'modal-non-message';
         }
     },
