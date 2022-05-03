@@ -147,6 +147,11 @@ export default {
         changeView.className = 'main-room2';
     }
   },
+  watch: {
+    $route(to, form) {//라우터 파라미터 변경 감지
+      if (to.path !== form.path) this.changeParams(this.$route.params.userid);
+    },
+  },
   computed: {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
@@ -164,6 +169,34 @@ export default {
     },
   },
   methods: {
+
+    changeParams(userId) {//파라미터 변경시 실행
+     getMessage(
+      userId,
+      (res) => {
+        console.log(res.data.Message);
+        this.messages = res.data.Message;
+        console.log(this.messages);
+      },
+      () => {
+        console.log("fail");
+      }
+    );
+
+    let today = new Date();   
+    let month = today.getMonth() + 1;  // 월
+    let date = today.getDate();  // 일
+    let hours = today.getHours(); // 시
+    let minutes = today.getMinutes();  // 분
+    let seconds = today.getSeconds();  // 초
+    console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+    if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
+        let changeView = document.getElementById('main-room');
+        console.log(changeView.className);
+        changeView.className = 'main-room2';
+    }
+  
+   },
     modal(message) {
         // 날짜 처리 (5월 5일 00:00:00 열람)
         let today = new Date();   
