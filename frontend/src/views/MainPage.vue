@@ -271,7 +271,6 @@ export default {
           this.totalVisit= res.data.User.totalVisit
         }
       },
-// <<<<<<< HEAD
       ()=>{
         console.log("getUserDetail fail")
       })
@@ -320,8 +319,14 @@ export default {
 
       logout(){
         //storage확인해서 도메인 확인 //모달창 바꾸기
-        if(confirm("로그아웃 하시겠습니까?")){
-          window.localStorage.removeItem("accessToken")
+        this.$swal.fire({
+          title: 'Logout',
+          html:'앙뿌에서 로그아웃 하시겠습니까? ' ,
+          showCancelButton: true,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            window.localStorage.removeItem("accessToken")
 
           if(this.$store.state.userStore.user.socialDomain=="kakao"){
             this.$store.commit("userStore/setUSerNull")
@@ -331,7 +336,20 @@ export default {
           }
           this.$store.commit("userStore/setUSerNull")
           this.$router.push({name: "Landing"})
-        }
+          } 
+        })
+        // if(confirm("로그아웃 하시겠습니까?")){
+        //   window.localStorage.removeItem("accessToken")
+
+        //   if(this.$store.state.userStore.user.socialDomain=="kakao"){
+        //     this.$store.commit("userStore/setUSerNull")
+        //     window.location.replace(
+        //       "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri="+FRONT_URL
+        //     );
+        //   }
+        //   this.$store.commit("userStore/setUSerNull")
+        //   this.$router.push({name: "Landing"})
+        // }
       },
 
       async updateUserTitle(){
