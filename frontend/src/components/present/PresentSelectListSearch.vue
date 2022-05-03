@@ -1,20 +1,17 @@
 <template>
-  <div class="present-carousel" >
+  <div class="present-carousel">
     <!-- <v-button >선물등록이 필요합니다</v-button> -->
-    <div v-if="showCarousel==false"      
-  >
-    <v-btn
-      tile
-      color="info"
-    >
-      <v-icon left>
-         mdi-exclamation
-      </v-icon>
-      선물이 등록되지 않았어요!<br/> 선물 등록하러 가시겠어요? :)
-    </v-btn>
-    <br/>
-    <br/>
-  </div>
+    <div v-if="showCarousel == false">
+      <v-btn tile color="info"
+        @click="goToPresentManage"
+      >
+        <v-icon left> mdi-exclamation </v-icon>
+        선물이 등록되지 않았어요!<br />
+        선물 등록하러 가시겠어요? :)
+      </v-btn>
+      <br />
+      <br />
+    </div>
     <v-carousel hide-delimiters style="height: 350px" v-if="showCarousel">
       <template v-for="(card, index) in cardList">
         <v-carousel-item
@@ -35,12 +32,14 @@
                       aspect-ratio="0.8"
                     ></v-img>
                     <v-card-title primary-title>
-                    {{ cardList[+index+i].presentName }}
-                  </v-card-title>
-                  <v-card-text>
-                    <p>가격 : {{cardList[+index+i].presentPrice}}</p>
-                    <p>모인 금액 : {{cardList[+index+i].receivedPrice}}</p>
-                  </v-card-text>
+                      {{ cardList[+index + i].presentName }}
+                    </v-card-title>
+                    <v-card-text>
+                      <p>가격 : {{ cardList[+index + i].presentPrice }}</p>
+                      <p>
+                        모인 금액 : {{ cardList[+index + i].receivedPrice }}
+                      </p>
+                    </v-card-text>
                   </v-card>
                 </v-col>
               </template>
@@ -59,7 +58,7 @@
 
 <script>
 import { API_BASE_URL } from "@/config/index.js";
-import { mapGetters,mapActions, mapState } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 import PresentPayModal from "@/components/present/PresentPayModal";
 const presentStore = "presentStore";
 const userStore = "userStore";
@@ -78,7 +77,7 @@ export default {
       showCarousel: true,
     };
   },
-  
+
   mounted() {
     this.search();
   },
@@ -93,21 +92,23 @@ export default {
   },
   methods: {
     ...mapActions(presentStore, ["searchList"]),
+    goToPresentManage(){
+      this.$router.push({ name: "PresentManage" });
+    },
     /**
      * BackEnd에서 getPresentListByUserId 호출 함수
      */
     search() {
       // To Do: User State에서 가져오기
       console.log("PresentSelectListSearch_search - 호출");
-      console.log("userId: ",this.curUser.id);
+      console.log("userId: ", this.curUser.id);
       this.searchList(this.curUser.id);
       this.cardList = this.presentList.Present;
-      console.log(this.cardList.length)
-      if(this.cardList.length == 0){
+      console.log(this.cardList.length);
+      if (this.cardList.length == 0) {
         this.showCarousel = false;
-      }else{
+      } else {
         this.showCarousel = true;
-
       }
       this.cardListCount = Math.ceil(this.cardList.length / 3);
     },
@@ -178,7 +179,7 @@ export default {
 }
 .selectedCard {
   margin: 5px;
-  background-color: #B9E2FA !important;
+  background-color: #b9e2fa !important;
 }
 
 .present-carousel {

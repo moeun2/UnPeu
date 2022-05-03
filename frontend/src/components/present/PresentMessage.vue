@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       nickname: null,
-      content: null,
+      content: '',
       cardList: [],
       API_BASE_URL: API_BASE_URL,
       rules: {

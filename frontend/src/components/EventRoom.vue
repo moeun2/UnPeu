@@ -13,8 +13,9 @@
       </ul>
       <div v-else class="hide-menu"></div>
     </div>
+    
     <div class="gift-box">
-      <router-link :to="{ name: 'PresentPayment' }">
+      <router-link :to="{ name: 'PresentPayment' ,params:{userId: this.curUser.id}}">
         <button class="reg-gift">
           <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="" />
           <p>
