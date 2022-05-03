@@ -23,7 +23,6 @@ ref="form"
       </v-col>
     <v-col cols="3">
       <v-text-field
-        :rules="rules.amount"
           v-model="presentPrice"
           label="Amount"
           value="10.00"
@@ -55,12 +54,7 @@ const presentStore="presentStore";
       presentName: null,
       presentPrice: null,
       rules: {
-        files:[value => {!value || value.size < 2000000 || '파일 크기가 2MB 이하여야합니다!'}],
-         amount:[v  => {
-           console.log(!v);
-          if (!isNaN(parseFloat(v)) && v >= 0) return true;
-          return '정확한 금액을 입력해주세요';
-        }]
+        files:[value => !value || value.size < 2000000 || '파일 크기가 2MB 이하여야합니다!'],
       },
       files:[],
       

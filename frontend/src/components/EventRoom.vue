@@ -13,8 +13,9 @@
       </ul>
       <div v-else class="hide-menu"></div>
     </div>
+
     <div class="gift-box">
-      <router-link :to="{ name: 'PresentPayment' }">
+      <router-link :to="{ name: 'PresentPayment' ,params:{userId: this.curUser.id}}">
         <button class="reg-gift">
           <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="" />
           <p>
@@ -55,7 +56,8 @@
             <span>X</span>
           </button>
         </a>
-        <div class="modal-content">
+        <!-- 로그인한 user의 모달창 -->
+        <div class="modal-content" id="modal-content" v-if="isMyPage">
           <img
             :src="API_BASE_URL + imgUrl"
             alt=""
@@ -64,6 +66,10 @@
           />
           <p class="message-user">{{ sender }}</p>
           <div class="message-box">{{ content }}</div>
+        </div>
+        <!-- guest의 모달창 -->
+        <div class="modal-non-message" v-else>
+            <p> 메세지의 주인만 확인할 수 있어요 🤐 </p>
         </div>
       </div>
     </div>
@@ -88,7 +94,7 @@ export default {
       imgUrl: "",
       API_BASE_URL: API_BASE_URL,
       // 몇개 씩 보여줄지
-      perPage: 10,
+      perPage: 12,
       // 현재 페이지
       currentPage: 1,
       isMyPage: false,
@@ -128,6 +134,27 @@ export default {
         console.log("fail");
       }
     );
+
+    let today = new Date();
+    let month = today.getMonth() + 1;  // 월
+    let date = today.getDate();  // 일
+    let hours = today.getHours(); // 시
+    let minutes = today.getMinutes();  // 분
+    let seconds = today.getSeconds();  // 초
+    console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+    if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
+        let changeView = document.getElementById('main-room');
+        console.log(changeView.className);
+        changeView.className = 'main-room2';
+    }
+  },
+  watch: {
+    $route(to, from) {//라우터 파라미터 변경 감지
+      console.log("watch")
+      console.log(to)
+      console.log(from)
+      if (to.path !== from.path) this.changeParams(this.$route.params.userid);
+    },
   },
   computed: {
     ...mapGetters(userStore, {
@@ -146,16 +173,60 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(presentStore,["RESET_PRESENT_STORE"]),
-    modal(message) {
-      console.log("modal-message : ", message);
-      this.content = message.content;
-      this.sender = message.sender;
-      if (message.present != null) {
-        this.imgUrl = message.present.presentImg;
-      } else {
-        this.imgUrl = "";
+    ...mapMutations(presentStore,["RESET_PRESENT_LIST"]),
+
+    changeParams(userId) {//파라미터 변경시 실행
+     getMessage(
+      userId,
+      (res) => {
+        console.log(res.data.Message);
+        this.messages = res.data.Message;
+        console.log(this.messages);
+      },
+      () => {
+        console.log("fail");
       }
+    );
+
+    let today = new Date();
+    let month = today.getMonth() + 1;  // 월
+    let date = today.getDate();  // 일
+    let hours = today.getHours(); // 시
+    let minutes = today.getMinutes();  // 분
+    let seconds = today.getSeconds();  // 초
+    console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+    if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
+        let changeView = document.getElementById('main-room');
+        console.log(changeView.className);
+        changeView.className = 'main-room2';
+    }
+
+   },
+    modal(message) {
+        // 날짜 처리 (5월 5일 00:00:00 열람)
+        let today = new Date();
+        let month = today.getMonth() + 1;  // 월
+        let date = today.getDate();  // 일
+        let hours = today.getHours(); // 시
+        let minutes = today.getMinutes();  // 분
+        let seconds = today.getSeconds();  // 초
+        console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+        if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
+            console.log("modal-message : ", message);
+            this.content = message.content;
+            this.sender = message.sender;
+            if (message.present != null) {
+                this.imgUrl = message.present.presentImg;
+            } else {
+                this.imgUrl = "";
+            }
+        }
+        else {
+            // 해당 날짜가 안 됐을 경우 모달 내용 변경, class 변경
+            let noneView = document.getElementById('modal-content');
+            noneView.innerHTML = '<p>아직 오픈 기간이 아닙니다. <br/> 5월 5일 어른이날을 기다려 주세요~! 🤩🤩🤩 </p>';
+            noneView.className = 'modal-non-message';
+        }
     },
     resetMessage() {
       this.$swal.fire(Alert.resetMessageCheck).then((result) => {
@@ -170,6 +241,7 @@ export default {
                 console.log(res);
                 Alert.resetMessageSuccess(this);
                 getMessage(
+                  this.curUser.id,
                   (res) => {
                     console.log(res.data.Message);
                     this.RESET_PRESENT_LIST();
@@ -203,6 +275,7 @@ export default {
                 console.log(res);
                 Alert.saveMessageSuccess(this);
                 getMessage(
+                  this.curUser.id,
                   (res) => {
                     console.log(res.data.Message);
                     this.messages = res.data.Message;
@@ -233,7 +306,7 @@ export default {
   display: grid;
   grid-template-rows: repeat(auto-fill, minmax(90px, 1fr));
   grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  width: 550px;
+  width: 630px;
   height: 230px;
 }
 .item {
@@ -369,6 +442,13 @@ ul.myMenu > li ul.submenu > li:hover {
   width: 300px;
 }
 
+.modal-non-message {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
 .modal-content {
   text-align: center;
 }
@@ -391,8 +471,8 @@ ul.myMenu > li ul.submenu > li:hover {
 }
 /* pagination css */
 .pg {
-  width: 550px;
-  bottom: -22%;
+  width: 600px;
+  bottom: -29%;
   position: absolute;
 }
 
@@ -408,4 +488,10 @@ ul.myMenu > li ul.submenu > li:hover {
   padding-left: 12px;
   text-align: center;
 }
+.main-room2 {
+    background-image: url("https://i.imgur.com/yBs2YNe.jpg");
+    background-size: cover;
+    border-radius: 15px;
+}
+
 </style>

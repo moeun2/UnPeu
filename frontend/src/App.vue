@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import EmailFab from './components/EmailFab.vue';
+import EmailFab from "./components/EmailFab.vue";
 
 export default {
   components: { EmailFab },
-  name: 'App'
+  name: "App",
 };
 </script>
 
