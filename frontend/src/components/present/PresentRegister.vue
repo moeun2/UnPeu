@@ -1,13 +1,15 @@
 <template>
 <div>
-<v-form @submit.prevent="regist">
+<v-form
+ref="form"
+>
 <v-container fluid>
   <v-row>
     <v-col cols="3">
       <v-file-input
-        :rules="rules"
+        :rules="rules.files"
         v-model="files"
-        accept="image/png, image/jpeg, image/bmp"
+        accept="image/*"
         placeholder="이미지 등록하기"
         prepend-icon="mdi-camera"
       ></v-file-input>
@@ -21,6 +23,7 @@
       </v-col>
     <v-col cols="3">
       <v-text-field
+        :rules="rules.amount"
           v-model="presentPrice"
           label="Amount"
           value="10.00"
@@ -32,7 +35,7 @@
       rounded
       color="primary"
       dark
-      type="submit"
+      @click="regist()"
     >
       등록하기
     </v-btn>
@@ -51,9 +54,14 @@ const presentStore="presentStore";
     data: () => ({
       presentName: null,
       presentPrice: null,
-      rules: [
-        value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
-      ],
+      rules: {
+        files:[value => {!value || value.size < 2000000 || '파일 크기가 2MB 이하여야합니다!'}],
+         amount:[v  => {
+           console.log(!v);
+          if (!isNaN(parseFloat(v)) && v >= 0) return true;
+          return '정확한 금액을 입력해주세요';
+        }]
+      },
       files:[],
       
     }),
@@ -61,6 +69,21 @@ const presentStore="presentStore";
     },
     methods:{
       ...mapActions(presentStore,["registerPresent"]),
+      // inputChanged() { 
+      //   if(this.files === null){
+      //     this.show=false;
+      //     return;
+      //   }
+      //   console.log('file type=',this.files.type)
+      //   if (this.files.type.match('image/*'))
+      //     {  console.log('image matched');
+      //         this.show=false;
+      //     }
+      //   else{ console.log('not matched')
+      //         this.show=true;
+      //         this.message="이미지가 아닙니다" ;
+      //       }
+      //   },
        regist(){
          this.$swal.fire({
         title: '등록하시겠어요?',

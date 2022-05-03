@@ -75,8 +75,9 @@ import { getMessage, saveMessage, resetMessage } from "@/api/event.js";
 import { API_BASE_URL } from "@/config/index.js";
 import { getUserDetailUseToken } from "@/api/user.js";
 import * as Alert from "@/api/alert";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 const userStore = "userStore";
+const presentStore = "presentStore";
 export default {
   name: "EventRoom",
   data() {
@@ -145,6 +146,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(presentStore,["RESET_PRESENT_STORE"]),
     modal(message) {
       console.log("modal-message : ", message);
       this.content = message.content;
@@ -170,6 +172,7 @@ export default {
                 getMessage(
                   (res) => {
                     console.log(res.data.Message);
+                    this.RESET_PRESENT_LIST();
                     this.messages = res.data.Message;
                     console.log(this.messages);
                   },
