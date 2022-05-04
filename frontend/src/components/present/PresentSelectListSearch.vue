@@ -119,7 +119,6 @@ export default {
       } else {
         this.showCarousel = true;
       }
-      this.cardListCount = Math.ceil(this.cardList.length / 3);
     },
     /**
      * PayModal Open시 실행되는 함수

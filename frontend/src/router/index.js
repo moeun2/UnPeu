@@ -64,19 +64,20 @@ const routes = [
         ],
       },
       {
-        path: "/present/:userid",
+        path: "/present",
         name: "Present",
         component: PresentPage,
-        redirect: "/present/:userid/manage",
         children: [
           {
-            path: "manage",
+            path: ":userid/manage",
             name: "PresentManage",
+            beforeEnter: getUserPresent,
             component: PresentManage,
           },
           {
-            path: "payment",
+            path: ":userid/payment",
             name: "PresentPayment",
+            beforeEnter: getUserPresent,
             component: PresentPayment,
           },
         ],
@@ -116,6 +117,13 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
+function getUserPresent(to, from, next){
+  let userId = to.params.userid;
+  Store.dispatch("presentStore/searchList",userId);
+
+  next();
+}
 
 function getUserInfo(to, from, next) {
   let userId = to.params.userid;
