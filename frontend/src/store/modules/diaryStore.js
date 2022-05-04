@@ -1,6 +1,10 @@
 import * as diaryApi from "@/api/diary";
+<<<<<<< HEAD
 import router from "../../router"; 
 import Swal from 'sweetalert2'
+=======
+import router from "../../router";
+>>>>>>> 80664f53f63bbbe26145e734ebda3e96dbddcd14
 
 export const diaryStore = {
   namespaced: true,
@@ -37,34 +41,36 @@ export const diaryStore = {
 
   mutations: {
     MU_CATEGORY_LIST(state, categoryList) {
-      console.log("category mutation");
+      // console.log("category mutation");
 
       // 빈 배열 체크
       if (Array.isArray(categoryList) && categoryList.length === 0) {
         state.categoryList = ["Default"];
-      } else {
+      } else if (categoryList.includes("Default")) {
         state.categoryList = categoryList;
+      } else {
+        state.categoryList = ["Default"].concat(categoryList);
       }
-      console.log(state.categoryList)
+      // console.log(state.categoryList);
     },
 
     MU_BOARD_LIST(state, boardList) {
-      console.log("boardList mutation");
+      // console.log("boardList mutation");
       state.boardList = boardList;
     },
 
     MU_BOARD_DETAIL(state, boardInfo) {
-      console.log("boardInfo mutation");
+      // console.log("boardInfo mutation");
       state.boardInfo = boardInfo;
     },
 
     MU_COMMENT_DETAIL(state, commentInfo) {
-      console.log("commentInfo mutation");
+      // console.log("commentInfo mutation");
       state.commentInfo = commentInfo;
     },
 
     MU_EDIT_FLAG(state, editFlag) {
-      console.log("editFlag mutation");
+      // console.log("editFlag mutation");
       state.editCommentFlag = editFlag;
     },
   },
@@ -75,8 +81,8 @@ export const diaryStore = {
       diaryApi.getCategory(
         userId,
         (res) => {
-          console.log("categoryList action");
-          console.log("카테고리 목록 조회 성공");
+          // console.log("categoryList action");
+          // console.log("카테고리 목록 조회 성공");
           commit("MU_CATEGORY_LIST", res.data.category);
         },
         (error) => {
@@ -91,8 +97,8 @@ export const diaryStore = {
         value.userId,
         value.category,
         (res) => {
-          console.log("boardList action");
-          console.log("게시글 목록 조회 성공");
+          // console.log("boardList action");
+          // console.log("게시글 목록 조회 성공");
           commit("MU_BOARD_LIST", res.data.boardList);
         },
         (error) => {
@@ -106,7 +112,7 @@ export const diaryStore = {
       diaryApi.getBoardInfo(
         boardId,
         (res) => {
-          console.log("게시글 상세 조회 성공");
+          // console.log("게시글 상세 조회 성공");
           commit("MU_BOARD_DETAIL", res.data.boardInfo);
         },
         (error) => {
@@ -119,9 +125,9 @@ export const diaryStore = {
     AC_REGISTER_BOARD({ commit }, boardInfo) {
       diaryApi.registerBoard(
         boardInfo,
-        (res) => {
+        () => {
           // console.log("save board action");
-          console.log(res.data);
+          // console.log(res.data);
           commit;
 
           router.replace({ name: "BoardList" });
@@ -144,9 +150,9 @@ export const diaryStore = {
       diaryApi.editBoard(
         value.boardId,
         value.boardInfo,
-        (res) => {
+        () => {
           // console.log("edit board action");
-          console.log(res.data);
+          // console.log(res.data);
           commit;
 
           router.replace({
@@ -171,8 +177,8 @@ export const diaryStore = {
       diaryApi.deleteBoard(
         boardId,
         (res) => {
-          console.log("delete board action");
-          console.log(res.data);
+          // console.log("delete board action");
+          // console.log(res.data);
           // alert("삭제가 완료되었습니다.");
           Swal.fire(
             'Delete',
@@ -201,9 +207,9 @@ export const diaryStore = {
       diaryApi.registerComment(
         value.boardId,
         value.commentInfo,
-        (res) => {
-          console.log("register comment action");
-          console.log(res.data);
+        () => {
+          // console.log("register comment action");
+          // console.log(res.data);
           // console.log("댓글 등록을 성공하였습니다.");
           commit("MU_COMMENT_DETAIL", value.commentInfo);
         },
@@ -220,8 +226,8 @@ export const diaryStore = {
         value.commentId,
         value.commentInfo,
         (res) => {
-          console.log("edit comment action");
-          console.log(res.data);
+          // console.log("edit comment action");
+          // console.log(res.data);
           Swal.fire(
             'Update',
             '댓글 수정이 완료되었습니다.',
@@ -235,7 +241,7 @@ export const diaryStore = {
             '댓글 수정을 실패하였습니다.',
             'error'
           )
-          alert("댓글 수정을 실패하였습니다.");
+          // alert("댓글 수정을 실패하였습니다.");
           console.log(error);
         }
       );
@@ -247,8 +253,8 @@ export const diaryStore = {
         value.commentId,
         value.password,
         (res) => {
-          console.log("delete comment action");
-          console.log(res.data);
+          // console.log("delete comment action");
+          // console.log(res.data);
           Swal.fire(
             'Delete',
             '댓글 삭제가 완료되었습니다.',

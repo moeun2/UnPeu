@@ -61,7 +61,7 @@ export default {
 
     /* 댓글 수정 요청하기 */
     async editComment(commentInfo) {
-      console.log("edit comment");
+      // console.log("edit comment");
       const { value: pass } = await this.$swal.fire({
       title: '비밀번호를 입력하세요',
       input: 'text',
@@ -86,7 +86,7 @@ export default {
 
     /* 댓글 삭제하기 */
     async deleteComment(commentInfo) {
-      console.log("delete comment");
+      // console.log("delete comment");
       const { value: pass } = await this.$swal.fire({
       title: '비밀번호를 입력하세요',
       input: 'text',

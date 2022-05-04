@@ -1,10 +1,8 @@
 <template>
   <div class="present-carousel">
     <!-- <v-button >선물등록이 필요합니다</v-button> -->
-    <div v-if="showCarousel == false && this.curUser.permission==0">
-      <v-btn tile color="info"
-        @click="goToPresentManage"
-      >
+    <div v-if="showCarousel == false && this.curUser.permission == 0">
+      <v-btn tile color="info" @click="goToPresentManage">
         <v-icon left> mdi-exclamation </v-icon>
         선물이 등록되지 않았어요!<br />
         선물 등록하러 가시겠어요? :)
@@ -60,12 +58,15 @@
 import { API_BASE_URL } from "@/config/index.js";
 import { mapGetters, mapActions, mapState } from "vuex";
 import PresentPayModal from "@/components/present/PresentPayModal";
+
 const presentStore = "presentStore";
 const userStore = "userStore";
+
 export default {
   components: {
     PresentPayModal,
   },
+
   data() {
     return {
       cardList: [],
@@ -81,6 +82,7 @@ export default {
   mounted() {
     this.search();
   },
+
   computed: {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
@@ -90,21 +92,24 @@ export default {
       return 3; // 카드 개수 3개로 고정
     },
   },
+
   methods: {
     ...mapActions(presentStore, ["searchList"]),
-    goToPresentManage(){
+
+    goToPresentManage() {
       this.$router.push({ name: "PresentManage" });
     },
+
     /**
      * BackEnd에서 getPresentListByUserId 호출 함수
      */
     search() {
       // To Do: User State에서 가져오기
-      console.log("PresentSelectListSearch_search - 호출");
-      console.log("userId: ", this.curUser.id);
+      // console.log("PresentSelectListSearch_search - 호출");
+      // console.log("userId: ", this.curUser.id);
       this.searchList(this.curUser.id);
       this.cardList = this.presentList.Present;
-      console.log(this.cardList.length);
+      // console.log(this.cardList.length);
       if (this.cardList.length == 0) {
         this.showCarousel = false;
       } else {
@@ -112,17 +117,19 @@ export default {
       }
       this.cardListCount = Math.ceil(this.cardList.length / 3);
     },
+
     /**
      * PayModal Open시 실행되는 함수
      */
     openPayModal(card, idx) {
-      console.log(card);
-      console.log(idx);
+      // console.log(card);
+      // console.log(idx);
       this.selectedPresentId = card.presentId;
       this.currentIdx = idx;
       this.changeCardColor(true);
       this.showModal = true;
     },
+
     /**
      * PayModal close시 실행되는 함수
      */
@@ -130,12 +137,13 @@ export default {
       this.showModal = false;
       this.changeCardColor(false);
     },
+    
     /**
      * PayModal에서 가격선택 시 넘어오는 함수
      * Present component로 선택된 Present 정보 Emit
      */
     saveSelectedPresent(data) {
-      console.log("payModal에서 받아온 selectedPrice : " + data);
+      // console.log("payModal에서 받아온 selectedPrice : " + data);
       this.showModal = false;
       this.selectedPresentPrice = data;
       this.$emit("present", {
