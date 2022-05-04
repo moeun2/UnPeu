@@ -41,8 +41,10 @@ export const diaryStore = {
       // 빈 배열 체크
       if (Array.isArray(categoryList) && categoryList.length === 0) {
         state.categoryList = ["Default"];
-      } else {
+      } else if (categoryList.includes("Default")) {
         state.categoryList = categoryList;
+      } else {
+        state.categoryList = ["Default"].concat(categoryList);
       }
       console.log(state.categoryList)
     },
