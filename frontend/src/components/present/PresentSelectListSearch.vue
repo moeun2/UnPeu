@@ -77,7 +77,6 @@ export default {
       showCarousel: true,
     };
   },
-
   mounted() {
     this.search();
   },

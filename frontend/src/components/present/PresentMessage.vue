@@ -41,15 +41,19 @@ export default {
   data() {
     return {
       nickname: null,
-      content: '',
+      content: "",
       cardList: [],
       API_BASE_URL: API_BASE_URL,
       rules: {
-        content: [(val) => val.length < 500 || "500자 이하로 적어주세요"],
+        content: [v => !( v && v.length >= 500) || this.lengthError()],
       },
     };
   },
   methods: {
+    lengthError(){
+      this.content.substring(0,500);
+      this.$swal.fire("Oops...!", "500자 이하로 적어주세요!", "error");
+    },
     /**
      * @Click : 보내기 버튼
      * 메세지 내용 검사
