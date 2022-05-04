@@ -172,7 +172,7 @@ export const diaryStore = {
     AC_DELETE_BOARD({ commit }, boardId) {
       diaryApi.deleteBoard(
         boardId,
-        (res) => {
+        () => {
           // console.log("delete board action");
           // console.log(res.data);
           // alert("삭제가 완료되었습니다.");
@@ -221,7 +221,7 @@ export const diaryStore = {
       diaryApi.editComment(
         value.commentId,
         value.commentInfo,
-        (res) => {
+        () => {
           // console.log("edit comment action");
           // console.log(res.data);
           Swal.fire(
@@ -248,7 +248,7 @@ export const diaryStore = {
       diaryApi.deleteComment(
         value.commentId,
         value.password,
-        (res) => {
+        () => {
           // console.log("delete comment action");
           // console.log(res.data);
           Swal.fire(
