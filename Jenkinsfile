@@ -59,8 +59,8 @@ pipeline {
 
                         // 컨테이너 실행 : docker run -d --name [컨테이너이름] -p [호스트포트]:[컨테이너포트] -v [호스트경로]:[컨테이너경로] [이미지명]
                         // -d : 백그라운드 모드
-                        sh 'docker run -d --name front -p 80:80 -p 443:443 --network unpeunetwork front:latest'
-                        sh 'docker run -d --name back --network unpeunetwork back:latest'
+                        sh 'docker run -d --name front -p 80:80 -p 443:443 front:latest'
+                        sh 'docker run -d --name back -p 8080:8080 back:latest'
                     } catch(e) {
                         currentBuild.result = "FAILURE"
                     } finally {
