@@ -46,19 +46,19 @@ export default {
   methods: {
     ...mapActions(presentStore, ["sendPresentMessage"]),
     testAlert() {
-      console.log("Getters TEST : getCurUser " , this.curUser.id)
+      // console.log("Getters TEST : getCurUser " , this.curUser.id)
       //alert(this.userTest);
       //this.$router.push({ name: "eventRoom" });
     },
     createMessage() {
       const vm = this;
       this.message.userId = this.curUser.id;
-      console.log(this.curUser.id)
-      console.log(this.message)
+      // console.log(this.curUser.id)
+      // console.log(this.message)
       sendMessage(
         this.message,
-        function (response) {
-          console.log(response);
+        function () {
+          // console.log(response);
           Alert.sendMessageSuccess(vm);
           vm.$router.push({ name: "eventRoom" });
         },
@@ -108,8 +108,8 @@ export default {
       this.message.presentId = data.selectedPresentId;
       this.message.price = data.selectedPresentPrice;
       this.currentIdx = data.selectedCardIdx;
-      console.log("getPresent - ", this.message);
-      console.log(this.currentIdx);
+      // console.log("getPresent - ", this.message);
+      // console.log(this.currentIdx);
     },
     /**
      * PresentMessage 모달에서 Emit온 Message를 받는 함수
@@ -117,7 +117,7 @@ export default {
     getMessage(data) {
       this.message.sender = data.sender;
       this.message.content = data.content;
-      console.log("getMessage - ", this.message);
+      // console.log("getMessage - ", this.message);
       this.checkPresent();
       // this.checkPay();
       //this.sendPresentMessage(this.message);

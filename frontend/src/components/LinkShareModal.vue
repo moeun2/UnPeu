@@ -79,7 +79,7 @@ export default {
       navigator.clipboard
         .writeText(`${copiedText}`)
         .then(() => {
-          console.log("copiedText : ", copiedText);
+          // // // // // console.log("copiedText : ", copiedText);
           // alert(`${copiedText}을 클립보드에 복사했습니다.`);
         })
         .catch(() => {
@@ -105,8 +105,8 @@ export default {
       window.open("http://www.facebook.com/sharer/sharer.php?u=" + sendUrl);
     },
     shareKakao() {
-      console.log("shareKakao-호출");
-      console.log(this.url);
+      // // // // // console.log("shareKakao-호출");
+      // // // // // console.log(this.url);
 
       if (window.Kakao) {
         const kakao = window.Kakao;

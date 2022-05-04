@@ -106,7 +106,7 @@ export default {
       getUserDetailUseToken(
         window.localStorage.getItem("accessToken"),
         (res) => {
-          console.log(res.data.User);
+          // // console.log(res.data.User);
           this.$store.commit("userStore/setUser", res.data.User);
           this.isLogin = true;
           if (this.$route.params.userid == res.data.User.id) {
@@ -114,7 +114,7 @@ export default {
           }
         },
         () => {
-          console.log("getUserDetailUseToken fail");
+          // // console.log("getUserDetailUseToken fail");
           this.isLogin = false;
           window.localStorage.removeItem("accessToken");
           this.$router.go;
@@ -126,12 +126,12 @@ export default {
     getMessage(
       this.curUser.id,
       (res) => {
-        console.log(res.data.Message);
+        // // console.log(res.data.Message);
         this.messages = res.data.Message;
-        console.log(this.messages);
+        // // console.log(this.messages);
       },
       () => {
-        console.log("fail");
+        // // console.log("fail");
       }
     );
 
@@ -141,16 +141,16 @@ export default {
     let hours = today.getHours(); // 시
     let minutes = today.getMinutes();  // 분
     let seconds = today.getSeconds();  // 초
-    console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+    // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
     if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
         let changeView = document.getElementById('main-room');
-        console.log(changeView.className);
+        // // console.log(changeView.className);
         changeView.className = 'main-room2';
     }
   },
   watch: {
     $route(to, from) {//라우터 파라미터 변경 감지
-      console.log("watch")
+      // // console.log("watch")
       if (to.path !== from.path) this.changeParams(this.$route.params.userid);
     },
   },
@@ -178,12 +178,12 @@ export default {
       getMessage(
         userId,
         (res) => {
-          console.log(res.data.Message);
+          // // console.log(res.data.Message);
           this.messages = res.data.Message;
-          console.log(this.messages);
+          // // console.log(this.messages);
         },
         () => {
-          console.log("fail");
+          // // console.log("fail");
         }
     );
 
@@ -193,10 +193,10 @@ export default {
     let hours = today.getHours(); // 시
     let minutes = today.getMinutes();  // 분
     let seconds = today.getSeconds();  // 초
-    console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+    // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
     if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
         let changeView = document.getElementById('main-room');
-        console.log(changeView.className);
+        // // console.log(changeView.className);
         changeView.className = 'main-room2';
     }
 
@@ -209,9 +209,9 @@ export default {
         let hours = today.getHours(); // 시
         let minutes = today.getMinutes();  // 분
         let seconds = today.getSeconds();  // 초
-        console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+        // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
         if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
-            console.log("modal-message : ", message);
+            // // console.log("modal-message : ", message);
             this.content = message.content;
             this.sender = message.sender;
             if (message.present != null) {
@@ -236,24 +236,24 @@ export default {
             Alert.resetMessageFail(this);
           } else {
             resetMessage(
-              (res) => {
-                console.log(res);
+              () => {
+                // console.log(res);
                 Alert.resetMessageSuccess(this);
                 getMessage(
                   this.curUser.id,
                   (res) => {
-                    console.log(res.data.Message);
+                    // console.log(res.data.Message);
                     this.RESET_PRESENT_LIST();
                     this.messages = res.data.Message;
-                    console.log(this.messages);
+                    // console.log(this.messages);
                   },
                   () => {
-                    console.log("fail");
+                    // console.log("fail");
                   }
                 );
               },
               () => {
-                console.log("fail");
+                // console.log("fail");
               }
             );
           }
@@ -270,15 +270,15 @@ export default {
           } else {
             saveMessage(
               this.messages,
-              (res) => {
-                console.log(res);
+              () => {
+                // console.log(res);
                 Alert.saveMessageSuccess(this);
                 getMessage(
                   this.curUser.id,
                   (res) => {
-                    console.log(res.data.Message);
+                    // console.log(res.data.Message);
                     this.messages = res.data.Message;
-                    console.log(this.messages);
+                    // console.log(this.messages);
                   },
                   () => {
                     console.log("fail");

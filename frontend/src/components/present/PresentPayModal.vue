@@ -151,7 +151,7 @@ export default {
         );
       } else if (this.selectedPrice == -1) {
         const inputNumber = document.getElementById("inputNumber").value;
-        console.log("직접입력 값 : " + inputNumber + "");
+        // console.log("직접입력 값 : " + inputNumber + "");
         this.selectedPrice = inputNumber;
         if(this.selectedPrice>0){
           this.$emit("selectedPrice", this.selectedPrice);
@@ -160,7 +160,7 @@ export default {
         }
         
       } else {
-        console.log("selectedPrice : ", this.selectedPrice);
+        // console.log("selectedPrice : ", this.selectedPrice);
         this.$emit("selectedPrice", this.selectedPrice);
       }
     },

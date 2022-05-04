@@ -98,7 +98,7 @@ export default {
           })
           .then((result) => {
             if (result.isConfirmed) {
-              console.log(this.present);
+              // console.log(this.present);
               let fd = new FormData();
               fd.append("presentImg", this.files);
               fd.append("presentPrice", this.presentPrice);

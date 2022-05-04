@@ -124,7 +124,7 @@ export default {
     search(){
       this.searchList(this.userId);
       this.cardList=this.presentList.Present;
-      console.log(this.userId);
+      // console.log(this.userId);
     },
     openDialog(index){
       this.dialog=true;

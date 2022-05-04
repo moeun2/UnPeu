@@ -49,9 +49,9 @@ export default {
         const vm = this;
         sendMail(
           this.content,
-          function (response) {
+          function () {
             Alert.sendFeedbackSuccess(vm);
-            console.log(response);
+            // console.log(response);
             vm.content = null;
             vm.clcickFab();
           },

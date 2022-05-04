@@ -129,7 +129,7 @@ const presentStore="presentStore";
     },
     computed:{
       dialog(){
-        console.log(this.openDialog);
+        // console.log(this.openDialog);
         return this.openDialog;
       },
     },
@@ -164,7 +164,7 @@ const presentStore="presentStore";
           fd:fd,
           presentId:this.present.presentId,
         }
-        console.log(presentData);
+        // console.log(presentData);
         this.updatePresent(presentData);
         this.$emit('close');
       },
