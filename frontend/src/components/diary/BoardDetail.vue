@@ -105,10 +105,17 @@ export default {
     /* 삭제하기 */
     deleteDiary() {
       // console.log("delete");
-      if (confirm("정말로 삭제하시겠습니까?")) {
-        this.AC_DELETE_BOARD(this.boardInfo.boardId);
-        this.$router.push({ name: "BoardList" });
-      }
+      this.$swal.fire({
+          icon: 'question',
+          title: 'Delete',
+          html:'정말로 삭제하시겠습니까? ' ,
+          showCancelButton: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.AC_DELETE_BOARD(this.boardInfo.boardId);
+            this.$router.push({ name: "BoardList" });
+          } 
+        })
     },
 
     /* 뒤로가기 */

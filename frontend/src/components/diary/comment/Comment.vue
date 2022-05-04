@@ -60,34 +60,53 @@ export default {
     ]),
 
     /* 댓글 수정 요청하기 */
-    editComment(commentInfo) {
+    async editComment(commentInfo) {
       // console.log("edit comment");
-      var input = prompt("비밀번호를 입력하세요");
+      const { value: pass } = await this.$swal.fire({
+      title: '비밀번호를 입력하세요',
+      input: 'text',
+      inputPlaceholder: 'Enter your Password'
+      })
 
-      if (input == commentInfo.password) {
+      if (pass== commentInfo.password) {
         this.ACT_SETTING_COMMENT({
-          editFlag: true,
-          commentInfo: commentInfo,
-        });
-      } else {
-        alert("비밀번호가 틀렸습니다.");
-      }
+            editFlag: true,
+            commentInfo: commentInfo,
+          });
+      }else {
+          this.$swal.fire(
+              '실패',
+              '비밀번호가 틀렸습니다..',
+              'error'
+            )
+          // alert("비밀번호가 틀렸습니다.")
+        }
     },
+    
 
     /* 댓글 삭제하기 */
-    deleteComment(commentInfo) {
+    async deleteComment(commentInfo) {
       // console.log("delete comment");
-      var input = prompt("비밀번호를 입력하세요");
+      const { value: pass } = await this.$swal.fire({
+      title: '비밀번호를 입력하세요',
+      input: 'text',
+      inputPlaceholder: 'Enter your Password'
+      })
 
-      if (input == commentInfo.password) {
+      if (pass== commentInfo.password) {
         this.ACT_DELETE_COMMENT({
           commentId: commentInfo.commentId,
           password: commentInfo.password,
         });
         this.$router.go();
-      } else {
-        alert("비밀번호가 틀렸습니다.");
-      }
+      }else {
+          this.$swal.fire(
+              '실패',
+              '비밀번호가 틀렸습니다..',
+              'error'
+            )
+          // alert("비밀번호가 틀렸습니다.")
+        }
     },
   },
 };
