@@ -61,7 +61,7 @@ export default {
 
     /* 댓글 수정 요청하기 */
     editComment(commentInfo) {
-      console.log("edit comment");
+      // console.log("edit comment");
       var input = prompt("비밀번호를 입력하세요");
 
       if (input == commentInfo.password) {
@@ -76,7 +76,7 @@ export default {
 
     /* 댓글 삭제하기 */
     deleteComment(commentInfo) {
-      console.log("delete comment");
+      // console.log("delete comment");
       var input = prompt("비밀번호를 입력하세요");
 
       if (input == commentInfo.password) {

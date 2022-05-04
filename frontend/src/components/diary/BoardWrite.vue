@@ -88,8 +88,8 @@ export default {
     this.AC_CATEGORY_LIST(this.form.userId);
 
     if (this.type === "edit") {
-      console.log("edit created");
-      console.log(this.value);
+      // console.log("edit created");
+      // console.log(this.value);
       this.form = this.value;
     }
   },
@@ -114,13 +114,13 @@ export default {
 
     /* 저장 후 상세 페이지 이동 */
     save() {
-      console.log("save");
+      // console.log("save");
       this.AC_REGISTER_BOARD(this.form);
     },
 
     /* 편집 후 상세 페이지 이동 */
     edit() {
-      console.log("edit");
+      // console.log("edit");
       this.AC_EDIT_BOARD({
         boardId: this.$route.params.boardId,
         boardInfo: this.form,
@@ -129,7 +129,7 @@ export default {
 
     /* 뒤로가기 */
     cancle() {
-      console.log("cancle");
+      // console.log("cancle");
       this.$router.go(-1); // 한 단계 뒤로
     },
   },

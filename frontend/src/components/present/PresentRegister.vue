@@ -40,7 +40,9 @@
 
 <script>
 import { mapActions } from "vuex";
+
 const presentStore = "presentStore";
+
 export default {
   data: () => ({
     presentName: null,
@@ -77,12 +79,16 @@ export default {
     },
     files: [],
   }),
+
   computed: {},
+
   methods: {
     errorAlert(message) {
       this.$swal.fire("Oops...!", message, "error");
     },
+
     ...mapActions(presentStore, ["registerPresent"]),
+    
     regist() {
       const validate = this.$refs.form.validate();
       if (!validate) {
@@ -98,7 +104,7 @@ export default {
           })
           .then((result) => {
             if (result.isConfirmed) {
-              console.log(this.present);
+              // console.log(this.present);
               let fd = new FormData();
               fd.append("presentImg", this.files);
               fd.append("presentPrice", this.presentPrice);
