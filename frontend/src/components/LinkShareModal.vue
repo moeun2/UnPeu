@@ -82,16 +82,30 @@ export default {
     copyLink() {
       this.$emit("close");
       const copiedText = FRONT_URL + "/eventRoom/" + this.curUser.id;
-      navigator.clipboard
-        .writeText(`${copiedText}`)
-        .then(() => {
-          // // // // // console.log("copiedText : ", copiedText);
-          // alert(`${copiedText}을 클립보드에 복사했습니다.`);
-        })
-        .catch(() => {
-          alert(`복사 실패!`);
-        });
 
+      //https 적용시
+      if (navigator.clipboard && window.isSecureContext) {
+        // navigator clipboard api method'
+        console.log("https 적용 시 copy")
+        navigator.clipboard.writeText(`${copiedText}`);
+      } else { //https 미적용시
+        console.log("https 미적용 시 copy")
+        // text area method
+        let textArea = document.createElement("textarea");
+        textArea.value = `${copiedText}`;
+        // make the textarea out of viewport
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        new Promise((res, rej) => {
+          // here the magic happens
+          document.execCommand("copy") ? res() : rej();
+          textArea.remove();
+        });
+      }
       // 복사완료 다이얼로그
       this.$swal.fire({
         icon: "success",
@@ -111,7 +125,7 @@ export default {
       var sendUrl = this.url; // 전달할 URL
       window.open("http://www.facebook.com/sharer/sharer.php?u=" + sendUrl);
     },
-    
+
     shareKakao() {
       // // // // // console.log("shareKakao-호출");
       // // // // // console.log(this.url);
