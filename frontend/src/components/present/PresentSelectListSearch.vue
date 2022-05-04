@@ -90,6 +90,16 @@ export default {
   mounted() {
     this.search();
   },
+   watch: {
+    ...mapState(presentStore, ["presentList"]),
+    presentList: {
+      deep: true,
+      handler(newVal) {
+        if(newVal==null) return;
+        this.cardList=newVal.Present;
+      }
+    }
+  },  
   computed: {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
@@ -107,19 +117,19 @@ export default {
     /**
      * BackEnd에서 getPresentListByUserId 호출 함수
      */
-    search() {
-      // To Do: User State에서 가져오기
-      //console.log("PresentSelectListSearch_search - 호출");
-      //console.log("userId: ", this.curUser.id);
-      this.searchList(this.curUser.id);
-      this.cardList = this.presentList.Present;
-      //console.log(this.cardList.length);
-      if (this.cardList.length == 0) {
-        this.showCarousel = false;
-      } else {
-        this.showCarousel = true;
-      }
-    },
+    // search() {
+    //   // To Do: User State에서 가져오기
+    //   //console.log("PresentSelectListSearch_search - 호출");
+    //   //console.log("userId: ", this.curUser.id);
+    //   this.searchList(this.curUser.id);
+    //   this.cardList = this.presentList.Present;
+    //   //console.log(this.cardList.length);
+    //   if (this.cardList.length == 0) {
+    //     this.showCarousel = false;
+    //   } else {
+    //     this.showCarousel = true;
+    //   }
+    // },
     /**
      * PayModal Open시 실행되는 함수
      */
