@@ -37,16 +37,7 @@ export const diaryStore = {
   mutations: {
     MU_CATEGORY_LIST(state, categoryList) {
       // console.log("category mutation");
-
-      // 빈 배열 체크
-      if (Array.isArray(categoryList) && categoryList.length === 0) {
-        state.categoryList = ["Default"];
-      } else if (categoryList.includes("Default")) {
-        state.categoryList = categoryList;
-      } else {
-        state.categoryList = ["Default"].concat(categoryList);
-      }
-      // console.log(state.categoryList);
+      state.categoryList = categoryList;
     },
 
     MU_BOARD_LIST(state, boardList) {
