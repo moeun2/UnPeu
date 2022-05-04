@@ -104,7 +104,7 @@
                 Here!👈)</a
               >
             </div>
-            <img class="speech-bubble2-img" src="@/assets/main_logo4.gif" />
+            <!-- <img class="speech-bubble2-img" src="@/assets/main_logo4.gif" /> -->
           </div>
           <div class="main-dot">
             <div class="main-paper">
@@ -551,8 +551,8 @@ img:hover + p.arrow_box {
 }
 
 .speech-bubble-div {
-  top: -17%;
-  left: 1%;
+  top: -3%;
+  left: 105%;
   position: absolute;
 }
 .speech-bubble2:after {

@@ -145,7 +145,6 @@ export default {
 
   methods: {
     ...mapActions(presentStore, ["searchList", "deletePresent"]),
-
     search() {
       this.searchList(this.userId);
       this.cardList = this.presentList.Present;
