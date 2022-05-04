@@ -21,7 +21,7 @@
               헉 너무 큰 금액이야 <br />
               가격을 다시 한 번 생각해봐~!
             </h4>
-            <br/>
+            <br />
             <table class="dabo_table">
               <tr>
                 <td>
@@ -136,12 +136,14 @@ export default {
       selectedPrice: 0,
     };
   },
+
   methods: {
     textbox() {
       document.getElementById("unpeu_input").innerHTML =
         '<input type="number" name="" id="inputNumber" size=5 style="background-color:white; text-align:center; border: 1px solid black; margin: 1px 1px 1px 1px" >원';
       document.getElementById("unpeu_input").style.display = "";
     },
+
     saveAmount() {
       if (this.selectedPrice == 0) {
         this.$swal.fire(
@@ -153,20 +155,21 @@ export default {
         const inputNumber = document.getElementById("inputNumber").value;
         // console.log("직접입력 값 : " + inputNumber + "");
         this.selectedPrice = inputNumber;
-        if(this.selectedPrice>0){
+        if (this.selectedPrice > 0) {
           this.$emit("selectedPrice", this.selectedPrice);
-        }else{
+        } else {
           Alert.selctAmountFailure(this);
         }
-        
       } else {
         // console.log("selectedPrice : ", this.selectedPrice);
         this.$emit("selectedPrice", this.selectedPrice);
       }
     },
+
     closeInputText() {
       document.getElementById("unpeu_input").style.display = "none";
     },
+    
     closeModal() {
       this.selectedPrice = 0;
       this.$emit("close");

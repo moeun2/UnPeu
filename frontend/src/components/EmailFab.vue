@@ -33,16 +33,19 @@
 import $ from "jquery";
 import { sendMail } from "@/api/mail.js";
 import * as Alert from "@/api/alert";
+
 export default {
   data: () => ({
     content: null,
   }),
+
   methods: {
     clcickFab() {
       $(".ba-we-love-subscribers-fab .wrap").toggleClass("ani");
       $(".ba-we-love-subscribers").toggleClass("open");
       $(".img-fab.img").toggleClass("close");
     },
+    
     submitEmail() {
       if (this.content != null) {
         //alert(this.content);

@@ -8,7 +8,7 @@
           </button>
 
           <div class="modal-header">
-              <h2>링크 공유</h2>
+            <h2>링크 공유</h2>
           </div>
 
           <div class="modal-body">
@@ -53,26 +53,32 @@
 <script>
 // import * as Alert from "@/api/alert"; //api 폴더 안에 넣어놓는 것이 맞는지는 모르겠음. But, 넣어놓을 곳이 딱히 없어서 넣어놓음
 import { mapGetters } from "vuex";
-const userStore = "userStore";
 import { KAKAO_API_KEY, FRONT_URL } from "@/config/index";
+
+const userStore = "userStore";
+
 export default {
   data() {
     return {
       url: "",
     };
   },
+
   computed: {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
     }),
   },
+
   mounted() {
     this.setUrl();
   },
+
   methods: {
     setUrl() {
       this.url = FRONT_URL + "/eventRoom/" + this.curUser.id;
     },
+
     copyLink() {
       this.$emit("close");
       const copiedText = FRONT_URL + "/eventRoom/" + this.curUser.id;
@@ -92,6 +98,7 @@ export default {
         title: "링크가 저장되었습니다.",
       });
     },
+
     shareTwitter() {
       var sendText = "UnPeu"; // 전달할 텍스트
       var sendUrl = this.url; // 전달할 URL
@@ -104,6 +111,7 @@ export default {
       var sendUrl = this.url; // 전달할 URL
       window.open("http://www.facebook.com/sharer/sharer.php?u=" + sendUrl);
     },
+    
     shareKakao() {
       // // // // // console.log("shareKakao-호출");
       // // // // // console.log(this.url);

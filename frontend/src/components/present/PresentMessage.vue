@@ -37,6 +37,7 @@
 
 <script>
 import { API_BASE_URL } from "../../config/index.js";
+
 export default {
   data() {
     return {
@@ -45,15 +46,17 @@ export default {
       cardList: [],
       API_BASE_URL: API_BASE_URL,
       rules: {
-        content: [v => !( v && v.length >= 500) || this.lengthError()],
+        content: [(v) => !(v && v.length >= 500) || this.lengthError()],
       },
     };
   },
+
   methods: {
-    lengthError(){
-      this.content.substring(0,500);
+    lengthError() {
+      this.content.substring(0, 500);
       this.$swal.fire("Oops...!", "500자 이하로 적어주세요!", "error");
     },
+    
     /**
      * @Click : 보내기 버튼
      * 메세지 내용 검사

@@ -15,7 +15,9 @@
     </div>
 
     <div class="gift-box">
-      <router-link :to="{ name: 'PresentPayment' ,params:{userId: this.curUser.id}}">
+      <router-link
+        :to="{ name: 'PresentPayment', params: { userId: this.curUser.id } }"
+      >
         <button class="reg-gift">
           <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="" />
           <p>
@@ -69,7 +71,7 @@
         </div>
         <!-- guest의 모달창 -->
         <div class="modal-non-message" v-else>
-            <p> 메세지의 주인만 확인할 수 있어요 🤐 </p>
+          <p>메세지의 주인만 확인할 수 있어요 🤐</p>
         </div>
       </div>
     </div>
@@ -82,10 +84,13 @@ import { API_BASE_URL } from "@/config/index.js";
 import { getUserDetailUseToken } from "@/api/user.js";
 import * as Alert from "@/api/alert";
 import { mapGetters, mapMutations } from "vuex";
+
 const userStore = "userStore";
 const presentStore = "presentStore";
+
 export default {
   name: "EventRoom",
+
   data() {
     return {
       messages: [],
@@ -100,6 +105,7 @@ export default {
       isMyPage: false,
     };
   },
+
   created() {
     if (window.localStorage.getItem("accessToken")) {
       //로그인 되어있는 상태 store inlogin true
@@ -122,6 +128,7 @@ export default {
       );
     }
   },
+
   mounted() {
     getMessage(
       this.curUser.id,
@@ -136,32 +143,37 @@ export default {
     );
 
     let today = new Date();
-    let month = today.getMonth() + 1;  // 월
-    let date = today.getDate();  // 일
+    let month = today.getMonth() + 1; // 월
+    let date = today.getDate(); // 일
     let hours = today.getHours(); // 시
-    let minutes = today.getMinutes();  // 분
-    let seconds = today.getSeconds();  // 초
+    let minutes = today.getMinutes(); // 분
+    let seconds = today.getSeconds(); // 초
     // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
-    if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
-        let changeView = document.getElementById('main-room');
-        // // console.log(changeView.className);
-        changeView.className = 'main-room2';
+    if (month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
+      let changeView = document.getElementById("main-room");
+      // // console.log(changeView.className);
+      changeView.className = "main-room2";
     }
   },
+
   watch: {
-    $route(to, from) {//라우터 파라미터 변경 감지
+    $route(to, from) {
+      //라우터 파라미터 변경 감지
       // // console.log("watch")
       if (to.path !== from.path) this.changeParams(this.$route.params.userid);
     },
   },
+
   computed: {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
     }),
+
     rows() {
       let length = this.messages.length / this.perPage;
       return Math.ceil(length);
     },
+
     messagesFor() {
       const items = this.messages;
       return items.slice(
@@ -170,11 +182,13 @@ export default {
       );
     },
   },
-  methods: {
-    ...mapMutations(presentStore,["RESET_PRESENT_LIST"]),
 
-    changeParams(userId) {//파라미터 변경시 실행
-      this.isMyPage=true;
+  methods: {
+    ...mapMutations(presentStore, ["RESET_PRESENT_LIST"]),
+
+    changeParams(userId) {
+      //파라미터 변경시 실행
+      this.isMyPage = true;
       getMessage(
         userId,
         (res) => {
@@ -185,48 +199,61 @@ export default {
         () => {
           // // console.log("fail");
         }
-    );
+      );
 
-    let today = new Date();
-    let month = today.getMonth() + 1;  // 월
-    let date = today.getDate();  // 일
-    let hours = today.getHours(); // 시
-    let minutes = today.getMinutes();  // 분
-    let seconds = today.getSeconds();  // 초
-    // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
-    if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
-        let changeView = document.getElementById('main-room');
+      let today = new Date();
+      let month = today.getMonth() + 1; // 월
+      let date = today.getDate(); // 일
+      let hours = today.getHours(); // 시
+      let minutes = today.getMinutes(); // 분
+      let seconds = today.getSeconds(); // 초
+      // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+      if (
+        month >= 5 &&
+        date >= 5 &&
+        hours >= 0 &&
+        minutes >= 0 &&
+        seconds >= 0
+      ) {
+        let changeView = document.getElementById("main-room");
         // // console.log(changeView.className);
-        changeView.className = 'main-room2';
-    }
-
-   },
-    modal(message) {
-        // 날짜 처리 (5월 5일 00:00:00 열람)
-        let today = new Date();
-        let month = today.getMonth() + 1;  // 월
-        let date = today.getDate();  // 일
-        let hours = today.getHours(); // 시
-        let minutes = today.getMinutes();  // 분
-        let seconds = today.getSeconds();  // 초
-        // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
-        if(month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
-            // // console.log("modal-message : ", message);
-            this.content = message.content;
-            this.sender = message.sender;
-            if (message.present != null) {
-                this.imgUrl = message.present.presentImg;
-            } else {
-                this.imgUrl = "";
-            }
-        }
-        else {
-            // 해당 날짜가 안 됐을 경우 모달 내용 변경, class 변경
-            let noneView = document.getElementById('modal-content');
-            noneView.innerHTML = '<p>아직 오픈 기간이 아닙니다. <br/> 5월 5일 어른이날을 기다려 주세요~! 🤩🤩🤩 </p>';
-            noneView.className = 'modal-non-message';
-        }
+        changeView.className = "main-room2";
+      }
     },
+
+    modal(message) {
+      // 날짜 처리 (5월 5일 00:00:00 열람)
+      let today = new Date();
+      let month = today.getMonth() + 1; // 월
+      let date = today.getDate(); // 일
+      let hours = today.getHours(); // 시
+      let minutes = today.getMinutes(); // 분
+      let seconds = today.getSeconds(); // 초
+      // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+      if (
+        month >= 5 &&
+        date >= 5 &&
+        hours >= 0 &&
+        minutes >= 0 &&
+        seconds >= 0
+      ) {
+        // // console.log("modal-message : ", message);
+        this.content = message.content;
+        this.sender = message.sender;
+        if (message.present != null) {
+          this.imgUrl = message.present.presentImg;
+        } else {
+          this.imgUrl = "";
+        }
+      } else {
+        // 해당 날짜가 안 됐을 경우 모달 내용 변경, class 변경
+        let noneView = document.getElementById("modal-content");
+        noneView.innerHTML =
+          "<p>아직 오픈 기간이 아닙니다. <br/> 5월 5일 어른이날을 기다려 주세요~! 🤩🤩🤩 </p>";
+        noneView.className = "modal-non-message";
+      }
+    },
+
     resetMessage() {
       this.$swal.fire(Alert.resetMessageCheck).then((result) => {
         if (result.dismiss === this.$swal.DismissReason.cancel) {
@@ -260,6 +287,7 @@ export default {
         }
       });
     },
+    
     saveMessage() {
       this.$swal.fire(Alert.saveMessageCheck).then((result) => {
         if (result.dismiss === this.$swal.DismissReason.cancel) {
@@ -442,11 +470,11 @@ ul.myMenu > li ul.submenu > li:hover {
 }
 
 .modal-non-message {
-    font-size: 25px;
-    font-weight: bold;
-    text-align: center;
-    padding-top: 20px;
-    padding-bottom: 20px;
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 .modal-content {
   text-align: center;
@@ -488,9 +516,8 @@ ul.myMenu > li ul.submenu > li:hover {
   text-align: center;
 }
 .main-room2 {
-    background-image: url("https://i.imgur.com/yBs2YNe.jpg");
-    background-size: cover;
-    border-radius: 15px;
+  background-image: url("https://i.imgur.com/yBs2YNe.jpg");
+  background-size: cover;
+  border-radius: 15px;
 }
-
 </style>

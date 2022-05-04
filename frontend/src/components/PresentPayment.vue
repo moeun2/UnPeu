@@ -3,11 +3,15 @@
     <div class="message-title">콩주머니 보내기</div>
     <v-checkbox
       v-model="checkbox"
-      :label="checkbox == false? '선물 없이 메세지로만 마음을 전할래요!':'선물도 보내고 싶다면 한 번 더 클릭!' "
+      :label="
+        checkbox == false
+          ? '선물 없이 메세지로만 마음을 전할래요!'
+          : '선물도 보내고 싶다면 한 번 더 클릭!'
+      "
     ></v-checkbox>
-    <present-select-list-search 
+    <present-select-list-search
       @present="getPresent"
-      v-if="checkbox==false"
+      v-if="checkbox == false"
     />
     <present-message @message="getMessage" />
     <!-- <button @click="testAlert">getters Test: {{userId}}</button> -->
@@ -20,8 +24,10 @@ import PresentSelectListSearch from "@/components/present/PresentSelectListSearc
 import { mapGetters, mapActions } from "vuex";
 import * as Alert from "@/api/alert"; //api 폴더 안에 넣어놓는 것이 맞는지는 모르겠음. But, 넣어놓을 곳이 딱히 없어서 넣어놓음
 import { sendMessage } from "@/api/present";
+
 const presentStore = "presentStore";
 const userStore = "userStore";
+
 export default {
   components: { PresentMessage, PresentSelectListSearch },
   data() {
@@ -38,18 +44,22 @@ export default {
       currentIdx: null,
     };
   },
+
   computed: {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
     }),
   },
+
   methods: {
     ...mapActions(presentStore, ["sendPresentMessage"]),
+
     testAlert() {
       // console.log("Getters TEST : getCurUser " , this.curUser.id)
       //alert(this.userTest);
       //this.$router.push({ name: "eventRoom" });
     },
+
     createMessage() {
       const vm = this;
       this.message.userId = this.curUser.id;
@@ -68,11 +78,12 @@ export default {
         }
       );
     },
+
     /**
      * 선물결제에 관해 Alert로 물어보고 sendPresentMessage API를 실행
      */
     checkPresent() {
-      if(this.checkbox == true){
+      if (this.checkbox == true) {
         this.message.presentId = null;
         this.message.price = null;
       }
@@ -80,7 +91,7 @@ export default {
         this.$swal.fire(Alert.notSelectPresentBody).then((result) => {
           if (result.dismiss === this.$swal.DismissReason.cancel) {
             //메세지만 보낼래요!
-            if(this.checkbox == false){
+            if (this.checkbox == false) {
               this.changeCardColor(false);
             }
             this.createMessage();
@@ -94,13 +105,14 @@ export default {
             Alert.paymentCancel(this);
             this.message.presentId = null;
             this.message.price = null;
-            if(this.checkbox == false){
+            if (this.checkbox == false) {
               this.changeCardColor(false);
             }
           }
         });
       }
     },
+
     /**
      * PresentSelectListSearch 모달에서 Emit온 Present를 받는 함수
      */
@@ -111,6 +123,7 @@ export default {
       // console.log("getPresent - ", this.message);
       // console.log(this.currentIdx);
     },
+
     /**
      * PresentMessage 모달에서 Emit온 Message를 받는 함수
      */
@@ -150,6 +163,7 @@ export default {
       /* 4. 결제 창 호출하기 */
       IMP.request_pay(data, this.callback);
     },
+    
     callback(response) {
       /* 3. 콜백 함수 정의하기 */
       const { success, error_msg } = response;
