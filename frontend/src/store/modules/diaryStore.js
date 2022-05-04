@@ -1,5 +1,6 @@
 import * as diaryApi from "@/api/diary";
 import router from "../../router"; 
+import Swal from 'sweetalert2'
 
 export const diaryStore = {
   namespaced: true,
@@ -127,7 +128,12 @@ export const diaryStore = {
           // alert("저장을 성공하였습니다.");
         },
         (error) => {
-          alert("저장을 실패하였습니다.");
+          Swal.fire(
+            'Save',
+            '저장을 실패하였습니다.',
+            'error'
+          )
+          // alert("저장을 실패하였습니다.");
           console.log(error);
         }
       );
@@ -150,7 +156,11 @@ export const diaryStore = {
           // alert("수정을 성공했습니다.");
         },
         (error) => {
-          alert("수정을 실패하였습니다.");
+          Swal.fire(
+            'Update',
+            '수정을 실패했습니다.',
+            'error'
+          )
           console.log(error);
         }
       );
@@ -163,11 +173,22 @@ export const diaryStore = {
         (res) => {
           console.log("delete board action");
           console.log(res.data);
-          alert("삭제가 완료되었습니다.");
+          // alert("삭제가 완료되었습니다.");
+          Swal.fire(
+            'Delete',
+            '삭제가 완료되었습니다.',
+            'success'
+          )
+          
           commit;
         },
         (error) => {
-          alert("삭제가 실패하였습니다.");
+          Swal.fire(
+            'Delete',
+            '삭제가 실패하였습니다.',
+            'error'
+          )
+          // alert("삭제가 실패하였습니다.");
           console.log(error);
         }
       );
@@ -201,10 +222,19 @@ export const diaryStore = {
         (res) => {
           console.log("edit comment action");
           console.log(res.data);
-          alert("댓글 수정이 완료되었습니다.");
+          Swal.fire(
+            'Update',
+            '댓글 수정이 완료되었습니다.',
+            'success'
+          )
           commit;
         },
         (error) => {
+          Swal.fire(
+            'Update',
+            '댓글 수정을 실패하였습니다.',
+            'error'
+          )
           alert("댓글 수정을 실패하였습니다.");
           console.log(error);
         }
@@ -219,11 +249,20 @@ export const diaryStore = {
         (res) => {
           console.log("delete comment action");
           console.log(res.data);
-          alert("댓글 삭제가 완료되었습니다.");
+          Swal.fire(
+            'Delete',
+            '댓글 삭제가 완료되었습니다.',
+            'success'
+          )
           commit;
         },
         (error) => {
-          alert("댓글 삭제를 실패하였습니다.");
+          Swal.fire(
+            'Delete',
+            '댓글 삭제를 실패하였습니다.',
+            'error'
+          )
+          // alert("댓글 삭제를 실패하였습니다.");
           console.log(error);
         }
       );

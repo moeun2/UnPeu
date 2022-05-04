@@ -324,6 +324,7 @@ export default {
       logout(){
         //storage확인해서 도메인 확인 //모달창 바꾸기
         this.$swal.fire({
+          icon: 'question',
           title: 'Logout',
           html:'앙뿌에서 로그아웃 하시겠습니까? ' ,
           showCancelButton: true,
