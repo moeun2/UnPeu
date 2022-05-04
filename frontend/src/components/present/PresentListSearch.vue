@@ -103,7 +103,7 @@ export default {
     deep: true,
     handler(newVal) {
       if(this.cardList.length === newVal.Present.length){
-        return;
+        this.cardList=newVal.Present;
       }else if(this.cardList.length < newVal.Present.length){
         this.cardList.push(newVal.Present[this.cardList.length]);
       }else{

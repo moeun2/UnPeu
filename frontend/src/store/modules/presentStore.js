@@ -20,6 +20,14 @@ export const presentStore={
         INSERT_PRESENT(state, present){
             state.presentList.Present.push(present);
         },
+        UPDATE_PRESENT(state, present){
+            const i=state.presentList.Present.map(item => item.presentId).indexOf(present.presentId);
+            console.log(state.presentList);
+            state.presentList.Present.splice(i, 1);
+            state.presentList.Present.splice(i, 0, present);
+            console.log(state.presentList);
+        }
+        ,
         RESET_PRESENT_LIST(state){
             state.presentList=null;
         }
@@ -61,7 +69,7 @@ export const presentStore={
                 present,
                 (response)=>{
                     console.log(response.data);
-                    commit;
+                    commit("UPDATE_PRESENT",response.data.Present);
                 }
             )
         },
