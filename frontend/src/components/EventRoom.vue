@@ -1,5 +1,5 @@
 <template>
-  <div class="main-room">
+  <div class="main-room" id="main-room">
     <div class="event-tab">
       <ul class="myMenu" v-if="isMyPage">
         <li class="menu2">
