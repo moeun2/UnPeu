@@ -21,7 +21,7 @@
               헉 너무 큰 금액이야 <br />
               가격을 다시 한 번 생각해봐~!
             </h4>
-            <br />
+            <br/>
             <table class="dabo_table">
               <tr>
                 <td>
