@@ -114,11 +114,6 @@ export default {
       userId: this.$store.state.userStore.user.id,
     };
   },
-
-  mounted() {
-    this.search();
-  },
-
   watch: {
     ...mapState(presentStore, ["presentList"]),
     presentList: {
@@ -178,7 +173,7 @@ export default {
                 "파일이 삭제되었습니다.",
                 "success"
               );
-              this.$delete(this.cardList, index);
+              //this.$delete(this.cardList, index);
             } else {
               this.$swal.fire(
                 "삭제 실패!",
