@@ -154,7 +154,6 @@ export default {
       console.log(to)
       console.log(from)
       if (to.path !== from.path) this.changeParams(this.$route.params.userid);
-      this.isMyPage=true;
     },
   },
   computed: {
@@ -177,16 +176,17 @@ export default {
     ...mapMutations(presentStore,["RESET_PRESENT_LIST"]),
 
     changeParams(userId) {//파라미터 변경시 실행
-     getMessage(
-      userId,
-      (res) => {
-        console.log(res.data.Message);
-        this.messages = res.data.Message;
-        console.log(this.messages);
-      },
-      () => {
-        console.log("fail");
-      }
+      this.isMyPage=true;
+      getMessage(
+        userId,
+        (res) => {
+          console.log(res.data.Message);
+          this.messages = res.data.Message;
+          console.log(this.messages);
+        },
+        () => {
+          console.log("fail");
+        }
     );
 
     let today = new Date();
