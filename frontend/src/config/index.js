@@ -9,6 +9,6 @@ const FRONT_URL = "http://k6b201.p.ssafy.io";
 // const FRONT_URL= "http://localhost:8081";
 
 const KAKAO_API_KEY = "85706c8831cc3c166937be3d85a3d8a1";
-const EVENT_URL = "https://www.naver.com/";
+const EVENT_URL = "https://delicate-pirate-12e.notion.site/73fb61239180484cb1b17f174e76a63c";
 
 export { API_BASE_URL, FRONT_URL, KAKAO_API_KEY, EVENT_URL };
