@@ -5,7 +5,7 @@
         <li class="menu2">
           MENU
           <ul class="menu2_s submenu">
-            <li><button>컨셉 변경</button></li>
+            <!-- <li><button>컨셉 변경</button></li> -->
             <li><button @click="resetMessage">컨셉 초기화</button></li>
             <li><button @click="saveMessage">메세지 저장</button></li>
           </ul>

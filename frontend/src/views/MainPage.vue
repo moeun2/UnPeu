@@ -56,19 +56,22 @@
                     <div class="info-birth">{{ this.userBirth }}</div>
                     <br />
                     <p class="text-email">{{ this.userEmail }}</p>
-                    <div style="display: flex; margin-top: 10px">
+                    <div style="display: flex; margin-top: 10px;">
                       <router-link
                         :to="{ name: 'PresentManage' }"
                         v-if="isMyPage"
                       >
                         <button class="item">
-                          <img src="https://i.imgur.com/nupfePY.png" />
+                          <v-icon>mdi-gift-open</v-icon>
+                          <!-- <img src="https://i.imgur.com/nupfePY.png" /> -->
                           <p class="arrow_box">받고 싶은 선물 등록!</p>
                         </button>
                       </router-link>
+
                       <router-link :to="{ name: 'Login' }" v-if="!isLogin">
                         <button class="item">
-                          <img src="https://i.imgur.com/Fqfvown.png" />
+                          <v-icon class="v-icon">mdi-login</v-icon>
+                          <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                           <p class="arrow_box">로그인</p>
                         </button>
                       </router-link>
@@ -79,14 +82,15 @@
                         }"
                         v-if="!isMyPage && isLogin"
                       >
-                        <!-- to="{name: 'eventRoom',params: {userid:  $store.state.userStore.user.id}}" -->
                         <button class="item">
-                          <img src="https://i.imgur.com/Fqfvown.png" />
+                          <v-icon >mdi-home</v-icon>
+                          <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                           <p class="arrow_box">마이페이지</p>
                         </button>
                       </router-link>
-                      <button class="item" @click="logout" v-if="isLogin">
-                        <img src="https://i.imgur.com/Fqfvown.png" />
+                      <button class="item" @click="logout" v-if="isLogin" style="margin-left: 5px;">
+                        <v-icon>mdi-logout</v-icon>
+                        <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                         <p class="arrow_box">로그아웃</p>
                       </button>
                     </div>
@@ -104,7 +108,7 @@
                 Here!👈)</a
               >
             </div>
-            <img class="speech-bubble2-img" src="@/assets/main_logo4.gif" />
+            <!-- <img class="speech-bubble2-img" src="@/assets/main_logo4.gif" /> -->
           </div>
           <div class="main-dot">
             <div class="main-paper">
@@ -352,12 +356,12 @@ export default {
       }
     },
 
-    logout() {
-      //storage확인해서 도메인 확인 //모달창 바꾸기
-      this.$swal
-        .fire({
-          title: "Logout",
-          html: "앙뿌에서 로그아웃 하시겠습니까? ",
+      logout(){
+        //storage확인해서 도메인 확인 //모달창 바꾸기
+        this.$swal.fire({
+          icon: 'question',
+          title: 'Logout',
+          html:'앙뿌에서 로그아웃 하시겠습니까? ' ,
           showCancelButton: true,
         })
         .then((result) => {
@@ -481,7 +485,7 @@ export default {
 .arrow_box {
   display: none;
   position: absolute;
-  width: 100px;
+  width: 120px;
   padding: 8px;
   left: 0;
   -webkit-border-radius: 8px;
@@ -493,7 +497,7 @@ export default {
   z-index: 1;
 }
 
-img:hover + p.arrow_box {
+.v-icon:hover + p.arrow_box {
   display: block;
 }
 .info-birth {
@@ -555,8 +559,8 @@ img:hover + p.arrow_box {
 }
 
 .speech-bubble-div {
-  top: -17%;
-  left: 1%;
+  top: -3%;
+  left: 105%;
   position: absolute;
 }
 .speech-bubble2:after {
