@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.unpeu.config.media.MediaService;
 import com.unpeu.service.iface.IUserService;
 
 import lombok.RequiredArgsConstructor;
