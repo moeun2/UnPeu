@@ -7,10 +7,12 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
+          <v-form ref="form">
           <v-container>
             <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
+                  :rules="rules.name"
                   v-model="updatedPresent.presentName"
                   label="선물 이름"
                   required
@@ -18,6 +20,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
+                  :rules="rules.price"
                   v-model="updatedPresent.presentPrice"
                   required
                   label="가격 설정"
@@ -39,7 +42,7 @@
               <v-col col="12" sm="6">
                 <v-layout>
                   <v-file-input
-                    :rules="rules"
+                    :rules="rules.file"
                     v-model="files"
                     required
                     accept="image/png, image/jpeg, image/bmp"
@@ -50,6 +53,7 @@
               </v-col>
             </v-row>
           </v-container>
+          </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -75,10 +79,35 @@ export default {
   data() {
     return {
       files: [],
-      rules: [
+      rules: {
+      file: [
         (value) =>
-          !value || value.size < 2000000 || "사진 크기는 2 MB 이하여야 해요!",
+          !value ||
+          value.size < 2000000 ||
+          "Avatar size should be less than 2 MB!",
       ],
+      name: [
+        (v) => !!v || "선물이름은 필수 입력사항입니다.",
+        (v) =>
+          !/[~!@#$%^&*()_+|<>?:{}]/.test(v) ||
+          "선물이름에는 특수문자를 사용할 수 없습니다.",
+        (v) =>
+          !/[/\s/g]/.test(v) ||
+          "공백은 들어갈 수 없습니다. 띄어쓰기 사용 시 '-' 로 사용해주세요",
+        (v) =>
+          !(v && v.length >= 10) ||
+          "선물이름은 1자 이상 10자 이하로 입력해주세요.",
+      ],
+      price: [
+        (v) => !!v || "가격은 필수 입력사항입니다.",
+        (v) => !/[^0-9]/.test(v) || "가격은 숫자만 입력가능합니다.",
+        (v) => !/[/\s/g]/.test(v) || "공백은 들어갈 수 없습니다",
+        (v) => !(v && v < 0) || "가격은 음수가 들어갈 수 없습니다",
+        (v) =>
+          !(v && v.length >= 10) || "가격은 3자 이상 10자 이하로 입력해주세요.",
+        (v) =>
+          !(v && v.length < 3) || "가격은 3자 이상 10자 이하로 입력해주세요.",
+      ],},
       presentId: null,
       newPresentImg: null,
       updatedPresent: {
@@ -118,25 +147,40 @@ export default {
 
   methods: {
     ...mapActions(presentStore, ["updatePresent"]),
-    
+    errorAlert(message) {
+      this.$swal.fire("Oops...!", message, "error");
+    },
+
     closeDialog() {
       this.dialog = false;
     },
 
     update() {
-      let fd = new FormData();
-      fd.append("presentImg", this.files);
-      fd.append("presentPrice", this.updatedPresent.presentPrice);
-      fd.append("userId", this.$store.state.userStore.user.id);
-      fd.append("presentName", this.updatedPresent.presentName);
+      if(this.files==null)
+        this.errorAlert("파일을 넣어주세요");
+      if(this.files.type.indexOf("image/")==-1){
+        this.errorAlert("파일 타입을 확인해주세요. 이미지만 가능합니다");
+        return;
+      }
+      let valid=this.$refs.form.validate();
+      if(!valid){
+        this.errorAlert("모든 항목들을 정확히 등록해주세요!");
+      }
+      else{
+        let fd = new FormData();
+        fd.append("presentImg", this.files);
+        fd.append("presentPrice", this.updatedPresent.presentPrice);
+        fd.append("userId", this.$store.state.userStore.user.id);
+        fd.append("presentName", this.updatedPresent.presentName);
 
-      let presentData = {
-        fd: fd,
-        presentId: this.present.presentId,
-      };
-      // console.log(presentData);
-      this.updatePresent(presentData);
-      this.$emit("close");
+        let presentData = {
+          fd: fd,
+          presentId: this.present.presentId,
+        };
+        // console.log(presentData);
+        this.updatePresent(presentData);
+        this.$emit("close");
+      }
     },
   },
 };
