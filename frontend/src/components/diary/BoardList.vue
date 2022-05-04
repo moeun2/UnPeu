@@ -98,7 +98,7 @@ export default {
 
     /* 상세 페이지 이동*/
     moveDetailPage(data) {
-      console.log(data.boardId);
+      // // // console.log(data.boardId);
       this.$router.push({
         name: "BoardDetail",
         params: { boardId: data.boardId },

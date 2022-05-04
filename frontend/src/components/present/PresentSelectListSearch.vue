@@ -109,11 +109,11 @@ export default {
      */
     search() {
       // To Do: User State에서 가져오기
-      console.log("PresentSelectListSearch_search - 호출");
-      console.log("userId: ", this.curUser.id);
+      //console.log("PresentSelectListSearch_search - 호출");
+      //console.log("userId: ", this.curUser.id);
       this.searchList(this.curUser.id);
       this.cardList = this.presentList.Present;
-      console.log(this.cardList.length);
+      //console.log(this.cardList.length);
       if (this.cardList.length == 0) {
         this.showCarousel = false;
       } else {
@@ -125,8 +125,8 @@ export default {
      * PayModal Open시 실행되는 함수
      */
     openPayModal(card, idx) {
-      console.log(card);
-      console.log(idx);
+      //console.log(card);
+      //console.log(idx);
       this.selectedPresentId = card.presentId;
       this.currentIdx = idx;
       this.changeCardColor(true);
@@ -144,7 +144,7 @@ export default {
      * Present component로 선택된 Present 정보 Emit
      */
     saveSelectedPresent(data) {
-      console.log("payModal에서 받아온 selectedPrice : " + data);
+      //console.log("payModal에서 받아온 selectedPrice : " + data);
       this.showModal = false;
       this.selectedPresentPrice = data;
       this.$emit("present", {

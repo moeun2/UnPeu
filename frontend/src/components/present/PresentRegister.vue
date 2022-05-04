@@ -40,7 +40,9 @@
 
 <script>
 import { mapActions } from "vuex";
+
 const presentStore = "presentStore";
+
 export default {
   data: () => ({
     presentName: null,
@@ -77,12 +79,16 @@ export default {
     },
     files: [],
   }),
+
   computed: {},
+
   methods: {
     errorAlert(message) {
       this.$swal.fire("Oops...!", message, "error");
     },
+
     ...mapActions(presentStore, ["registerPresent"]),
+    
     regist() {
       if(this.files.type.indexOf("image/")==-1){
         this.errorAlert("파일 타입을 확인해주세요. 이미지만 가능합니다");
@@ -102,7 +108,7 @@ export default {
           })
           .then((result) => {
             if (result.isConfirmed) {
-              console.log(this.present);
+              // console.log(this.present);
               let fd = new FormData();
               fd.append("presentImg", this.files);
               fd.append("presentPrice", this.presentPrice);

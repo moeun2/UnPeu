@@ -16,7 +16,7 @@ function saveMessage(messages, success, fail) {
     })
     .then(success)
     .catch(fail);
-  console.log("실행됨");
+  // console.log("실행됨");
 }
 
 function resetMessage(success, fail) {
@@ -29,7 +29,7 @@ function resetMessage(success, fail) {
     })
     .then(success)
     .catch(fail);
-  console.log("실행됨");
+  // console.log("실행됨");
 }
 
 export { getMessage, saveMessage, resetMessage };

@@ -11,7 +11,7 @@ export const presentStore={
     mutations:{
         SET_PRESENT_LIST(state, presentList){
             state.presentList=presentList;
-            console.log(state.presentList);
+            //console.log(state.presentList);
         },
         REMOVE_PRESENT_FROM_ARRAY(state, presentId){
             const i=state.presentList.Present.map(item => item.presentId).indexOf(presentId);
@@ -22,10 +22,10 @@ export const presentStore={
         },
         UPDATE_PRESENT(state, present){
             const i=state.presentList.Present.map(item => item.presentId).indexOf(present.presentId);
-            console.log(state.presentList);
+            //console.log(state.presentList);
             state.presentList.Present.splice(i, 1);
             state.presentList.Present.splice(i, 0, present);
-            console.log(state.presentList);
+            //console.log(state.presentList);
         }
         ,
         RESET_PRESENT_LIST(state){
@@ -37,7 +37,7 @@ export const presentStore={
              register(
                 fd,
                 (response) => {
-                    console.log(response.data);
+                    //console.log(response.data);
                     commit("INSERT_PRESENT", response.data.Present);
                     return response.data.Present;
                 },
@@ -50,7 +50,7 @@ export const presentStore={
             search(
                 id,
                 (response)=>{
-                    console.log(response.data);
+                    //console.log(response.data);
                     commit("SET_PRESENT_LIST", response.data);
                 }
             )
@@ -58,8 +58,8 @@ export const presentStore={
         sendPresentMessage({commit}, message){
             sendMessage(
                 message,
-                (response)=>{
-                    console.log(response.data);
+                ()=>{
+                    //console.log(response.data);
                     commit;
                 }
             )
@@ -68,7 +68,7 @@ export const presentStore={
             update(
                 present,
                 (response)=>{
-                    console.log(response.data);
+                    //console.log(response.data);
                     commit("UPDATE_PRESENT",response.data.Present);
                 }
             )
@@ -76,8 +76,8 @@ export const presentStore={
         deletePresent({commit}, presentId){
             remove(
                 presentId,
-                (response)=>{
-                    console.log(response.data);
+                ()=>{
+                    //console.log(response.data);
                     commit("REMOVE_PRESENT_FROM_ARRAY",presentId);
                     return true;
                 },
