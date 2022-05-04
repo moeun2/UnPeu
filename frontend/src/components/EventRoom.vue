@@ -151,8 +151,6 @@ export default {
   watch: {
     $route(to, from) {//라우터 파라미터 변경 감지
       console.log("watch")
-      console.log(to)
-      console.log(from)
       if (to.path !== from.path) this.changeParams(this.$route.params.userid);
     },
   },
