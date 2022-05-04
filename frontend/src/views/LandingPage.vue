@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { FRONT_URL} from "@/config/index";
 export default {
   name: 'LandingPage',
   created() {
@@ -30,7 +31,12 @@ export default {
       const { value: email } = await this.$swal.fire({
         title: '링크를 붙여넣어 주세요',
         input: 'text',//url
-        inputPlaceholder: 'paste the link'
+        inputPlaceholder: 'paste the link',
+        inputValidator:(value) => {
+              if (value.substr(0,FRONT_URL.length)!=FRONT_URL) {
+                return '앙뿌의 링크를 입력해주세요!'
+              }
+            }
         })
 
         if (email) {

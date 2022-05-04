@@ -272,7 +272,7 @@ export default {
         }
       },
       ()=>{
-        console.log("getUserDetail fail")
+        this.$router.push({ name: "NotFound" })
       })
     },
 
