@@ -174,7 +174,10 @@ import {
 } from "@/api/user.js";
 import { EVENT_URL,FRONT_URL, API_BASE_URL } from "@/config/index";
 import LinkShareModal from "@/components/LinkShareModal.vue";
+import { mapMutations } from 'vuex';
 
+
+const presentStore="presentStore";
 // import store from '@/store';
 export default {
   name: "App",
@@ -264,6 +267,7 @@ export default {
     LinkShareModal,
   },
   methods: {
+    ...mapMutations(presentStore,["RESET_PRESENT_LIST"]),
     goToMainPage() {
       this.$router.push({ name: "eventRoom" });
     },
@@ -364,7 +368,7 @@ export default {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
             window.localStorage.removeItem("accessToken");
-
+            this.RESET_PRESENT_LIST();
             if (this.$store.state.userStore.user.socialDomain == "kakao") {
               this.$store.commit("userStore/setUSerNull");
               window.location.replace(
