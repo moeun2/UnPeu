@@ -96,8 +96,19 @@ export default {
 
   computed: {
     ...mapGetters(diaryStore, {
-      categories: "GET_CATEGORY_LIST",
+      categoryList: "GET_CATEGORY_LIST",
     }),
+
+    categories: function() {
+      // 빈 배열 체크
+      if (Array.isArray(this.categoryList) && this.categoryList.length === 0) {
+        return ["Default"];
+      } else if (this.categoryList.includes("Default")) {
+        return this.categoryList;
+      } else {
+        return ["Default"].concat(this.categoryList);
+      }
+    },
 
     /* 작성 폼 유효성 검사 */
     formIsValid() {
