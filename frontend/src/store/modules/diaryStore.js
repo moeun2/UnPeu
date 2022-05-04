@@ -1,10 +1,6 @@
 import * as diaryApi from "@/api/diary";
-<<<<<<< HEAD
 import router from "../../router"; 
 import Swal from 'sweetalert2'
-=======
-import router from "../../router";
->>>>>>> 80664f53f63bbbe26145e734ebda3e96dbddcd14
 
 export const diaryStore = {
   namespaced: true,
