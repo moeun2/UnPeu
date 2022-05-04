@@ -1,10 +1,6 @@
 import * as diaryApi from "@/api/diary";
-<<<<<<< HEAD
 import router from "../../router"; 
 import Swal from 'sweetalert2'
-=======
-import router from "../../router";
->>>>>>> 80664f53f63bbbe26145e734ebda3e96dbddcd14
 
 export const diaryStore = {
   namespaced: true,
@@ -176,7 +172,7 @@ export const diaryStore = {
     AC_DELETE_BOARD({ commit }, boardId) {
       diaryApi.deleteBoard(
         boardId,
-        (res) => {
+        () => {
           // console.log("delete board action");
           // console.log(res.data);
           // alert("삭제가 완료되었습니다.");
@@ -225,7 +221,7 @@ export const diaryStore = {
       diaryApi.editComment(
         value.commentId,
         value.commentInfo,
-        (res) => {
+        () => {
           // console.log("edit comment action");
           // console.log(res.data);
           Swal.fire(
@@ -252,7 +248,7 @@ export const diaryStore = {
       diaryApi.deleteComment(
         value.commentId,
         value.password,
-        (res) => {
+        () => {
           // console.log("delete comment action");
           // console.log(res.data);
           Swal.fire(
