@@ -154,6 +154,7 @@ export default {
       console.log(to)
       console.log(from)
       if (to.path !== from.path) this.changeParams(this.$route.params.userid);
+      this.isMyPage=true;
     },
   },
   computed: {
