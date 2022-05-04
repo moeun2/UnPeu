@@ -1,5 +1,7 @@
 package com.unpeu.service.impl;
 
+import static com.unpeu.config.exception.ErrorCode.MEMBER_NOT_FOUND;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -10,12 +12,14 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.unpeu.config.exception.CustomException;
 import com.unpeu.domain.entity.Present;
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.repository.IUserRepository;
@@ -311,8 +315,11 @@ public class UserServiceImpl implements IUserService{
 	 */
 	@Override
 	public User getUserById(Long userId) {
-		User user= userRepository.findById(userId).get();
-		return user;
+		Optional<User> user= userRepository.findById(userId);
+		if (user.isEmpty()) {
+			throw new CustomException(MEMBER_NOT_FOUND);
+		}
+		return user.get();
 	}
 
 	/**

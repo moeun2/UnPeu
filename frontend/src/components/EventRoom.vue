@@ -13,7 +13,7 @@
       </ul>
       <div v-else class="hide-menu"></div>
     </div>
-    
+
     <div class="gift-box">
       <router-link :to="{ name: 'PresentPayment' ,params:{userId: this.curUser.id}}">
         <button class="reg-gift">
@@ -50,7 +50,7 @@
 
     <!-- modal 창 -->
     <div id="pocket" class="modal-window">
-      <div class="modal-message">  
+      <div class="modal-message">
         <a href="#">
           <button class="btn_red_cancel">
             <span>X</span>
@@ -81,8 +81,9 @@ import { getMessage, saveMessage, resetMessage } from "@/api/event.js";
 import { API_BASE_URL } from "@/config/index.js";
 import { getUserDetailUseToken } from "@/api/user.js";
 import * as Alert from "@/api/alert";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 const userStore = "userStore";
+const presentStore = "presentStore";
 export default {
   name: "EventRoom",
   data() {
@@ -134,7 +135,7 @@ export default {
       }
     );
 
-    let today = new Date();   
+    let today = new Date();
     let month = today.getMonth() + 1;  // 월
     let date = today.getDate();  // 일
     let hours = today.getHours(); // 시
@@ -170,21 +171,23 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(presentStore,["RESET_PRESENT_LIST"]),
 
     changeParams(userId) {//파라미터 변경시 실행
-     getMessage(
-      userId,
-      (res) => {
-        console.log(res.data.Message);
-        this.messages = res.data.Message;
-        console.log(this.messages);
-      },
-      () => {
-        console.log("fail");
-      }
+      this.isMyPage=true;
+      getMessage(
+        userId,
+        (res) => {
+          console.log(res.data.Message);
+          this.messages = res.data.Message;
+          console.log(this.messages);
+        },
+        () => {
+          console.log("fail");
+        }
     );
 
-    let today = new Date();   
+    let today = new Date();
     let month = today.getMonth() + 1;  // 월
     let date = today.getDate();  // 일
     let hours = today.getHours(); // 시
@@ -196,11 +199,11 @@ export default {
         console.log(changeView.className);
         changeView.className = 'main-room2';
     }
-  
+
    },
     modal(message) {
         // 날짜 처리 (5월 5일 00:00:00 열람)
-        let today = new Date();   
+        let today = new Date();
         let month = today.getMonth() + 1;  // 월
         let date = today.getDate();  // 일
         let hours = today.getHours(); // 시
@@ -240,6 +243,7 @@ export default {
                   this.curUser.id,
                   (res) => {
                     console.log(res.data.Message);
+                    this.RESET_PRESENT_LIST();
                     this.messages = res.data.Message;
                     console.log(this.messages);
                   },
@@ -484,7 +488,7 @@ ul.myMenu > li ul.submenu > li:hover {
   text-align: center;
 }
 .main-room2 {
-    background-image: url("https://i.imgur.com/yBs2YNe.jpg"); 
+    background-image: url("https://i.imgur.com/yBs2YNe.jpg");
     background-size: cover;
     border-radius: 15px;
 }

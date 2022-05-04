@@ -7,7 +7,7 @@
             <v-file-input
               :rules="rules.file"
               v-model="files"
-              accept="image/png, image/jpeg, image/bmp"
+              accept="image/*"
               placeholder="이미지 등록하기"
               prepend-icon="mdi-camera"
             ></v-file-input>
@@ -99,7 +99,6 @@ export default {
           .then((result) => {
             if (result.isConfirmed) {
               console.log(this.present);
-
               let fd = new FormData();
               fd.append("presentImg", this.files);
               fd.append("presentPrice", this.presentPrice);
