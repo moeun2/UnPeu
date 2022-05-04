@@ -276,14 +276,20 @@ export default {
           this.userName = res.data.User.userName;
           if (res.data.User.userImg) {
             this.userImg = API_BASE_URL + res.data.User.userImg
+          }else{
+            this.userImg=""
           }
+
           if (res.data.User.userInfo) {
             this.userInfo = res.data.User.userInfo
           }else{
             this.userInfo="선물주는 사람\n차칸 사람"
           }
+
           if (res.data.User.userTitle) {
             this.userTitle = res.data.User.userTitle;
+          }else{
+            this.userTitle="오늘은 어른이날, 선물사주라주"
           }
           if (res.data.User.userEmail) {
             this.userEmail = res.data.User.userEmail;
