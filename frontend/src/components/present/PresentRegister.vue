@@ -90,6 +90,10 @@ export default {
     ...mapActions(presentStore, ["registerPresent"]),
     
     regist() {
+      if(this.files.type.indexOf("image/")==-1){
+        this.errorAlert("파일 타입을 확인해주세요. 이미지만 가능합니다");
+        return;
+      }
       const validate = this.$refs.form.validate();
       if (!validate) {
         this.errorAlert("모든 항목들을 등록해주세요!");
@@ -125,9 +129,7 @@ export default {
                   "파일이 등록되었습니다.",
                   "success"
                 );
-                this.presentName = null;
-                this.presentPrice = null;
-                this.files = [];
+                this.$refs.form.reset();
               }
             }
           });
