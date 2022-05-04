@@ -6,6 +6,7 @@
         <div class="holder hd2"></div>
         <div class="holder hd3"></div>
         <div class="holder hd4"></div>
+
         <section class="profile-section">
           <div class="profile-dot">
             <div class="profile-paper">
@@ -34,6 +35,7 @@
                     alt="profile 이미지가 없습니다"
                     onerror="this.src='https://i.imgur.com/nupfePY.png'"
                   />
+
                   <div class="desc-wrap">
                     <v-icon
                       small
@@ -99,6 +101,15 @@
           </div>
         </section>
         <section class="main-section">
+          <div class="speech-bubble-div">
+            <div class="speech-bubble2">
+              <a :href="this.url" style="color: white">
+                더 상세한 사용방법과<br />이벤트를 알고싶다면?<br />(👉Click
+                Here!👈)</a
+              >
+            </div>
+            <!-- <img class="speech-bubble2-img" src="@/assets/main_logo4.gif" /> -->
+          </div>
           <div class="main-dot">
             <div class="main-paper">
               <div class="main-wrap">
@@ -161,7 +172,7 @@ import {
   updateUserInfo,
   increaseVisit,
 } from "@/api/user.js";
-import { FRONT_URL, API_BASE_URL } from "@/config/index";
+import { EVENT_URL,FRONT_URL, API_BASE_URL } from "@/config/index";
 import LinkShareModal from "@/components/LinkShareModal.vue";
 
 // import store from '@/store';
@@ -169,6 +180,7 @@ export default {
   name: "App",
   data() {
     return {
+      url : EVENT_URL,
       activeCheckClass: "menu-item mi-1 menu-checked",
       activeClass: "menu-item mi-3",
       userName: "김싸피",
@@ -243,6 +255,7 @@ export default {
         },
         () => {
           // console.log("increaseVisit fail")
+
         }
       );
     }
@@ -258,6 +271,7 @@ export default {
       getUserDetail(
         this.$route.params.userid,
         (res) => {
+
           // console.log(res.data.User);
           this.userName = res.data.User.userName;
           if (res.data.User.userImg) {
@@ -300,6 +314,7 @@ export default {
           window.localStorage.getItem("accessToken"),
           (res) => {
             // console.log(res.data.User);
+
             this.$store.commit("userStore/setUser", res.data.User);
             this.isLogin = true;
             if (index == res.data.User.id) {
@@ -308,6 +323,7 @@ export default {
           },
           () => {
             // console.log("getUserDetailUseToken fail")
+
             this.isLogin = false;
             window.localStorage.removeItem("accessToken");
             this.$store.commit("userStore/setUserNull");
@@ -411,6 +427,7 @@ export default {
         updateUserInfo(info.replace('"', ""), (res) => {
           this.userInfo = res.data.User.userInfo;
           // console.log(res.data.User.userInfo)
+
         });
       }
     },
@@ -523,5 +540,40 @@ export default {
   border-top: 0;
   margin-top: -5px;
   margin-right: -10px;
+}
+
+.speech-bubble2 {
+  position: absolute;
+  background: #85b9eaef;
+  border-radius: 0.4em;
+  padding: 0.3rem;
+  color: white;
+  top: -20%;
+  left: 120%;
+  width: 150px;
+  text-align: center;
+}
+
+.speech-bubble-div {
+  top: -3%;
+  left: 105%;
+  position: absolute;
+}
+.speech-bubble2:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: #85b9eaef;
+  border-left: 0;
+  border-bottom: 0;
+  margin-top: -4px;
+  margin-left: -8px;
+}
+.speech-bubble2-img {
+  width: 100px;
 }
 </style>

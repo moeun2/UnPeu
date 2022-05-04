@@ -4,7 +4,7 @@
       <v-img src="@/assets/img/none_present.png"> </v-img>
     </template>
     <template v-else>
-      <v-carousel hide-delimiters style="height: 350px">
+      <v-carousel hide-delimiters style="height: 400px">
         <template v-for="(card, index) in cardList">
           <v-carousel-item
             v-if="(index + 1) % columns === 1 || columns === 1"
@@ -122,17 +122,17 @@ export default {
   watch: {
     ...mapState(presentStore, ["presentList"]),
     presentList: {
-      deep: true,
-      handler(newVal) {
-        if (this.cardList.length === newVal.Present.length) {
-          return;
-        } else if (this.cardList.length < newVal.Present.length) {
-          this.cardList.push(newVal.Present[this.cardList.length]);
-        } else {
-          return;
-        }
-      },
-    },
+    deep: true,
+    handler(newVal) {
+      if(this.cardList.length === newVal.Present.length){
+        this.cardList=newVal.Present;
+      }else if(this.cardList.length < newVal.Present.length){
+        this.cardList.push(newVal.Present[this.cardList.length]);
+      }else{
+        return;
+      } 
+    }
+  }
   },
 
   computed: {
@@ -145,7 +145,6 @@ export default {
 
   methods: {
     ...mapActions(presentStore, ["searchList", "deletePresent"]),
-
     search() {
       this.searchList(this.userId);
       this.cardList = this.presentList.Present;
