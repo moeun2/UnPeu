@@ -19,6 +19,9 @@ export const presentStore={
         },
         INSERT_PRESENT(state, present){
             state.presentList.Present.push(present);
+        },
+        RESET_PRESENT_LIST(state){
+            state.presentList=null;
         }
     },
     actions:{
