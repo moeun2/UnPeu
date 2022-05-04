@@ -70,7 +70,8 @@ public class UserServiceImpl implements IUserService{
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=c0ad1801cdf80282754cf18e79556743");//kakao restapi키
-            sb.append("&redirect_uri=http://localhost:8081/login/kakao");//redirect 경로
+            sb.append("&redirect_uri=http://k6b201.p.ssafy.io/login/kakao");//redirect 경로, server
+            // sb.append("&redirect_uri=http://localhost:8081/login/kakao");//redirect 경로, local
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -125,7 +126,8 @@ public class UserServiceImpl implements IUserService{
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=530350751299-fbiks9onutpnvmgebr0fc5uvllj5fidn.apps.googleusercontent.com");//kakao restapi키
             sb.append("&client_secret=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");
-            sb.append("&redirect_uri=http://localhost:8081/login/google");//redirect 경로
+            sb.append("&redirect_uri=http://k6b201.p.ssafy.io/login/google");//redirect 경로, server
+						// sb.append("&redirect_uri=http://localhost:8081/login/google");//redirect 경로, local
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();

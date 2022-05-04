@@ -21,7 +21,7 @@ function getUserDetail(userId, success, fail) {
     .get(`/users/` + userId)
     .then(success)
     .catch(fail);
-  console.log("getUserDetail 실행됨");
+  // console.log("getUserDetail 실행됨");
 }
 
 function getUserDetailUseToken(token, success, fail) {
@@ -33,7 +33,7 @@ function getUserDetailUseToken(token, success, fail) {
     })
     .then(success)
     .catch(fail);
-  console.log("getUserDetailUseToken 실행됨");
+  // console.log("getUserDetailUseToken 실행됨");
 }
 
 function getUserIdUseToken(token, success, fail) {
@@ -45,7 +45,7 @@ function getUserIdUseToken(token, success, fail) {
     })
     .then(success)
     .catch(fail);
-  console.log("getUserDetailUseToken 실행됨");
+  // console.log("getUserDetailUseToken 실행됨");
 }
 
 function updateUserImg(img, success, fail) {
@@ -58,7 +58,7 @@ function updateUserImg(img, success, fail) {
     })
     .then(success)
     .catch(fail);
-  console.log("updateUserImg 실행됨");
+  // console.log("updateUserImg 실행됨");
 }
 
 function updateUserInfo(userInfo, success, fail) {
@@ -76,7 +76,7 @@ function updateUserInfo(userInfo, success, fail) {
     )
     .then(success)
     .catch(fail);
-  console.log("updateUserInfo 실행됨");
+  // console.log("updateUserInfo 실행됨");
 }
 
 function updateUserTitle(userTitle, success, fail) {
@@ -88,7 +88,7 @@ function updateUserTitle(userTitle, success, fail) {
     })
     .then(success)
     .catch(fail);
-  console.log("updateUserTitle 실행됨");
+  // console.log("updateUserTitle 실행됨");
 }
 
 function updateUserEmailBirth(token, data, success, fail) {
@@ -100,7 +100,7 @@ function updateUserEmailBirth(token, data, success, fail) {
     })
     .then(success)
     .catch(fail);
-  console.log("updateUserEmailBirth 실행됨");
+  // console.log("updateUserEmailBirth 실행됨");
 }
 
 function increaseVisit(userId, success, fail) {

@@ -98,9 +98,11 @@
         </section>
         <section class="main-section">
           <div class="speech-bubble-div">
-            <div class="speech-bubble2"><a :href=this.url style="color:white;"> 
-              더 상세한 사용방법과<br />이벤트를 알고싶다면?<br />(👉Click
-              Here!👈)</a>
+            <div class="speech-bubble2">
+              <a :href="this.url" style="color: white">
+                더 상세한 사용방법과<br />이벤트를 알고싶다면?<br />(👉Click
+                Here!👈)</a
+              >
             </div>
             <img class="speech-bubble2-img" src="@/assets/main_logo4.gif" />
           </div>
@@ -212,7 +214,7 @@ export default {
       getUserDetailUseToken(
         window.localStorage.getItem("accessToken"),
         (res) => {
-          console.log(res.data.User);
+          // console.log(res.data.User);
           this.$store.commit("userStore/setUser", res.data.User);
           this.isLogin = true;
           if (this.$route.params.userid == res.data.User.id) {
@@ -220,7 +222,7 @@ export default {
           }
         },
         () => {
-          console.log("getUserDetailUseToken fail");
+          // console.log("getUserDetailUseToken fail");
           this.isLogin = false;
           window.localStorage.removeItem("accessToken");
           this.$router.go;
@@ -237,8 +239,8 @@ export default {
       increaseVisit(
         this.$route.params.userid,
         (res) => {
-          console.log("increaseVisit 실행");
-          console.log(res);
+          // console.log("increaseVisit 실행")
+          // console.log(res)
 
           if (res.data.User.todayVisit) {
             this.todayVisit = res.data.User.todayVisit;
@@ -248,7 +250,8 @@ export default {
           }
         },
         () => {
-          console.log("increaseVisit fail");
+          // console.log("increaseVisit fail")
+
         }
       );
     }
@@ -264,7 +267,8 @@ export default {
       getUserDetail(
         this.$route.params.userid,
         (res) => {
-          console.log(res.data.User);
+
+          // console.log(res.data.User);
           this.userName = res.data.User.userName;
           if (res.data.User.userImg) {
             this.userImg = API_BASE_URL + res.data.User.userImg;
@@ -305,7 +309,8 @@ export default {
         getUserDetailUseToken(
           window.localStorage.getItem("accessToken"),
           (res) => {
-            console.log(res.data.User);
+            // console.log(res.data.User);
+
             this.$store.commit("userStore/setUser", res.data.User);
             this.isLogin = true;
             if (index == res.data.User.id) {
@@ -313,7 +318,8 @@ export default {
             }
           },
           () => {
-            console.log("getUserDetailUseToken fail");
+            // console.log("getUserDetailUseToken fail")
+
             this.isLogin = false;
             window.localStorage.removeItem("accessToken");
             this.$store.commit("userStore/setUserNull");
@@ -416,7 +422,8 @@ export default {
       if (info) {
         updateUserInfo(info.replace('"', ""), (res) => {
           this.userInfo = res.data.User.userInfo;
-          console.log(res.data.User.userInfo);
+          // console.log(res.data.User.userInfo)
+
         });
       }
     },
