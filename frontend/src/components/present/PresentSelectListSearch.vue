@@ -90,6 +90,16 @@ export default {
   mounted() {
     this.search();
   },
+   watch: {
+    ...mapState(presentStore, ["presentList"]),
+    presentList: {
+      deep: true,
+      handler(newVal) {
+        this.cardList=newVal.Present;
+        
+      }
+    }
+  },  
   computed: {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
