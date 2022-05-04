@@ -275,10 +275,12 @@ export default {
           // console.log(res.data.User);
           this.userName = res.data.User.userName;
           if (res.data.User.userImg) {
-            this.userImg = API_BASE_URL + res.data.User.userImg;
+            this.userImg = API_BASE_URL + res.data.User.userImg
           }
           if (res.data.User.userInfo) {
-            this.userInfo = res.data.User.userInfo;
+            this.userInfo = res.data.User.userInfo
+          }else{
+            this.userInfo="선물주는 사람\n차칸 사람"
           }
           if (res.data.User.userTitle) {
             this.userTitle = res.data.User.userTitle;
