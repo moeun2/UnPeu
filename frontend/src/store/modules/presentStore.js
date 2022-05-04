@@ -3,10 +3,10 @@ import { register, remove, search, sendMessage, update } from "@/api/present";
 export const presentStore={
     namespaced : true,
     state:{
-        presentList:[],
+        presentList:[]
     },
     getters:{
-
+        
     },
     mutations:{
         SET_PRESENT_LIST(state, presentList){
@@ -14,10 +14,11 @@ export const presentStore={
             console.log(state.presentList);
         },
         REMOVE_PRESENT_FROM_ARRAY(state, presentId){
-            console.log(state.presentList.Present)
             const i=state.presentList.Present.map(item => item.presentId).indexOf(presentId);
-            console.log(i,presentId);
             state.presentList.Present.splice(i, 1);
+        },
+        INSERT_PRESENT(state, present){
+            state.presentList.Present.push(present);
         }
     },
     actions:{
@@ -25,10 +26,12 @@ export const presentStore={
              register(
                 fd,
                 (response) => {
-                    if(response.data.message === "success") {
-                        console.log("성공");
-                        commit;
-                    }
+                    console.log(response.data);
+                    commit("INSERT_PRESENT", response.data.Present);
+                    return response.data.Present;
+                },
+                ()=>{
+                    return false;
                 }
             )
         },
@@ -65,6 +68,10 @@ export const presentStore={
                 (response)=>{
                     console.log(response.data);
                     commit("REMOVE_PRESENT_FROM_ARRAY",presentId);
+                    return true;
+                },
+                ()=>{
+                    return false;
                 }
             )
         }

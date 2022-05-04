@@ -45,7 +45,7 @@ export default {
     },
     submitEmail() {
       if (this.content != null) {
-        alert(this.content);
+        //alert(this.content);
         const vm = this;
         sendMail(
           this.content,

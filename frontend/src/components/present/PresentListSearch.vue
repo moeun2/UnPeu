@@ -54,9 +54,9 @@
                     {{ cardList[+index+i].presentName }}
                   </v-card-title>
                   <v-card-text>
-                    가격 : {{cardList[+index+i].presentPrice}}
+                    <p>가격 : {{cardList[+index+i].presentPrice}}</p>
+                    <p>현재 받은 금액 : {{cardList[+index+i].receivedPrice}}</p>
                   </v-card-text>
-                  
                 </v-card>
                 </v-hover>
               </v-col>
@@ -97,6 +97,21 @@ export default {
   mounted(){
     this.search();
   },
+  watch:{
+    ...mapState(presentStore,["presentList"]),
+    presentList: {
+    deep: true,
+    handler(newVal) {
+      if(this.cardList.length === newVal.Present.length){
+        return;
+      }else if(this.cardList.length < newVal.Present.length){
+        this.cardList.push(newVal.Present[this.cardList.length]);
+      }else{
+        return;
+      } 
+    }
+  }
+  },
   computed:{
     ...mapState(presentStore,["presentList"]),
     columns(){
@@ -119,7 +134,32 @@ export default {
       this.dialog=false;
     },
     remove(index){
-      this.deletePresent(this.cardList[index].presentId);
+      this.$swal.fire({
+        title: '정말 삭제하시나요?',
+        text: "다시 한번 생각해주세요!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '네, 삭제합니다!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let rmv=this.deletePresent(this.cardList[index].presentId);
+          if(rmv){
+            this.$swal.fire(
+              '삭제 성공!',
+              '파일이 삭제되었습니다.',
+              'success'
+            )
+            this.$delete(this.cardList,index);
+          }else{
+            this.$swal.fire(
+              '삭제 실패!',
+              '파일이 정상적으로 삭제되지 않았습니다.',
+              'error'
+            )
+          }
+        }
+      })
+      //
     }
   }
 }

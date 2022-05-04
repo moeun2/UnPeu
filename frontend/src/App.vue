@@ -1,19 +1,18 @@
 <template>
   <v-app>
     <div class="view">
-      <!-- 같은 경로(다른 param)로 라우터 이동시 화면이 변경안되는 것 때문에 추가 -->
-      <router-view :key="$route.fullPath" />
+      <router-view />
     </div>
     <email-fab></email-fab>
   </v-app>
 </template>
 
 <script>
-import EmailFab from './components/EmailFab.vue';
+import EmailFab from "./components/EmailFab.vue";
 
 export default {
   components: { EmailFab },
-  name: 'App'
+  name: "App",
 };
 </script>
 

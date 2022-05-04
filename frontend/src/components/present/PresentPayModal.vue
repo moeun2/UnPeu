@@ -128,6 +128,8 @@
 </template>
 
 <script>
+import * as Alert from "@/api/alert"; //api 폴더 안에 넣어놓는 것이 맞는지는 모르겠음. But, 넣어놓을 곳이 딱히 없어서 넣어놓음
+
 export default {
   data() {
     return {
@@ -151,6 +153,12 @@ export default {
         const inputNumber = document.getElementById("inputNumber").value;
         console.log("직접입력 값 : " + inputNumber + "");
         this.selectedPrice = inputNumber;
+        if(this.selectedPrice>0){
+          this.$emit("selectedPrice", this.selectedPrice);
+        }else{
+          Alert.selctAmountFailure(this);
+        }
+        
       } else {
         console.log("selectedPrice : ", this.selectedPrice);
         this.$emit("selectedPrice", this.selectedPrice);

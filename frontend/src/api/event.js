@@ -1,30 +1,35 @@
-import { tokenInstance } from "./index.js";
+import { createInstance } from "./index.js";
 
-const tokenApi = tokenInstance();
+const api = createInstance();
 
-function getMessage(success, fail){
-    console.log(localStorage.getItem("accessToken")) // 여기서 null 뜨면 1. login 하고 들어갔는지 확인 / 2. application-localstorage에서 accessToken있는지 확인
-    tokenApi.get(`/message`)
+function getMessage(userId, success, fail) {
+  api.get(`/message/list/${userId}`).then(success).catch(fail);
+}
+
+function saveMessage(messages, success, fail) {
+  api
+    .post(`/message/messageToDiary`, messages, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        "Content-Type": "application/json",
+      },
+    })
     .then(success)
-    .catch(fail)
+    .catch(fail);
+  console.log("실행됨");
 }
 
-function saveMessage(messages, success, fail){
-    tokenApi.post(`/message/messageToDiary`,messages)
+function resetMessage(success, fail) {
+  api
+    .delete(`/message`, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        "Content-Type": "application/json",
+      },
+    })
     .then(success)
-    .catch(fail)
-    console.log("실행됨")
+    .catch(fail);
+  console.log("실행됨");
 }
 
-function resetMessage(success, fail){
-    tokenApi.delete(`/message`)
-    .then(success)
-    .catch(fail)
-    console.log("실행됨")
-}
-
-export{
-    getMessage,
-    saveMessage,
-    resetMessage
-}
+export { getMessage, saveMessage, resetMessage };
