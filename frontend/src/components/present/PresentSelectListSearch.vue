@@ -1,53 +1,63 @@
 <template>
   <div class="present-carousel">
     <!-- <v-button >선물등록이 필요합니다</v-button> -->
-    <div v-if="showCarousel == false && this.curUser.permission==0">
-      <v-btn tile color="info"
-        @click="goToPresentManage"
-      >
-        <v-icon left> mdi-exclamation </v-icon>
-        선물이 등록되지 않았어요!<br />
-        선물 등록하러 가시겠어요? :)
-      </v-btn>
-      <br />
-      <br />
-    </div>
-    <v-carousel hide-delimiters style="height: 350px" v-if="showCarousel">
-      <template v-for="(card, index) in cardList">
-        <v-carousel-item
-          v-if="(index + 1) % columns === 1 || columns === 1"
-          :key="index"
+    <template v-if="cardList.length===0">
+      <div v-if="this.curUser.permission==0">
+        <v-btn tile color="info"
+          @click="goToPresentManage"
         >
-          <v-row class="flex-nowrap" id="rootCards">
-            <template v-for="(n, i) in columns">
-              <template v-if="+index + i - 1 <= cardList.length">
-                <v-col :key="i">
-                  <v-card
-                    v-if="+index + i < cardList.length"
-                    class="card"
-                    @click="openPayModal(cardList[+index + i], +index + i)"
-                  >
-                    <v-img
-                      :src="API_BASE_URL + cardList[+index + i].presentImg"
-                      aspect-ratio="0.8"
-                    ></v-img>
-                    <v-card-title primary-title>
-                      {{ cardList[+index + i].presentName }}
-                    </v-card-title>
-                    <v-card-text>
-                      <p>가격 : {{ cardList[+index + i].presentPrice }}</p>
-                      <p>
-                        모인 금액 : {{ cardList[+index + i].receivedPrice }}
-                      </p>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
+          <v-icon left> mdi-exclamation </v-icon>
+          선물이 등록되지 않았어요!<br />
+          선물 등록하러 가시겠어요? :)
+        </v-btn>
+        <br />
+        <br />
+      </div>
+      <div v-else>
+        <v-img
+          src="@/assets/img/none_present.png"
+          >
+          </v-img>
+      </div>
+    </template>
+    <template v-else>
+      <v-carousel hide-delimiters style="height: 400px">
+        <template v-for="(card, index) in cardList">
+          <v-carousel-item
+            v-if="(index + 1) % columns === 1 || columns === 1"
+            :key="index"
+          >
+            <v-row class="flex-nowrap" id="rootCards">
+              <template v-for="(n, i) in columns">
+                <template v-if="+index + i - 1 <= cardList.length">
+                  <v-col :key="i">
+                    <v-card
+                      v-if="+index + i < cardList.length"
+                      class="card"
+                      @click="openPayModal(cardList[+index + i], +index + i)"
+                    >
+                      <v-img
+                        :src="API_BASE_URL + cardList[+index + i].presentImg"
+                        aspect-ratio="0.8"
+                      ></v-img>
+                      <v-card-title primary-title>
+                        {{ cardList[+index + i].presentName }}
+                      </v-card-title>
+                      <v-card-text>
+                        <p>가격 : {{ cardList[+index + i].presentPrice }}</p>
+                        <p>
+                          모인 금액 : {{ cardList[+index + i].receivedPrice }}
+                        </p>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </template>
               </template>
-            </template>
-          </v-row>
-        </v-carousel-item>
-      </template>
-    </v-carousel>
+            </v-row>
+          </v-carousel-item>
+        </template>
+      </v-carousel>
+    </template>
     <PresentPayModal
       v-if="showModal"
       @close="closePayModal"
