@@ -89,7 +89,7 @@ export default {
 
     /* 편집하기 */
     editDiary() {
-      console.log("edit");
+      // console.log("edit");
       this.$router.push({
         name: "BoardEdit",
         params: { boardId: this.boardInfo.boardId },
@@ -98,16 +98,23 @@ export default {
 
     /* 삭제하기 */
     deleteDiary() {
-      console.log("delete");
-      if (confirm("정말로 삭제하시겠습니까?")) {
-        this.AC_DELETE_BOARD(this.boardInfo.boardId);
-        this.$router.push({ name: "BoardList" });
-      }
+      // console.log("delete");
+      this.$swal.fire({
+          icon: 'question',
+          title: 'Delete',
+          html:'정말로 삭제하시겠습니까? ' ,
+          showCancelButton: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.AC_DELETE_BOARD(this.boardInfo.boardId);
+            this.$router.push({ name: "BoardList" });
+          } 
+        })
     },
 
     /* 뒤로가기 */
     backMovePage() {
-      console.log("back");
+      // console.log("back");
       this.$router.go(-1);
     },
   },

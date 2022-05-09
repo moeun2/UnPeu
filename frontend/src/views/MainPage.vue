@@ -6,11 +6,11 @@
         <div class="holder hd2"></div>
         <div class="holder hd3"></div>
         <div class="holder hd4"></div>
+
         <section class="profile-section">
           <div class="profile-dot">
             <div class="profile-paper">
               <div class="profile-wrap">
-                
                 <div class="visitor-counter">
                   <p class="text-today" v-text="todayVisit">103</p>
                   <p class="text-total" v-text="totalVisit">13042</p>
@@ -35,6 +35,7 @@
                     alt="profile 이미지가 없습니다"
                     onerror="this.src='https://i.imgur.com/nupfePY.png'"
                   />
+
                   <div class="desc-wrap">
                     <v-icon
                       small
@@ -46,26 +47,31 @@
                     <div class="text-desc" v-html="userInfo"></div>
                   </div>
                   <div class="info-wrap">
-                    <div class="speech-bubble">친구에게<br/>공유해보세요~!</div>
+                    <div class="speech-bubble">
+                      친구에게<br />공유해보세요~!
+                    </div>
 
                     <v-icon small @click="copyLink">mdi-link</v-icon>
                     <a class="info-name" href="#"> {{ this.userName }}</a>
                     <div class="info-birth">{{ this.userBirth }}</div>
                     <br />
                     <p class="text-email">{{ this.userEmail }}</p>
-                    <div style="display: flex; margin-top: 10px">
+                    <div style="display: flex; margin-top: 10px;">
                       <router-link
                         :to="{ name: 'PresentManage' }"
                         v-if="isMyPage"
                       >
                         <button class="item">
-                          <img src="https://i.imgur.com/nupfePY.png" />
+                          <v-icon>mdi-gift-open</v-icon>
+                          <!-- <img src="https://i.imgur.com/nupfePY.png" /> -->
                           <p class="arrow_box">받고 싶은 선물 등록!</p>
                         </button>
                       </router-link>
+
                       <router-link :to="{ name: 'Login' }" v-if="!isLogin">
                         <button class="item">
-                          <img src="https://i.imgur.com/Fqfvown.png" />
+                          <v-icon class="v-icon">mdi-login</v-icon>
+                          <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                           <p class="arrow_box">로그인</p>
                         </button>
                       </router-link>
@@ -76,14 +82,15 @@
                         }"
                         v-if="!isMyPage && isLogin"
                       >
-                        <!-- to="{name: 'eventRoom',params: {userid:  $store.state.userStore.user.id}}" -->
                         <button class="item">
-                          <img src="https://i.imgur.com/Fqfvown.png" />
+                          <v-icon >mdi-home</v-icon>
+                          <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                           <p class="arrow_box">마이페이지</p>
                         </button>
                       </router-link>
-                      <button class="item" @click="logout" v-if="isLogin">
-                        <img src="https://i.imgur.com/Fqfvown.png" />
+                      <button class="item" @click="logout" v-if="isLogin" style="margin-left: 5px;">
+                        <v-icon>mdi-logout</v-icon>
+                        <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                         <p class="arrow_box">로그아웃</p>
                       </button>
                     </div>
@@ -94,6 +101,15 @@
           </div>
         </section>
         <section class="main-section">
+          <div class="speech-bubble-div">
+            <div class="speech-bubble2">
+              <a :href="this.url" style="color: white">
+                더 상세한 사용방법과<br />이벤트를 알고싶다면?<br />(👉Click
+                Here!👈)</a
+              >
+            </div>
+            <!-- <img class="speech-bubble2-img" src="@/assets/main_logo4.gif" /> -->
+          </div>
           <div class="main-dot">
             <div class="main-paper">
               <div class="main-wrap">
@@ -142,7 +158,7 @@
     </div>
     <LinkShareModal
       v-if="showModal"
-      @close="showModal=false"
+      @close="showModal = false"
     ></LinkShareModal>
   </div>
 </template>
@@ -154,17 +170,20 @@ import {
   updateUserImg,
   updateUserTitle,
   updateUserInfo,
-  increaseVisit
+  increaseVisit,
 } from "@/api/user.js";
-import { FRONT_URL, API_BASE_URL } from "@/config/index";
-import LinkShareModal from "@/components/LinkShareModal.vue"
+import { EVENT_URL,FRONT_URL, API_BASE_URL } from "@/config/index";
+import LinkShareModal from "@/components/LinkShareModal.vue";
+import { mapMutations } from 'vuex';
 
+
+const presentStore="presentStore";
 // import store from '@/store';
 export default {
   name: "App",
   data() {
-
     return {
+      url : EVENT_URL,
       activeCheckClass: "menu-item mi-1 menu-checked",
       activeClass: "menu-item mi-3",
       userName: "김싸피",
@@ -175,9 +194,9 @@ export default {
       userEmail: "ssafykim@ssafy.com",
       isLogin: false,
       isMyPage: false,
-      totalVisit:0,
-      todayVisit:0,
-      showModal : false,
+      totalVisit: 0,
+      todayVisit: 0,
+      showModal: false,
       rules: [
         (value) =>
           !value ||
@@ -202,7 +221,7 @@ export default {
       getUserDetailUseToken(
         window.localStorage.getItem("accessToken"),
         (res) => {
-          console.log(res.data.User);
+          // console.log(res.data.User);
           this.$store.commit("userStore/setUser", res.data.User);
           this.isLogin = true;
           if (this.$route.params.userid == res.data.User.id) {
@@ -210,7 +229,7 @@ export default {
           }
         },
         () => {
-          console.log("getUserDetailUseToken fail");
+          // console.log("getUserDetailUseToken fail");
           this.isLogin = false;
           window.localStorage.removeItem("accessToken");
           this.$router.go;
@@ -220,139 +239,171 @@ export default {
     this.setUserData();
 
     //조회수 증가
-    if(window.document.location.href==FRONT_URL+"/eventRoom/"+this.$route.params.userid){
-      increaseVisit(this.$route.params.userid,(res)=>{
-        console.log("increaseVisit 실행")
-        console.log(res)
+    if (
+      window.document.location.href ==
+      FRONT_URL + "/eventRoom/" + this.$route.params.userid
+    ) {
+      increaseVisit(
+        this.$route.params.userid,
+        (res) => {
+          // console.log("increaseVisit 실행")
+          // console.log(res)
 
-        if(res.data.User.todayVisit){
-          this.todayVisit= res.data.User.todayVisit
-        }
-        if(res.data.User.totalVisit){
-          this.totalVisit= res.data.User.totalVisit
-        }
-    },()=>{
-      console.log("increaseVisit fail")
-    });
+          if (res.data.User.todayVisit) {
+            this.todayVisit = res.data.User.todayVisit;
+          }
+          if (res.data.User.totalVisit) {
+            this.totalVisit = res.data.User.totalVisit;
+          }
+        },
+        () => {
+          // console.log("increaseVisit fail")
 
+        }
+      );
     }
-   },
+  },
   components: {
     LinkShareModal,
   },
   methods: {
-    goToMainPage(){
+    ...mapMutations(presentStore,["RESET_PRESENT_LIST"]),
+    goToMainPage() {
       this.$router.push({ name: "eventRoom" });
     },
-    setUserData(){
-      getUserDetail(this.$route.params.userid,
-      (res)=>{
-        console.log(res.data.User);
-        this.userName = res.data.User.userName;
-        if (res.data.User.userImg) {
-          this.userImg = API_BASE_URL + res.data.User.userImg;
+    setUserData() {
+      getUserDetail(
+        this.$route.params.userid,
+        (res) => {
+
+          // console.log(res.data.User);
+          this.userName = res.data.User.userName;
+          if (res.data.User.userImg) {
+            this.userImg = API_BASE_URL + res.data.User.userImg
+          }else{
+            this.userImg=""
+          }
+
+          if (res.data.User.userInfo) {
+            this.userInfo = res.data.User.userInfo
+          }else{
+            this.userInfo="선물주는 사람\n차칸 사람"
+          }
+
+          if (res.data.User.userTitle) {
+            this.userTitle = res.data.User.userTitle;
+          }else{
+            this.userTitle="오늘은 어른이날, 선물사주라주"
+          }
+          if (res.data.User.userEmail) {
+            this.userEmail = res.data.User.userEmail;
+          }
+          if (res.data.User.userBirth) {
+            this.userBirth =
+              res.data.User.userBirth[0] +
+              "." +
+              res.data.User.userBirth[1] +
+              "." +
+              res.data.User.userBirth[2];
+          }
+          if (res.data.User.todayVisit) {
+            this.todayVisit = res.data.User.todayVisit;
+          }
+          if (res.data.User.totalVisit) {
+            this.totalVisit = res.data.User.totalVisit;
+          }
+        },
+        () => {
+          this.$router.push({ name: "NotFound" });
         }
-        if (res.data.User.userInfo) {
-          this.userInfo = res.data.User.userInfo;
-        }
-        if (res.data.User.userTitle) {
-          this.userTitle = res.data.User.userTitle;
-        }
-        if(res.data.User.userEmail){
-          this.userEmail= res.data.User.userEmail
-        }
-        if(res.data.User.userBirth){
-          this.userBirth= res.data.User.userBirth[0]+"."+res.data.User.userBirth[1]+"."+res.data.User.userBirth[2]
-        }
-        if(res.data.User.todayVisit){
-          this.todayVisit= res.data.User.todayVisit
-        }
-        if(res.data.User.totalVisit){
-          this.totalVisit= res.data.User.totalVisit
-        }
-      },
-      ()=>{
-        console.log("getUserDetail fail")
-      })
+      );
     },
 
     changeParams(index) {
-     if(window.localStorage.getItem("accessToken")){
-      //로그인 되어있는 상태 store inlogin true
-      getUserDetailUseToken(window.localStorage.getItem("accessToken"),
-      (res)=>{
-        console.log(res.data.User);
-        this.$store.commit("userStore/setUser",res.data.User)
-        this.isLogin=true;
-        if(index==res.data.User.id){
-          this.isMyPage=true
-        }
-      },
-      ()=>{
-        console.log("getUserDetailUseToken fail")
-        this.isLogin=false;
-        window.localStorage.removeItem("accessToken")
-        this.$store.commit("userStore/setUserNull")
-        this.$router.go
-      } )
-    }
-    this.setUserData();
-   },
+      if (window.localStorage.getItem("accessToken")) {
+        //로그인 되어있는 상태 store inlogin true
+        getUserDetailUseToken(
+          window.localStorage.getItem("accessToken"),
+          (res) => {
+            // console.log(res.data.User);
 
-      checkHome() {
-          if(this.activeClass === 'menu-item mi-1 menu-checked') {
-              this.activeClass = 'menu-item mi-3';
-          }
-          if(this.activeCheckClass === 'menu-item mi-3') {
-              this.activeCheckClass = 'menu-item mi-1 menu-checked';
-          }
-      },
+            this.$store.commit("userStore/setUser", res.data.User);
+            this.isLogin = true;
+            if (index == res.data.User.id) {
+              this.isMyPage = true;
+            }
+          },
+          () => {
+            // console.log("getUserDetailUseToken fail")
 
-      checkDiary() {
-          if(this.activeClass === 'menu-item mi-3') {
-              this.activeClass = 'menu-item mi-1 menu-checked';
+            this.isLogin = false;
+            window.localStorage.removeItem("accessToken");
+            this.$store.commit("userStore/setUserNull");
+            this.$router.go;
           }
-          if(this.activeCheckClass === 'menu-item mi-1 menu-checked') {
-              this.activeCheckClass = 'menu-item mi-3';
-          }
-      },
+        );
+      }
+      this.setUserData();
+    },
+
+    checkHome() {
+      if (this.activeClass === "menu-item mi-1 menu-checked") {
+        this.activeClass = "menu-item mi-3";
+      }
+      if (this.activeCheckClass === "menu-item mi-3") {
+        this.activeCheckClass = "menu-item mi-1 menu-checked";
+      }
+    },
+
+    checkDiary() {
+      if (this.activeClass === "menu-item mi-3") {
+        this.activeClass = "menu-item mi-1 menu-checked";
+      }
+      if (this.activeCheckClass === "menu-item mi-1 menu-checked") {
+        this.activeCheckClass = "menu-item mi-3";
+      }
+    },
 
       logout(){
         //storage확인해서 도메인 확인 //모달창 바꾸기
         this.$swal.fire({
+          icon: 'question',
           title: 'Logout',
           html:'앙뿌에서 로그아웃 하시겠습니까? ' ,
           showCancelButton: true,
-        }).then((result) => {
+        })
+        .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            window.localStorage.removeItem("accessToken")
-
-          if(this.$store.state.userStore.user.socialDomain=="kakao"){
-            this.$store.commit("userStore/setUSerNull")
-            window.location.replace(
-              "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri="+FRONT_URL
-            );
+            window.localStorage.removeItem("accessToken");
+            this.RESET_PRESENT_LIST();
+            if (this.$store.state.userStore.user.socialDomain == "kakao") {
+              this.$store.commit("userStore/setUSerNull");
+              window.location.replace(
+                "https://kauth.kakao.com/oauth/logout?client_id=c0ad1801cdf80282754cf18e79556743&logout_redirect_uri=" +
+                  FRONT_URL
+              );
+            }
+            this.$store.commit("userStore/setUSerNull");
+            this.$router.push({ name: "Landing" });
           }
-          this.$store.commit("userStore/setUSerNull")
-          this.$router.push({name: "Landing"})
-          } 
-        })
-      },
+        });
+    },
 
-      async updateUserTitle(){
-        const { value: title } = await this.$swal.fire({
-          title: '타이틀을 입력해주세요!',
-          input: 'text',
-          inputLabel: '오른쪽 상단의 타이틀입니다. 귀여운 어필을 해보는건 어떨까요?',
-          inputPlaceholder: '25자 이하로 작성해주세요.',
-          inputAttributes: {
-            maxlength: 25,
-          },
-          inputValidator:(value) => {
-              if (!value) {
-                return '타이틀을 한글자 이상 입력해주세요!'
-              }
+    async updateUserTitle() {
+      const { value: title } = await this.$swal.fire({
+        title: "타이틀을 입력해주세요!",
+        input: "text",
+        inputLabel:
+          "오른쪽 상단의 타이틀입니다. 귀여운 어필을 해보는건 어떨까요?",
+        inputPlaceholder: "25자 이하로 작성해주세요.",
+        inputAttributes: {
+          maxlength: 25,
+        },
+        inputValidator: (value) => {
+          if (!value) {
+            return "타이틀을 한글자 이상 입력해주세요!";
+          }
         },
       });
 
@@ -363,31 +414,35 @@ export default {
       }
     },
 
-    async updateUserInfo(){
-        const { value: info } = await this.$swal.fire({
-          title: '소개글을 입력해주세요!',
-          input: 'textarea',
-          inputLabel: '프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)' ,
-          inputPlaceholder: '50자 이하, 4줄 이하로 작성해주세요.',
-          inputAttributes: {
-            maxlength: 50,
-          },
-          inputValidator:(value) => {
-              if (!value) {
-                return '소개글을 한글자 이상 입력해주세요!'
-              }else if(value.match(/[\n]/g) == null ? false : value.match(/[\n]/g).length+1>4){
-                return '4줄 이하로 입력해주세요!'
-              }
-            }
-        })
-        if (info) {
-          updateUserInfo(info.replace("\"", ""),
-          (res)=>{
-            this.userInfo=res.data.User.userInfo
-            console.log(res.data.User.userInfo)
-          })
-        }
-      },
+    async updateUserInfo() {
+      const { value: info } = await this.$swal.fire({
+        title: "소개글을 입력해주세요!",
+        input: "textarea",
+        inputLabel: "프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)",
+        inputPlaceholder: "50자 이하, 4줄 이하로 작성해주세요.",
+        inputAttributes: {
+          maxlength: 50,
+        },
+        inputValidator: (value) => {
+          if (!value) {
+            return "소개글을 한글자 이상 입력해주세요!";
+          } else if (
+            value.match(/[\n]/g) == null
+              ? false
+              : value.match(/[\n]/g).length + 1 > 4
+          ) {
+            return "4줄 이하로 입력해주세요!";
+          }
+        },
+      });
+      if (info) {
+        updateUserInfo(info.replace('"', ""), (res) => {
+          this.userInfo = res.data.User.userInfo;
+          // console.log(res.data.User.userInfo)
+
+        });
+      }
+    },
 
     async updateUserImg() {
       let fd = new FormData();
@@ -397,9 +452,9 @@ export default {
         this.userImg = API_BASE_URL + res.data.User.userImg;
       });
     },
-    copyLink(){
-      this.showModal=true;
-    }
+    copyLink() {
+      this.showModal = true;
+    },
   },
 };
 </script>
@@ -425,7 +480,6 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: column;
-
 }
 
 .v-application--wrap {
@@ -439,7 +493,7 @@ export default {
 .arrow_box {
   display: none;
   position: absolute;
-  width: 100px;
+  width: 120px;
   padding: 8px;
   left: 0;
   -webkit-border-radius: 8px;
@@ -451,7 +505,7 @@ export default {
   z-index: 1;
 }
 
-img:hover + p.arrow_box {
+.v-icon:hover + p.arrow_box {
   display: block;
 }
 .info-birth {
@@ -476,27 +530,62 @@ img:hover + p.arrow_box {
 }
 
 .speech-bubble {
-	position: absolute;
-  bottom:105px;
+  position: absolute;
+  bottom: 105px;
   left: -30px;
-	background: #85b9eaef;
+  background: #85b9eaef;
   color: white;
-	border-radius: .4em;
+  border-radius: 0.4em;
   padding: 0.3rem;
 }
 
 .speech-bubble:after {
-	content: '';
-	position: absolute;
-	right: 0;
-	top: 50%;
-	width: 0;
-	height: 0;
-	border: 10px solid transparent;
-	border-left-color: #85b9eaef;
-	border-right: 0;
-	border-top: 0;
-	margin-top: -5px;
-	margin-right: -10px;
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-left-color: #85b9eaef;
+  border-right: 0;
+  border-top: 0;
+  margin-top: -5px;
+  margin-right: -10px;
+}
+
+.speech-bubble2 {
+  position: absolute;
+  background: #85b9eaef;
+  border-radius: 0.4em;
+  padding: 0.3rem;
+  color: white;
+  top: -20%;
+  left: 120%;
+  width: 150px;
+  text-align: center;
+}
+
+.speech-bubble-div {
+  top: -3%;
+  left: 105%;
+  position: absolute;
+}
+.speech-bubble2:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: #85b9eaef;
+  border-left: 0;
+  border-bottom: 0;
+  margin-top: -4px;
+  margin-left: -8px;
+}
+.speech-bubble2-img {
+  width: 100px;
 }
 </style>

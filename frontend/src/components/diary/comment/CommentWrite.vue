@@ -143,7 +143,7 @@ export default {
 
     /* 댓글 등록하기 */
     save() {
-      console.log("save comment");
+      // console.log("save comment");
       this.ACT_REGISTER_COMMENT({
         boardId: this.$route.params.boardId,
         commentInfo: this.form,
@@ -153,7 +153,7 @@ export default {
 
     /* 댓글 수정하기 */
     edit() {
-      console.log("edit comment");
+      // console.log("edit comment");
       this.ACT_EDIT_COMMENT({
         commentId: this.nonUser.commentId,
         commentInfo: this.form,

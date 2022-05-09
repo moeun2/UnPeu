@@ -36,8 +36,6 @@ public class MailController {
 
 	@Value("${spring.mail.username}")
 	private String TO_EMAIL;
-	private String FROM_EMAIL = "mo_ah@naver.com";
-
 	private final JavaMailSender mailSender;
 
 	@ApiOperation(value = "메일 보내기 Controller")
@@ -54,7 +52,7 @@ public class MailController {
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
 			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
 			mimeMessageHelper.setFrom(TO_EMAIL);
-			mimeMessageHelper.setTo(FROM_EMAIL);
+			mimeMessageHelper.setTo(TO_EMAIL);
 			mimeMessageHelper.setSubject(title);
 			mimeMessageHelper.setText(text);
 			mailSender.send(mimeMessage);

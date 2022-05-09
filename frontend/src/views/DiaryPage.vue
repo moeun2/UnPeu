@@ -1,15 +1,14 @@
 <template>
-    <v-container fluid style="background:#DDEFA5">
-        <router-view></router-view>
-    </v-container>
+  <v-container fluid style="background: #ddefa5">
+    <router-view></router-view>
+  </v-container>
 </template>
 
 <script>
 export default {
-    name: 'DiaryPage',
-}
+  name: "DiaryPage",
+};
 </script>
 
 <style lang="">
-    
 </style>

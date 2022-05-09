@@ -106,16 +106,27 @@ export default {
     this.AC_CATEGORY_LIST(this.form.userId);
 
     if (this.type === "edit") {
-      console.log("edit created");
-      console.log(this.value);
+      // console.log("edit created");
+      // console.log(this.value);
       this.form = this.value;
     }
   },
 
   computed: {
     ...mapGetters(diaryStore, {
-      categories: "GET_CATEGORY_LIST",
+      categoryList: "GET_CATEGORY_LIST",
     }),
+
+    categories: function() {
+      // 빈 배열 체크
+      if (Array.isArray(this.categoryList) && this.categoryList.length === 0) {
+        return ["Default"];
+      } else if (this.categoryList.includes("Default")) {
+        return this.categoryList;
+      } else {
+        return ["Default"].concat(this.categoryList);
+      }
+    },
 
     /* 작성 폼 유효성 검사 */
     formIsValid() {
@@ -168,13 +179,13 @@ export default {
 
     /* 저장 후 상세 페이지 이동 */
     save() {
-      console.log("save");
+      // console.log("save");
       this.AC_REGISTER_BOARD(this.form);
     },
 
     /* 편집 후 상세 페이지 이동 */
     edit() {
-      console.log("edit");
+      // console.log("edit");
       this.AC_EDIT_BOARD({
         boardId: this.$route.params.boardId,
         boardInfo: this.form,
@@ -183,7 +194,7 @@ export default {
 
     /* 뒤로가기 */
     cancle() {
-      console.log("cancle");
+      // console.log("cancle");
       this.$router.go(-1); // 한 단계 뒤로
     },
   },

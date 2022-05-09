@@ -1,5 +1,7 @@
 package com.unpeu.service.impl;
 
+import static com.unpeu.config.exception.ErrorCode.MEMBER_NOT_FOUND;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -10,12 +12,14 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.unpeu.config.exception.CustomException;
 import com.unpeu.domain.entity.Present;
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.repository.IUserRepository;
@@ -66,7 +70,8 @@ public class UserServiceImpl implements IUserService{
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=c0ad1801cdf80282754cf18e79556743");//kakao restapi키
-            sb.append("&redirect_uri=http://localhost:8081/login/kakao");//redirect 경로
+            sb.append("&redirect_uri=http://k6b201.p.ssafy.io/login/kakao");//redirect 경로, server
+            // sb.append("&redirect_uri=http://localhost:8081/login/kakao");//redirect 경로, local
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -121,7 +126,8 @@ public class UserServiceImpl implements IUserService{
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=530350751299-fbiks9onutpnvmgebr0fc5uvllj5fidn.apps.googleusercontent.com");//kakao restapi키
             sb.append("&client_secret=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");
-            sb.append("&redirect_uri=http://localhost:8081/login/google");//redirect 경로
+            sb.append("&redirect_uri=http://k6b201.p.ssafy.io/login/google");//redirect 경로, server
+						// sb.append("&redirect_uri=http://localhost:8081/login/google");//redirect 경로, local
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -311,8 +317,11 @@ public class UserServiceImpl implements IUserService{
 	 */
 	@Override
 	public User getUserById(Long userId) {
-		User user= userRepository.findById(userId).get();
-		return user;
+		Optional<User> user= userRepository.findById(userId);
+		if (user.isEmpty()) {
+			throw new CustomException(MEMBER_NOT_FOUND);
+		}
+		return user.get();
 	}
 
 	/**

@@ -77,8 +77,18 @@ export default {
     // 이름 지정해서 getters 가져오기
     ...mapGetters(diaryStore, {
       boardList: "GET_BOARD_LIST",
-      categories: "GET_CATEGORY_LIST",
+      categoryList: "GET_CATEGORY_LIST",
     }),
+    categories: function() {
+      // 빈 배열 체크
+      if (Array.isArray(this.categoryList) && this.categoryList.length === 0) {
+        return ["Default"];
+      } else if (this.categoryList.includes("Default")) {
+        return this.categoryList;
+      } else {
+        return ["Default"].concat(this.categoryList);
+      }
+    }
   },
 
   watch: {
@@ -98,7 +108,7 @@ export default {
 
     /* 상세 페이지 이동*/
     moveDetailPage(data) {
-      console.log(data.boardId);
+      // // // console.log(data.boardId);
       this.$router.push({
         name: "BoardDetail",
         params: { boardId: data.boardId },

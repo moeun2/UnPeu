@@ -31,6 +31,7 @@ import com.unpeu.config.media.MediaService;
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.request.UserPatchEmailBirthReq;
 import com.unpeu.domain.request.UserPatchUserInfoReq;
+import com.unpeu.domain.response.UserGetRes;
 import com.unpeu.service.iface.IUserService;
 
 import io.swagger.annotations.Api;
@@ -109,7 +110,7 @@ public class UserController {
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
 
-		resultMap.put("User", user);
+		resultMap.put("User", new UserGetRes(user));
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 
@@ -118,9 +119,15 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> getUserInfoByUserId(@PathVariable("userId") @NotNull Long userId){
 		logger.info("getUserInfoByUserId - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
-        User user =userService.getUserById(userId);
+		User user=null;
+		try {
+			user =userService.getUserById(userId);
+		}catch (Exception e) {
+			logger.info("getUserInfoByUserId - 없는 유저입니다. ");
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+		}
         
-		resultMap.put("User",user);
+		resultMap.put("User",new UserGetRes(user));
         return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
     }
 	
@@ -133,10 +140,10 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
-
+		
 		User updateUser = userService.updateUserTitle(user.getId(), userTitle);
 
-		resultMap.put("User", updateUser);
+		resultMap.put("User", new UserGetRes(updateUser));
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 
@@ -150,7 +157,7 @@ public class UserController {
 
 		User updateUser = userService.updateUserInfo(user.getId(), userPatchReq.getUserInfo());
 
-		resultMap.put("User", updateUser);
+		resultMap.put("User",  new UserGetRes(updateUser));
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 	
@@ -163,8 +170,8 @@ public class UserController {
 		User user = userDetails.getUser();
 
 		User updateUser = userService.updateUserEmailBirth(user.getId(), userPatchEmailBirthReq);
-
-		resultMap.put("User", updateUser);
+		
+		resultMap.put("User", new UserGetRes(updateUser));
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 
@@ -182,7 +189,7 @@ public class UserController {
 			String url = mediaService.save(userImg);
 			user = userService.updateUserImg(user.getId(), url);
 		}
-		resultMap.put("User", user);
+		resultMap.put("User", new UserGetRes(user));
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 	
@@ -192,7 +199,7 @@ public class UserController {
 		logger.info("updateVisit - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
 		User user=userService.increseVisit(userId);
-		resultMap.put("User", user);
+		resultMap.put("User",  new UserGetRes(user));
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 

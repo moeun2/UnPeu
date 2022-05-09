@@ -34,6 +34,7 @@ const routes = [
         name: "eventRoom",
         component: eventRoom,
         beforeEnter: getUserInfo,
+        
       },
       {
         path: "/diary/:userid",
@@ -64,19 +65,20 @@ const routes = [
         ],
       },
       {
-        path: "/present/:userid",
+        path: "/present",
         name: "Present",
         component: PresentPage,
-        redirect: "/present/:userid/manage",
         children: [
           {
-            path: "manage",
+            path: ":userid/manage",
             name: "PresentManage",
             component: PresentManage,
+            beforeEnter: getUserPresent,
           },
           {
-            path: "payment",
+            path: ":userid/payment",
             name: "PresentPayment",
+            beforeEnter: getUserPresent,
             component: PresentPayment,
           },
         ],
@@ -117,33 +119,39 @@ const router = new VueRouter({
   routes,
 });
 
+function getUserPresent(to, from, next){
+  let userId = to.params.userid;
+  Store.dispatch("presentStore/searchList",userId);
+  console.log(userId)
+  next();
+}
+
 function getUserInfo(to, from, next) {
   let userId = to.params.userid;
-  console.log("Router-indx.js-getUserInfo-현재 페이지의 userId:", userId);
+  // console.log("Router-indx.js-getUserInfo-현재 페이지의 userId:", userId);
   Store.commit("userStore/setCurUserId", userId);
-  const getCurUser = Store.getters["userStore/getCurUser"];
-  console.log(getCurUser);
+  // const getCurUser = Store.getters["userStore/getCurUser"];
+  // console.log(getCurUser);
 
   let accessToken = localStorage.getItem("accessToken");
   if (accessToken == null) {
-    console.log("Permission : Guest"); //2
+    // console.log("Permission : Guest"); //2
     Store.commit("userStore/setCurUserPermission", 2);
-    
   } else {
     getUserDetailUseToken(accessToken, (res) => {
-      console.log("router-index.js-getUserInfo-getUserDetailUseToken 호출");
-      console.log(res.data.User.id);
+      // console.log("router-index.js-getUserInfo-getUserDetailUseToken 호출");
+      // console.log(res.data.User.id);
       let compareId = res.data.User.id;
       if (compareId != userId) {
-        console.log("Permission : Guest(Logined User)"); //1
+        // console.log("Permission : Guest(Logined User)"); //1
         Store.commit("userStore/setCurUserPermission", 1);
       } else {
-        console.log("Permission : User"); //0
+        // console.log("Permission : User"); //0
         Store.commit("userStore/setCurUserPermission", 0);
       }
     });
   }
-
+  
   next();
 }
 
