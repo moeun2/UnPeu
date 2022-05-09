@@ -22,22 +22,14 @@
             required
           ></v-text-field>
 
-          <!-- <v-textarea
-            v-model="form.content"
-            :rules="rules.content"
-            label="Content"
-            rows="6"
-            auto-grow
-            required
-          >
-          </v-textarea> -->
           <vue-editor
             id="editor"
             useCustomImageHandler
+            :editorOptions="editorSettings"
             @image-added="handleImageAdded"
-            ref="myQuillEditor"
             v-model="form.content"
             class="vue_edeitor_height"
+            ref="myQuillEditor"
           >
           </vue-editor>
         </v-form>
@@ -63,7 +55,11 @@
 import { mapGetters, mapActions } from "vuex";
 import { addBoardFileImage } from "@/api/diary.js";
 import { API_BASE_URL } from "@/config/index";
-import { VueEditor } from "vue2-editor";
+import { VueEditor, Quill } from "vue2-editor";
+
+window.Quill = Quill;
+const ImageResize = require("quill-image-resize-module").default;
+Quill.register("modules/imageResize", ImageResize);
 
 const diaryStore = "diaryStore";
 
@@ -83,7 +79,12 @@ export default {
         category: [ (value) => (value && value.length <= 40) || "반드시 1자 이상, 40자 미만 작성해야 합니다."],
         title: [ (value) => (value && value.length <= 30) || "반드시 1자 이상, 30자 미만 작성해야 합니다."],
       },
-      
+
+      editorSettings: {
+        modules: {
+          imageResize: {},
+        },
+      },
     };
   },
 
@@ -117,7 +118,7 @@ export default {
       categoryList: "GET_CATEGORY_LIST",
     }),
 
-    categories: function() {
+    categories: function () {
       // 빈 배열 체크
       if (Array.isArray(this.categoryList) && this.categoryList.length === 0) {
         return ["Default"];
@@ -203,9 +204,4 @@ export default {
 
 <style scoped>
 @import "~vue2-editor/dist/vue2-editor.css";
-
-/* Import the Quill styles you want */
-@import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.bubble.css';
-@import '~quill/dist/quill.snow.css';
 </style>

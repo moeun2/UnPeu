@@ -15,8 +15,8 @@
           readonly
         ></v-text-field>
 
-        <div class= "ql-editor">
-          <p v-html="boardInfo.content"></p>
+        <div class="output ql-snow">
+          <div class= "ql-editor" v-html="boardInfo.content"></div>
         </div>
       </v-card-text>
 
@@ -123,9 +123,4 @@ export default {
 
 <style scoped>
 @import "~vue2-editor/dist/vue2-editor.css";
-
-/* Import the Quill styles you want */
-@import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.bubble.css';
-@import '~quill/dist/quill.snow.css';
 </style>
