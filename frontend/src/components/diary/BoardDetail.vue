@@ -1,21 +1,19 @@
 <template>
   <v-container fluid>
     <v-card outlined>
-      <v-card-title> View </v-card-title>
-
       <v-card-subtitle>
         <span>{{ boardInfo.category }}</span>
         <span class="float-right">{{ boardInfo.createdAt }}</span>
       </v-card-subtitle>
 
-      <v-card-text>
-        <v-text-field
-          v-model="boardInfo.title"
-          label="Title"
-          readonly
-        ></v-text-field>
+      <v-card-title class="pt-0 pb-0 text-h4 text--primary">
+        {{ boardInfo.title }}
+      </v-card-title>
 
-        <div class="output ql-snow">
+      <v-divider class="mx-6"></v-divider>
+      <v-card-text>
+
+        <div class="ql-container ql-snow yellow lighten-5">
           <div class= "ql-editor" v-html="boardInfo.content"></div>
         </div>
       </v-card-text>
@@ -99,17 +97,19 @@ export default {
     /* 삭제하기 */
     deleteDiary() {
       // console.log("delete");
-      this.$swal.fire({
-          icon: 'question',
-          title: 'Delete',
-          html:'정말로 삭제하시겠습니까? ' ,
+      this.$swal
+        .fire({
+          icon: "question",
+          title: "Delete",
+          html: "정말로 삭제하시겠습니까? ",
           showCancelButton: true,
-        }).then((result) => {
+        })
+        .then((result) => {
           if (result.isConfirmed) {
             this.AC_DELETE_BOARD(this.boardInfo.boardId);
             this.$router.push({ name: "BoardList" });
-          } 
-        })
+          }
+        });
     },
 
     /* 뒤로가기 */
