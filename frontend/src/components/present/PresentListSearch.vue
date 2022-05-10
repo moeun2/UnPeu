@@ -92,7 +92,6 @@
 import PresentUpdateModal from "@/components/present/PresentUpdateModal.vue";
 import { API_BASE_URL } from "../../config/index.js";
 import { mapActions, mapState } from "vuex";
-import { userStore } from '@/store/modules/userStore.js';
 
 const presentStore = "presentStore";
 
@@ -115,33 +114,12 @@ export default {
       userId: this.$store.state.userStore.user.id,
     };
   },
-
-  mounted() {
-    this.search();
-  },
-
   watch: {
-    ...mapState(userStore,["user"]),
     ...mapState(presentStore, ["presentList"]),
-    user: {
-    deep: true,
-    handler(newVal) {
-      if(this.cardList.length === newVal.Present.length){
-        this.cardList=newVal.Present;
-      }else if(this.cardList.length < newVal.Present.length){
-        if(this.cardList.length-1 == newVal.Present.length)
-          this.cardList.push(newVal.Present[this.cardList.length]);
-        else{
-          this.cardList=newVal.Present;
-        }
-      }else{
-        return;
-      } 
-    }
-    },
     presentList: {
     deep: true,
     handler(newVal) {
+      if(newVal==null) return;
       if(this.cardList.length === newVal.Present.length){
         this.cardList=newVal.Present;
       }else if(this.cardList.length < newVal.Present.length){
@@ -166,13 +144,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(presentStore, ["searchList", "deletePresent"]),
-    search() {
-      this.searchList(this.userId);
-      if(this.presentList==null) return;
-      this.cardList = this.presentList.Present;
-      // console.log(this.userId);
-    },
+    ...mapActions(presentStore, ["deletePresent"]),
 
     openDialog(index) {
       this.dialog = true;
@@ -201,7 +173,7 @@ export default {
                 "파일이 삭제되었습니다.",
                 "success"
               );
-              this.$delete(this.cardList, index);
+              //this.$delete(this.cardList, index);
             } else {
               this.$swal.fire(
                 "삭제 실패!",

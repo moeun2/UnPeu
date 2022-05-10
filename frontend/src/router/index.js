@@ -34,6 +34,7 @@ const routes = [
         name: "eventRoom",
         component: eventRoom,
         beforeEnter: getUserInfo,
+        
       },
       {
         path: "/diary/:userid",
@@ -71,8 +72,8 @@ const routes = [
           {
             path: ":userid/manage",
             name: "PresentManage",
-            beforeEnter: getUserPresent,
             component: PresentManage,
+            beforeEnter: getUserPresent,
           },
           {
             path: ":userid/payment",
@@ -121,7 +122,7 @@ const router = new VueRouter({
 function getUserPresent(to, from, next){
   let userId = to.params.userid;
   Store.dispatch("presentStore/searchList",userId);
-
+  console.log(userId)
   next();
 }
 
@@ -150,7 +151,7 @@ function getUserInfo(to, from, next) {
       }
     });
   }
-
+  
   next();
 }
 
