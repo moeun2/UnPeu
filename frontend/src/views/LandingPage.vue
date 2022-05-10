@@ -44,19 +44,21 @@ export default {
 
   methods: {
     async goToUrl() {
-      const { value: email } = await this.$swal.fire({
+      const { value: url } = await this.$swal.fire({
         title: "링크를 붙여넣어 주세요",
         input: "text", //url
         inputPlaceholder: "paste the link",
         inputValidator: (value) => {
-          if (value.substr(0, FRONT_URL.length) != FRONT_URL) {
+          if (value.substr(0, FRONT_URL.length) != FRONT_URL||!value) {
             return "앙뿌의 링크를 입력해주세요!";
+          }else if(value.length>50){
+            return "링크의 길이가 너무 깁니다!";
           }
         },
       });
 
-      if (email) {
-        location.replace(email);
+      if (url) {
+        location.replace(url);
       }
     },
   },
