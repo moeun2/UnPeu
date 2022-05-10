@@ -157,6 +157,7 @@ export default {
      */
     closePayModal() {
       this.selectedPresentPrice = 0;
+      this.selectedPresentId=null;
       this.showModal = false;
       this.changeCardColor(false);
     },
