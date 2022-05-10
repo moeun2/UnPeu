@@ -93,6 +93,11 @@
                         <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                         <p class="arrow_box">로그아웃</p>
                       </button>
+                      <button class="item" @click="userSetting" v-if="isMyPage&&isLogin" style="margin-left: 5px;">
+                        <v-icon>mdi-account-cog</v-icon>
+                        <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
+                        <p class="arrow_box">회원정보</p>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -171,10 +176,14 @@ import {
   updateUserTitle,
   updateUserInfo,
   increaseVisit,
+  updateUserEmailBirth,
+  deleteUser,
 } from "@/api/user.js";
 import { EVENT_URL,FRONT_URL, API_BASE_URL } from "@/config/index";
 import LinkShareModal from "@/components/LinkShareModal.vue";
 import { mapMutations } from 'vuex';
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 
 
 const presentStore="presentStore";
@@ -452,10 +461,74 @@ export default {
         this.userImg = API_BASE_URL + res.data.User.userImg;
       });
     },
+
     copyLink() {
       this.showModal = true;
     },
+
+    async userSetting(){
+      let flatpickrInstance;
+
+      await this.$swal.fire({
+        title: "회원 정보",
+        icon: 'info',
+        html:
+          '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="swal-input1" class="swal2-input" value='+this.userEmail+'></div>' +
+          '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="expiry-date"value='+this.userBirth+'></div>',
+        inputLabel:
+          "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
+        stopKeydownPropagation: false,
+        focusConfirm: true,
+        showDenyButton: true,
+        showCancelButton: true,
+        cancelButtonText:'취소',
+        confirmButtonText: '수정',
+        denyButtonText: `회원 탈퇴`,
+        preConfirm: () => {
+          //validation 설정
+          var exptext = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+          if (!flatpickrInstance.selectedDates[0]) {
+            this.$swal.showValidationMessage(`생일을 입력해주세요`);
+          }else if (flatpickrInstance.selectedDates[0] > new Date()) {
+            this.$swal.showValidationMessage(`혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`)
+          }
+          if (!document.getElementById("swal-input1").value||!exptext.test(document.getElementById("swal-input1").value)) {
+            this.$swal.showValidationMessage(`이메일을 입력해주세요`);
+          }
+        },
+        willOpen: () => {
+          flatpickrInstance = flatpickr(
+            this.$swal.getPopup().querySelector("#expiry-date")
+          );
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const data={
+            userEmail: document.getElementById("swal-input1").value,
+            userBirth: document.getElementById("expiry-date").value
+          }
+            updateUserEmailBirth(localStorage.getItem("accessToken"), data, (res) => {
+            console.log("success change email and birth")
+            this.$swal.fire('수정을 성공했습니다!', '', 'success')
+            this.userEmail= res.data.User.userEmail
+            this.userBirth =
+              res.data.User.userBirth[0] +
+              "." +
+              res.data.User.userBirth[1] +
+              "." +
+              res.data.User.userBirth[2];
+          });
+        } else if (result.isDenied) {
+          deleteUser(() => {
+            this.$swal.fire('회원 탈퇴되었습니다.', '', 'success')
+            localStorage.removeItem("accessToken")
+            this.$router.push({name:"Landing"})
+          })
+        }
+      })
+    },
   },
+
 };
 </script>
 
