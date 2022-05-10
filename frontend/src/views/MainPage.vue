@@ -403,11 +403,14 @@ export default {
       const { value: title } = await this.$swal.fire({
         title: "타이틀을 입력해주세요!",
         input: "text",
+        inputValue: this.userTitle,
         inputLabel:
           "오른쪽 상단의 타이틀입니다. 귀여운 어필을 해보는건 어떨까요?",
         inputPlaceholder: "25자 이하로 작성해주세요.",
         inputAttributes: {
           maxlength: 25,
+          rows: 4,
+
         },
         inputValidator: (value) => {
           if (!value) {
@@ -426,11 +429,14 @@ export default {
     async updateUserInfo() {
       const { value: info } = await this.$swal.fire({
         title: "소개글을 입력해주세요!",
+        // html:"<textarea placeholder />",
         input: "textarea",
+        inputValue: this.userInfo,
         inputLabel: "프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)",
         inputPlaceholder: "50자 이하, 4줄 이하로 작성해주세요.",
         inputAttributes: {
           maxlength: 50,
+          rows:4
         },
         inputValidator: (value) => {
           if (!value) {
@@ -660,5 +666,16 @@ export default {
 }
 .speech-bubble2-img {
   width: 100px;
+}
+.swal2-textarea {
+    height: 5.75em !important;
+    padding: 0.75em;
+    resize: none;
+    text-align: center;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.swal2-textarea::-webkit-scrollbar {
+  display: none;
 }
 </style>
