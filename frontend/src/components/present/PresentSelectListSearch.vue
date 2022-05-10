@@ -1,11 +1,9 @@
 <template>
   <div class="present-carousel">
     <!-- <v-button >선물등록이 필요합니다</v-button> -->
-    <template v-if="cardList.length===0">
-      <div v-if="this.curUser.permission==0">
-        <v-btn tile color="info"
-          @click="goToPresentManage"
-        >
+    <template v-if="cardList.length === 0">
+      <div v-if="this.curUser.permission == 0">
+        <v-btn tile color="info" @click="goToPresentManage">
           <v-icon left> mdi-exclamation </v-icon>
           선물이 등록되지 않았어요!<br />
           선물 등록하러 가시겠어요? :)
@@ -14,10 +12,7 @@
         <br />
       </div>
       <div v-else>
-        <v-img
-          src="@/assets/img/none_present.png"
-          >
-          </v-img>
+        <v-img src="@/assets/img/none_present.png"> </v-img>
       </div>
     </template>
     <template v-else>
@@ -62,7 +57,15 @@
       v-if="showModal"
       @close="closePayModal"
       @selectedPrice="saveSelectedPresent"
-    ></PresentPayModal>
+    >
+      <img
+        :src="this.selectedPresentImg"
+        :alt="this.selectedPresentName"
+        class="modal-img"
+        slot="body"
+      />
+
+    </PresentPayModal>
   </div>
 </template>
 
@@ -83,6 +86,8 @@ export default {
       showModal: false,
       selectedPresentId: "",
       selectedPresentPrice: 0,
+      selectedPresentImg:'',
+      selectedPresentName:'',
       currentIdx: "",
       showCarousel: true,
     };
@@ -90,16 +95,16 @@ export default {
   mounted() {
     this.search();
   },
-   watch: {
+  watch: {
     ...mapState(presentStore, ["presentList"]),
     presentList: {
       deep: true,
       handler(newVal) {
-        if(newVal==null) return;
-        this.cardList=newVal.Present;
-      }
-    }
-  },  
+        if (newVal == null) return;
+        this.cardList = newVal.Present;
+      },
+    },
+  },
   computed: {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
@@ -111,7 +116,7 @@ export default {
   },
   methods: {
     ...mapActions(presentStore, ["searchList"]),
-    goToPresentManage(){
+    goToPresentManage() {
       this.$router.push({ name: "PresentManage" });
     },
     /**
@@ -134,8 +139,10 @@ export default {
      * PayModal Open시 실행되는 함수
      */
     openPayModal(card, idx) {
-      //console.log(card);
+      console.log(card);
       //console.log(idx);
+      this.selectedPresentImg = API_BASE_URL + card.presentImg;
+      this.selectedPresentName = card.presentName;
       this.selectedPresentId = card.presentId;
       this.currentIdx = idx;
       this.changeCardColor(true);
@@ -213,5 +220,9 @@ export default {
   height: 35px;
   width: 35px;
   top: calc(50% - 20px);
+}
+.modal-img{
+  height: 35px;
+  width: 35px;
 }
 </style>

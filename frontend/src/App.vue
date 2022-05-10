@@ -33,4 +33,11 @@ body {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
 }
+/** 공통 색상 표 지정 **/
+:root{
+  --green-color : #ddefa5;
+  --cancel-color : #FF7878;
+  --confirm-color: #4CAF50;
+  --close-color : #9e9e9e; /*vuetify grey */
+}
 </style>

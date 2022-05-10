@@ -11,11 +11,14 @@
           </div>
 
           <div class="modal-body">
-            <img
+            <slot name="body">
+            <!-- <img
               src="https://i.imgur.com/vaBFer6.png"
-              alt=""
+              alt="선택된 선물"
               class="modal-img"
-            />
+            /> -->
+            </slot> 
+            
             <br />
             <h4>
               헉 너무 큰 금액이야 <br />
@@ -102,7 +105,7 @@
               </tr>
             </table>
 
-            <slot name="body"> </slot>
+            
           </div>
 
           <div class="modal-footer">
@@ -110,12 +113,12 @@
               <div style="display: flex; justify-content: flex-end">
                 <v-btn
                   depressed
-                  color="primary"
+                  color=primary
                   style="margin-right: 5px"
                   @click="saveAmount"
                   >가격선택
                 </v-btn>
-                <v-btn depressed color="warning" @click="closeModal"
+                <v-btn  color=grey style="color: white" @click="closeModal"
                   >닫기
                 </v-btn>
               </div>
@@ -255,7 +258,7 @@ export default {
 table {
   width: 100%;
   /* border: 1px solid #f08986; */
-  background-color: #f08986;
+  background-color: var(--green-color);
   border-collapse: collapse;
 }
 td {
