@@ -15,13 +15,13 @@
         <v-img src="@/assets/img/none_present.png"> </v-img>
       </div> -->
     </template>
-    
+
     <template v-else>
       <v-alert dense type="info">
-          선물은 한 가지만 선택할 수 있어요! 현재 선택한 선물의 가격은 <strong>{{selectedPresentPrice}} 원</strong
-          > 입니다!
+        선물은 한 가지만 선택할 수 있어요! 현재 선택한 선물의 가격은
+        <strong>{{ selectedPresentPrice }} 원</strong> 입니다!
       </v-alert>
-      <br/>
+      <br />
       <v-carousel hide-delimiters style="height: 400px">
         <template v-for="(card, index) in cardList">
           <v-carousel-item
@@ -57,7 +57,7 @@
             </v-row>
           </v-carousel-item>
         </template>
-      </v-carousel>      
+      </v-carousel>
     </template>
     <PresentPayModal
       v-if="showModal"
@@ -144,8 +144,7 @@ export default {
      * PayModal Open시 실행되는 함수
      */
     openPayModal(card, idx) {
-      console.log(card);
-      //console.log(idx);
+      console.log("openPayModal",idx);
       this.selectedPresentImg = API_BASE_URL + card.presentImg;
       this.selectedPresentName = card.presentName;
       this.selectedPresentId = card.presentId;
@@ -157,7 +156,7 @@ export default {
      * PayModal close시 실행되는 함수
      */
     closePayModal() {
-      this.selectedPresentPrice = 0
+      this.selectedPresentPrice = 0;
       this.showModal = false;
       this.changeCardColor(false);
     },
@@ -181,6 +180,16 @@ export default {
      * 현재 노란색으로 지정해놓았으며, 나중에 색깔을 통일할 예정(style : .selectedCard 참고)
      */
     changeCardColor(reverse) {
+      console.log(this.currentIdx);
+      const cardLength = document.getElementById("rootCards").children.length;
+      for (let index = 0; index < cardLength; index++) {
+          const er =
+            document.getElementById("rootCards").children[index].children[0];
+          if (er != null)
+            document
+              .getElementById("rootCards")
+              .children[index].children[0].classList.remove("selectedCard");
+      }
       if (reverse) {
         document
           .getElementById("rootCards")
