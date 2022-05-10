@@ -15,7 +15,13 @@
         <v-img src="@/assets/img/none_present.png"> </v-img>
       </div>
     </template>
+    
     <template v-else>
+      <v-alert dense type="info">
+          선물은 한 가지만 선택할 수 있어요! 현재 선택한 선물의 가격은 <strong>{{selectedPresentPrice}} 원</strong
+          > 입니다!
+      </v-alert>
+      <br/>
       <v-carousel hide-delimiters style="height: 400px">
         <template v-for="(card, index) in cardList">
           <v-carousel-item
@@ -51,7 +57,7 @@
             </v-row>
           </v-carousel-item>
         </template>
-      </v-carousel>
+      </v-carousel>      
     </template>
     <PresentPayModal
       v-if="showModal"
@@ -64,7 +70,6 @@
         class="modal-img"
         slot="body"
       />
-
     </PresentPayModal>
   </div>
 </template>
@@ -86,8 +91,8 @@ export default {
       showModal: false,
       selectedPresentId: "",
       selectedPresentPrice: 0,
-      selectedPresentImg:'',
-      selectedPresentName:'',
+      selectedPresentImg: "",
+      selectedPresentName: "",
       currentIdx: "",
       showCarousel: true,
     };
@@ -152,6 +157,7 @@ export default {
      * PayModal close시 실행되는 함수
      */
     closePayModal() {
+      this.selectedPresentPrice = 0
       this.showModal = false;
       this.changeCardColor(false);
     },
@@ -204,9 +210,8 @@ export default {
 }
 .selectedCard {
   margin: 5px;
-  background-color: #b9e2fa !important;
+  background-color: var(--soft-blue-color) !important;
 }
-
 .present-carousel {
   padding-top: 5px;
 }
@@ -221,7 +226,7 @@ export default {
   width: 35px;
   top: calc(50% - 20px);
 }
-.modal-img{
+.modal-img {
   height: 35px;
   width: 35px;
 }

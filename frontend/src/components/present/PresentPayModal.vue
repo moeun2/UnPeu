@@ -3,22 +3,13 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-          <!-- <button class="modal-default-button" @click="$emit('close')">
-            <i style="color: #505352" class="far fa-times-circle fa-2x"></i>
-          </button> -->
           <div class="modal-header">
             <slot name="header"> 선물 선택 </slot>
           </div>
 
           <div class="modal-body">
-            <slot name="body">
-            <!-- <img
-              src="https://i.imgur.com/vaBFer6.png"
-              alt="선택된 선물"
-              class="modal-img"
-            /> -->
-            </slot> 
-            
+            <slot name="body"></slot>
+
             <br />
             <h4>
               헉 너무 큰 금액이야 <br />
@@ -104,8 +95,6 @@
                 </td>
               </tr>
             </table>
-
-            
           </div>
 
           <div class="modal-footer">
@@ -113,12 +102,12 @@
               <div style="display: flex; justify-content: flex-end">
                 <v-btn
                   depressed
-                  color=primary
+                  color="primary"
                   style="margin-right: 5px"
                   @click="saveAmount"
                   >가격선택
                 </v-btn>
-                <v-btn  color=grey style="color: white" @click="closeModal"
+                <v-btn color="grey" style="color: white" @click="closeModal"
                   >닫기
                 </v-btn>
               </div>
@@ -172,7 +161,7 @@ export default {
     closeInputText() {
       document.getElementById("unpeu_input").style.display = "none";
     },
-    
+
     closeModal() {
       this.selectedPrice = 0;
       this.$emit("close");

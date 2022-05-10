@@ -39,5 +39,6 @@ body {
   --cancel-color : #FF7878;
   --confirm-color: #4CAF50;
   --close-color : #9e9e9e; /*vuetify grey */
+  --soft-blue-color: #b9e2fa; /*tab color */
 }
 </style>
