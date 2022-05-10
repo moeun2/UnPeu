@@ -11,9 +11,9 @@
         <br />
         <br />
       </div>
-      <div v-else>
+      <!-- <div v-else>
         <v-img src="@/assets/img/none_present.png"> </v-img>
-      </div>
+      </div> -->
     </template>
     
     <template v-else>
