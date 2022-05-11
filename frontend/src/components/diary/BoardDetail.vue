@@ -122,5 +122,5 @@ export default {
 </script>
 
 <style scoped>
-@import "~vue2-editor/dist/vue2-editor.css";
+@import url("@/assets/css/editor.css");
 </style>
