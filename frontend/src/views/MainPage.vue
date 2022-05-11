@@ -275,6 +275,7 @@ export default {
   components: {
     LinkShareModal,
   },
+
   methods: {
     ...mapMutations(presentStore,["RESET_PRESENT_LIST"]),
     goToMainPage() {
@@ -491,7 +492,6 @@ export default {
         confirmButtonText: '수정',
         denyButtonText: `회원 탈퇴`,
         preConfirm: () => {
-          //validation 설정
           var exptext = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
           if (!flatpickrInstance.selectedDates[0]) {
             this.$swal.showValidationMessage(`생일을 입력해주세요`);
@@ -525,15 +525,24 @@ export default {
               res.data.User.userBirth[2];
           });
         } else if (result.isDenied) {
-          deleteUser(() => {
-            this.$swal.fire('회원 탈퇴되었습니다.', '', 'success')
-            localStorage.removeItem("accessToken")
-            this.$router.push({name:"Landing"})
-          })
+          this.$swal.fire({
+              title: '정말 회원을 탈퇴하시겠습니까?',
+              showCancelButton: true,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                deleteUser(() => {
+                  this.$swal.fire('회원 탈퇴되었습니다.', '', 'success')
+                  localStorage.removeItem("accessToken")
+                  this.$store.commit("userStore/setUSerNull")
+                  this.$router.push({name:"Landing"})
+                })
+              }
+            })
         }
       })
     },
   },
+
 
 };
 </script>
