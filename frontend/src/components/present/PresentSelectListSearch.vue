@@ -1,9 +1,11 @@
 <template>
   <div class="present-carousel">
     <!-- <v-button >선물등록이 필요합니다</v-button> -->
-    <template v-if="cardList.length === 0">
-      <div v-if="this.curUser.permission == 0">
-        <v-btn tile color="info" @click="goToPresentManage">
+    <template v-if="cardList.length===0">
+      <div v-if="this.curUser.permission==0">
+        <v-btn tile color="info"
+          @click="goToPresentManage"
+        >
           <v-icon left> mdi-exclamation </v-icon>
           선물이 등록되지 않았어요!<br />
           선물 등록하러 가시겠어요? :)
@@ -11,17 +13,14 @@
         <br />
         <br />
       </div>
-      <!-- <div v-else>
-        <v-img src="@/assets/img/none_present.png"> </v-img>
-      </div> -->
+      <div v-else>
+        <v-img
+          src="@/assets/img/none_present.png"
+          >
+          </v-img>
+      </div>
     </template>
-
     <template v-else>
-      <v-alert dense type="info">
-        선물은 한 가지만 선택할 수 있어요! 현재 선택한 선물의 가격은
-        <strong>{{ selectedPresentPrice }} 원</strong> 입니다!
-      </v-alert>
-      <br />
       <v-carousel hide-delimiters style="height: 400px">
         <template v-for="(card, index) in cardList">
           <v-carousel-item
@@ -63,14 +62,7 @@
       v-if="showModal"
       @close="closePayModal"
       @selectedPrice="saveSelectedPresent"
-    >
-      <img
-        :src="this.selectedPresentImg"
-        :alt="this.selectedPresentName"
-        class="modal-img"
-        slot="body"
-      />
-    </PresentPayModal>
+    ></PresentPayModal>
   </div>
 </template>
 
@@ -91,8 +83,6 @@ export default {
       showModal: false,
       selectedPresentId: "",
       selectedPresentPrice: 0,
-      selectedPresentImg: "",
-      selectedPresentName: "",
       currentIdx: "",
       showCarousel: true,
     };
@@ -100,16 +90,16 @@ export default {
   mounted() {
     this.search();
   },
-  watch: {
+   watch: {
     ...mapState(presentStore, ["presentList"]),
     presentList: {
       deep: true,
       handler(newVal) {
-        if (newVal == null) return;
-        this.cardList = newVal.Present;
-      },
-    },
-  },
+        if(newVal==null) return;
+        this.cardList=newVal.Present;
+      }
+    }
+  },  
   computed: {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
@@ -121,32 +111,31 @@ export default {
   },
   methods: {
     ...mapActions(presentStore, ["searchList"]),
-    goToPresentManage() {
+    goToPresentManage(){
       this.$router.push({ name: "PresentManage" });
     },
     /**
      * BackEnd에서 getPresentListByUserId 호출 함수
      */
-    search() {
-      // To Do: User State에서 가져오기
-      //console.log("PresentSelectListSearch_search - 호출");
-      //console.log("userId: ", this.curUser.id);
-      this.searchList(this.curUser.id);
-      this.cardList = this.presentList.Present;
-      //console.log(this.cardList.length);
-      if (this.cardList.length == 0) {
-        this.showCarousel = false;
-      } else {
-        this.showCarousel = true;
-      }
-    },
+    // search() {
+    //   // To Do: User State에서 가져오기
+    //   //console.log("PresentSelectListSearch_search - 호출");
+    //   //console.log("userId: ", this.curUser.id);
+    //   this.searchList(this.curUser.id);
+    //   this.cardList = this.presentList.Present;
+    //   //console.log(this.cardList.length);
+    //   if (this.cardList.length == 0) {
+    //     this.showCarousel = false;
+    //   } else {
+    //     this.showCarousel = true;
+    //   }
+    // },
     /**
      * PayModal Open시 실행되는 함수
      */
     openPayModal(card, idx) {
-      console.log("openPayModal",idx);
-      this.selectedPresentImg = API_BASE_URL + card.presentImg;
-      this.selectedPresentName = card.presentName;
+      //console.log(card);
+      //console.log(idx);
       this.selectedPresentId = card.presentId;
       this.currentIdx = idx;
       this.changeCardColor(true);
@@ -156,8 +145,6 @@ export default {
      * PayModal close시 실행되는 함수
      */
     closePayModal() {
-      this.selectedPresentPrice = 0;
-      this.selectedPresentId=null;
       this.showModal = false;
       this.changeCardColor(false);
     },
@@ -181,16 +168,6 @@ export default {
      * 현재 노란색으로 지정해놓았으며, 나중에 색깔을 통일할 예정(style : .selectedCard 참고)
      */
     changeCardColor(reverse) {
-      console.log(this.currentIdx);
-      const cardLength = document.getElementById("rootCards").children.length;
-      for (let index = 0; index < cardLength; index++) {
-          const er =
-            document.getElementById("rootCards").children[index].children[0];
-          if (er != null)
-            document
-              .getElementById("rootCards")
-              .children[index].children[0].classList.remove("selectedCard");
-      }
       if (reverse) {
         document
           .getElementById("rootCards")
@@ -220,8 +197,9 @@ export default {
 }
 .selectedCard {
   margin: 5px;
-  background-color: var(--soft-blue-color) !important;
+  background-color: #b9e2fa !important;
 }
+
 .present-carousel {
   padding-top: 5px;
 }
@@ -235,9 +213,5 @@ export default {
   height: 35px;
   width: 35px;
   top: calc(50% - 20px);
-}
-.modal-img {
-  height: 35px;
-  width: 35px;
 }
 </style>

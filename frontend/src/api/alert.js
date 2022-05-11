@@ -61,7 +61,7 @@ const notSelectPresentBody = {
 };
 const agreePaymentBody = {
   title: "선물결제를 동의하시나요?",
-  text: "선물결제시 100원이 가결제되며, 24시간 전에 결제는 취소됩니다",
+  text: "선물결제시 10원이 가결제되며, 24시간 전에 결제는 취소됩니다",
   icon: "warning",
   showCancelButton: true,
   confirmButtonText: "결제할래요!",
