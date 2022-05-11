@@ -35,6 +35,8 @@ public interface IUserService {
 	
 	void updateTodayVisit();
 	
+	void deleteUser(Long userId);
+	
 	User increseVisit(Long userId);
 	
 }

@@ -16,4 +16,5 @@ public interface IBoardRepository extends JpaRepository<Board, Long> {
     @Query(value = "SELECT DISTINCT category FROM board WHERE user_id = :userId ORDER BY board_id DESC", nativeQuery = true)
     List<String> findCategoryByUserId(@Param("userId") Long userId);
     List<Board> findByUserIdAndCategoryOrderByCreatedAtDesc(Long userId, String category);
+    void deleteAllByUserId(Long userId);
 }
