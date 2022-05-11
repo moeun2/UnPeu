@@ -35,7 +35,7 @@ body {
 }
 /** 공통 색상 표 지정 **/
 :root{
-  --green-color : #ddefa5;
+  --green-color : #DCE775;
   --cancel-color : #FF7878;
   --confirm-color: #4CAF50;
   --close-color : #9e9e9e; /*vuetify grey */

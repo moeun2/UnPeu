@@ -30,20 +30,20 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-          text
-          color="warning"
-          @click="editDiary"
           v-if="loginUser && boardInfo.userId == loginUser.id"
+          color="var(--confirm-color)"
+          class="white--text"
+          @click="editDiary"
           ><v-icon dark left>mdi-pencil</v-icon>edit</v-btn
         >
         <v-btn
-          text
-          color="error"
-          @click="deleteDiary"
           v-if="loginUser && boardInfo.userId == loginUser.id"
+          color="var(--cancel-color)"
+          class="white--text"
+          @click="deleteDiary"
           ><v-icon dark left>mdi-delete</v-icon>delete</v-btn
         >
-        <v-btn text color="grey darken-1" @click="backMovePage"
+        <v-btn color="var(--close-color)" class="ma-2 white--text" @click="backMovePage"
           ><v-icon dark left>mdi-arrow-left</v-icon>back</v-btn
         >
       </v-card-actions>

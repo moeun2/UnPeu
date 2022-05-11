@@ -61,7 +61,7 @@ export default {
   methods: {
     ...mapActions(presentStore, ["sendPresentMessage"]),
     checkNumOfPresentList(){
-      console.log(this.numOfPresentList)
+      // console.log(this.numOfPresentList)
       if(this.numOfPresentList == null || this.numOfPresentList==0){
         this.numCheckbox = true
       }else{

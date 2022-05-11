@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-card outlined>
+    <v-card outlined style="height: 515px">
       <v-card-title>
         <span>Diary</span>
       </v-card-title>
@@ -10,10 +10,10 @@
           <v-col>
             <span>{{ today }}</span>
             <v-btn
-              tile
-              class="float-right success"
-              @click="writeDiary"
               v-if="loginUser && userId == loginUser.id"
+              color="var(--confirm-color)"
+              class="float-right white--text"
+              @click="writeDiary"
               ><v-icon left>mdi-pencil</v-icon>글 작성
             </v-btn>
           </v-col>
