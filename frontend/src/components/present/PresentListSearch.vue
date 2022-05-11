@@ -117,22 +117,22 @@ export default {
   watch: {
     ...mapState(presentStore, ["presentList"]),
     presentList: {
-    deep: true,
-    handler(newVal) {
-      if(newVal==null) return;
-      if(this.cardList.length === newVal.Present.length){
-        this.cardList=newVal.Present;
-      }else if(this.cardList.length < newVal.Present.length){
-        if(this.cardList.length-1 == newVal.Present.length)
-          this.cardList.push(newVal.Present[this.cardList.length]);
-        else{
-          this.cardList=newVal.Present;
+      deep: true,
+      handler(newVal) {
+        if (newVal == null) return;
+        if (this.cardList.length === newVal.Present.length) {
+          this.cardList = newVal.Present;
+        } else if (this.cardList.length < newVal.Present.length) {
+          if (this.cardList.length - 1 == newVal.Present.length)
+            this.cardList.push(newVal.Present[this.cardList.length]);
+          else {
+            this.cardList = newVal.Present;
+          }
+        } else {
+          return;
         }
-      }else{
-        return;
-      } 
-    }
-  }
+      },
+    },
   },
 
   computed: {
