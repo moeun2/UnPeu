@@ -36,16 +36,32 @@
       </v-card-text>
 
       <v-card-actions>
+        <v-spacer></v-spacer>
         <v-btn
           v-if="this.type === 'write'"
           :disabled="!formIsValid"
           @click="save"
-          text
+          color="var(--confirm-color)"
+          class="white--text"
         >
           save
         </v-btn>
-        <v-btn v-else :disabled="!formIsValid" @click="edit" text> edit </v-btn>
-        <v-btn text @click="cancle"> cancle </v-btn>
+        <v-btn
+          v-else
+          :disabled="!formIsValid"
+          @click="edit"
+          color="var(--confirm-color)"
+          class="white--text"
+        >
+          edit
+        </v-btn>
+        <v-btn
+          @click="cancle"
+          color="var(--cancel-color)"
+          class="ma-2 white--text"
+        >
+          cancle
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-container>
@@ -164,7 +180,7 @@ export default {
     /* 이미지 삭제 */
     // handleImageRemoved(url) {
     //   const savePath = url.replace(API_BASE_URL, "");
-      
+
     //   deleteBoardFileImage(
     //     savePath,
     //     (res) => {
