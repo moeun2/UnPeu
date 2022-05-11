@@ -13,8 +13,8 @@ faLibrary.add(faHome, faSearch, faPlus);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 const options = {
-  confirmButtonColor: "#FF7878",
-  cancelButtonColor: "#4CAF50",
+  confirmButtonColor: "#4CAF50",
+  cancelButtonColor: "#F78780",
 };
 
 Vue.use(VueSweetalert2, options);
