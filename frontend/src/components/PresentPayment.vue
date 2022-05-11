@@ -15,7 +15,7 @@
       v-if="checkbox == false"
     />
     <present-message @message="getMessage" />
-    <!-- <button @click="testAlert">getters Test: {{userId}}</button> -->
+    <!-- <button @click="testAlert">getters Test</button> -->
   </div>
 </template>
 
@@ -54,6 +54,9 @@ export default {
     ...mapGetters(presentStore, {
       numOfPresentList: "getNumberOfPresentList",
     }),
+    ...mapGetters(userStore,{
+      userInfo: "getUser",
+    })
   },
   mounted() {
     this.checkNumOfPresentList()
@@ -72,8 +75,8 @@ export default {
       // console.log("Getters TEST : getCurUser " , this.curUser.id)
       //alert(this.userTest);
       //this.$router.push({ name: "eventRoom" });
+      console.log(this.userInfo);
     },
-
     createMessage() {
       const vm = this;
       this.message.userId = this.curUser.id;
@@ -169,7 +172,7 @@ export default {
         name: "Unpeu 선물 구매", // 주문명
         buyer_name: "Unpeu Guest", // 구매자 이름
         buyer_tel: "01012341234", // 구매자 전화번호
-        buyer_email: "mo_ah@naver.com", // 구매자 이메일
+        buyer_email: this.userInfo.userEmail, // 구매자 이메일
         buyer_addr: "Unpeu", // 구매자 주소
         buyer_postcode: "06018", // 구매자 우편번호
       };
