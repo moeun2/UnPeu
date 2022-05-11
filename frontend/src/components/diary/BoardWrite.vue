@@ -28,7 +28,7 @@
             :editorOptions="editorSettings"
             @image-added="handleImageAdded"
             v-model="form.content"
-            class="vue_edeitor_height"
+            class="vue_edeitor_height editor"
             ref="myQuillEditor"
           >
           </vue-editor>
@@ -203,5 +203,5 @@ export default {
 </script>
 
 <style scoped>
-@import "~vue2-editor/dist/vue2-editor.css";
+@import url("@/assets/css/editor.css");
 </style>
