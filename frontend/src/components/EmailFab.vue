@@ -3,12 +3,19 @@
     <div class="ba-we-love-subscribers popup-ani">
       <header>
         <h1>당신을 위한 조그마한 기록 그리고 선물<br />UnPeu:앙뿌</h1>
+        <p>
+          만약 더 디테일한 피드백을 주시고 싶다면
+          <a href="https://forms.gle/uXoLCauCEHMNoPoo6"
+            ><strong>여기클릭!</strong></a
+          >
+        </p>
+        <p>경품추천을 위하여 MM 아이디를 꼭! 입력해주세요!</p>
       </header>
       <!-- <form v-on:submit="submitEmail"> -->
       <div class="formControl">
         <textarea
           name="email"
-          placeholder="피드백 부탁드려요♥"
+          placeholder="피드백 부탁드려요♥ (한 줄 피드백도 환영!!)"
           type="text"
           value=""
           v-model="content"
@@ -45,7 +52,7 @@ export default {
       $(".ba-we-love-subscribers").toggleClass("open");
       $(".img-fab.img").toggleClass("close");
     },
-    
+
     submitEmail() {
       if (this.content != null) {
         //alert(this.content);
@@ -64,7 +71,8 @@ export default {
           }
         );
       } else {
-        alert("내용을 입력해주세요");
+        // alert("내용을 입력해주세요");
+        this.$swal.fire("Oops!", "내용을 입력해주세요~!", "error");
       }
     },
   },
@@ -86,7 +94,7 @@ export default {
   opacity: 0;
 }
 .ba-we-love-subscribers.open {
-  height: 270px;
+  height: 350px;
   opacity: 1;
 }
 .ba-we-love-subscribers.popup-ani {
@@ -136,7 +144,7 @@ export default {
   line-height: normal;
 }
 .ba-we-love-subscribers input {
-  font-size: 14px;
+  font-size: 16px;
   padding: 12px 15px;
   border-radius: 15px;
   border: 0;
@@ -153,6 +161,7 @@ export default {
 .ba-we-love-subscribers textarea {
   background-color: #eee;
   height: 80px;
+  font-size: 16px;
   overflow-x: hidden;
   overflow-y: scroll;
   resize: none;
