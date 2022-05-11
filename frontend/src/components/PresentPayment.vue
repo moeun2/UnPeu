@@ -2,6 +2,7 @@
   <div>
     <div class="message-title">콩주머니 보내기</div>
     <v-checkbox
+      v-if="numCheckbox == false"
       v-model="checkbox"
       :label="
         checkbox == false
@@ -32,6 +33,7 @@ export default {
   components: { PresentMessage, PresentSelectListSearch },
   data() {
     return {
+      numCheckbox : false,
       checkbox: false,
       message: {
         category: "2022_어른이날",
@@ -49,11 +51,23 @@ export default {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
     }),
+    ...mapGetters(presentStore, {
+      numOfPresentList: "getNumberOfPresentList",
+    }),
   },
-
+  mounted() {
+    this.checkNumOfPresentList()
+  },
   methods: {
     ...mapActions(presentStore, ["sendPresentMessage"]),
-
+    checkNumOfPresentList(){
+      console.log(this.numOfPresentList)
+      if(this.numOfPresentList == null || this.numOfPresentList==0){
+        this.numCheckbox = true
+      }else{
+        this.numCheckbox = false
+      }
+    },
     testAlert() {
       // console.log("Getters TEST : getCurUser " , this.curUser.id)
       //alert(this.userTest);
@@ -163,7 +177,7 @@ export default {
       /* 4. 결제 창 호출하기 */
       IMP.request_pay(data, this.callback);
     },
-    
+
     callback(response) {
       /* 3. 콜백 함수 정의하기 */
       const { success, error_msg } = response;
