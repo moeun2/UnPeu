@@ -228,7 +228,7 @@
     overflow: scroll;
   }
   
-  h2 {
+  h2 :not(.editor) {
     border-bottom: 1px solid black;
     width: 100%;
     font-size: 18px;

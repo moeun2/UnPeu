@@ -14,16 +14,10 @@
           label="Title"
           readonly
         ></v-text-field>
-        <!-- CKEditor로 수정 예정 -->
-        <v-textarea
-          v-model="boardInfo.content"
-          label="Content"
-          readonly
-          rows="6"
-          auto-grow
-          required
-        >
-        </v-textarea>
+
+        <div class="output ql-snow">
+          <div class= "ql-editor" v-html="boardInfo.content"></div>
+        </div>
       </v-card-text>
 
       <v-divider class="mx-4"></v-divider>
@@ -127,5 +121,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@import url("@/assets/css/editor.css");
 </style>

@@ -21,16 +21,17 @@
             label="Title"
             required
           ></v-text-field>
-          <!-- CKEditor로 수정 예정 -->
-          <v-textarea
+
+          <vue-editor
+            id="editor"
+            useCustomImageHandler
+            :editorOptions="editorSettings"
+            @image-added="handleImageAdded"
             v-model="form.content"
-            :rules="rules.content"
-            label="Content"
-            rows="6"
-            auto-grow
-            required
+            class="vue_edeitor_height editor"
+            ref="myQuillEditor"
           >
-          </v-textarea>
+          </vue-editor>
         </v-form>
       </v-card-text>
 
@@ -52,6 +53,14 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { addBoardFileImage } from "@/api/diary.js";
+import { API_BASE_URL } from "@/config/index";
+import { VueEditor, Quill } from "vue2-editor";
+
+window.Quill = Quill;
+const ImageResize = require("quill-image-resize-module").default;
+Quill.register("modules/imageResize", ImageResize);
+
 const diaryStore = "diaryStore";
 
 export default {
@@ -65,12 +74,22 @@ export default {
         title: "",
         content: "",
       },
+
       rules: {
-        category: [(value) => (value && value.length <= 40) || "반드시 1자 이상, 40자 미만 작성해야 합니다."],
-        title: [(value) => (value && value.length <= 30)  || "반드시 1자 이상, 30자 미만 작성해야 합니다."],
-        content: [(value) => (value && value.length <= 10000) || "반드시 1자 이상, 10000자 미만 작성해야 합니다."],
+        category: [ (value) => (value && value.length <= 40) || "반드시 1자 이상, 40자 미만 작성해야 합니다."],
+        title: [ (value) => (value && value.length <= 30) || "반드시 1자 이상, 30자 미만 작성해야 합니다."],
+      },
+
+      editorSettings: {
+        modules: {
+          imageResize: {},
+        },
       },
     };
+  },
+
+  components: {
+    VueEditor,
   },
 
   props: {
@@ -99,7 +118,7 @@ export default {
       categoryList: "GET_CATEGORY_LIST",
     }),
 
-    categories: function() {
+    categories: function () {
       // 빈 배열 체크
       if (Array.isArray(this.categoryList) && this.categoryList.length === 0) {
         return ["Default"];
@@ -122,6 +141,42 @@ export default {
       "AC_REGISTER_BOARD",
       "AC_EDIT_BOARD",
     ]),
+
+    /* 이미지 등록 */
+    handleImageAdded(file, Editor, cursorLocation) {
+      var formData = new FormData();
+      formData.append("file", file);
+
+      addBoardFileImage(
+        formData,
+        (res) => {
+          const url = API_BASE_URL + res.data.url;
+          Editor.insertEmbed(cursorLocation, "image", url);
+          console.log("이미지 등록 성공");
+        },
+        (error) => {
+          console.log("등록 처리 시 문제가 발생했습니다");
+          console.log(error);
+        }
+      );
+    },
+
+    /* 이미지 삭제 */
+    // handleImageRemoved(url) {
+    //   const savePath = url.replace(API_BASE_URL, "");
+      
+    //   deleteBoardFileImage(
+    //     savePath,
+    //     (res) => {
+    //       console.log(res);
+    //       console.log("이미지 삭제 성공")
+    //     },
+    //     (error) => {
+    //       console.log("삭제 처리 시 문제가 발생했습니다");
+    //       console.log(error);
+    //     }
+    //   );
+    // },
 
     /* 저장 후 상세 페이지 이동 */
     save() {
@@ -147,5 +202,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@import url("@/assets/css/editor.css");
 </style>

@@ -50,13 +50,11 @@ export default {
   computed: {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
+      userInfo: "getUser",
     }),
     ...mapGetters(presentStore, {
       numOfPresentList: "getNumberOfPresentList",
     }),
-    ...mapGetters(userStore,{
-      userInfo: "getUser",
-    })
   },
   mounted() {
     this.checkNumOfPresentList()
