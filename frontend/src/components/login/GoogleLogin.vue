@@ -64,11 +64,13 @@ export default {
         showCancelButton: true,
         
         preConfirm: () => {
-          //validation 설정
+          var exptext = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
           if (!flatpickrInstance.selectedDates[0]) {
             this.$swal.showValidationMessage(`생일을 입력해주세요`);
+          }else if (flatpickrInstance.selectedDates[0] > new Date()) {
+            this.$swal.showValidationMessage(`혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`)
           }
-          if (!document.getElementById("swal-input1").value) {
+          if (!document.getElementById("swal-input1").value||!exptext.test(document.getElementById("swal-input1").value)) {
             this.$swal.showValidationMessage(`이메일을 입력해주세요`);
           }
           return {

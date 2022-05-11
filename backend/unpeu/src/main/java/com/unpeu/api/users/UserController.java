@@ -3,9 +3,7 @@ package com.unpeu.api.users;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
@@ -202,5 +200,20 @@ public class UserController {
 		resultMap.put("User",  new UserGetRes(user));
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
+	
+	@ApiOperation(value = "회원탈퇴 Controller")
+	@RequestMapping(value = "/users", method = RequestMethod.DELETE)
+    public ResponseEntity<Map<String, Object>> deleteUser(@ApiIgnore @NotNull Authentication authentication){
+		logger.info("deleteUser - 호출");
+		Map<String, Object> resultMap = new HashMap<>();
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+		
+		userService.deleteUser(user.getId());
+		resultMap.put("message", "success");
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+		
+	}
+	
 
 }
