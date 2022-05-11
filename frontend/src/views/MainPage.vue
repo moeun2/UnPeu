@@ -501,7 +501,10 @@ export default {
         },
         willOpen: () => {
           flatpickrInstance = flatpickr(
-            this.$swal.getPopup().querySelector("#expiry-date")
+            this.$swal.getPopup().querySelector("#expiry-date"),
+            {
+              allowInput:true
+            }
           );
         },
       }).then((result) => {
@@ -683,5 +686,8 @@ export default {
 }
 .swal2-textarea::-webkit-scrollbar {
   display: none;
+}
+.mdi-camera::before {
+    color: grey;
 }
 </style>
