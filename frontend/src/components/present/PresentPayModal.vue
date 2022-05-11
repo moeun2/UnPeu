@@ -147,10 +147,10 @@ export default {
         const inputNumber = document.getElementById("inputNumber").value;
         // console.log("직접입력 값 : " + inputNumber + "");
         this.selectedPrice = inputNumber;
-        if (this.selectedPrice > 0) {
+        if (this.selectedPrice > 100) {
           this.$emit("selectedPrice", this.selectedPrice);
         } else {
-          Alert.selctAmountFailure(this);
+          Alert.selectAmountFailure(this);
         }
       } else {
         // console.log("selectedPrice : ", this.selectedPrice);
