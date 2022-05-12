@@ -14,7 +14,7 @@
       @present="getPresent"
       v-if="checkbox == false"
     />
-    <present-message @message="getMessage" />
+    <present-message @message="getMessage"/>
     <!-- <button @click="testAlert">getters Test</button> -->
   </div>
 </template>

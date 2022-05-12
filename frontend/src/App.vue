@@ -41,4 +41,8 @@ body {
   --close-color : #9e9e9e; /*vuetify grey */
   --soft-blue-color: #b9e2fa; /*tab color */
 }
+
+@media(preferes-color-scheme: light){
+  
+}
 </style>
