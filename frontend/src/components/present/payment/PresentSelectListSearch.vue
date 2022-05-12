@@ -77,7 +77,7 @@
 <script>
 import { API_BASE_URL } from "@/config/index.js";
 import { mapGetters, mapActions, mapState } from "vuex";
-import PresentPayModal from "@/components/present/PresentPayModal";
+import PresentPayModal from "@/components/present/payment/PresentPayModal";
 const presentStore = "presentStore";
 const userStore = "userStore";
 export default {

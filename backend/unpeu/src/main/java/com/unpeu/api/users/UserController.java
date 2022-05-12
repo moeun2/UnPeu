@@ -27,6 +27,7 @@ import com.unpeu.config.auth.JwtTokenUtil;
 import com.unpeu.config.auth.UnpeuUserDetails;
 import com.unpeu.config.media.MediaService;
 import com.unpeu.domain.entity.User;
+import com.unpeu.domain.request.UserPatchConceptReq;
 import com.unpeu.domain.request.UserPatchEmailBirthReq;
 import com.unpeu.domain.request.UserPatchUserInfoReq;
 import com.unpeu.domain.response.UserGetRes;
@@ -128,8 +129,18 @@ public class UserController {
 		resultMap.put("User",new UserGetRes(user));
         return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
     }
-	
-	
+
+	@ApiOperation(value = "유저 컨셉 등록/수정 Controller")
+	@RequestMapping(value = "/users/concept", method = RequestMethod.PATCH)
+	public ResponseEntity<Map<String, Object>> updateUserConcept(@ApiIgnore @NotNull @org.jetbrains.annotations.NotNull Authentication authentication,@RequestBody @NotNull UserPatchConceptReq userPatchConceptReq){
+		logger.info("updateUserConcept - 호출");
+		Map<String, Object> resultMap = new HashMap<>();
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+		User updateUser = userService.updateUserConcept(user.getId(), userPatchConceptReq);
+		resultMap.put("User", new UserGetRes(updateUser));
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+	}
 	
 	@ApiOperation(value = "유저 타이틀 수정 Controller")
 	@RequestMapping(value = "/users/title", method = RequestMethod.PATCH)

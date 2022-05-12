@@ -39,10 +39,7 @@ public class User {
 
 	private String userImg;
 
-	@NotNull(message = "category 를 입력해주세요")
 	private String category;
-
-	@NotNull(message = "selectedDate 를 입력해주세요")
 	private LocalDate selectedDate;
 
 	private LocalDateTime createdAt;

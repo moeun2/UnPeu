@@ -2,12 +2,12 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/MainPage.vue";
 import PresentPage from "@/views/PresentPage.vue";
-import PresentPayment from "@/components/PresentPayment.vue";
-import PresentManage from "@/components/PresentManage.vue";
+import PresentPayment from "@/components/present/payment/PresentPayment.vue";
+import PresentManage from "@/components/present/management/PresentManage.vue";
 
 import Event from "@/views/EventPage.vue";
-import eventRoom from "@/components/EventRoom.vue";
-import ConceptChange from "@/components/ConceptChange.vue";
+import eventRoom from "@/components/eventRoom/EventRoom.vue";
+import ConceptChange from "@/components/eventRoom/ConceptChange.vue";
 
 import Diary from "@/views/DiaryPage.vue";
 import BoardList from "@/components/diary/BoardList.vue";

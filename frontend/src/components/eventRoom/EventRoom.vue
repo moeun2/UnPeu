@@ -35,7 +35,7 @@
       <div class="item" v-for="(message, index) in messagesFor" :key="index">
         <a href="#pocket">
           <button @click="modal(message)">
-            <img src="@/assets/img/pocket.png" class="pocket" alt="" />
+            <img src="@/assets/img/concept/childrenday/pocket.png" class="pocket" alt="" />
           </button>
         </a>
       </div>

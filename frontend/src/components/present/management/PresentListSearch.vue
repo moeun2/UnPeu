@@ -89,8 +89,8 @@
 </template>
 
 <script>
-import PresentUpdateModal from "@/components/present/PresentUpdateModal.vue";
-import { API_BASE_URL } from "../../config/index.js";
+import PresentUpdateModal from "@/components/present/management/PresentUpdateModal.vue";
+import { API_BASE_URL } from "@/config/index.js";
 import { mapActions, mapState } from "vuex";
 
 const presentStore = "presentStore";

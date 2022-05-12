@@ -178,39 +178,6 @@
   </div>
 </template>
 <script>
-const $checkbox = document.querySelector(".check");
-
-const isUserColorTheme = localStorage.getItem("color-theme");
-const isOsColorTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-  ? "dark"
-  : "light";
-
-const getUserTheme = () =>
-  isUserColorTheme ? isUserColorTheme : isOsColorTheme;
-
-window.onload = function () {
-  if (getUserTheme === "dark") {
-    localStorage.setItem("color-theme", "dark");
-    document.documentElement.setAttribute("color-theme", "dark");
-    $checkbox.setAttribute("checked", true);
-  } else {
-    localStorage.setItem("color-theme", "light");
-    document.documentElement.setAttribute("color-theme", "light");
-  }
-};
-
-$checkbox.addEventListener("click", (e) => {
-  if (e.target.checked) {
-    localStorage.setItem("color-theme", "light");
-    document.documentElement.setAttribute("color-theme", "dark");
-  } else {
-    localStorage.setItem("color-theme", "light");
-    document.documentElement.setAttribute("color-theme", "light");
-  }
-});
-</script>
-
-<script>
 import {
   getUserDetailUseToken,
   getUserDetail,
@@ -222,7 +189,7 @@ import {
   deleteUser,
 } from "@/api/user.js";
 import { EVENT_URL, FRONT_URL, API_BASE_URL } from "@/config/index";
-import LinkShareModal from "@/components/LinkShareModal.vue";
+import LinkShareModal from "@/components/option/LinkShareModal.vue";
 import { mapMutations } from "vuex";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
@@ -636,12 +603,25 @@ export default {
   font-weight: 400;
 }
 
+:root[color-theme="default"] {
+  --background: var(--test2);
+  --profile : var(--pink-color);
+
+}
+:root[color-theme="birthday"] {
+  --background: var(--test2);
+  --profile : var(--pink-color);
+
+}
 :root[color-theme="light"] {
   --background: var(--test2);
+  --profile : var(--pink-color);
+
 }
 
 :root[color-theme="dark"] {
   --background: var(--test);
+  --profile : var(--yellow-color);
 }
 
 .view {
@@ -671,7 +651,7 @@ export default {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
-  background: #85b9eaef;
+  background: var(--speech-bubble-color);
   color: #fff;
   font-weight: bold;
   z-index: 1;
@@ -705,7 +685,7 @@ export default {
   position: absolute;
   bottom: 105px;
   left: -30px;
-  background: #85b9eaef;
+  background: var(--speech-bubble-color);
   color: white;
   border-radius: 0.4em;
   padding: 0.3rem;
@@ -719,7 +699,7 @@ export default {
   width: 0;
   height: 0;
   border: 10px solid transparent;
-  border-left-color: #85b9eaef;
+  border-left-color: var(--speech-bubble-color);
   border-right: 0;
   border-top: 0;
   margin-top: -5px;
@@ -728,7 +708,7 @@ export default {
 
 .speech-bubble2 {
   position: absolute;
-  background: #85b9eaef;
+  background: var(--speech-bubble-color);
   border-radius: 0.4em;
   padding: 0.3rem;
   color: white;
@@ -751,7 +731,7 @@ export default {
   width: 0;
   height: 0;
   border: 8px solid transparent;
-  border-right-color: #85b9eaef;
+  border-right-color: var(--speech-bubble-color);
   border-left: 0;
   border-bottom: 0;
   margin-top: -4px;

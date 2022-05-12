@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import PresentMessage from "./present/PresentMessage.vue";
-import PresentSelectListSearch from "@/components/present/PresentSelectListSearch.vue";
+import PresentMessage from "./PresentMessage.vue";
+import PresentSelectListSearch from "@/components/present/payment/PresentSelectListSearch.vue";
 import { mapGetters, mapActions } from "vuex";
 import * as Alert from "@/api/alert"; //api 폴더 안에 넣어놓는 것이 맞는지는 모르겠음. But, 넣어놓을 곳이 딱히 없어서 넣어놓음
 import { sendMessage } from "@/api/present";
