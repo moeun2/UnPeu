@@ -50,13 +50,11 @@ export default {
   computed: {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
+      userInfo: "getUser",
     }),
     ...mapGetters(presentStore, {
       numOfPresentList: "getNumberOfPresentList",
     }),
-    ...mapGetters(userStore,{
-      userInfo: "getUser",
-    })
   },
   mounted() {
     this.checkNumOfPresentList()
@@ -64,7 +62,7 @@ export default {
   methods: {
     ...mapActions(presentStore, ["sendPresentMessage"]),
     checkNumOfPresentList(){
-      console.log(this.numOfPresentList)
+      // console.log(this.numOfPresentList)
       if(this.numOfPresentList == null || this.numOfPresentList==0){
         this.numCheckbox = true
       }else{
