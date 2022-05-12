@@ -12,8 +12,8 @@
             <div class="profile-paper">
               <div class="profile-wrap">
                 <div class="visitor-counter">
-                  <p class="text-today" v-text="todayVisit">103</p>
-                  <p class="text-total" v-text="totalVisit">13042</p>
+                  <p class="text-today" v-text="todayVisit"></p>
+                  <p class="text-total" v-text="totalVisit"></p>
                 </div>
                 <div class="profile">
                   <p class="text-today-is">
@@ -292,26 +292,22 @@ export default {
     //조회수 증가
     if (
       window.document.location.href ==
-      FRONT_URL + "/eventRoom/" + this.$route.params.userid
-    ) {
-      increaseVisit(
-        this.$route.params.userid,
-        (res) => {
-          // console.log("increaseVisit 실행")
-          // console.log(res)
-
-          if (res.data.User.todayVisit) {
-            this.todayVisit = res.data.User.todayVisit;
-          }
-          if (res.data.User.totalVisit) {
-            this.totalVisit = res.data.User.totalVisit;
-          }
-        },
-        () => {
-          // console.log("increaseVisit fail")
-        }
-      );
+      FRONT_URL + "/eventRoom/" + this.$route.params.userid) 
+      {
+        increaseVisit(
+          this.$route.params.userid,
+          (res) => {
+            if (res.data.User.todayVisit) {
+              this.todayVisit = res.data.User.todayVisit;
+            }
+            if (res.data.User.totalVisit) {
+              this.totalVisit = res.data.User.totalVisit;
+            }
+          },
+        );
+        
     }
+
   },
   components: {
     LinkShareModal,
@@ -486,7 +482,10 @@ export default {
         inputAttributes: {
           maxlength: 25,
           rows: 4,
+          'spellcheck':'false'
+
         },
+
         inputValidator: (value) => {
           if (!value) {
             return "타이틀을 한글자 이상 입력해주세요!";
@@ -511,7 +510,9 @@ export default {
         inputPlaceholder: "50자 이하, 4줄 이하로 작성해주세요.",
         inputAttributes: {
           maxlength: 50,
-          rows: 4,
+          rows:4,
+          'spellcheck':'false'
+
         },
         inputValidator: (value) => {
           if (!value) {
@@ -546,92 +547,78 @@ export default {
       this.showModal = true;
     },
 
-    async userSetting() {
+    async userSetting(){
       let flatpickrInstance;
 
-      await this.$swal
-        .fire({
-          title: "회원 정보",
-          icon: "info",
-          html:
-            '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="swal-input1" class="swal2-input" value=' +
-            this.userEmail +
-            "></div>" +
-            '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="expiry-date"value=' +
-            this.userBirth +
-            "></div>",
-          inputLabel:
-            "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
-          stopKeydownPropagation: false,
-          focusConfirm: true,
-          showDenyButton: true,
-          showCancelButton: true,
-          cancelButtonText: "취소",
-          confirmButtonText: "수정",
-          denyButtonText: `회원 탈퇴`,
-          preConfirm: () => {
-            var exptext =
-              /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-            if (!flatpickrInstance.selectedDates[0]) {
-              this.$swal.showValidationMessage(`생일을 입력해주세요`);
-            } else if (flatpickrInstance.selectedDates[0] > new Date()) {
-              this.$swal.showValidationMessage(
-                `혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`
-              );
-            }
-            if (
-              !document.getElementById("swal-input1").value ||
-              !exptext.test(document.getElementById("swal-input1").value)
-            ) {
-              this.$swal.showValidationMessage(`이메일을 입력해주세요`);
-            }
-          },
-          willOpen: () => {
-            flatpickrInstance = flatpickr(
-              this.$swal.getPopup().querySelector("#expiry-date")
-            );
-          },
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            const data = {
-              userEmail: document.getElementById("swal-input1").value,
-              userBirth: document.getElementById("expiry-date").value,
-            };
-            updateUserEmailBirth(
-              localStorage.getItem("accessToken"),
-              data,
-              (res) => {
-                console.log("success change email and birth");
-                this.$swal.fire("수정을 성공했습니다!", "", "success");
-                this.userEmail = res.data.User.userEmail;
-                this.userBirth =
-                  res.data.User.userBirth[0] +
-                  "." +
-                  res.data.User.userBirth[1] +
-                  "." +
-                  res.data.User.userBirth[2];
-              }
-            );
-          } else if (result.isDenied) {
-            this.$swal
-              .fire({
-                title: "정말 회원을 탈퇴하시겠습니까?",
-                showCancelButton: true,
-              })
-              .then((result) => {
-                if (result.isConfirmed) {
-                  deleteUser(() => {
-                    this.$swal.fire("회원 탈퇴되었습니다.", "", "success");
-                    localStorage.removeItem("accessToken");
-                    this.$store.commit("userStore/setUSerNull");
-                    this.$router.push({ name: "Landing" });
-                  });
-                }
-              });
+      await this.$swal.fire({
+        title: "회원 정보",
+        icon: 'info',
+        html:
+          '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="swal-input1" class="swal2-input" value='+this.userEmail+'></div>' +
+          '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="expiry-date"value='+this.userBirth+'></div>',
+        inputLabel:
+          "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
+        stopKeydownPropagation: false,
+        focusConfirm: true,
+        showDenyButton: true,
+        showCancelButton: true,
+        cancelButtonText:'취소',
+        confirmButtonText: '수정',
+        denyButtonText: `회원 탈퇴`,
+        preConfirm: () => {
+          var exptext = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+          if (!flatpickrInstance.selectedDates[0]) {
+            this.$swal.showValidationMessage(`생일을 입력해주세요`);
+          }else if (flatpickrInstance.selectedDates[0] > new Date()) {
+            this.$swal.showValidationMessage(`혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`)
           }
-        });
+          if (!document.getElementById("swal-input1").value||!exptext.test(document.getElementById("swal-input1").value)) {
+            this.$swal.showValidationMessage(`이메일을 입력해주세요`);
+          }
+        },
+        willOpen: () => {
+          flatpickrInstance = flatpickr(
+            this.$swal.getPopup().querySelector("#expiry-date"),
+            {
+              allowInput:true
+            }
+          );
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const data={
+            userEmail: document.getElementById("swal-input1").value,
+            userBirth: document.getElementById("expiry-date").value
+          }
+            updateUserEmailBirth(localStorage.getItem("accessToken"), data, (res) => {
+            console.log("success change email and birth")
+            this.$swal.fire('수정을 성공했습니다!', '', 'success')
+            this.userEmail= res.data.User.userEmail
+            this.userBirth =
+              res.data.User.userBirth[0] +
+              "." +
+              res.data.User.userBirth[1] +
+              "." +
+              res.data.User.userBirth[2];
+          });
+        } else if (result.isDenied) {
+          this.$swal.fire({
+              title: '정말 회원을 탈퇴하시겠습니까?',
+              showCancelButton: true,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                deleteUser(() => {
+                  this.$swal.fire('회원 탈퇴되었습니다.', '', 'success')
+                  localStorage.removeItem("accessToken")
+                  this.$store.commit("userStore/setUSerNull")
+                  this.$router.push({name:"Landing"})
+                })
+              }
+            })
+        }
+      })
     },
+
   },
 };
 </script>
@@ -784,4 +771,8 @@ export default {
 .swal2-textarea::-webkit-scrollbar {
   display: none;
 }
+.mdi-camera::before {
+    color: grey;
+}
 </style>
+
