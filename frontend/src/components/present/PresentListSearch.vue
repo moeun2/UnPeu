@@ -123,17 +123,7 @@ export default {
     deep: true,
     handler(newVal) {
       if(newVal==null) return;
-      if(this.cardList.length === newVal.Present.length){
-        this.cardList=newVal.Present;
-      }else if(this.cardList.length < newVal.Present.length){
-        if(this.cardList.length-1 == newVal.Present.length)
-          this.cardList.push(newVal.Present[this.cardList.length]);
-        else{
-          this.cardList=newVal.Present;
-        }
-      }else{
-        return;
-      } 
+      this.cardList=newVal.Present;
     }
   }
   },
@@ -148,9 +138,6 @@ export default {
 
   methods: {
     ...mapActions(presentStore, ["deletePresent"]),
-    progress(){
-
-    },
 
     openDialog(index) {
       this.dialog = true;
@@ -179,7 +166,7 @@ export default {
                 "파일이 삭제되었습니다.",
                 "success"
               );
-              //this.$delete(this.cardList, index);
+              // this.$delete(this.cardList, index);
             } else {
               this.$swal.fire(
                 "삭제 실패!",

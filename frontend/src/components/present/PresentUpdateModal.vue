@@ -9,7 +9,6 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-tabs
-          v-model="tab"
           background-color="yellow lighten-4"
           color="blue accent-2"
           grow
