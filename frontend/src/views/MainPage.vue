@@ -12,8 +12,8 @@
             <div class="profile-paper">
               <div class="profile-wrap">
                 <div class="visitor-counter">
-                  <p class="text-today" v-text="todayVisit">103</p>
-                  <p class="text-total" v-text="totalVisit">13042</p>
+                  <p class="text-today" v-text="todayVisit"></p>
+                  <p class="text-total" v-text="totalVisit"></p>
                 </div>
                 <div class="profile">
                   <p class="text-today-is">
@@ -250,26 +250,20 @@ export default {
     //조회수 증가
     if (
       window.document.location.href ==
-      FRONT_URL + "/eventRoom/" + this.$route.params.userid
-    ) {
-      increaseVisit(
-        this.$route.params.userid,
-        (res) => {
-          // console.log("increaseVisit 실행")
-          // console.log(res)
-
-          if (res.data.User.todayVisit) {
-            this.todayVisit = res.data.User.todayVisit;
-          }
-          if (res.data.User.totalVisit) {
-            this.totalVisit = res.data.User.totalVisit;
-          }
-        },
-        () => {
-          // console.log("increaseVisit fail")
-
-        }
-      );
+      FRONT_URL + "/eventRoom/" + this.$route.params.userid) 
+      {
+        increaseVisit(
+          this.$route.params.userid,
+          (res) => {
+            if (res.data.User.todayVisit) {
+              this.todayVisit = res.data.User.todayVisit;
+            }
+            if (res.data.User.totalVisit) {
+              this.totalVisit = res.data.User.totalVisit;
+            }
+          },
+        );
+        
     }
   },
   components: {
@@ -410,9 +404,9 @@ export default {
         inputPlaceholder: "25자 이하로 작성해주세요.",
         inputAttributes: {
           maxlength: 25,
-          rows: 4,
-
+          'spellcheck':'false'
         },
+
         inputValidator: (value) => {
           if (!value) {
             return "타이틀을 한글자 이상 입력해주세요!";
@@ -437,7 +431,8 @@ export default {
         inputPlaceholder: "50자 이하, 4줄 이하로 작성해주세요.",
         inputAttributes: {
           maxlength: 50,
-          rows:4
+          rows:4,
+          'spellcheck':'false'
         },
         inputValidator: (value) => {
           if (!value) {
@@ -504,7 +499,10 @@ export default {
         },
         willOpen: () => {
           flatpickrInstance = flatpickr(
-            this.$swal.getPopup().querySelector("#expiry-date")
+            this.$swal.getPopup().querySelector("#expiry-date"),
+            {
+              allowInput:true
+            }
           );
         },
       }).then((result) => {
@@ -686,5 +684,8 @@ export default {
 }
 .swal2-textarea::-webkit-scrollbar {
   display: none;
+}
+.mdi-camera::before {
+    color: grey;
 }
 </style>
