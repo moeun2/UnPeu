@@ -175,7 +175,7 @@ export default {
     let seconds = today.getSeconds(); // 초
     let setMonth = this.$store.state.eventStore.month;
     let setDate = this.$store.state.eventStore.date;
-    console.log("gmonth: " + setMonth);
+    // console.log("gmonth: " + setMonth);
     // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
     if (month >= setMonth && date >= setDate && hours >= 0 && minutes >= 0 && seconds >= 0) {
       let changeView = document.getElementById("main-room");
