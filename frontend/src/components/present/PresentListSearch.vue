@@ -16,7 +16,7 @@
                   <v-col :key="i">
                     <v-hover v-slot="{ hover }">
                       <v-card
-                        :elevation="hover ? 12 : 2"
+                        :elevation="hover ? 6 : 2"
                         :class="{ 'on-hover': hover }"
                         v-if="+index + i < cardList.length"
                         class="card"
@@ -61,14 +61,15 @@
                           </v-expand-transition>
                         </v-img>
                         <v-card-title primary-title>
-                          {{ cardList[+index + i].presentName }}
+                              {{ cardList[+index + i].presentName }}
                         </v-card-title>
                         <v-card-text>
                           <p>가격 : {{ cardList[+index + i].presentPrice }}</p>
-                          <p>
-                            현재 받은 금액 :
-                            {{ cardList[+index + i].receivedPrice }}
-                          </p>
+                          <br/>
+                          <present-progress-bar 
+                          :presentPrice="cardList[+index + i].presentPrice"
+                          :receivedPrice="cardList[+index + i].receivedPrice"
+                          ></present-progress-bar>
                         </v-card-text>
                       </v-card>
                     </v-hover>
@@ -90,6 +91,7 @@
 
 <script>
 import PresentUpdateModal from "@/components/present/PresentUpdateModal.vue";
+import PresentProgressBar from "@/components/present/PresentProgressBar.vue";
 import { API_BASE_URL } from "../../config/index.js";
 import { mapActions, mapState } from "vuex";
 
@@ -98,6 +100,7 @@ const presentStore = "presentStore";
 export default {
   components: {
     PresentUpdateModal,
+    PresentProgressBar,
   },
 
   data() {
@@ -120,17 +123,7 @@ export default {
     deep: true,
     handler(newVal) {
       if(newVal==null) return;
-      if(this.cardList.length === newVal.Present.length){
-        this.cardList=newVal.Present;
-      }else if(this.cardList.length < newVal.Present.length){
-        if(this.cardList.length-1 == newVal.Present.length)
-          this.cardList.push(newVal.Present[this.cardList.length]);
-        else{
-          this.cardList=newVal.Present;
-        }
-      }else{
-        return;
-      } 
+      this.cardList=newVal.Present;
     }
   }
   },
@@ -173,7 +166,7 @@ export default {
                 "파일이 삭제되었습니다.",
                 "success"
               );
-              //this.$delete(this.cardList, index);
+              // this.$delete(this.cardList, index);
             } else {
               this.$swal.fire(
                 "삭제 실패!",

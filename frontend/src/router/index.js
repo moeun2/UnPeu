@@ -88,7 +88,7 @@ const routes = [
             path: ":userid/manage",
             name: "PresentManage",
             component: PresentManage,
-            beforeEnter: getUserPresent,
+            beforeEnter: getUserPresentAndCheckGuest,
           },
           {
             path: ":userid/payment",
@@ -133,6 +133,22 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
+function getUserPresentAndCheckGuest(to, from, next){
+  let loginCheck=Store.state.userStore.user;
+  if(loginCheck==null) {
+    alert("로그인을 하셔야 합니다!")
+    router.push({
+      name:"eventRoom",
+      params: { userid: to.params.userid }
+    })
+  }
+  else{
+    let userId = to.params.userid;
+    Store.dispatch("presentStore/searchList",userId);
+    next();
+  }
+}
 
 function getUserPresent(to, from, next){
   let userId = to.params.userid;
