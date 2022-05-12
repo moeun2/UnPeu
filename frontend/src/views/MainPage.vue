@@ -55,7 +55,7 @@
                     <div class="info-birth">{{ this.userBirth }}</div>
                     <br />
                     <p class="text-email">{{ this.userEmail }}</p>
-                    <div style="display: flex; margin-top: 10px;">
+                    <div style="display: flex; margin-top: 10px">
                       <router-link
                         :to="{ name: 'PresentManage' }"
                         v-if="isMyPage"
@@ -82,17 +82,27 @@
                         v-if="!isMyPage && isLogin"
                       >
                         <button class="item">
-                          <v-icon >mdi-home</v-icon>
+                          <v-icon>mdi-home</v-icon>
                           <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                           <p class="arrow_box">마이페이지</p>
                         </button>
                       </router-link>
-                      <button class="item" @click="logout" v-if="isLogin" style="margin-left: 5px;">
+                      <button
+                        class="item"
+                        @click="logout"
+                        v-if="isLogin"
+                        style="margin-left: 5px"
+                      >
                         <v-icon>mdi-logout</v-icon>
                         <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                         <p class="arrow_box">로그아웃</p>
                       </button>
-                      <button class="item" @click="userSetting" v-if="isMyPage&&isLogin" style="margin-left: 5px;">
+                      <button
+                        class="item"
+                        @click="userSetting"
+                        v-if="isMyPage && isLogin"
+                        style="margin-left: 5px"
+                      >
                         <v-icon>mdi-account-cog</v-icon>
                         <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                         <p class="arrow_box">회원정보</p>
@@ -165,7 +175,6 @@
     ></LinkShareModal>
   </div>
 </template>
-
 <script>
 import {
   getUserDetailUseToken,
@@ -177,20 +186,19 @@ import {
   updateUserEmailBirth,
   deleteUser,
 } from "@/api/user.js";
-import { EVENT_URL,FRONT_URL, API_BASE_URL } from "@/config/index";
-import LinkShareModal from "@/components/LinkShareModal.vue";
-import { mapMutations } from 'vuex';
+import { EVENT_URL, FRONT_URL, API_BASE_URL } from "@/config/index";
+import LinkShareModal from "@/components/option/LinkShareModal.vue";
+import { mapMutations } from "vuex";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
-
-const presentStore="presentStore";
+const presentStore = "presentStore";
 // import store from '@/store';
 export default {
   name: "App",
   data() {
     return {
-      url : EVENT_URL,
+      url: EVENT_URL,
       activeCheckClass: "menu-item mi-1 menu-checked",
       activeClass: "menu-item mi-3",
       userName: "김싸피",
@@ -223,6 +231,7 @@ export default {
   },
 
   created() {
+    this.test();
     if (window.localStorage.getItem("accessToken")) {
       //로그인 되어있는 상태 store inlogin true
       getUserDetailUseToken(
@@ -263,39 +272,73 @@ export default {
         );
         
     }
+
   },
   components: {
     LinkShareModal,
   },
 
   methods: {
-    ...mapMutations(presentStore,["RESET_PRESENT_LIST"]),
+    test() {
+      const isUserColorTheme = localStorage.getItem("color-theme");
+      // const isOsColorTheme = window.matchMedia("(prefers-color-scheme: dark)")
+      //   .matches
+      //   ? "dark"
+      //   : "light";
+      // console.log(isUserColorTheme,isOsColorTheme)
+      // const getUserTheme = () =>
+      //   isUserColorTheme ? isUserColorTheme : isOsColorTheme;
+      let getUserTheme='';
+      console.log("isUserColorTheme : ",isUserColorTheme)
+      if(isUserColorTheme){
+        getUserTheme = isUserColorTheme;
+      }else{
+        getUserTheme = "light"
+      }
+
+      if (getUserTheme === "dark") {
+        localStorage.setItem("color-theme", "dark");
+        document.documentElement.setAttribute("color-theme", "dark");
+        // $checkbox.setAttribute('checked', true);
+      } else {
+        localStorage.setItem("color-theme", "light");
+        document.documentElement.setAttribute("color-theme", "light");
+      }
+    },
+    ...mapMutations(presentStore, ["RESET_PRESENT_LIST"]),
     goToMainPage() {
-      this.$router.push({ name: "eventRoom" }).catch(()=>{});
+      if (localStorage.getItem("color-theme") === "light") {
+        localStorage.setItem("color-theme", "dark");
+        document.documentElement.setAttribute("color-theme", "dark");
+        // $checkbox.setAttribute('checked', true);
+      } else {
+        localStorage.setItem("color-theme", "light");
+        document.documentElement.setAttribute("color-theme", "light");
+      }
+      // this.$router.push({ name: "eventRoom" }).catch(()=>{});
     },
     setUserData() {
       getUserDetail(
         this.$route.params.userid,
         (res) => {
-
           // console.log(res.data.User);
           this.userName = res.data.User.userName;
           if (res.data.User.userImg) {
-            this.userImg = API_BASE_URL + res.data.User.userImg
-          }else{
-            this.userImg=""
+            this.userImg = API_BASE_URL + res.data.User.userImg;
+          } else {
+            this.userImg = "";
           }
 
           if (res.data.User.userInfo) {
-            this.userInfo = res.data.User.userInfo
-          }else{
-            this.userInfo="선물주는 사람\n차칸 사람"
+            this.userInfo = res.data.User.userInfo;
+          } else {
+            this.userInfo = "선물주는 사람\n차칸 사람";
           }
 
           if (res.data.User.userTitle) {
             this.userTitle = res.data.User.userTitle;
-          }else{
-            this.userTitle="오늘은 어른이날, 선물사주라주"
+          } else {
+            this.userTitle = "오늘은 어른이날, 선물사주라주";
           }
           if (res.data.User.userEmail) {
             this.userEmail = res.data.User.userEmail;
@@ -366,12 +409,13 @@ export default {
       }
     },
 
-      logout(){
-        //storage확인해서 도메인 확인 //모달창 바꾸기
-        this.$swal.fire({
-          icon: 'question',
-          title: 'Logout',
-          html:'앙뿌에서 로그아웃 하시겠습니까? ' ,
+    logout() {
+      //storage확인해서 도메인 확인 //모달창 바꾸기
+      this.$swal
+        .fire({
+          icon: "question",
+          title: "Logout",
+          html: "앙뿌에서 로그아웃 하시겠습니까? ",
           showCancelButton: true,
         })
         .then((result) => {
@@ -402,7 +446,9 @@ export default {
         inputPlaceholder: "25자 이하로 작성해주세요.",
         inputAttributes: {
           maxlength: 25,
+          rows: 4,
           'spellcheck':'false'
+
         },
 
         inputValidator: (value) => {
@@ -431,6 +477,7 @@ export default {
           maxlength: 50,
           rows:4,
           'spellcheck':'false'
+
         },
         inputValidator: (value) => {
           if (!value) {
@@ -448,7 +495,6 @@ export default {
         updateUserInfo(info.replace('"', ""), (res) => {
           this.userInfo = res.data.User.userInfo;
           // console.log(res.data.User.userInfo)
-
         });
       }
     },
@@ -537,9 +583,8 @@ export default {
         }
       })
     },
+
   },
-
-
 };
 </script>
 
@@ -556,8 +601,29 @@ export default {
   font-weight: 400;
 }
 
+:root[color-theme="default"] {
+  --background: var(--test2);
+  --profile : var(--pink-color);
+
+}
+:root[color-theme="birthday"] {
+  --background: var(--test2);
+  --profile : var(--pink-color);
+
+}
+:root[color-theme="light"] {
+  --background: var(--test2);
+  --profile : var(--pink-color);
+
+}
+
+:root[color-theme="dark"] {
+  --background: var(--test);
+  --profile : var(--yellow-color);
+}
+
 .view {
-  background-image: url("https://i.imgur.com/JzNuJr5.png");
+  background-image: var(--background);
   background-size: cover;
   /* 수직 정렬 위해서 사용 */
   height: 100vh;
@@ -583,7 +649,7 @@ export default {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
-  background: #85b9eaef;
+  background: var(--speech-bubble-color);
   color: #fff;
   font-weight: bold;
   z-index: 1;
@@ -617,7 +683,7 @@ export default {
   position: absolute;
   bottom: 105px;
   left: -30px;
-  background: #85b9eaef;
+  background: var(--speech-bubble-color);
   color: white;
   border-radius: 0.4em;
   padding: 0.3rem;
@@ -631,7 +697,7 @@ export default {
   width: 0;
   height: 0;
   border: 10px solid transparent;
-  border-left-color: #85b9eaef;
+  border-left-color: var(--speech-bubble-color);
   border-right: 0;
   border-top: 0;
   margin-top: -5px;
@@ -640,7 +706,7 @@ export default {
 
 .speech-bubble2 {
   position: absolute;
-  background: #85b9eaef;
+  background: var(--speech-bubble-color);
   border-radius: 0.4em;
   padding: 0.3rem;
   color: white;
@@ -663,7 +729,7 @@ export default {
   width: 0;
   height: 0;
   border: 8px solid transparent;
-  border-right-color: #85b9eaef;
+  border-right-color: var(--speech-bubble-color);
   border-left: 0;
   border-bottom: 0;
   margin-top: -4px;
@@ -673,12 +739,12 @@ export default {
   width: 100px;
 }
 .swal2-textarea {
-    height: 5.75em !important;
-    padding: 0.75em;
-    resize: none;
-    text-align: center;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  height: 5.75em !important;
+  padding: 0.75em;
+  resize: none;
+  text-align: center;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 .swal2-textarea::-webkit-scrollbar {
   display: none;
@@ -687,3 +753,4 @@ export default {
     color: grey;
 }
 </style>
+

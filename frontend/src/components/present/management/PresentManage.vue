@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import PresentListSearch from "./present/PresentListSearch.vue";
-import PresentRegister from "./present/PresentRegister.vue";
+import PresentListSearch from "@/components/present/management/PresentListSearch.vue";
+import PresentRegister from "@/components/present/management/PresentRegister.vue";
 
 export default {
   components: { PresentRegister, PresentListSearch },

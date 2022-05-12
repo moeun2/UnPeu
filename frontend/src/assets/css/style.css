@@ -49,7 +49,7 @@
   .profile-section,
   .main-section {
     height: 600px;
-    background-color: #FFD232;
+    background-color: var(--profile);
   }
   
   .profile-section {

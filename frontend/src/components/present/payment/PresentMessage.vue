@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { API_BASE_URL } from "../../config/index.js";
+import { API_BASE_URL } from "@/config/index.js";
 
 export default {
   data() {

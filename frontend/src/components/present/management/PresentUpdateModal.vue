@@ -133,7 +133,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import { API_BASE_URL } from "../../config/index.js";
+import { API_BASE_URL } from "@/config/index.js";
 
 const presentStore = "presentStore";
 

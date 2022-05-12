@@ -76,6 +76,7 @@ export default {
 .landing_btn {
   background-color: #fff6ca !important;
 }
+
 </style>
 
 
