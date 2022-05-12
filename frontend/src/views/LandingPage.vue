@@ -5,7 +5,7 @@
         당신을 위한 조그마한 기록 그리고 선물<br />
         Un Peu : 앙뿌<br /><br />
       </span>
-      <img width="250px" src="@/assets/main_logo4.gif" /><br /><br />
+      <img width="250px" src="@/assets/img/main_logo4.gif" /><br /><br />
       <div class="description">친구에게 받은 URL이 있다면 여기로</div>
       <v-btn
         class="landing_btn"

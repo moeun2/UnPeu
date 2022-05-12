@@ -19,7 +19,6 @@
                   <p class="text-today-is">
                     BGM IS .. <span> Y - 프리스타일</span>
                   </p>
-                  <!-- <v-icon class="img-update-icon" small @click="updateUserImg" v-if="isMyPage">mdi-image-edit-outline</v-icon> -->
                   <v-file-input
                     class="img-update-icon"
                     v-if="isMyPage"
@@ -127,8 +126,7 @@
                       }"
                       ><li :class="[activeCheckClass]" @click="checkHome()">
                         홈
-                      </li></router-link
-                    >
+                      </li></router-link>
                     <router-link
                       :to="{
                         name: 'Diary',
