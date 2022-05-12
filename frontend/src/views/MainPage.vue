@@ -563,6 +563,8 @@ export default {
         } else if (result.isDenied) {
           this.$swal.fire({
               title: '정말 회원을 탈퇴하시겠습니까?',
+              icon: 'question',
+              text: '탈퇴하면 소중한 메세지와 선물들이 사라집니다 그래도 탈퇴하시겠습니까?',
               showCancelButton: true,
             }).then((result) => {
               if (result.isConfirmed) {
