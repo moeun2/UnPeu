@@ -21,9 +21,9 @@
         <button class="reg-gift">
           <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="" />
           <p>
-            어른이날을 축하해주세요
+            <b>click! 📩</b>
             <br />
-            콩주머니 메세지 &amp; 선물 등록하러 가기!
+            메세지 &amp; 선물 전달하러 가기!
           </p>
         </button>
       </router-link>
@@ -430,6 +430,14 @@ export default {
   width: 400px;
   text-align: center;
   box-shadow: 3px 3px 3px #abababd8;
+}
+.reg-gift:hover {
+  background-color: rgb(222, 221, 221);
+  // border-radius: 15px;
+  // padding: 10px;
+  // width: 400px;
+  // text-align: center;
+  // box-shadow: 3px 3px 3px #abababd8;
 }
 .gift-box {
   text-align: center;
