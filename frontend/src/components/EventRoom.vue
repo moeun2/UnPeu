@@ -5,8 +5,8 @@
         <li class="menu2">
           MENU
           <ul class="menu2_s submenu">
-            <!-- <li><button>컨셉 변경</button></li> -->
-            <li><button @click="resetMessage">컨셉 초기화</button></li>
+            <li><button @click="changeConcept">컨셉 변경</button></li>
+            <li><button @click="resetMessage">메세지 삭제</button></li>
             <li><button @click="saveMessage">메세지 저장</button></li>
           </ul>
         </li>
@@ -148,8 +148,11 @@ export default {
     let hours = today.getHours(); // 시
     let minutes = today.getMinutes(); // 분
     let seconds = today.getSeconds(); // 초
+    let setMonth = this.$store.state.eventStore.month;
+    let setDate = this.$store.state.eventStore.date;
+    console.log("gmonth: " + setMonth);
     // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
-    if (month >= 5 && date >= 5 && hours >= 0 && minutes >= 0 && seconds >= 0) {
+    if (month >= setMonth && date >= setDate && hours >= 0 && minutes >= 0 && seconds >= 0) {
       let changeView = document.getElementById("main-room");
       // // console.log(changeView.className);
       changeView.className = "main-room2";
@@ -168,7 +171,6 @@ export default {
     ...mapGetters(userStore, {
       curUser: "getCurUser",
     }),
-
     rows() {
       let length = this.messages.length / this.perPage;
       return Math.ceil(length);
@@ -207,10 +209,11 @@ export default {
       let hours = today.getHours(); // 시
       let minutes = today.getMinutes(); // 분
       let seconds = today.getSeconds(); // 초
-      // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+      let setMonth = this.$store.state.eventStore.month;
+      let setDate = this.$store.state.eventStore.date;
       if (
-        month >= 5 &&
-        date >= 5 &&
+        month >= setMonth &&
+        date >= setDate &&
         hours >= 0 &&
         minutes >= 0 &&
         seconds >= 0
@@ -222,6 +225,7 @@ export default {
     },
 
     modal(message) {
+
       // 날짜 처리 (5월 5일 00:00:00 열람)
       let today = new Date();
       let month = today.getMonth() + 1; // 월
@@ -229,10 +233,11 @@ export default {
       let hours = today.getHours(); // 시
       let minutes = today.getMinutes(); // 분
       let seconds = today.getSeconds(); // 초
-      // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+      let setMonth = this.$store.state.eventStore.month;
+      let setDate = this.$store.state.eventStore.date;
       if (
-        month >= 5 &&
-        date >= 5 &&
+        month >= setMonth &&
+        date >= setDate &&
         hours >= 0 &&
         minutes >= 0 &&
         seconds >= 0
@@ -321,6 +326,10 @@ export default {
         }
       });
     },
+    changeConcept() {
+      //document.getElementById("main-room").style.backgroundImage = 'url(https://i.imgur.com/JzNuJr5.png)';
+      this.$router.replace({ name: "ConceptChange" });
+    }
   },
 };
 </script>
@@ -378,6 +387,7 @@ ul.myMenu {
 }
 ul.myMenu > li {
   display: inline-block;
+  margin-top: 5px;
   width: 80px;
   padding: 5px 10px;
   text-align: center;
@@ -398,7 +408,7 @@ ul.myMenu > li:hover ul.submenu {
 }
 ul.myMenu > li ul.submenu > li {
   display: inline-block;
-  width: 100px;
+  width: 90px;
   padding: 5px 10px;
   background: #eee;
   border: 1px solid #eee;
@@ -489,12 +499,14 @@ ul.myMenu > li ul.submenu > li:hover {
   font-size: 20px;
   font-weight: bold;
   padding-bottom: 5px;
+  word-wrap: break-word;
 }
 
 .message-box {
   border: 1px solid rgb(221, 239, 165);
   border-radius: 15px;
   white-space: pre-line;
+  word-wrap: break-word;
 }
 /* pagination css */
 .pg {
