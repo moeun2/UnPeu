@@ -56,7 +56,7 @@
                     <div class="info-birth">{{ this.userBirth }}</div>
                     <br />
                     <p class="text-email">{{ this.userEmail }}</p>
-                    <div style="display: flex; margin-top: 10px;">
+                    <div style="display: flex; margin-top: 10px">
                       <router-link
                         :to="{ name: 'PresentManage' }"
                         v-if="isMyPage"
@@ -83,17 +83,27 @@
                         v-if="!isMyPage && isLogin"
                       >
                         <button class="item">
-                          <v-icon >mdi-home</v-icon>
+                          <v-icon>mdi-home</v-icon>
                           <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                           <p class="arrow_box">마이페이지</p>
                         </button>
                       </router-link>
-                      <button class="item" @click="logout" v-if="isLogin" style="margin-left: 5px;">
+                      <button
+                        class="item"
+                        @click="logout"
+                        v-if="isLogin"
+                        style="margin-left: 5px"
+                      >
                         <v-icon>mdi-logout</v-icon>
                         <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                         <p class="arrow_box">로그아웃</p>
                       </button>
-                      <button class="item" @click="userSetting" v-if="isMyPage&&isLogin" style="margin-left: 5px;">
+                      <button
+                        class="item"
+                        @click="userSetting"
+                        v-if="isMyPage && isLogin"
+                        style="margin-left: 5px"
+                      >
                         <v-icon>mdi-account-cog</v-icon>
                         <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                         <p class="arrow_box">회원정보</p>
@@ -167,6 +177,38 @@
     ></LinkShareModal>
   </div>
 </template>
+<script>
+const $checkbox = document.querySelector(".check");
+
+const isUserColorTheme = localStorage.getItem("color-theme");
+const isOsColorTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+  ? "dark"
+  : "light";
+
+const getUserTheme = () =>
+  isUserColorTheme ? isUserColorTheme : isOsColorTheme;
+
+window.onload = function () {
+  if (getUserTheme === "dark") {
+    localStorage.setItem("color-theme", "dark");
+    document.documentElement.setAttribute("color-theme", "dark");
+    $checkbox.setAttribute("checked", true);
+  } else {
+    localStorage.setItem("color-theme", "light");
+    document.documentElement.setAttribute("color-theme", "light");
+  }
+};
+
+$checkbox.addEventListener("click", (e) => {
+  if (e.target.checked) {
+    localStorage.setItem("color-theme", "light");
+    document.documentElement.setAttribute("color-theme", "dark");
+  } else {
+    localStorage.setItem("color-theme", "light");
+    document.documentElement.setAttribute("color-theme", "light");
+  }
+});
+</script>
 
 <script>
 import {
@@ -179,20 +221,19 @@ import {
   updateUserEmailBirth,
   deleteUser,
 } from "@/api/user.js";
-import { EVENT_URL,FRONT_URL, API_BASE_URL } from "@/config/index";
+import { EVENT_URL, FRONT_URL, API_BASE_URL } from "@/config/index";
 import LinkShareModal from "@/components/LinkShareModal.vue";
-import { mapMutations } from 'vuex';
+import { mapMutations } from "vuex";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
-
-const presentStore="presentStore";
+const presentStore = "presentStore";
 // import store from '@/store';
 export default {
   name: "App",
   data() {
     return {
-      url : EVENT_URL,
+      url: EVENT_URL,
       activeCheckClass: "menu-item mi-1 menu-checked",
       activeClass: "menu-item mi-3",
       userName: "김싸피",
@@ -225,6 +266,7 @@ export default {
   },
 
   created() {
+    this.test();
     if (window.localStorage.getItem("accessToken")) {
       //로그인 되어있는 상태 store inlogin true
       getUserDetailUseToken(
@@ -267,7 +309,6 @@ export default {
         },
         () => {
           // console.log("increaseVisit fail")
-
         }
       );
     }
@@ -277,33 +318,66 @@ export default {
   },
 
   methods: {
-    ...mapMutations(presentStore,["RESET_PRESENT_LIST"]),
+    test() {
+      const isUserColorTheme = localStorage.getItem("color-theme");
+      // const isOsColorTheme = window.matchMedia("(prefers-color-scheme: dark)")
+      //   .matches
+      //   ? "dark"
+      //   : "light";
+      // console.log(isUserColorTheme,isOsColorTheme)
+      // const getUserTheme = () =>
+      //   isUserColorTheme ? isUserColorTheme : isOsColorTheme;
+      let getUserTheme='';
+      console.log("isUserColorTheme : ",isUserColorTheme)
+      if(isUserColorTheme){
+        getUserTheme = isUserColorTheme;
+      }else{
+        getUserTheme = "light"
+      }
+
+      if (getUserTheme === "dark") {
+        localStorage.setItem("color-theme", "dark");
+        document.documentElement.setAttribute("color-theme", "dark");
+        // $checkbox.setAttribute('checked', true);
+      } else {
+        localStorage.setItem("color-theme", "light");
+        document.documentElement.setAttribute("color-theme", "light");
+      }
+    },
+    ...mapMutations(presentStore, ["RESET_PRESENT_LIST"]),
     goToMainPage() {
-      this.$router.push({ name: "eventRoom" }).catch(()=>{});
+      if (localStorage.getItem("color-theme") === "light") {
+        localStorage.setItem("color-theme", "dark");
+        document.documentElement.setAttribute("color-theme", "dark");
+        // $checkbox.setAttribute('checked', true);
+      } else {
+        localStorage.setItem("color-theme", "light");
+        document.documentElement.setAttribute("color-theme", "light");
+      }
+      // this.$router.push({ name: "eventRoom" }).catch(()=>{});
     },
     setUserData() {
       getUserDetail(
         this.$route.params.userid,
         (res) => {
-
           // console.log(res.data.User);
           this.userName = res.data.User.userName;
           if (res.data.User.userImg) {
-            this.userImg = API_BASE_URL + res.data.User.userImg
-          }else{
-            this.userImg=""
+            this.userImg = API_BASE_URL + res.data.User.userImg;
+          } else {
+            this.userImg = "";
           }
 
           if (res.data.User.userInfo) {
-            this.userInfo = res.data.User.userInfo
-          }else{
-            this.userInfo="선물주는 사람\n차칸 사람"
+            this.userInfo = res.data.User.userInfo;
+          } else {
+            this.userInfo = "선물주는 사람\n차칸 사람";
           }
 
           if (res.data.User.userTitle) {
             this.userTitle = res.data.User.userTitle;
-          }else{
-            this.userTitle="오늘은 어른이날, 선물사주라주"
+          } else {
+            this.userTitle = "오늘은 어른이날, 선물사주라주";
           }
           if (res.data.User.userEmail) {
             this.userEmail = res.data.User.userEmail;
@@ -374,12 +448,13 @@ export default {
       }
     },
 
-      logout(){
-        //storage확인해서 도메인 확인 //모달창 바꾸기
-        this.$swal.fire({
-          icon: 'question',
-          title: 'Logout',
-          html:'앙뿌에서 로그아웃 하시겠습니까? ' ,
+    logout() {
+      //storage확인해서 도메인 확인 //모달창 바꾸기
+      this.$swal
+        .fire({
+          icon: "question",
+          title: "Logout",
+          html: "앙뿌에서 로그아웃 하시겠습니까? ",
           showCancelButton: true,
         })
         .then((result) => {
@@ -411,7 +486,6 @@ export default {
         inputAttributes: {
           maxlength: 25,
           rows: 4,
-
         },
         inputValidator: (value) => {
           if (!value) {
@@ -437,7 +511,7 @@ export default {
         inputPlaceholder: "50자 이하, 4줄 이하로 작성해주세요.",
         inputAttributes: {
           maxlength: 50,
-          rows:4
+          rows: 4,
         },
         inputValidator: (value) => {
           if (!value) {
@@ -455,7 +529,6 @@ export default {
         updateUserInfo(info.replace('"', ""), (res) => {
           this.userInfo = res.data.User.userInfo;
           // console.log(res.data.User.userInfo)
-
         });
       }
     },
@@ -473,77 +546,93 @@ export default {
       this.showModal = true;
     },
 
-    async userSetting(){
+    async userSetting() {
       let flatpickrInstance;
 
-      await this.$swal.fire({
-        title: "회원 정보",
-        icon: 'info',
-        html:
-          '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="swal-input1" class="swal2-input" value='+this.userEmail+'></div>' +
-          '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="expiry-date"value='+this.userBirth+'></div>',
-        inputLabel:
-          "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
-        stopKeydownPropagation: false,
-        focusConfirm: true,
-        showDenyButton: true,
-        showCancelButton: true,
-        cancelButtonText:'취소',
-        confirmButtonText: '수정',
-        denyButtonText: `회원 탈퇴`,
-        preConfirm: () => {
-          var exptext = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-          if (!flatpickrInstance.selectedDates[0]) {
-            this.$swal.showValidationMessage(`생일을 입력해주세요`);
-          }else if (flatpickrInstance.selectedDates[0] > new Date()) {
-            this.$swal.showValidationMessage(`혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`)
-          }
-          if (!document.getElementById("swal-input1").value||!exptext.test(document.getElementById("swal-input1").value)) {
-            this.$swal.showValidationMessage(`이메일을 입력해주세요`);
-          }
-        },
-        willOpen: () => {
-          flatpickrInstance = flatpickr(
-            this.$swal.getPopup().querySelector("#expiry-date")
-          );
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const data={
-            userEmail: document.getElementById("swal-input1").value,
-            userBirth: document.getElementById("expiry-date").value
-          }
-            updateUserEmailBirth(localStorage.getItem("accessToken"), data, (res) => {
-            console.log("success change email and birth")
-            this.$swal.fire('수정을 성공했습니다!', '', 'success')
-            this.userEmail= res.data.User.userEmail
-            this.userBirth =
-              res.data.User.userBirth[0] +
-              "." +
-              res.data.User.userBirth[1] +
-              "." +
-              res.data.User.userBirth[2];
-          });
-        } else if (result.isDenied) {
-          this.$swal.fire({
-              title: '정말 회원을 탈퇴하시겠습니까?',
-              showCancelButton: true,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                deleteUser(() => {
-                  this.$swal.fire('회원 탈퇴되었습니다.', '', 'success')
-                  localStorage.removeItem("accessToken")
-                  this.$store.commit("userStore/setUSerNull")
-                  this.$router.push({name:"Landing"})
-                })
+      await this.$swal
+        .fire({
+          title: "회원 정보",
+          icon: "info",
+          html:
+            '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="swal-input1" class="swal2-input" value=' +
+            this.userEmail +
+            "></div>" +
+            '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="expiry-date"value=' +
+            this.userBirth +
+            "></div>",
+          inputLabel:
+            "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
+          stopKeydownPropagation: false,
+          focusConfirm: true,
+          showDenyButton: true,
+          showCancelButton: true,
+          cancelButtonText: "취소",
+          confirmButtonText: "수정",
+          denyButtonText: `회원 탈퇴`,
+          preConfirm: () => {
+            var exptext =
+              /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+            if (!flatpickrInstance.selectedDates[0]) {
+              this.$swal.showValidationMessage(`생일을 입력해주세요`);
+            } else if (flatpickrInstance.selectedDates[0] > new Date()) {
+              this.$swal.showValidationMessage(
+                `혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`
+              );
+            }
+            if (
+              !document.getElementById("swal-input1").value ||
+              !exptext.test(document.getElementById("swal-input1").value)
+            ) {
+              this.$swal.showValidationMessage(`이메일을 입력해주세요`);
+            }
+          },
+          willOpen: () => {
+            flatpickrInstance = flatpickr(
+              this.$swal.getPopup().querySelector("#expiry-date")
+            );
+          },
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            const data = {
+              userEmail: document.getElementById("swal-input1").value,
+              userBirth: document.getElementById("expiry-date").value,
+            };
+            updateUserEmailBirth(
+              localStorage.getItem("accessToken"),
+              data,
+              (res) => {
+                console.log("success change email and birth");
+                this.$swal.fire("수정을 성공했습니다!", "", "success");
+                this.userEmail = res.data.User.userEmail;
+                this.userBirth =
+                  res.data.User.userBirth[0] +
+                  "." +
+                  res.data.User.userBirth[1] +
+                  "." +
+                  res.data.User.userBirth[2];
               }
-            })
-        }
-      })
+            );
+          } else if (result.isDenied) {
+            this.$swal
+              .fire({
+                title: "정말 회원을 탈퇴하시겠습니까?",
+                showCancelButton: true,
+              })
+              .then((result) => {
+                if (result.isConfirmed) {
+                  deleteUser(() => {
+                    this.$swal.fire("회원 탈퇴되었습니다.", "", "success");
+                    localStorage.removeItem("accessToken");
+                    this.$store.commit("userStore/setUSerNull");
+                    this.$router.push({ name: "Landing" });
+                  });
+                }
+              });
+          }
+        });
     },
   },
-
-
 };
 </script>
 
@@ -560,8 +649,16 @@ export default {
   font-weight: 400;
 }
 
+:root[color-theme="light"] {
+  --background: var(--test2);
+}
+
+:root[color-theme="dark"] {
+  --background: var(--test);
+}
+
 .view {
-  background-image: url("https://i.imgur.com/JzNuJr5.png");
+  background-image: var(--background);
   background-size: cover;
   /* 수직 정렬 위해서 사용 */
   height: 100vh;
@@ -677,12 +774,12 @@ export default {
   width: 100px;
 }
 .swal2-textarea {
-    height: 5.75em !important;
-    padding: 0.75em;
-    resize: none;
-    text-align: center;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  height: 5.75em !important;
+  padding: 0.75em;
+  resize: none;
+  text-align: center;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 .swal2-textarea::-webkit-scrollbar {
   display: none;

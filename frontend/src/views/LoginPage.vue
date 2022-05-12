@@ -78,10 +78,10 @@ export default {
 @import url("@/assets/css/reset.css");
 @import url("@/assets/css/style.css");
 
-body {
+/* body {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
-}
+} */
 
 .test {
   display: flex;

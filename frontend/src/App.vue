@@ -3,6 +3,8 @@
     <div class="view">
       <router-view />
     </div>
+    <input class="check" type="checkbox">
+    <div class ="theme"></div>
     <email-fab></email-fab>
   </v-app>
 </template>
@@ -13,6 +15,7 @@ import EmailFab from "./components/EmailFab.vue";
 export default {
   components: { EmailFab },
   name: "App",
+
 };
 </script>
 
@@ -29,10 +32,10 @@ export default {
   font-weight: 400;
 }
 
-body {
-  background-image: url("https://i.imgur.com/EI9xcZH.png");
+/* body {
+  background-image: url("https://user-images.githubusercontent.com/40678696/167977803-08d49118-a649-478f-9980-732f1724df1a.png");
   background-size: cover;
-}
+} */
 /** 공통 색상 표 지정 **/
 :root{
   --green-color : #DCE775;
@@ -40,9 +43,8 @@ body {
   --confirm-color: #4CAF50;
   --close-color : #9e9e9e; /*vuetify grey */
   --soft-blue-color: #b9e2fa; /*tab color */
+  --test :  url("https://i.imgur.com/EI9xcZH.png");
+  --test2 : url("https://user-images.githubusercontent.com/40678696/167977803-08d49118-a649-478f-9980-732f1724df1a.png");
 }
 
-@media(preferes-color-scheme: light){
-  
-}
 </style>
