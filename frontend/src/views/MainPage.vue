@@ -252,20 +252,18 @@ export default {
       window.document.location.href ==
       FRONT_URL + "/eventRoom/" + this.$route.params.userid) 
       {
-        if(!localStorage.getItem("isVisit")||localStorage.getItem("isVisit")!=new Date().toLocaleDateString('en-US')){
-          increaseVisit(
-            this.$route.params.userid,
-            (res) => {
-              localStorage.setItem("isVisit",new Date().toLocaleDateString('en-US'))
-              if (res.data.User.todayVisit) {
-                this.todayVisit = res.data.User.todayVisit;
-              }
-              if (res.data.User.totalVisit) {
-                this.totalVisit = res.data.User.totalVisit;
-              }
-            },
-          );
-        }
+        increaseVisit(
+          this.$route.params.userid,
+          (res) => {
+            if (res.data.User.todayVisit) {
+              this.todayVisit = res.data.User.todayVisit;
+            }
+            if (res.data.User.totalVisit) {
+              this.totalVisit = res.data.User.totalVisit;
+            }
+          },
+        );
+        
     }
   },
   components: {
