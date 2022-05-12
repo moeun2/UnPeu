@@ -52,10 +52,10 @@
 
                     <v-icon small @click="copyLink">mdi-link</v-icon>
                     <a class="info-name" @click="copyLink"> {{ this.userName }}</a>
-                    <div class="info-birth" v-if="showUserBirthAndEmail">{{ this.userBirth }}</div>
+                    <div class="info-birth" v-if="isAgree">{{ this.userBirth }}</div>
                     <br />
-                    <p class="text-email" v-if="showUserBirthAndEmail">{{ this.userEmail }}</p>
-                    <p class="text-email" v-if="!showUserBirthAndEmail">ㅤ</p>
+                    <p class="text-email" v-if="isAgree">{{ this.userEmail }}</p>
+                    <p class="text-email" v-if="!isAgree">ㅤ</p>
                     <div style="display: flex; margin-top: 10px">
                       <router-link
                         :to="{ name: 'PresentManage' }"
@@ -205,7 +205,7 @@ export default {
       userEmail: "ssafykim@ssafy.com",
       isLogin: false,
       isMyPage: false,
-      showUserBirthAndEmail: false,
+      isAgree: false,
       totalVisit: 0,
       todayVisit: 0,
       showModal: false,
@@ -353,6 +353,7 @@ export default {
           if (res.data.User.totalVisit) {
             this.totalVisit = res.data.User.totalVisit;
           }
+          this.isAgree=res.data.User.isAgree;
         },
         () => {
           this.$router.push({ name: "NotFound" });
@@ -508,8 +509,10 @@ export default {
         title: "회원 정보",
         icon: 'info',
         html:
-          '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="swal-input1" class="swal2-input" value='+this.userEmail+'></div>' +
-          '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="expiry-date"value='+this.userBirth+'></div>',
+          '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="email" class="swal2-input" value='+this.userEmail+'></div>' +
+          '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="birth" value='+this.userBirth+'></div><br/>'+
+          '<label><input type="checkbox" id="isAgree" name="scales" '+(this.isAgree ? 'checked':'')+'>ㅤ생일과 이메일을 공개하는 것에 동의합니다.</label>',
+
         inputLabel:
           "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
         stopKeydownPropagation: false,
@@ -526,13 +529,13 @@ export default {
           }else if (flatpickrInstance.selectedDates[0] > new Date()) {
             this.$swal.showValidationMessage(`혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`)
           }
-          if (!document.getElementById("swal-input1").value||!exptext.test(document.getElementById("swal-input1").value)) {
+          if (!document.getElementById("email").value||!exptext.test(document.getElementById("email").value)) {
             this.$swal.showValidationMessage(`이메일을 입력해주세요`);
           }
         },
         willOpen: () => {
           flatpickrInstance = flatpickr(
-            this.$swal.getPopup().querySelector("#expiry-date"),
+            this.$swal.getPopup().querySelector("#birth"),
             {
               allowInput:true
             }
@@ -541,8 +544,9 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           const data={
-            userEmail: document.getElementById("swal-input1").value,
-            userBirth: document.getElementById("expiry-date").value
+            userEmail: document.getElementById("email").value,
+            userBirth: document.getElementById("birth").value,
+            isAgree: document.getElementById("isAgree").checked
           }
             updateUserEmailBirth(localStorage.getItem("accessToken"), data, (res) => {
             console.log("success change email and birth")
@@ -554,6 +558,7 @@ export default {
               res.data.User.userBirth[1] +
               "." +
               res.data.User.userBirth[2];
+            this.isAgree=res.data.User.isAgree
           });
         } else if (result.isDenied) {
           this.$swal.fire({
