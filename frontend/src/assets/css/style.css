@@ -45,7 +45,7 @@
     background-color:rgba(225, 225, 225, 0.85); /*스크롤바 트랙 색상*/
     border-radius: 15px;
   }
-  
+
   .profile-section,
   .main-section {
     height: 600px;
@@ -762,4 +762,8 @@ a.link {
   width: 100%;
   overflow: hidden;
   max-height: 30px;
+}
+
+.v-application a {
+  color: #000 !important;
 }
