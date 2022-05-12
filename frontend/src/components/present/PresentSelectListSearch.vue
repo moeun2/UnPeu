@@ -215,7 +215,7 @@ export default {
 
 <style>
 .card {
-  margin: 15px;
+  margin: 5px;
   background-color: white !important;
 }
 .selectedCard {
