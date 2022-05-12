@@ -14,6 +14,5 @@ public class UserPatchUserInfoReq {
 
     public UserPatchUserInfoReq(String userInfo) {
         this.userInfo = userInfo;
-        
     }
 }

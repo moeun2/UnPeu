@@ -2,7 +2,7 @@ package com.unpeu.api.diary;
 
 import com.unpeu.config.auth.UnpeuUserDetails;
 import com.unpeu.config.exception.ApplicationException;
-import com.unpeu.domain.entity.Board;
+import com.unpeu.config.media.MediaService;
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.request.BoardPostReq;
 import com.unpeu.service.iface.IBoardService;
@@ -12,10 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
@@ -32,6 +33,7 @@ public class BoardController {
     private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
     private final IBoardService boardService;
+    private final MediaService mediaService;
 
     @ApiOperation(value = "userId의 카테고리에 해당하는 게시글 전체 조회 Controller")
     @RequestMapping(value = "/{userId}/{category}", method = RequestMethod.GET)
@@ -119,5 +121,30 @@ public class BoardController {
             resultMap.put("message", e.getMessage());
             return new ResponseEntity<>(resultMap, HttpStatus.FORBIDDEN); // 403
         }
+    }
+
+    @ApiOperation(value = "게시글 이미지 추가 Controller")
+    @RequestMapping(value = "/addImg", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Map<String, Object>> addBoardFileImage(@RequestPart(value = "file") @NotNull MultipartFile upImage) {
+        logger.info("addBoardFileImage - 호출");
+        Map<String, Object> resultMap = new HashMap<>();
+
+        // 이미지 -> url로 변경 설정
+        String url = mediaService.save(upImage);
+        logger.info("media Saved Url : " + url);
+
+        resultMap.put("message", "success");
+        resultMap.put("url", url);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "게시글 이미지 삭제 Controller")
+    @RequestMapping(value = "/deleteImg", produces = "application/json; charset=UTF8", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> deleteBoardFileImage(@Valid @RequestBody String imgUrl) {
+        logger.info("deleteBoardFileImage - 호출");
+        Map<String, Object> resultMap = new HashMap<>();
+        mediaService.delete(imgUrl);
+        resultMap.put("message", "success");
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }

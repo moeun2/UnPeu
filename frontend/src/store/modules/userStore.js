@@ -15,6 +15,9 @@ export const userStore = {
       // console.log("0:User/1:Guest(Logined User)/2:Guest")
       return state.currentUser;
     },
+    getUser(state){
+      return state.user;
+    }
   },
 
   mutations: {

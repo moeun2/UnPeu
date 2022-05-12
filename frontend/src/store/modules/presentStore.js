@@ -6,7 +6,12 @@ export const presentStore={
         presentList:[]
     },
     getters:{
-        
+        getNumberOfPresentList(state){
+            if(state.presentList == null)
+                return null
+            else
+                return state.presentList.Present.length;
+        }
     },
     mutations:{
         SET_PRESENT_LIST(state, presentList){
@@ -30,7 +35,8 @@ export const presentStore={
         ,
         RESET_PRESENT_LIST(state){
             state.presentList=null;
-        }
+        },
+        
     },
     actions:{
          registerPresent({commit}, fd){

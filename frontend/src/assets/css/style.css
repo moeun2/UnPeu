@@ -228,7 +228,7 @@
     overflow: scroll;
   }
   
-  h2 {
+  h2 :not(.editor) {
     border-bottom: 1px solid black;
     width: 100%;
     font-size: 18px;
@@ -395,6 +395,9 @@
     font-size: 10px;
     color: #e57002;
     margin: 3px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   
   .info-wrap img {

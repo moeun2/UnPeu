@@ -138,6 +138,7 @@ function getUserPresentAndCheckGuest(to, from, next){
 function getUserPresent(to, from, next){
   let userId = to.params.userid;
   Store.dispatch("presentStore/searchList",userId);
+  // console.log(userId)
   next();
 }
 

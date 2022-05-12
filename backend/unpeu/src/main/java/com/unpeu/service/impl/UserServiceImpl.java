@@ -1,5 +1,6 @@
 package com.unpeu.service.impl;
 
+import static com.unpeu.config.exception.ErrorCode.DELETE_CONFLICT;
 import static com.unpeu.config.exception.ErrorCode.MEMBER_NOT_FOUND;
 
 import java.io.BufferedReader;
@@ -22,6 +23,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unpeu.config.exception.CustomException;
 import com.unpeu.domain.entity.Present;
 import com.unpeu.domain.entity.User;
+import com.unpeu.domain.repository.IBoardRepository;
+import com.unpeu.domain.repository.IMessageRepository;
+import com.unpeu.domain.repository.IPresentRepository;
 import com.unpeu.domain.repository.IUserRepository;
 import com.unpeu.domain.request.UserPatchEmailBirthReq;
 import com.unpeu.domain.request.UserPatchUserInfoReq;
@@ -35,6 +39,9 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements IUserService{
 	
 	private final IUserRepository userRepository;
+	private final IMessageRepository messageRepository;
+	private final IPresentRepository presentRepository;
+	private final IBoardRepository boardRepository;
 
 	/**
 	 * userLogin정보로 사용자 조회
@@ -70,8 +77,8 @@ public class UserServiceImpl implements IUserService{
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=c0ad1801cdf80282754cf18e79556743");//kakao restapi키
-            //sb.append("&redirect_uri=http://k6b201.p.ssafy.io/login/kakao");//redirect 경로, server
-             sb.append("&redirect_uri=http://localhost:8081/login/kakao");//redirect 경로, local
+            // sb.append("&redirect_uri=http://k6b201.p.ssafy.io/login/kakao");//redirect 경로, server
+            sb.append("&redirect_uri=http://localhost:8081/login/kakao");//redirect 경로, local
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -126,7 +133,7 @@ public class UserServiceImpl implements IUserService{
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=530350751299-fbiks9onutpnvmgebr0fc5uvllj5fidn.apps.googleusercontent.com");//kakao restapi키
             sb.append("&client_secret=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");
-            //sb.append("&redirect_uri=http://k6b201.p.ssafy.io/login/google");//redirect 경로, server
+            // sb.append("&redirect_uri=http://k6b201.p.ssafy.io/login/google");//redirect 경로, server
 			sb.append("&redirect_uri=http://localhost:8081/login/google");//redirect 경로, local
             sb.append("&code=" + code);
             bw.write(sb.toString());
@@ -402,6 +409,20 @@ public class UserServiceImpl implements IUserService{
 	public User increseVisit(Long userId) {
 		userRepository.increseVisit(userId);
 		return userRepository.findById(userId).get();
+	}
+
+
+	@Override
+	@Transactional(readOnly = false)
+	public void deleteUser(Long userId) {
+		try {
+			presentRepository.deleteAllByUserId(userId);
+			messageRepository.deleteAllByUserId(userId);
+			boardRepository.deleteAllByUserId(userId);
+			userRepository.deleteById(userId);
+		} catch (Exception e) {
+			throw new CustomException(DELETE_CONFLICT);
+		}
 	}
 
 }

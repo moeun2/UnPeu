@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 public class BoardInfoGetRes {
     private Long userId;
     private Long boardId;
+    private String category;
     private String title;
     private String content;
-    private String category;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
@@ -31,9 +31,9 @@ public class BoardInfoGetRes {
     public BoardInfoGetRes(Board board) {
         this.userId = board.getUser().getId();
         this.boardId = board.getBoardId();
+        this.category = board.getCategory();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.category = board.getCategory();
         this.createdAt = board.getCreatedAt();
         this.commentList = board.getComments().stream().map(CommentInfoGetRes::new).collect(Collectors.toList());
     }

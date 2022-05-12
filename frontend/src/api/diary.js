@@ -19,6 +19,22 @@ function getBoardInfo(boardId, success, fail) {
   api.get(`board/${boardId}`).then(success).catch(fail);
 }
 
+// 게시글 이미지 등록
+function addBoardFileImage(img, success, fail) {
+  api
+    .post(`board/addImg`, img)
+    .then(success)
+    .catch(fail);
+}
+
+// 게시글 이미지 삭제
+function deleteBoardFileImage(img, success, fail) {
+  api
+    .post(`board/deleteImg`, img)
+    .then(success)
+    .catch(fail);
+}
+
 // 게시글 등록
 function registerBoard(boardInfo, success, fail) {
   api
@@ -79,6 +95,8 @@ export {
   getBoardList,
   getCategory,
   getBoardInfo,
+  addBoardFileImage,
+  deleteBoardFileImage,
   registerBoard,
   editBoard,
   deleteBoard,

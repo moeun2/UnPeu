@@ -3,19 +3,13 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-          <!-- <button class="modal-default-button" @click="$emit('close')">
-            <i style="color: #505352" class="far fa-times-circle fa-2x"></i>
-          </button> -->
           <div class="modal-header">
             <slot name="header"> 선물 선택 </slot>
           </div>
 
           <div class="modal-body">
-            <img
-              src="https://i.imgur.com/vaBFer6.png"
-              alt=""
-              class="modal-img"
-            />
+            <slot name="body"></slot>
+
             <br />
             <h4>
               헉 너무 큰 금액이야 <br />
@@ -101,8 +95,6 @@
                 </td>
               </tr>
             </table>
-
-            <slot name="body"> </slot>
           </div>
 
           <div class="modal-footer">
@@ -115,7 +107,7 @@
                   @click="saveAmount"
                   >가격선택
                 </v-btn>
-                <v-btn depressed color="warning" @click="closeModal"
+                <v-btn color="grey" style="color: white" @click="closeModal"
                   >닫기
                 </v-btn>
               </div>
@@ -155,10 +147,11 @@ export default {
         const inputNumber = document.getElementById("inputNumber").value;
         // console.log("직접입력 값 : " + inputNumber + "");
         this.selectedPrice = inputNumber;
-        if (this.selectedPrice > 0) {
+        if (this.selectedPrice >= 100) {
           this.$emit("selectedPrice", this.selectedPrice);
         } else {
-          Alert.selctAmountFailure(this);
+          Alert.selectAmountFailure(this);
+          this.selectedPrice = 0;
         }
       } else {
         // console.log("selectedPrice : ", this.selectedPrice);
@@ -169,7 +162,7 @@ export default {
     closeInputText() {
       document.getElementById("unpeu_input").style.display = "none";
     },
-    
+
     closeModal() {
       this.selectedPrice = 0;
       this.$emit("close");
@@ -181,7 +174,7 @@ export default {
 <style scoped>
 .modal-mask {
   position: fixed;
-  z-index: 9998;
+  z-index: 30;
   top: 0;
   left: 0;
   width: 100%;
@@ -255,7 +248,7 @@ export default {
 table {
   width: 100%;
   /* border: 1px solid #f08986; */
-  background-color: #f08986;
+  background-color: var(--green-color);
   border-collapse: collapse;
 }
 td {

@@ -110,6 +110,17 @@ function increaseVisit(userId, success, fail) {
     .catch(fail);
 }
 
+function deleteUser(success, fail) {
+  api
+    .delete(`/users`,{
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      },
+    })
+    .then(success)
+    .catch(fail);
+}
+
 export {
   kakaoLogin,
   googleLogin,
@@ -121,4 +132,5 @@ export {
   updateUserEmailBirth,
   getUserIdUseToken,
   increaseVisit,
+  deleteUser,
 };

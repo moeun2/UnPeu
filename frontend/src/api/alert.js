@@ -47,8 +47,8 @@ function sendFeedbackFailure(vm) {
     "error"
   );
 }
-function selctAmountFailure(vm) {
-  vm.$swal.fire("가격 직접입력 실패", "0보다 큰 금액을 입력해주세요˚", "error");
+function selectAmountFailure(vm) {
+  vm.$swal.fire("가격 직접입력 실패", "100원 이상 금액을 입력해주세요˚", "error");
 }
 const notSelectPresentBody = {
   title: "선물을 선택하지 않으셨어요!",
@@ -61,7 +61,7 @@ const notSelectPresentBody = {
 };
 const agreePaymentBody = {
   title: "선물결제를 동의하시나요?",
-  text: "선물결제시 10원이 가결제되며, 24시간 전에 결제는 취소됩니다",
+  text: "선물결제시 100원이 가결제되며, 24시간 전에 결제는 취소됩니다",
   icon: "warning",
   showCancelButton: true,
   confirmButtonText: "결제할래요!",
@@ -119,7 +119,7 @@ function saveMessageSuccess(vm) {
 }
 
 export {
-  selctAmountFailure,
+  selectAmountFailure,
   paymentSuccess,
   paymentFailure,
   notSelectPresentBody,
