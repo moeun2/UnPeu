@@ -80,7 +80,10 @@ export default {
         willOpen: () => {
           // 달력 날짜입력 추가 flatpickr
           flatpickrInstance = flatpickr(
-            this.$swal.getPopup().querySelector("#expiry-date")
+            this.$swal.getPopup().querySelector("#expiry-date"),
+            {
+              allowInput:true
+            }
           );
         },
       });
