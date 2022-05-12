@@ -3,65 +3,129 @@
     <template>
       <v-card>
         <v-card-title>
-          <span class="text-h5">선물 수정하기</span>
+          <v-row justify="center">
+          <span>선물 수정하기</span>
+          </v-row>
         </v-card-title>
         <v-divider></v-divider>
-        <v-card-text>
-          <v-form ref="form">
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  :rules="rules.name"
-                  v-model="updatedPresent.presentName"
-                  label="선물 이름"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  :rules="rules.price"
-                  v-model="updatedPresent.presentPrice"
-                  required
-                  label="가격 설정"
-                  value="0"
-                  prefix="₩"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row justify="center">
-              <span class="text-h5">현재 선물</span>
-            </v-row>
-            <v-row justify="center">
-              <v-col col="12" sm="6" align-self="center">
-                <v-img class="mx-auto" :src="imgUrl" aspect-ratio="0.8">
-                </v-img>
-              </v-col>
-            </v-row>
-            <v-row justify="center">
-              <v-col col="12" sm="6">
-                <v-layout>
-                  <v-file-input
-                    :rules="rules.file"
-                    v-model="files"
-                    required
-                    accept="image/png, image/jpeg, image/bmp"
-                    placeholder="변경하고 싶은 선물 선택!"
-                    prepend-icon="mdi-camera"
-                  ></v-file-input>
-                </v-layout>
-              </v-col>
-            </v-row>
-          </v-container>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="update()"> 보내기 </v-btn>
-          <v-btn color="blue darken-1" text @click="$emit('close')">
-            닫기
-          </v-btn>
-        </v-card-actions>
+        <v-tabs
+          background-color="yellow lighten-4"
+          color="blue accent-2"
+          grow
+        >
+          <v-tab
+            v-for="item in items"
+            :key="item"
+            style="font-size: 20px;"
+          >
+            {{ item }}
+          </v-tab>
+        <v-tab-item>
+          <v-card flat>
+            <v-card-text>
+              <v-form ref="form1">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      :rules="rules.name"
+                      v-model="updatedPresentExceptFile.presentName"
+                      label="선물 이름"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      :rules="rules.price"
+                      v-model="updatedPresentExceptFile.presentPrice"
+                      required
+                      label="가격 설정"
+                      value="0"
+                      prefix="₩"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+              depressed
+              color="primary"
+              style="margin-right: 5px" 
+              @click="update()"> 보내기 </v-btn>
+              <v-btn depressed color="warning" @click="$emit('close')">
+                닫기
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item>
+          <v-card flat>
+            <v-card-text>
+              <v-form ref="form2">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      :rules="rules.name"
+                      v-model="updatedPresent.presentName"
+                      label="선물 이름"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      :rules="rules.price"
+                      v-model="updatedPresent.presentPrice"
+                      required
+                      label="가격 설정"
+                      value="0"
+                      prefix="₩"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row justify="center">
+                  <span style="font-size:25px;">현재 선물</span>
+                </v-row>
+                <v-row justify="center">
+                  <v-col col="12" sm="6" align-self="center">
+                    <v-img class="mx-auto" :src="imgUrl" aspect-ratio="0.8">
+                    </v-img>
+                  </v-col>
+                </v-row>
+                <v-row justify="center">
+                  <v-col col="12" sm="6">
+                    <v-layout>
+                      <v-file-input
+                        :rules="rules.file"
+                        v-model="files"
+                        required
+                        accept="image/png, image/jpeg, image/bmp"
+                        placeholder="변경하고 싶은 선물 선택!"
+                        prepend-icon="mdi-camera"
+                      ></v-file-input>
+                    </v-layout>
+                  </v-col>
+                </v-row>
+              </v-container>
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+              depressed
+              color="primary"
+              style="margin-right: 5px" 
+              @click="updateWithFile()"> 보내기 </v-btn>
+              <v-btn depressed color="warning" @click="$emit('close')">
+                닫기
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
       </v-card>
     </template>
   </v-dialog>
@@ -78,6 +142,9 @@ export default {
 
   data() {
     return {
+      items: [
+        '이름과 가격만 수정','전체 수정'
+      ],
       files: [],
       rules: {
       file: [
@@ -110,6 +177,10 @@ export default {
       ],},
       presentId: null,
       newPresentImg: null,
+      updatedPresentExceptFile:{
+        presentName: null,
+        presentPrice: null,
+      },
       updatedPresent: {
         presentName: null,
         presentPrice: null,
@@ -135,6 +206,10 @@ export default {
     else this.updatedPresent.presentPrice = this.present.presentPrice;
     if (this.present === null) this.imgUrl = null;
     else this.imgUrl = this.API_BASE_URL + this.present.presentImg;
+    if (this.present === null) this.updatedPresentExceptFile.presentName = null;
+    else this.updatedPresentExceptFile.presentName = this.present.presentName;
+    if (this.present === null) this.updatedPresentExceptFile.presentPrice = null;
+    else this.updatedPresentExceptFile.presentPrice = this.present.presentPrice;
   },
 
   watch: {
@@ -142,6 +217,8 @@ export default {
       this.updatedPresent.presentName = this.present.presentName;
       this.updatedPresent.presentPrice = this.present.presentPrice;
       this.imgUrl = this.API_BASE_URL + this.present.presentImg;
+      this.updatedPresentExceptFile.presentName = this.present.presentName;
+      this.updatedPresentExceptFile.presentPrice = this.present.presentPrice;
     },
   },
 
@@ -156,13 +233,34 @@ export default {
     },
 
     update() {
-      if(this.files==null)
+      let valid=this.$refs.form1.validate();
+      if(!valid){
+        this.errorAlert("모든 항목들을 정확히 등록해주세요!");
+      }
+      else{
+        let fd = new FormData();
+        fd.append("presentPrice", this.updatedPresentExceptFile.presentPrice);
+        fd.append("userId", this.$store.state.userStore.user.id);
+        fd.append("presentName", this.updatedPresentExceptFile.presentName);
+
+        let presentData = {
+          fd: fd,
+          presentId: this.present.presentId,
+        };
+        this.updatePresent(presentData);
+        this.$emit("close");
+      }
+    },
+
+    updateWithFile() {
+      console.log(this.files.length);
+      if(this.files==null || this.files.length==0)
         this.errorAlert("파일을 넣어주세요");
       if(this.files.type.indexOf("image/")==-1){
         this.errorAlert("파일 타입을 확인해주세요. 이미지만 가능합니다");
         return;
       }
-      let valid=this.$refs.form.validate();
+      let valid=this.$refs.form2.validate();
       if(!valid){
         this.errorAlert("모든 항목들을 정확히 등록해주세요!");
       }
@@ -179,6 +277,7 @@ export default {
         };
         // console.log(presentData);
         this.updatePresent(presentData);
+        this.files=null;
         this.$emit("close");
       }
     },

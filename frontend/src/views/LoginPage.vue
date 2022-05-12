@@ -9,12 +9,14 @@
       <img
         class="google_login_btn"
         src="@/assets/img/login/btn_google_signin_light_normal_web@2x.png"
+
         v-on:click="GoogleLogin"
       /><br />
       <div id="my-signin2" style="display: none"></div>
       <img
         class="kakao_login_btn"
         src="@/assets/img/login/kakao_login_large_narrow.png"
+
         v-on:click="KakaoLogin"
       /><br />
     </div>

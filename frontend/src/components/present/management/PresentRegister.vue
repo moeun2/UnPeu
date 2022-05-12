@@ -90,6 +90,11 @@ export default {
     ...mapActions(presentStore, ["registerPresent"]),
     
     regist() {
+      console.log(this.files)
+      if(this.files==null || this.files.length==0){
+        this.errorAlert("파일을 넣어주세요");
+        return;
+      }
       if(this.files.type.indexOf("image/")==-1){
         this.errorAlert("파일 타입을 확인해주세요. 이미지만 가능합니다");
         return;
