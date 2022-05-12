@@ -5,7 +5,7 @@
         <li class="menu2">
           MENU
           <ul class="menu2_s submenu">
-            <li><button @click="changeConcept">컨셉 변경</button></li>
+            <li><a href="#setDate" class="menu-a">컨셉 변경</a></li>
             <li><button @click="resetMessage">메세지 삭제</button></li>
             <li><button @click="saveMessage">메세지 저장</button></li>
           </ul>
@@ -21,9 +21,9 @@
         <button class="reg-gift">
           <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="" />
           <p>
-            어른이날을 축하해주세요
+            <b>click! 📩</b>
             <br />
-            콩주머니 메세지 &amp; 선물 등록하러 가기!
+            메세지 &amp; 선물 전달하러 가기!
           </p>
         </button>
       </router-link>
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <!-- modal 창 -->
+    <!-- 메세지 modal 창 -->
     <div id="pocket" class="modal-window">
       <div class="modal-message">
         <a href="#">
@@ -75,6 +75,29 @@
         </div>
       </div>
     </div>
+
+    <!-- 컨셉 변경 modal 창 -->
+        <div id="setDate" class="modal-window">
+            <div class="modal-message">
+                <a href="#">
+                <button class="btn_red_cancel">
+                    <span>X</span>
+                </button>
+                </a>            
+                <!-- 날짜 입력 받기 -->
+                <div class="concept-content">
+                  <h2 class="concept-h2">날짜 선택</h2>
+                    <p class="setDate-p">본 날짜는 매년 정기적으로 실행됩니다</p>
+                    <input type="number" name="month" class="input-date" id="month" v-model="month" placeholder="0"> 월
+                    <input type="number" name="date" class="input-date" id="date" v-model="date" placeholder="0"> 일
+                    <button @click="setDate" type="submit" class="setDate-btn"> 설정 </button>
+                    <h2 class="concept-h2">컨셉 모드 선택</h2>
+                    <button class="mode-btn">기본</button>
+                    <button class="mode-btn">생일</button>
+                    <button class="mode-btn">어른이날</button>
+                </div>
+            </div>
+        </div>
   </div>
 </template>
 
@@ -103,6 +126,8 @@ export default {
       // 현재 페이지
       currentPage: 1,
       isMyPage: false,
+      month: '',
+      date: ''
     };
   },
 
@@ -150,7 +175,7 @@ export default {
     let seconds = today.getSeconds(); // 초
     let setMonth = this.$store.state.eventStore.month;
     let setDate = this.$store.state.eventStore.date;
-    console.log("gmonth: " + setMonth);
+    // console.log("gmonth: " + setMonth);
     // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
     if (month >= setMonth && date >= setDate && hours >= 0 && minutes >= 0 && seconds >= 0) {
       let changeView = document.getElementById("main-room");
@@ -329,7 +354,45 @@ export default {
     changeConcept() {
       //document.getElementById("main-room").style.backgroundImage = 'url(https://i.imgur.com/JzNuJr5.png)';
       this.$router.replace({ name: "ConceptChange" });
-    }
+    },
+    setDate() {
+            if(this.month == null) {
+                this.$swal.fire("Oops...!", "Month를 적어주세요!", "error");
+            }
+            else if(this.date == null) {
+                this.$swal.fire("Oops...!", "date을 적어주세요!", "error");
+            }
+            else if(this.month < 1 || this.month > 12) {
+                this.$swal.fire("Oops...!", "Month는 1 ~ 12월까지 있어요!", "error");
+            }
+            else if(this.month == 2 && (this.date < 1 || this.date > 28)) {
+                this.$swal.fire("Oops...!", "2월의 일 범위를 벗어났어요!", "error");
+            }
+            else if((this.month == 1 ||
+                    this.month == 3 ||
+                    this.month == 5 ||
+                    this.month == 7 ||
+                    this.month == 8 ||
+                    this.month == 10 ||
+                    this.month == 12) &&
+                    (this.date < 1 || this.date > 31)) {
+                this.$swal.fire("Oops...!", "일 범위를 벗어났어요!", "error");
+            }
+            else if((this.month == 4 ||
+                    this.month == 6 ||
+                    this.month == 9 ||
+                    this.month == 11) &&
+                    (this.date < 1 || this.date > 30)) {
+                this.$swal.fire("Oops...!", "일 범위를 벗어났어요!", "error");
+            }
+            else {
+                this.$store.commit("eventStore/SET_DATE", this.date);
+                this.$store.commit("eventStore/SET_MONTH", this.month);
+                Alert.setMonthAndDate(this);
+                //modal 닫게 처리
+            }
+            
+        },
   },
 };
 </script>
@@ -367,6 +430,14 @@ export default {
   width: 400px;
   text-align: center;
   box-shadow: 3px 3px 3px #abababd8;
+}
+.reg-gift:hover {
+  background-color: rgb(222, 221, 221);
+  // border-radius: 15px;
+  // padding: 10px;
+  // width: 400px;
+  // text-align: center;
+  // box-shadow: 3px 3px 3px #abababd8;
 }
 .gift-box {
   text-align: center;
@@ -531,5 +602,51 @@ ul.myMenu > li ul.submenu > li:hover {
   background-image: url("https://i.imgur.com/yBs2YNe.jpg");
   background-size: cover;
   border-radius: 15px;
+}
+.menu-a {
+  color: black;
+}
+.concept-room {
+    background-color: #ddefa5;
+    height: 435px;
+    padding: 23px;
+}
+.concept-div {
+    background-color: #fff;
+    height: 390px;
+    border-radius: 5px;
+}
+.concept-content {
+    padding: 10px;
+}
+.setDate-p {
+    margin-bottom: 5px;
+}
+.input-date {
+    height: 30px;
+    width: 50px;
+    border-bottom: solid rgb(37, 37, 37) 1px;
+}
+.setDate-btn {
+    float: right;
+    width: 60px;
+    height: 30px;
+    color: #fff;
+    border-radius: 15px;
+    background-color: #4caf50;
+}
+.concept-h2 {
+  font-size: 20px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+.mode-btn {
+    width: 60px;
+    height: 30px;
+    color: #000;
+    border-radius: 15px;
+    background-color: #DCE775;
+    margin-right: 5px;
+    margin-top: 10px;
 }
 </style>

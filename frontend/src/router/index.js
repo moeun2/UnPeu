@@ -4,10 +4,7 @@ import Home from "@/views/MainPage.vue";
 import PresentPage from "@/views/PresentPage.vue";
 import PresentPayment from "@/components/present/payment/PresentPayment.vue";
 import PresentManage from "@/components/present/management/PresentManage.vue";
-
-import Event from "@/views/EventPage.vue";
 import eventRoom from "@/components/eventRoom/EventRoom.vue";
-import ConceptChange from "@/components/eventRoom/ConceptChange.vue";
 
 import Diary from "@/views/DiaryPage.vue";
 import BoardList from "@/components/diary/BoardList.vue";
@@ -34,22 +31,9 @@ const routes = [
     children: [
       {
         path: "/eventRoom/:userid",
-        name: "Event",
-        component: Event,
+        name: "eventRoom",
+        component: eventRoom,
         beforeEnter: getUserInfo,
-        redirect: "/eventRoom/:userid",
-        children: [
-          {
-            path: "/",
-            name: "eventRoom",
-            component: eventRoom,
-          },
-          {
-            path: "conceptChange",
-            name: "ConceptChange",
-            component: ConceptChange,
-          }
-        ]
       },
       {
         path: "/diary/:userid",
