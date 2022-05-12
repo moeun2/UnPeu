@@ -51,10 +51,11 @@
                     </div>
 
                     <v-icon small @click="copyLink">mdi-link</v-icon>
-                    <a class="info-name" href="#"> {{ this.userName }}</a>
-                    <div class="info-birth">{{ this.userBirth }}</div>
+                    <a class="info-name" @click="copyLink"> {{ this.userName }}</a>
+                    <div class="info-birth" v-if="showUserBirthAndEmail">{{ this.userBirth }}</div>
                     <br />
-                    <p class="text-email">{{ this.userEmail }}</p>
+                    <p class="text-email" v-if="showUserBirthAndEmail">{{ this.userEmail }}</p>
+                    <p class="text-email" v-if="!showUserBirthAndEmail">ㅤ</p>
                     <div style="display: flex; margin-top: 10px">
                       <router-link
                         :to="{ name: 'PresentManage' }"
@@ -62,7 +63,6 @@
                       >
                         <button class="item">
                           <v-icon>mdi-gift-open</v-icon>
-                          <!-- <img src="https://i.imgur.com/nupfePY.png" /> -->
                           <p class="arrow_box">받고 싶은 선물 등록!</p>
                         </button>
                       </router-link>
@@ -70,7 +70,6 @@
                       <router-link :to="{ name: 'Login' }" v-if="!isLogin">
                         <button class="item">
                           <v-icon class="v-icon">mdi-login</v-icon>
-                          <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                           <p class="arrow_box">로그인</p>
                         </button>
                       </router-link>
@@ -83,7 +82,6 @@
                       >
                         <button class="item">
                           <v-icon>mdi-home</v-icon>
-                          <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                           <p class="arrow_box">마이페이지</p>
                         </button>
                       </router-link>
@@ -94,7 +92,6 @@
                         style="margin-left: 5px"
                       >
                         <v-icon>mdi-logout</v-icon>
-                        <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                         <p class="arrow_box">로그아웃</p>
                       </button>
                       <button
@@ -104,7 +101,6 @@
                         style="margin-left: 5px"
                       >
                         <v-icon>mdi-account-cog</v-icon>
-                        <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                         <p class="arrow_box">회원정보</p>
                       </button>
                     </div>
@@ -122,7 +118,6 @@
                 Here!👈)</a
               >
             </div>
-            <!-- <img class="speech-bubble2-img" src="@/assets/main_logo4.gif" /> -->
           </div>
           <div class="main-dot">
             <div class="main-paper">
@@ -134,7 +129,8 @@
                         name: 'eventRoom',
                         params: { userid: $route.params.userid },
                       }"
-                      ><li :class="[activeCheckClass]" @click="checkHome()">
+                      >
+                      <li :class="[activeCheckClass]" @click="checkHome()">
                         홈
                       </li></router-link>
                     <router-link
@@ -209,6 +205,7 @@ export default {
       userEmail: "ssafykim@ssafy.com",
       isLogin: false,
       isMyPage: false,
+      showUserBirthAndEmail: false,
       totalVisit: 0,
       todayVisit: 0,
       showModal: false,
@@ -321,7 +318,6 @@ export default {
       getUserDetail(
         this.$route.params.userid,
         (res) => {
-          // console.log(res.data.User);
           this.userName = res.data.User.userName;
           if (res.data.User.userImg) {
             this.userImg = API_BASE_URL + res.data.User.userImg;
@@ -370,8 +366,6 @@ export default {
         getUserDetailUseToken(
           window.localStorage.getItem("accessToken"),
           (res) => {
-            // console.log(res.data.User);
-
             this.$store.commit("userStore/setUser", res.data.User);
             this.isLogin = true;
             if (index == res.data.User.id) {
@@ -379,8 +373,6 @@ export default {
             }
           },
           () => {
-            // console.log("getUserDetailUseToken fail")
-
             this.isLogin = false;
             window.localStorage.removeItem("accessToken");
             this.$store.commit("userStore/setUserNull");
@@ -419,7 +411,6 @@ export default {
           showCancelButton: true,
         })
         .then((result) => {
-          /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
             window.localStorage.removeItem("accessToken");
             this.RESET_PRESENT_LIST();
@@ -468,7 +459,6 @@ export default {
     async updateUserInfo() {
       const { value: info } = await this.$swal.fire({
         title: "소개글을 입력해주세요!",
-        // html:"<textarea placeholder />",
         input: "textarea",
         inputValue: this.userInfo,
         inputLabel: "프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)",
@@ -494,7 +484,6 @@ export default {
       if (info) {
         updateUserInfo(info.replace('"', ""), (res) => {
           this.userInfo = res.data.User.userInfo;
-          // console.log(res.data.User.userInfo)
         });
       }
     },
@@ -753,4 +742,3 @@ export default {
     color: grey;
 }
 </style>
-
