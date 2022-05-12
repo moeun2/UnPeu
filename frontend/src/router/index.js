@@ -122,7 +122,7 @@ const router = new VueRouter({
 function getUserPresent(to, from, next){
   let userId = to.params.userid;
   Store.dispatch("presentStore/searchList",userId);
-  console.log(userId)
+  // console.log(userId)
   next();
 }
 

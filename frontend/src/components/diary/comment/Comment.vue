@@ -6,13 +6,13 @@
           <v-icon small>mdi-account</v-icon>{{ item.writer }}
         </td>
 
-        <td class="content pa-0">{{ item.content }}</td>
+        <td style="width: 285px;" class="content pa-0 d-print-table-row">{{ item.content }}</td>
 
-        <td style="width: 110px;" class="pa-0 text-center">
+        <td style="width: 105px;" class="pa-0 text-center">
           {{ item.createdAt }}
         </td>
 
-        <td style="width: 23px;" class="pa-0">
+        <td style="width: 20px;" class="pa-0">
           <v-btn @click="editComment(item)" icon x-small color="grey"
             ><v-icon>mdi-pencil</v-icon></v-btn
           >

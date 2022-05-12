@@ -273,7 +273,7 @@ export default {
   methods: {
     ...mapMutations(presentStore,["RESET_PRESENT_LIST"]),
     goToMainPage() {
-      this.$router.push({ name: "eventRoom" });
+      this.$router.push({ name: "eventRoom" }).catch(()=>{});
     },
     setUserData() {
       getUserDetail(
