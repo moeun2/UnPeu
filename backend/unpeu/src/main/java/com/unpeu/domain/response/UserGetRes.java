@@ -29,6 +29,8 @@ public class UserGetRes {
     private Long totalVisit;
 
 	private String userImg;
+	
+	private Boolean isAgree;
 
 	public UserGetRes(User user) {
 		super();
@@ -43,6 +45,7 @@ public class UserGetRes {
 		this.todayVisit = user.getTodayVisit();
 		this.totalVisit = user.getTotalVisit();
 		this.userImg = user.getUserImg();
+		this.isAgree= user.getIsAgree();
 	}
 
 

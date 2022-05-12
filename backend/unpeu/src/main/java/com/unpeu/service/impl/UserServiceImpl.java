@@ -315,6 +315,7 @@ public class UserServiceImpl implements IUserService{
 		user.setSocialDomain(socialDomain);
 		user.setTodayVisit(0L);
 		user.setTotalVisit(0L);
+		user.setIsAgree(true);
 
 		user.setCreatedAt(LocalDateTime.now());
 		return userRepository.save(user);
@@ -407,6 +408,7 @@ public class UserServiceImpl implements IUserService{
 		User user= userRepository.findById(userId).get();
 		user.setUserBirth(userPatchEmailBirthReq.getUserBirth());
 		user.setUserEmail(userPatchEmailBirthReq.getUserEmail());
+		user.setIsAgree(userPatchEmailBirthReq.getIsAgree());
 		return userRepository.save(user);
 	}
 
@@ -422,7 +424,7 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	/**
-	 * 일일 방문자수 초기회
+	 * 일일 방문자수 증가
 	 * @param userId
 	 * @return
 	 */
@@ -433,7 +435,11 @@ public class UserServiceImpl implements IUserService{
 		return userRepository.findById(userId).get();
 	}
 
-
+	/**
+	 * 회원 삭제
+	 * @param userId
+	 * @return
+	 */
 	@Override
 	@Transactional(readOnly = false)
 	public void deleteUser(Long userId) {

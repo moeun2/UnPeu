@@ -41,6 +41,8 @@ public class User {
 
 	private String category;
 	private LocalDate selectedDate;
+	
+	private Boolean isAgree;
 
 	private LocalDateTime createdAt;
 }
