@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,8 +22,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-	
-	
+
 	private String userLogin;
 	private String socialDomain;
 
@@ -38,6 +38,9 @@ public class User {
     private Long totalVisit;
 
 	private String userImg;
+
+	private String category;
+	private LocalDate selectedDate;
 
 	private LocalDateTime createdAt;
 }

@@ -5,16 +5,18 @@
         당신을 위한 조그마한 기록 그리고 선물<br />
         Un Peu : 앙뿌<br /><br />
       </span>
-      <img width="250px" src="@/assets/main_logo4.gif" /><br /><br /><br />
+      <img width="250px" src="@/assets/img/main_logo4.gif" /><br /><br /><br />
       <img
         class="google_login_btn"
-        src="@/assets/btn_google_signin_light_normal_web@2x.png"
+        src="@/assets/img/login/btn_google_signin_light_normal_web@2x.png"
+
         v-on:click="GoogleLogin"
       /><br />
       <div id="my-signin2" style="display: none"></div>
       <img
         class="kakao_login_btn"
-        src="@/assets/kakao_login_large_narrow.png"
+        src="@/assets/img/login/kakao_login_large_narrow.png"
+
         v-on:click="KakaoLogin"
       /><br />
     </div>
@@ -78,10 +80,10 @@ export default {
 @import url("@/assets/css/reset.css");
 @import url("@/assets/css/style.css");
 
-body {
+/* body {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
-}
+} */
 
 .test {
   display: flex;

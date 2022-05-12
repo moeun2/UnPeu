@@ -171,17 +171,17 @@ export default {
 }
 .link-icon.twitter {
   width: 40px;
-  background-image: url(@/assets/img/icon-twitter.png);
+  background-image: url(@/assets/img/sns/icon-twitter.png);
   background-repeat: no-repeat;
 }
 .link-icon.facebook {
   width: 40px;
-  background-image: url(@/assets/img/icon-facebook.png);
+  background-image: url(@/assets/img/sns/icon-facebook.png);
   background-repeat: no-repeat;
 }
 .link-icon.kakao {
   width: 40px;
-  background-image: url(@/assets/img/icon-kakao.png);
+  background-image: url(@/assets/img/sns/icon-kakao.png);
   background-repeat: no-repeat;
 }
 .modal-mask {

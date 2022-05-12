@@ -2,12 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/MainPage.vue";
 import PresentPage from "@/views/PresentPage.vue";
-import PresentPayment from "@/components/PresentPayment.vue";
-import PresentManage from "@/components/PresentManage.vue";
-
-import Event from "@/views/EventPage.vue";
-import eventRoom from "@/components/EventRoom.vue";
-import ConceptChange from "@/components/ConceptChange.vue";
+import PresentPayment from "@/components/present/payment/PresentPayment.vue";
+import PresentManage from "@/components/present/management/PresentManage.vue";
+import eventRoom from "@/components/eventRoom/EventRoom.vue";
 
 import Diary from "@/views/DiaryPage.vue";
 import BoardList from "@/components/diary/BoardList.vue";
@@ -34,22 +31,9 @@ const routes = [
     children: [
       {
         path: "/eventRoom/:userid",
-        name: "Event",
-        component: Event,
+        name: "eventRoom",
+        component: eventRoom,
         beforeEnter: getUserInfo,
-        redirect: "/eventRoom/:userid",
-        children: [
-          {
-            path: "/",
-            name: "eventRoom",
-            component: eventRoom,
-          },
-          {
-            path: "conceptChange",
-            name: "ConceptChange",
-            component: ConceptChange,
-          }
-        ]
       },
       {
         path: "/diary/:userid",
@@ -88,7 +72,7 @@ const routes = [
             path: ":userid/manage",
             name: "PresentManage",
             component: PresentManage,
-            beforeEnter: getUserPresent,
+            beforeEnter: getUserPresentAndCheckGuest,
           },
           {
             path: ":userid/payment",
@@ -133,6 +117,22 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
+function getUserPresentAndCheckGuest(to, from, next){
+  let loginCheck=Store.state.userStore.user;
+  if(loginCheck==null) {
+    alert("로그인을 하셔야 합니다!")
+    router.push({
+      name:"eventRoom",
+      params: { userid: to.params.userid }
+    })
+  }
+  else{
+    let userId = to.params.userid;
+    Store.dispatch("presentStore/searchList",userId);
+    next();
+  }
+}
 
 function getUserPresent(to, from, next){
   let userId = to.params.userid;

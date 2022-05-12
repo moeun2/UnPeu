@@ -1,7 +1,6 @@
 package com.unpeu.service.impl;
 
-import static com.unpeu.config.exception.ErrorCode.DELETE_CONFLICT;
-import static com.unpeu.config.exception.ErrorCode.MEMBER_NOT_FOUND;
+import static com.unpeu.config.exception.ErrorCode.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +27,7 @@ import com.unpeu.domain.repository.IBoardRepository;
 import com.unpeu.domain.repository.IMessageRepository;
 import com.unpeu.domain.repository.IPresentRepository;
 import com.unpeu.domain.repository.IUserRepository;
+import com.unpeu.domain.request.UserPatchConceptReq;
 import com.unpeu.domain.request.UserPatchEmailBirthReq;
 import com.unpeu.domain.request.UserPatchUserInfoReq;
 import com.unpeu.service.iface.IUserService;
@@ -315,6 +316,25 @@ public class UserServiceImpl implements IUserService{
 
 		user.setCreatedAt(LocalDateTime.now());
 		return userRepository.save(user);
+	}
+
+	@Override
+	public User updateUserConcept(Long userId, UserPatchConceptReq userPatchConceptReq) {
+		Optional<User> user = userRepository.findById(userId);
+		if (user.isEmpty()) {
+			throw new CustomException(MEMBER_NOT_FOUND);
+		}
+		User newUser= user.get();
+
+		String category = userPatchConceptReq.getCategory();
+		LocalDate selectedDate = userPatchConceptReq.getSelectedDate();
+		if( category == null || selectedDate == null){
+			throw new CustomException(CONCEPT_NOT_FOUND);
+		}
+
+		newUser.setCategory(category);
+		newUser.setSelectedDate(selectedDate);
+		return userRepository.save(newUser);
 	}
 
 	/**
