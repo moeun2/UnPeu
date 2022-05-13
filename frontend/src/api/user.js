@@ -63,12 +63,9 @@ function updateUserImg(img, success, fail) {
 
 function updateUserConcept(data, success, fail) {
   console.log("updateUserConcept 실행됨");
+  console.log(data);
   api
-    .patch(`/users/concept`, data, {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("accessToken"),
-      },
-    })
+    .patch(`/users/concept`, JSON.stringify(data))
     .then(success)
     .catch(fail);
 }
