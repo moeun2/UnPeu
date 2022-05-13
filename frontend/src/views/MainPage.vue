@@ -735,10 +735,10 @@ export default {
 
 .speech-bubble {
   position: absolute;
-  bottom: 105px;
-  left: -30px;
+  bottom: 100px;
+  left: -50px;
   background: var(--speech-bubble-color);
-  color: white;
+  color: black;
   border-radius: 0.4em;
   padding: 0.3rem;
 }
