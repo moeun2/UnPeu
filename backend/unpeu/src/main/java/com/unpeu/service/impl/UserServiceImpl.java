@@ -313,28 +313,19 @@ public class UserServiceImpl implements IUserService{
 		user.setSocialDomain(socialDomain);
 		user.setTodayVisit(0L);
 		user.setTotalVisit(0L);
-
+		user.setCategory("default");
+		user.setSelectedDate(null);
 		user.setCreatedAt(LocalDateTime.now());
 		return userRepository.save(user);
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public User updateUserConcept(Long userId, UserPatchConceptReq userPatchConceptReq) {
-		Optional<User> user = userRepository.findById(userId);
-		if (user.isEmpty()) {
-			throw new CustomException(MEMBER_NOT_FOUND);
-		}
-		User newUser= user.get();
-
-		String category = userPatchConceptReq.getCategory();
-		LocalDate selectedDate = userPatchConceptReq.getSelectedDate();
-		if( category == null || selectedDate == null){
-			throw new CustomException(CONCEPT_NOT_FOUND);
-		}
-
-		newUser.setCategory(category);
-		newUser.setSelectedDate(selectedDate);
-		return userRepository.save(newUser);
+		User user= userRepository.findById(userId).get();
+		user.setCategory(userPatchConceptReq.getCategory());
+		user.setSelectedDate(userPatchConceptReq.getSelectedDate());
+		return userRepository.save(user);
 	}
 
 	/**

@@ -14,7 +14,7 @@ public class UserPatchEmailBirthReq {
 	@ApiModelProperty(name = "userEmail", example = "ssafy123@ssafy.com")
     private String userEmail;
 	
-	@ApiModelProperty(name = "userBirth", example = "1997-12-9")
+	@ApiModelProperty(name = "userBirth", example = "1997-12-09")
     private LocalDate userBirth;
 
     public UserPatchEmailBirthReq(String userEmail,LocalDate userBirth) {

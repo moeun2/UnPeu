@@ -14,7 +14,7 @@ public class UserPatchConceptReq {
 	@ApiModelProperty(name = "category", example = "birthday")
     private String category;
 
-	@ApiModelProperty(name = "selectedDate", example = "1997-12-9")
+	@ApiModelProperty(name = "selectedDate", example = "1997-12-09")
     private LocalDate selectedDate;
 
     public UserPatchConceptReq(String category,LocalDate selectedDate) {
