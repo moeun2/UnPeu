@@ -1,5 +1,6 @@
 <template>
-  <div class="view" @click.once="playMusic(userMusic)">
+  <div class="view">
+     <!-- @click.once="playMusic(userMusic)" -->
     <div class="background">
       <main>
         <div class="holder hd1"></div>
@@ -287,7 +288,7 @@ export default {
     
     playMusic(music){
       // alert("노래를 재생합니다.")
-      if(this.music!="none"){
+      if(music!="none"){
         if(this.audio){
           if(!this.audio.paused){
             this.audio.pause();
@@ -392,7 +393,7 @@ export default {
             if(this.audio&&this.userMusic!=res.data.User.userMusic){
               this.pauseMusic()
               this.audio=null
-              this.playMusic(res.data.User.userMusic)
+              // this.playMusic(res.data.User.userMusic)
             }
             this.userMusic = res.data.User.userMusic;
           }
@@ -478,7 +479,7 @@ export default {
         input: 'select',
         text: "원하는 노래를 선택해주세요!",
         inputOptions: {
-          'none':'none',
+          'none':'노래를 재생하고 싶지 않아요',
           'allthat': 'allthat',
           'betterdays': 'betterdays',
           'happiness': 'happiness',
@@ -488,7 +489,7 @@ export default {
         },
         inputPlaceholder: '노래를 선택해주세요',
         showCancelButton: true,
-        
+
       })
       if (music) {
         updateUserMusic(music,
