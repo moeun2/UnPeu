@@ -124,6 +124,6 @@ export default {
 .landing {
   text-align: center;
   justify-content: center;
-  margin-top : 10vh;
+  align-items:center;
 }
 </style>

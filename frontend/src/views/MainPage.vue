@@ -245,7 +245,7 @@ export default {
       curUser: "getCurUser",
     }),
   },
-   mounted() {
+  mounted() {
     this.checkConcept();
   },
   created() {

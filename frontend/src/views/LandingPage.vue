@@ -78,7 +78,7 @@ export default {
   margin-top : 10vh;
   text-align: center;
   justify-content: center;
-  margin-top : 10vh;
+  align-items:center;
 }
 .landing_btn {
   background-color: #fff6ca !important;
