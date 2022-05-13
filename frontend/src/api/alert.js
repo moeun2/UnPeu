@@ -120,7 +120,7 @@ function saveMessageSuccess(vm) {
 
 function setMonthAndDate(vm) {
   vm.$swal.fire(
-    "Month & Date 설정 완료!",
+    "컨셉 변경 완료!",
     "설정된 날짜는 0시 정각에 실행됩니다.",
     "success"
   );
