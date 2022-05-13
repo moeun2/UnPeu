@@ -61,6 +61,7 @@ export const userStore = {
         (response) => {
           console.log("AC_UPDATE_CONCEPT : ",response.data)
           commit("setCurUserCategory", response.data.category);
+          commit("setCurUserSelectedDate", response.data.selectedDate);
           return response.data.category;
         },
         (err)=>{
