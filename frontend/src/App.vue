@@ -3,8 +3,6 @@
     <div class="view">
       <router-view />
     </div>
-    <input class="check" type="checkbox" />
-    <div class="theme"></div>
     <email-fab></email-fab>
   </v-app>
 </template>

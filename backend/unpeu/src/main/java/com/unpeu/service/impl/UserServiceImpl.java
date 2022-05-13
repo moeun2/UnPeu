@@ -321,8 +321,8 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public User updateUserConcept(Long userId, UserPatchConceptReq userPatchConceptReq) {
-		User user= userRepository.findById(userId).get();
+	public User updateUserConcept(UserPatchConceptReq userPatchConceptReq) {
+		User user= userRepository.findById(userPatchConceptReq.getUserId()).get();
 		user.setCategory(userPatchConceptReq.getCategory());
 		user.setSelectedDate(userPatchConceptReq.getSelectedDate());
 		return userRepository.save(user);
