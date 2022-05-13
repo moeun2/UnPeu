@@ -118,58 +118,56 @@ const router = new VueRouter({
   routes,
 });
 
-function getUserPresentAndCheckGuest(to, from, next){
-  let loginCheck=Store.state.userStore.user;
-  if(loginCheck==null) {
-    alert("로그인을 하셔야 합니다!")
+function getUserPresentAndCheckGuest(to, from, next) {
+  let loginCheck = Store.state.userStore.user;
+  if (loginCheck == null) {
+    alert("로그인을 하셔야 합니다!");
     router.push({
-      name:"eventRoom",
-      params: { userid: to.params.userid }
-    })
-  }
-  else{
+      name: "eventRoom",
+      params: { userid: to.params.userid },
+    });
+  } else {
     let userId = to.params.userid;
-    Store.dispatch("presentStore/searchList",userId);
+    Store.dispatch("presentStore/searchList", userId);
     next();
   }
 }
 
-function getUserPresent(to, from, next){
+function getUserPresent(to, from, next) {
   let userId = to.params.userid;
-  Store.dispatch("presentStore/searchList",userId);
+  Store.dispatch("presentStore/searchList", userId);
   // console.log(userId)
   next();
 }
 
 function getUserInfo(to, from, next) {
   let userId = to.params.userid;
-  // console.log("Router-indx.js-getUserInfo-현재 페이지의 userId:", userId);
-  Store.commit("userStore/setCurUserId", userId);
-  // const getCurUser = Store.getters["userStore/getCurUser"];
-  // console.log(getCurUser);
-
   let accessToken = localStorage.getItem("accessToken");
+  Store.commit("userStore/MU_CUR_USER_ID", userId);
+
   if (accessToken == null) {
-    // console.log("Permission : Guest"); //2
-    Store.commit("userStore/setCurUserPermission", 2);
+    /** Permission 설정  **/
+    Store.commit("userStore/MU_CUR_USER_PERMISSION", 2);
   } else {
     getUserDetailUseToken(accessToken, (res) => {
-      // console.log("router-index.js-getUserInfo-getUserDetailUseToken 호출");
-      // console.log(res.data.User.id);
       let compareId = res.data.User.id;
-      Store.commit("userStore/setCurUserCategory", res.data.User.category);
-      Store.commit("userStore/setCurUserSelectedDate", res.data.User.selectedDate);
-      
+
+      /** Category, selectedDate 설정 **/
+      Store.commit(
+        "userStore/MU_CUR_USER_CONCEPT",
+        res.data.User.category,
+        res.data.User.selectedDate
+      );
+
+      /** Permission 설정  **/
       if (compareId != userId) {
-        // console.log("Permission : Guest(Logined User)"); //1
-        Store.commit("userStore/setCurUserPermission", 1);
+        Store.commit("userStore/MU_CUR_USER_PERMISSION", 1);
       } else {
-        // console.log("Permission : User"); //0
-        Store.commit("userStore/setCurUserPermission", 0);
+        Store.commit("userStore/MU_CUR_USER_PERMISSION", 0);
       }
     });
   }
-  
+
   next();
 }
 

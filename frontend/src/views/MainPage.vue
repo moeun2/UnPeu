@@ -189,17 +189,17 @@ import {
 } from "@/api/user.js";
 import { EVENT_URL, FRONT_URL, API_BASE_URL } from "@/config/index";
 import LinkShareModal from "@/components/option/LinkShareModal.vue";
-import { mapGetters, mapMutations,mapActions } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 const userStore = "userStore";
 const presentStore = "presentStore";
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 // import store from '@/store';
 export default {
   name: "App",
-  component:{
-    dayjs
+  component: {
+    dayjs,
   },
   data() {
     return {
@@ -225,10 +225,11 @@ export default {
           "Avatar size should be less than 2 MB!",
       ],
       files: null,
-      data:{
-        "category":'',
-        "selectedDate":'',
-      }
+      data: {
+        userId:"",
+        category: "",
+        selectedDate: "",
+      },
     };
   },
   watch: {
@@ -244,8 +245,11 @@ export default {
       curUser: "getCurUser",
     }),
   },
-  created() {
+   mounted() {
     this.checkConcept();
+  },
+  created() {
+    
     if (window.localStorage.getItem("accessToken")) {
       //로그인 되어있는 상태 store inlogin true
       getUserDetailUseToken(
@@ -272,22 +276,17 @@ export default {
 
     //조회수 증가
     if (
-
       window.location.href ==
-      FRONT_URL + "/eventRoom/" + this.$route.params.userid) 
-      {
-        increaseVisit(
-          this.$route.params.userid,
-          (res) => {
-            if (res.data.User.todayVisit) {
-              this.todayVisit = res.data.User.todayVisit;
-            }
-            if (res.data.User.totalVisit) {
-              this.totalVisit = res.data.User.totalVisit;
-            }
-          },
-        );
-        
+      FRONT_URL + "/eventRoom/" + this.$route.params.userid
+    ) {
+      increaseVisit(this.$route.params.userid, (res) => {
+        if (res.data.User.todayVisit) {
+          this.todayVisit = res.data.User.todayVisit;
+        }
+        if (res.data.User.totalVisit) {
+          this.totalVisit = res.data.User.totalVisit;
+        }
+      });
     }
   },
   components: {
@@ -349,31 +348,57 @@ export default {
     goToMainPage() {
       // test 용 입니다.
       let concept = this.curUser.category;
+      this.data.userId = this.curUser.id;
       console.log("concept : ", this.curUser.category);
       switch (concept) {
         case "default":
-          this.$store.commit("userStore/setCurUserCategory", "birthday");
-          this.data.category="birthday";
-          this.AC_UPDATE_CONCEPT(this.data,function(res){console.log(res)},function(){});
-          document.documentElement.setAttribute("color-theme", "birthday-close");
+          this.data.category = "birthday";
+          this.AC_UPDATE_CONCEPT(
+            this.data,
+            function (res) {
+              console.log("AC_UPDATE_CONCEPT Success")
+              console.log(res);
+              console.log(this.curUser);
+            },
+            function () {}
+          );
+          document.documentElement.setAttribute(
+            "color-theme",
+            "birthday-close"
+          );
+
           break;
         case "birthday":
-          this.data.category="children";
-          this.$store.commit("userStore/setCurUserCategory", "children");
-          this.AC_UPDATE_CONCEPT(this.data,function(res){console.log(res)},function(){});
+          this.data.category = "children";
+          this.AC_UPDATE_CONCEPT(
+            this.data,
+            function (res) {
+              console.log("AC_UPDATE_CONCEPT Success")
+              console.log(res);
+              console.log(this.curUser);
+            },
+            function () {}
+          );
           document.documentElement.setAttribute(
             "color-theme",
             "children-close"
           );
           break;
         case "children":
-          this.data.category="default";
-          this.$store.commit("userStore/setCurUserCategory", "default");
-          this.AC_UPDATE_CONCEPT(this.data,function(res){console.log(res)},function(){});
+          this.data.category = "default";
+          this.AC_UPDATE_CONCEPT(
+            this.data,
+            function (res) {
+              console.log("AC_UPDATE_CONCEPT Success")
+              console.log(res);
+              console.log(this.curUser);
+            },
+            function () {}
+          );
           document.documentElement.setAttribute("color-theme", "default-close");
           break;
       }
-      
+
       // this.$router.push({ name: "eventRoom" }).catch(()=>{});
     },
     setUserData() {
@@ -670,10 +695,11 @@ export default {
   font-family: "GangwonEdu_OTFBoldA" !important;
 }
 @font-face {
-    font-family: 'GangwonEdu_OTFBoldA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "GangwonEdu_OTFBoldA";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
 
 .view {
