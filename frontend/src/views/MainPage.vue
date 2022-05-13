@@ -1,5 +1,5 @@
 <template>
-  <div class="view">
+  <div class="view" @click.once="playMusic(userMusic)">
     <div class="background">
       <main>
         <div class="holder hd1"></div>
@@ -16,9 +16,14 @@
                   <p class="text-total" v-text="totalVisit"></p>
                 </div>
                 <div class="profile">
-                  <p class="text-today-is">
-                    BGM IS .. <span> Y - 프리스타일</span>
-                  </p>
+                  <div class="text-today-is">
+                    BGM IS .. <span v-text="userMusic"> </span>
+                    <div class="music-icon">
+                    <v-icon small @click="playMusic(userMusic)" v-if="userMusic!='none'">mdi-play</v-icon>
+                    <v-icon small @click="pauseMusic" v-if="userMusic!='none'">mdi-pause</v-icon>
+                    <v-icon small @click="updateMusic" v-if="isMyPage">mdi-account-music</v-icon>
+                    </div>
+                  </div>
                   <v-file-input
                     class="img-update-icon"
                     v-if="isMyPage"
@@ -181,6 +186,7 @@ import {
   increaseVisit,
   updateUserEmailBirth,
   deleteUser,
+  updateUserMusic,
 } from "@/api/user.js";
 import { EVENT_URL, FRONT_URL, API_BASE_URL } from "@/config/index";
 import LinkShareModal from "@/components/option/LinkShareModal.vue";
@@ -203,12 +209,14 @@ export default {
       userImg: "",
       userBirth: "1996.10.31",
       userEmail: "ssafykim@ssafy.com",
+      userMusic: "none",
       isLogin: false,
       isMyPage: false,
       isAgree: false,
       totalVisit: 0,
       todayVisit: 0,
       showModal: false,
+      audio:null,
       rules: [
         (value) =>
           !value ||
@@ -276,6 +284,31 @@ export default {
   },
 
   methods: {
+    
+    playMusic(music){
+      // alert("노래를 재생합니다.")
+      if(this.music!="none"){
+        if(this.audio){
+          if(!this.audio.paused){
+            this.audio.pause();
+            this.audio.currentTime=0
+          }
+          this.audio.play();
+        }else{
+          // console.log(this.userMusic)
+          const audio = new Audio(require('@/assets/music/'+music+'.mp3'))
+          audio.loop=true
+          audio.volume=0.07
+          this.audio=audio
+          this.audio.play();
+        }
+      }
+    },
+    pauseMusic(){
+      if(this.audio){
+          this.audio.pause();
+      }
+    },
     test() {
       const isUserColorTheme = localStorage.getItem("color-theme");
       // const isOsColorTheme = window.matchMedia("(prefers-color-scheme: dark)")
@@ -354,17 +387,28 @@ export default {
             this.totalVisit = res.data.User.totalVisit;
           }
           this.isAgree=res.data.User.isAgree;
+
+          if (res.data.User.userMusic){
+            if(this.audio&&this.userMusic!=res.data.User.userMusic){
+              this.pauseMusic()
+              this.audio=null
+              this.playMusic(res.data.User.userMusic)
+            }
+            this.userMusic = res.data.User.userMusic;
+          }
         },
         () => {
           this.$router.push({ name: "NotFound" });
         }
       );
+      
     },
 
-    changeParams(index) {
+    async changeParams(index) {
+
       if (window.localStorage.getItem("accessToken")) {
         //로그인 되어있는 상태 store inlogin true
-        getUserDetailUseToken(
+        await getUserDetailUseToken(
           window.localStorage.getItem("accessToken"),
           (res) => {
             this.$store.commit("userStore/setUser", res.data.User);
@@ -381,7 +425,8 @@ export default {
           }
         );
       }
-      this.setUserData();
+      //지금 접속한 페이지유저의 정보
+      this.setUserData()
     },
 
     checkHome() {
@@ -427,6 +472,36 @@ export default {
           }
         });
     },
+    async updateMusic(){
+      const { value: music } = await  this.$swal.fire({
+        title: 'BGM🎵',
+        input: 'select',
+        text: "원하는 노래를 선택해주세요!",
+        inputOptions: {
+          'none':'none',
+          'allthat': 'allthat',
+          'betterdays': 'betterdays',
+          'happiness': 'happiness',
+          'highoctane': 'highoctane',
+          'jazzcomedy': 'jazzcomedy',
+          'moose': 'moose',
+        },
+        inputPlaceholder: '노래를 선택해주세요',
+        showCancelButton: true,
+        
+      })
+      if (music) {
+        updateUserMusic(music,
+        (res) => {
+            this.userMusic=res.data.User.userMusic
+            this.pauseMusic()
+            this.audio=null
+            this.playMusic(this.userMusic)
+          }
+        )
+      }
+      
+    },
 
     async updateUserTitle() {
       const { value: title } = await this.$swal.fire({
@@ -440,7 +515,6 @@ export default {
           maxlength: 25,
           rows: 4,
           'spellcheck':'false'
-
         },
 
         inputValidator: (value) => {
@@ -549,7 +623,7 @@ export default {
             isAgree: document.getElementById("isAgree").checked
           }
             updateUserEmailBirth(localStorage.getItem("accessToken"), data, (res) => {
-            console.log("success change email and birth")
+            // console.log("success change email and birth")
             this.$swal.fire('수정을 성공했습니다!', '', 'success')
             this.userEmail= res.data.User.userEmail
             this.userBirth =
@@ -745,7 +819,13 @@ export default {
 .swal2-textarea::-webkit-scrollbar {
   display: none;
 }
+.swal2-select{
+  border: 1px solid #d9d9d9;
+}
 .mdi-camera::before {
     color: grey;
+}
+.music-icon {
+    float: right;
 }
 </style>
