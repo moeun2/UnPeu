@@ -272,17 +272,22 @@ export default {
 
     //조회수 증가
     if (
-      window.document.location.href ==
-      FRONT_URL + "/eventRoom/" + this.$route.params.userid
-    ) {
-      increaseVisit(this.$route.params.userid, (res) => {
-        if (res.data.User.todayVisit) {
-          this.todayVisit = res.data.User.todayVisit;
-        }
-        if (res.data.User.totalVisit) {
-          this.totalVisit = res.data.User.totalVisit;
-        }
-      });
+
+      window.location.href ==
+      FRONT_URL + "/eventRoom/" + this.$route.params.userid) 
+      {
+        increaseVisit(
+          this.$route.params.userid,
+          (res) => {
+            if (res.data.User.todayVisit) {
+              this.todayVisit = res.data.User.todayVisit;
+            }
+            if (res.data.User.totalVisit) {
+              this.totalVisit = res.data.User.totalVisit;
+            }
+          },
+        );
+        
     }
   },
   components: {
@@ -662,12 +667,13 @@ export default {
 @import url("@/assets/css/style.css"); */
 
 * {
-  font-family: "hiffy" !important;
+  font-family: "GangwonEdu_OTFBoldA" !important;
 }
 @font-face {
-  font-family: "hiffy";
-  src: url("@/assets/font/hiffy.ttf") format("truetype");
-  font-weight: 400;
+    font-family: 'GangwonEdu_OTFBoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 .view {
