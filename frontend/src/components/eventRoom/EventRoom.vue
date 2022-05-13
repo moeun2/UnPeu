@@ -19,7 +19,6 @@
         :to="{ name: 'PresentPayment', params: { userId: this.curUser.id } }"
       >
         <button class="reg-gift">
-          <!-- <img class="gift-img" alt="" /> -->
           <p>
             <span class="btn-p">📩 CLICK! CLICK! 🎁</span>
             <br />
