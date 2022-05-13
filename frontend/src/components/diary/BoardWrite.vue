@@ -56,11 +56,11 @@
           edit
         </v-btn>
         <v-btn
-          @click="cancle"
+          @click="cancel"
           color="var(--cancel-color)"
           class="ma-2 white--text"
         >
-          cancle
+          cancel
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -206,8 +206,8 @@ export default {
     },
 
     /* 뒤로가기 */
-    cancle() {
-      // console.log("cancle");
+    cancel() {
+      // console.log("cancel");
       this.$router.go(-1); // 한 단계 뒤로
     },
   },
