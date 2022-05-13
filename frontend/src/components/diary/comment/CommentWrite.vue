@@ -40,6 +40,7 @@
     <v-row>
       <v-col class="pa-0">
         <v-textarea
+          ref="myTextArea"
           v-model="statusContent"
           :rules="rules.content"
           label="Comment"
@@ -91,6 +92,8 @@ export default {
     if (this.editFlag) {
       this.form.writer = this.nonUser.writer
       this.form.password = this.nonUser.password
+
+      this.$refs["myTextArea"].focus();
     }
   },
 

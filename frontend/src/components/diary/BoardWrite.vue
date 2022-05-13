@@ -135,14 +135,10 @@ export default {
     }),
 
     categories: function () {
-      // 빈 배열 체크
-      if (Array.isArray(this.categoryList) && this.categoryList.length === 0) {
-        return ["Default"];
-      } else if (this.categoryList.includes("Default")) {
-        return this.categoryList;
-      } else {
-        return ["Default"].concat(this.categoryList);
-      }
+      var merged = ["Default"].concat(this.categoryList);
+      var unique = merged.filter((item, pos) => merged.indexOf(item) === pos); // 중복 제거
+      // console.log(unique);
+      return unique;
     },
 
     /* 작성 폼 유효성 검사 */

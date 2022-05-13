@@ -256,7 +256,7 @@ export default {
 
     //조회수 증가
     if (
-      window.document.location.href ==
+      window.location.href ==
       FRONT_URL + "/eventRoom/" + this.$route.params.userid) 
       {
         increaseVisit(
