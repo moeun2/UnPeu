@@ -18,7 +18,7 @@ public interface IUserService {
 	
 	User addUser(Map<String, String> userInfo,String socialDomain);
 
-	User updateUserConcept(Long userId, UserPatchConceptReq userPatchConceptReq);
+	User updateUserConcept(UserPatchConceptReq userPatchConceptReq);
 
 	User updateUserTitle(Long userId,String userTitle);
 	

@@ -19,11 +19,10 @@
         :to="{ name: 'PresentPayment', params: { userId: this.curUser.id } }"
       >
         <button class="reg-gift">
-          <img class="gift-img" alt="" />
           <p>
-            <b>click! 📩</b>
+            <span class="btn-p">📩 CLICK! CLICK! 🎁</span>
             <br />
-            메세지 &amp; 선물 전달하러 가기!
+            메세지 &amp; 선물 보내러 가기!
           </p>
         </button>
       </router-link>
@@ -86,15 +85,21 @@
                 </a>            
                 <!-- 날짜 입력 받기 -->
                 <div class="concept-content">
-                  <h2 class="concept-h2">날짜 선택</h2>
-                    <p class="setDate-p">본 날짜는 매년 정기적으로 실행됩니다</p>
+                  <div class="mode-content">
+                    <h2 class="concept-h2">날짜 선택</h2>
+                    <p class="setDate-p">본 날짜는 매년 정기적으로 실행됩니다.</p>
                     <input type="number" name="month" class="input-date" id="month" v-model="month" placeholder="0"> 월
                     <input type="number" name="date" class="input-date" id="date" v-model="date" placeholder="0"> 일
-                    <button @click="setDate" type="submit" class="setDate-btn"> 설정 </button>
+                    <p class="setDate-p">{{ this.month }} 월 {{ this.date }} 일 </p>
+                  </div>
+                  <div class="mode-content">
                     <h2 class="concept-h2">컨셉 모드 선택</h2>
-                    <button class="mode-btn">기본</button>
-                    <button class="mode-btn">생일</button>
-                    <button class="mode-btn">어른이날</button>
+                    <p class="setDate-p">컨셉을 바꾸게 되면 이전 컨셉의 내용이 모두 초기화 됩니다. 신중히 선택하세요! </p>
+                    <input type="radio" name="concept" id="default" value="default" v-model="category" checked> 기본
+                    <input type="radio" name="concept" id="birthday" value="birthday" v-model="category"> 생일
+                    <input type="radio" name="concept" id="childrenDay" value="childrenDay" v-model="category"> 어른이날
+                  </div>
+                  <button @click="setDate" type="submit" class="setDate-btn"> 설정 </button>
                 </div>
             </div>
         </div>
@@ -106,7 +111,7 @@ import { getMessage, saveMessage, resetMessage } from "@/api/event.js";
 import { API_BASE_URL } from "@/config/index.js";
 import { getUserDetailUseToken } from "@/api/user.js";
 import * as Alert from "@/api/alert";
-import { mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 const userStore = "userStore";
 const presentStore = "presentStore";
@@ -127,7 +132,9 @@ export default {
       currentPage: 1,
       isMyPage: false,
       month: '',
-      date: ''
+      date: '',
+      category:'',
+      selectedDate:'',
     };
   },
 
@@ -212,6 +219,7 @@ export default {
 
   methods: {
     ...mapMutations(presentStore, ["RESET_PRESENT_LIST"]),
+    ...mapActions(userStore, ["AC_UPDATE_CONCEPT"]),
 
     changeParams(userId) {
       //파라미터 변경시 실행
@@ -279,7 +287,7 @@ export default {
         // 해당 날짜가 안 됐을 경우 모달 내용 변경, class 변경
         let noneView = document.getElementById("modal-content");
         noneView.innerHTML =
-          "<p>아직 오픈 기간이 아닙니다. <br/> 5월 5일 어른이날을 기다려 주세요~! 🤩🤩🤩 </p>";
+          "<p>아직 오픈 기간이 아닙니다. <br/> 오픈날까지 조금만 기다려 주세요~! 🤩🤩🤩 </p>";
         noneView.className = "modal-non-message";
       }
     },
@@ -351,10 +359,6 @@ export default {
         }
       });
     },
-    changeConcept() {
-      //document.getElementById("main-room").style.backgroundImage = 'url(https://i.imgur.com/JzNuJr5.png)';
-      this.$router.replace({ name: "ConceptChange" });
-    },
     setDate() {
             if(this.month == null) {
                 this.$swal.fire("Oops...!", "Month를 적어주세요!", "error");
@@ -386,10 +390,23 @@ export default {
                 this.$swal.fire("Oops...!", "일 범위를 벗어났어요!", "error");
             }
             else {
-                this.$store.commit("eventStore/SET_DATE", this.date);
-                this.$store.commit("eventStore/SET_MONTH", this.month);
+                let today = new Date();
+                let year = today.getFullYear();
+                // 한자리 수 일 경우
+                if(this.month < 10) {
+                  this.month = "0" + this.month;
+                }
+                if(this.date < 10) {
+                  this.date = "0" + this.date;
+                }
+                this.selectedDate = year + "-" + this.month + "-" + this.date;
+                let data = {};
+                data.category = this.category;
+                data.selectedDate = this.selectedDate;
+                data.userId = this.curUser.id;
+                console.log(data);
+                this.AC_UPDATE_CONCEPT(data, function(res) {console.log(res)}, function() {});
                 Alert.setMonthAndDate(this);
-                //modal 닫게 처리
             }
             
         },
@@ -624,6 +641,7 @@ ul.myMenu > li ul.submenu > li:hover {
 }
 .setDate-p {
     margin-bottom: 5px;
+    color: rgb(111, 111, 111);
 }
 .input-date {
     height: 30px;
@@ -644,12 +662,19 @@ ul.myMenu > li ul.submenu > li:hover {
   font-weight: bold;
 }
 .mode-btn {
-    width: 60px;
+    width: 70px;
     height: 30px;
     color: #000;
     border-radius: 15px;
     background-color: #DCE775;
     margin-right: 5px;
     margin-top: 10px;
+}
+.mode-content {
+  margin-bottom: 30px;
+}
+.btn-p {
+  font-size: 20px;
+  background-color: #DCE775;
 }
 </style>

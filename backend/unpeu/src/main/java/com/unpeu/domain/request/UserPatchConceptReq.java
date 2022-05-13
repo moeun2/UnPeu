@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserPatchConceptReq {
+	@ApiModelProperty(name = "userId", example = "1")
+	private Long userId;
 
 	@ApiModelProperty(name = "category", example = "birthday")
     private String category;
@@ -17,7 +19,8 @@ public class UserPatchConceptReq {
 	@ApiModelProperty(name = "selectedDate", example = "1997-12-09")
     private LocalDate selectedDate;
 
-    public UserPatchConceptReq(String category,LocalDate selectedDate) {
+    public UserPatchConceptReq(Long userId,String category,LocalDate selectedDate) {
+		this.userId = userId;
         this.category = category;
         this.selectedDate = selectedDate;
     }

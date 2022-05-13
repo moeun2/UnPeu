@@ -1,27 +1,30 @@
 <template>
-  <v-container>
-    <div class="landing">
-      <span style="font-size: 2em; font-weight: bold">
-        당신을 위한 조그마한 기록 그리고 선물<br />
-        Un Peu : 앙뿌<br /><br />
-      </span>
-      <img width="250px" src="@/assets/img/main_logo4.gif" /><br /><br /><br />
-      <img
-        class="google_login_btn"
-        src="@/assets/img/login/btn_google_signin_light_normal_web@2x.png"
-
-        v-on:click="GoogleLogin"
-      /><br />
-      <div id="my-signin2" style="display: none"></div>
-      <img
-        class="kakao_login_btn"
-        src="@/assets/img/login/kakao_login_large_narrow.png"
-
-        v-on:click="KakaoLogin"
-      /><br />
-    </div>
-    <router-view />
-  </v-container>
+  <div class="view">
+    <v-container>
+      <div class="landing">
+        <span style="font-size: 2em; font-weight: bold">
+          당신을 위한 조그마한 기록 그리고 선물<br />
+          Un Peu : 앙뿌<br /><br />
+        </span>
+        <img
+          width="250px"
+          src="@/assets/img/main_logo4.gif"
+        /><br /><br /><br />
+        <img
+          class="google_login_btn"
+          src="@/assets/img/login/btn_google_signin_light_normal_web@2x.png"
+          v-on:click="GoogleLogin"
+        /><br />
+        <div id="my-signin2" style="display: none"></div>
+        <img
+          class="kakao_login_btn"
+          src="@/assets/img/login/kakao_login_large_narrow.png"
+          v-on:click="KakaoLogin"
+        /><br />
+      </div>
+      <router-view />
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -76,14 +79,12 @@ export default {
 };
 </script>
 
-<style lang="css">
-@import url("@/assets/css/reset.css");
-@import url("@/assets/css/style.css");
-
-/* body {
+<style scoped>
+.view {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
-} */
+  height: 100vh;
+}
 
 .test {
   display: flex;
@@ -123,5 +124,6 @@ export default {
 .landing {
   text-align: center;
   justify-content: center;
+  align-items:center;
 }
 </style>

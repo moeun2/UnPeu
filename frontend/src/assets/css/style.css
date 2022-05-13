@@ -767,3 +767,7 @@ a.link {
 .v-application a {
   color: #000 !important;
 }
+
+.btn_red_cancel {
+  font-size: 25px;
+}
