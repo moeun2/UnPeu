@@ -173,6 +173,9 @@ function getUserInfo(to, from, next) {
       // console.log("router-index.js-getUserInfo-getUserDetailUseToken 호출");
       // console.log(res.data.User.id);
       let compareId = res.data.User.id;
+      Store.commit("userStore/setCurUserCategory", res.data.User.category);
+      Store.commit("userStore/setCurUserSelectedDate", res.data.User.selectedDate);
+      
       if (compareId != userId) {
         // console.log("Permission : Guest(Logined User)"); //1
         Store.commit("userStore/setCurUserPermission", 1);

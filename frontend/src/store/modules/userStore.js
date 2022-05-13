@@ -1,3 +1,4 @@
+import * as api from "@/api/user";
 export const userStore = {
   namespaced: true,
 
@@ -6,6 +7,8 @@ export const userStore = {
     currentUser: {
       id: "",
       permission: "",
+      category:"",
+      selectedDate :"",
     },
   },
 
@@ -35,12 +38,36 @@ export const userStore = {
       state.currentUser.id = userId;
       // console.log("setCurUserId mutation : ", state.currentUser);
     },
-
+    setCurUserCategory(state, category) {
+      state.currentUser.category = category;
+      // console.log("setCurUserId mutation : ", state.currentUser);
+    },
+    setCurUserSelectedDate(state, selectedDate) {
+      state.currentUser.selectedDate = selectedDate;
+      // console.log("setCurUserId mutation : ", state.currentUser);
+    },
     setCurUserPermission(state, permission) {
       state.currentUser.permission = permission;
       // console.log("parameter mutation : ", state.currentUser);
     },
   },
   
-  actions: {},
+  actions: {
+
+    /* 컨셉 등록 or 수정 */
+    AC_UPDATE_CONCEPT({ commit }, data) {
+      api.updateUserConcept(
+        data,
+        (response) => {
+          console.log("AC_UPDATE_CONCEPT : ",response.data)
+          commit("setCurUserCategory", response.data.category);
+          return response.data.category;
+        },
+        (err)=>{
+          console.log(err);
+          return false;
+      }
+      );
+    },
+  },
 };

@@ -19,7 +19,7 @@
         :to="{ name: 'PresentPayment', params: { userId: this.curUser.id } }"
       >
         <button class="reg-gift">
-          <img src="https://i.imgur.com/vaBFer6.png" class="gift-img" alt="" />
+          <img class="gift-img" alt="" />
           <p>
             어른이날을 축하해주세요
             <br />
@@ -35,7 +35,7 @@
       <div class="item" v-for="(message, index) in messagesFor" :key="index">
         <a href="#pocket">
           <button @click="modal(message)">
-            <img src="@/assets/img/concept/childrenday/pocket.png" class="pocket" alt="" />
+            <img class="pocket" alt="" />
           </button>
         </a>
       </div>
@@ -354,11 +354,14 @@ export default {
 .pocket {
   width: 85px;
   height: 80px;
+  content:var(--pocket);
 }
 .gift-img {
   width: 35px;
   height: 35px;
   float: left;
+  content:url("https://i.imgur.com/nupfePY.png");
+  
 }
 .reg-gift {
   background-color: #fff;
@@ -528,7 +531,7 @@ ul.myMenu > li ul.submenu > li:hover {
   text-align: center;
 }
 .main-room2 {
-  background-image: url("https://i.imgur.com/yBs2YNe.jpg");
+  background-image: var(--main);
   background-size: cover;
   border-radius: 15px;
 }

@@ -136,7 +136,8 @@
                       }"
                       ><li :class="[activeCheckClass]" @click="checkHome()">
                         홈
-                      </li></router-link>
+                      </li></router-link
+                    >
                     <router-link
                       :to="{
                         name: 'Diary',
@@ -188,16 +189,21 @@ import {
 } from "@/api/user.js";
 import { EVENT_URL, FRONT_URL, API_BASE_URL } from "@/config/index";
 import LinkShareModal from "@/components/option/LinkShareModal.vue";
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations,mapActions } from "vuex";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-
+const userStore = "userStore";
 const presentStore = "presentStore";
+import dayjs from 'dayjs'
 // import store from '@/store';
 export default {
   name: "App",
+  component:{
+    dayjs
+  },
   data() {
     return {
+      today: dayjs().format("YYYY-MM-DD"),
       url: EVENT_URL,
       activeCheckClass: "menu-item mi-1 menu-checked",
       activeClass: "menu-item mi-3",
@@ -219,6 +225,10 @@ export default {
           "Avatar size should be less than 2 MB!",
       ],
       files: null,
+      data:{
+        "category":'',
+        "selectedDate":'',
+      }
     };
   },
   watch: {
@@ -229,16 +239,21 @@ export default {
       if (to.path !== form.path) this.changeParams(this.$route.params.userid);
     },
   },
-
+  computed: {
+    ...mapGetters(userStore, {
+      curUser: "getCurUser",
+    }),
+  },
   created() {
-    this.test();
+    this.checkConcept();
     if (window.localStorage.getItem("accessToken")) {
       //로그인 되어있는 상태 store inlogin true
       getUserDetailUseToken(
         window.localStorage.getItem("accessToken"),
         (res) => {
-          // console.log(res.data.User);
+          console.log("UserData : ", res.data.User);
           this.$store.commit("userStore/setUser", res.data.User);
+
           this.isLogin = true;
           if (this.$route.params.userid == res.data.User.id) {
             this.isMyPage = true;
@@ -248,6 +263,7 @@ export default {
           // console.log("getUserDetailUseToken fail");
           this.isLogin = false;
           window.localStorage.removeItem("accessToken");
+
           this.$router.go;
         }
       );
@@ -257,64 +273,102 @@ export default {
     //조회수 증가
     if (
       window.document.location.href ==
-      FRONT_URL + "/eventRoom/" + this.$route.params.userid) 
-      {
-        increaseVisit(
-          this.$route.params.userid,
-          (res) => {
-            if (res.data.User.todayVisit) {
-              this.todayVisit = res.data.User.todayVisit;
-            }
-            if (res.data.User.totalVisit) {
-              this.totalVisit = res.data.User.totalVisit;
-            }
-          },
-        );
-        
+      FRONT_URL + "/eventRoom/" + this.$route.params.userid
+    ) {
+      increaseVisit(this.$route.params.userid, (res) => {
+        if (res.data.User.todayVisit) {
+          this.todayVisit = res.data.User.todayVisit;
+        }
+        if (res.data.User.totalVisit) {
+          this.totalVisit = res.data.User.totalVisit;
+        }
+      });
     }
-
   },
   components: {
     LinkShareModal,
   },
 
   methods: {
-    test() {
-      const isUserColorTheme = localStorage.getItem("color-theme");
-      // const isOsColorTheme = window.matchMedia("(prefers-color-scheme: dark)")
-      //   .matches
-      //   ? "dark"
-      //   : "light";
-      // console.log(isUserColorTheme,isOsColorTheme)
-      // const getUserTheme = () =>
-      //   isUserColorTheme ? isUserColorTheme : isOsColorTheme;
-      let getUserTheme='';
-      console.log("isUserColorTheme : ",isUserColorTheme)
-      if(isUserColorTheme){
-        getUserTheme = isUserColorTheme;
-      }else{
-        getUserTheme = "light"
-      }
-
-      if (getUserTheme === "dark") {
-        localStorage.setItem("color-theme", "dark");
-        document.documentElement.setAttribute("color-theme", "dark");
-        // $checkbox.setAttribute('checked', true);
-      } else {
-        localStorage.setItem("color-theme", "light");
-        document.documentElement.setAttribute("color-theme", "light");
+    ...mapActions(userStore, ["AC_UPDATE_CONCEPT"]),
+    checkConcept() {
+      let concept = this.curUser.category;
+      let selectedDate = this.curUser.selectedDate;
+      //console.log("Today : ", this.today);
+      switch (concept) {
+        case "default":
+          if (selectedDate == this.today) {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "default-open"
+            );
+          } else {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "default-close"
+            );
+          }
+          break;
+        case "birthday":
+          if (selectedDate == this.today) {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "birthday-open"
+            );
+          } else {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "birthday-close"
+            );
+          }
+          break;
+        case "children":
+          if (selectedDate == this.today) {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "children-open"
+            );
+          } else {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "children-close"
+            );
+          }
+          break;
+        default:
+          console.log(concept);
+          console.log("어떤 값인지 파악이 되지 않습니다.");
       }
     },
     ...mapMutations(presentStore, ["RESET_PRESENT_LIST"]),
     goToMainPage() {
-      if (localStorage.getItem("color-theme") === "light") {
-        localStorage.setItem("color-theme", "dark");
-        document.documentElement.setAttribute("color-theme", "dark");
-        // $checkbox.setAttribute('checked', true);
-      } else {
-        localStorage.setItem("color-theme", "light");
-        document.documentElement.setAttribute("color-theme", "light");
+      // test 용 입니다.
+      let concept = this.curUser.category;
+      console.log("concept : ", this.curUser.category);
+      switch (concept) {
+        case "default":
+          this.$store.commit("userStore/setCurUserCategory", "birthday");
+          this.data.category="birthday";
+          this.AC_UPDATE_CONCEPT(this.data,function(res){console.log(res)},function(){});
+          document.documentElement.setAttribute("color-theme", "birthday-close");
+          break;
+        case "birthday":
+          this.data.category="children";
+          this.$store.commit("userStore/setCurUserCategory", "children");
+          this.AC_UPDATE_CONCEPT(this.data,function(res){console.log(res)},function(){});
+          document.documentElement.setAttribute(
+            "color-theme",
+            "children-close"
+          );
+          break;
+        case "children":
+          this.data.category="default";
+          this.$store.commit("userStore/setCurUserCategory", "default");
+          this.AC_UPDATE_CONCEPT(this.data,function(res){console.log(res)},function(){});
+          document.documentElement.setAttribute("color-theme", "default-close");
+          break;
       }
+      
       // this.$router.push({ name: "eventRoom" }).catch(()=>{});
     },
     setUserData() {
@@ -447,8 +501,7 @@ export default {
         inputAttributes: {
           maxlength: 25,
           rows: 4,
-          'spellcheck':'false'
-
+          spellcheck: "false",
         },
 
         inputValidator: (value) => {
@@ -475,9 +528,8 @@ export default {
         inputPlaceholder: "50자 이하, 4줄 이하로 작성해주세요.",
         inputAttributes: {
           maxlength: 50,
-          rows:4,
-          'spellcheck':'false'
-
+          rows: 4,
+          spellcheck: "false",
         },
         inputValidator: (value) => {
           if (!value) {
@@ -512,85 +564,102 @@ export default {
       this.showModal = true;
     },
 
-    async userSetting(){
+    async userSetting() {
       let flatpickrInstance;
 
-      await this.$swal.fire({
-        title: "회원 정보",
-        icon: 'info',
-        html:
-          '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="swal-input1" class="swal2-input" value='+this.userEmail+'></div>' +
-          '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="expiry-date"value='+this.userBirth+'></div>',
-        inputLabel:
-          "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
-        stopKeydownPropagation: false,
-        focusConfirm: true,
-        showDenyButton: true,
-        showCancelButton: true,
-        cancelButtonText:'취소',
-        confirmButtonText: '수정',
-        denyButtonText: `회원 탈퇴`,
-        preConfirm: () => {
-          var exptext = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-          if (!flatpickrInstance.selectedDates[0]) {
-            this.$swal.showValidationMessage(`생일을 입력해주세요`);
-          }else if (flatpickrInstance.selectedDates[0] > new Date()) {
-            this.$swal.showValidationMessage(`혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`)
-          }
-          if (!document.getElementById("swal-input1").value||!exptext.test(document.getElementById("swal-input1").value)) {
-            this.$swal.showValidationMessage(`이메일을 입력해주세요`);
-          }
-        },
-        willOpen: () => {
-          flatpickrInstance = flatpickr(
-            this.$swal.getPopup().querySelector("#expiry-date"),
-            {
-              allowInput:true
+      await this.$swal
+        .fire({
+          title: "회원 정보",
+          icon: "info",
+          html:
+            '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="swal-input1" class="swal2-input" value=' +
+            this.userEmail +
+            "></div>" +
+            '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="expiry-date"value=' +
+            this.userBirth +
+            "></div>",
+          inputLabel:
+            "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
+          stopKeydownPropagation: false,
+          focusConfirm: true,
+          showDenyButton: true,
+          showCancelButton: true,
+          cancelButtonText: "취소",
+          confirmButtonText: "수정",
+          denyButtonText: `회원 탈퇴`,
+          preConfirm: () => {
+            var exptext =
+              /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+            if (!flatpickrInstance.selectedDates[0]) {
+              this.$swal.showValidationMessage(`생일을 입력해주세요`);
+            } else if (flatpickrInstance.selectedDates[0] > new Date()) {
+              this.$swal.showValidationMessage(
+                `혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`
+              );
             }
-          );
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const data={
-            userEmail: document.getElementById("swal-input1").value,
-            userBirth: document.getElementById("expiry-date").value
-          }
-            updateUserEmailBirth(localStorage.getItem("accessToken"), data, (res) => {
-            console.log("success change email and birth")
-            this.$swal.fire('수정을 성공했습니다!', '', 'success')
-            this.userEmail= res.data.User.userEmail
-            this.userBirth =
-              res.data.User.userBirth[0] +
-              "." +
-              res.data.User.userBirth[1] +
-              "." +
-              res.data.User.userBirth[2];
-          });
-        } else if (result.isDenied) {
-          this.$swal.fire({
-              title: '정말 회원을 탈퇴하시겠습니까?',
-              showCancelButton: true,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                deleteUser(() => {
-                  this.$swal.fire('회원 탈퇴되었습니다.', '', 'success')
-                  localStorage.removeItem("accessToken")
-                  this.$store.commit("userStore/setUSerNull")
-                  this.$router.push({name:"Landing"})
-                })
+            if (
+              !document.getElementById("swal-input1").value ||
+              !exptext.test(document.getElementById("swal-input1").value)
+            ) {
+              this.$swal.showValidationMessage(`이메일을 입력해주세요`);
+            }
+          },
+          willOpen: () => {
+            flatpickrInstance = flatpickr(
+              this.$swal.getPopup().querySelector("#expiry-date"),
+              {
+                allowInput: true,
               }
-            })
-        }
-      })
+            );
+          },
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            const data = {
+              userEmail: document.getElementById("swal-input1").value,
+              userBirth: document.getElementById("expiry-date").value,
+            };
+            updateUserEmailBirth(
+              localStorage.getItem("accessToken"),
+              data,
+              (res) => {
+                console.log("success change email and birth");
+                this.$swal.fire("수정을 성공했습니다!", "", "success");
+                this.userEmail = res.data.User.userEmail;
+                this.userBirth =
+                  res.data.User.userBirth[0] +
+                  "." +
+                  res.data.User.userBirth[1] +
+                  "." +
+                  res.data.User.userBirth[2];
+              }
+            );
+          } else if (result.isDenied) {
+            this.$swal
+              .fire({
+                title: "정말 회원을 탈퇴하시겠습니까?",
+                showCancelButton: true,
+              })
+              .then((result) => {
+                if (result.isConfirmed) {
+                  deleteUser(() => {
+                    this.$swal.fire("회원 탈퇴되었습니다.", "", "success");
+                    localStorage.removeItem("accessToken");
+                    this.$store.commit("userStore/setUSerNull");
+                    this.$router.push({ name: "Landing" });
+                  });
+                }
+              });
+          }
+        });
     },
-
   },
 };
 </script>
 
-<style scope>
-@import url("@/assets/css/reset.css");
-@import url("@/assets/css/style.css");
+<style scoped>
+/* @import url("@/assets/css/reset.css");
+@import url("@/assets/css/style.css"); */
 
 * {
   font-family: "hiffy" !important;
@@ -599,27 +668,6 @@ export default {
   font-family: "hiffy";
   src: url("@/assets/font/hiffy.ttf") format("truetype");
   font-weight: 400;
-}
-
-:root[color-theme="default"] {
-  --background: var(--test2);
-  --profile : var(--pink-color);
-
-}
-:root[color-theme="birthday"] {
-  --background: var(--test2);
-  --profile : var(--pink-color);
-
-}
-:root[color-theme="light"] {
-  --background: var(--test2);
-  --profile : var(--pink-color);
-
-}
-
-:root[color-theme="dark"] {
-  --background: var(--test);
-  --profile : var(--yellow-color);
 }
 
 .view {
@@ -750,7 +798,6 @@ export default {
   display: none;
 }
 .mdi-camera::before {
-    color: grey;
+  color: grey;
 }
 </style>
-
