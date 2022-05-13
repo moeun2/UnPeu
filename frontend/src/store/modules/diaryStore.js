@@ -172,8 +172,8 @@ export const diaryStore = {
             '삭제가 완료되었습니다.',
             'success'
           )
-          
           commit;
+          router.push({ name: "BoardList" });
         },
         (error) => {
           Swal.fire(

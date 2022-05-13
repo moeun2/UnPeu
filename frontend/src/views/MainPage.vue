@@ -138,7 +138,8 @@
                       >
                       <li :class="[activeCheckClass]" @click="checkHome()">
                         홈
-                      </li></router-link>
+                      </li></router-link
+                    >
                     <router-link
                       :to="{
                         name: 'Diary',
@@ -191,16 +192,21 @@ import {
 } from "@/api/user.js";
 import { EVENT_URL, FRONT_URL, API_BASE_URL } from "@/config/index";
 import LinkShareModal from "@/components/option/LinkShareModal.vue";
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations,mapActions } from "vuex";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-
+const userStore = "userStore";
 const presentStore = "presentStore";
+import dayjs from 'dayjs'
 // import store from '@/store';
 export default {
   name: "App",
+  component:{
+    dayjs
+  },
   data() {
     return {
+      today: dayjs().format("YYYY-MM-DD"),
       url: EVENT_URL,
       activeCheckClass: "menu-item mi-1 menu-checked",
       activeClass: "menu-item mi-3",
@@ -225,6 +231,10 @@ export default {
           "Avatar size should be less than 2 MB!",
       ],
       files: null,
+      data:{
+        "category":'',
+        "selectedDate":'',
+      }
     };
   },
   watch: {
@@ -235,16 +245,21 @@ export default {
       if (to.path !== form.path) this.changeParams(this.$route.params.userid);
     },
   },
-
+  computed: {
+    ...mapGetters(userStore, {
+      curUser: "getCurUser",
+    }),
+  },
   created() {
-    this.test();
+    this.checkConcept();
     if (window.localStorage.getItem("accessToken")) {
       //로그인 되어있는 상태 store inlogin true
       getUserDetailUseToken(
         window.localStorage.getItem("accessToken"),
         (res) => {
-          // console.log(res.data.User);
+          console.log("UserData : ", res.data.User);
           this.$store.commit("userStore/setUser", res.data.User);
+
           this.isLogin = true;
           if (this.$route.params.userid == res.data.User.id) {
             this.isMyPage = true;
@@ -254,6 +269,7 @@ export default {
           // console.log("getUserDetailUseToken fail");
           this.isLogin = false;
           window.localStorage.removeItem("accessToken");
+
           this.$router.go;
         }
       );
@@ -262,7 +278,8 @@ export default {
 
     //조회수 증가
     if (
-      window.document.location.href ==
+
+      window.location.href ==
       FRONT_URL + "/eventRoom/" + this.$route.params.userid) 
       {
         increaseVisit(
@@ -278,14 +295,12 @@ export default {
         );
         
     }
-
   },
   components: {
     LinkShareModal,
   },
 
   methods: {
-    
     playMusic(music){
       // alert("노래를 재생합니다.")
       if(music!="none"){
@@ -310,42 +325,87 @@ export default {
           this.audio.pause();
       }
     },
-    test() {
-      const isUserColorTheme = localStorage.getItem("color-theme");
-      // const isOsColorTheme = window.matchMedia("(prefers-color-scheme: dark)")
-      //   .matches
-      //   ? "dark"
-      //   : "light";
-      // console.log(isUserColorTheme,isOsColorTheme)
-      // const getUserTheme = () =>
-      //   isUserColorTheme ? isUserColorTheme : isOsColorTheme;
-      let getUserTheme='';
-      console.log("isUserColorTheme : ",isUserColorTheme)
-      if(isUserColorTheme){
-        getUserTheme = isUserColorTheme;
-      }else{
-        getUserTheme = "light"
-      }
 
-      if (getUserTheme === "dark") {
-        localStorage.setItem("color-theme", "dark");
-        document.documentElement.setAttribute("color-theme", "dark");
-        // $checkbox.setAttribute('checked', true);
-      } else {
-        localStorage.setItem("color-theme", "light");
-        document.documentElement.setAttribute("color-theme", "light");
+    ...mapActions(userStore, ["AC_UPDATE_CONCEPT"]),
+    checkConcept() {
+      let concept = this.curUser.category;
+      let selectedDate = this.curUser.selectedDate;
+      //console.log("Today : ", this.today);
+      switch (concept) {
+        case "default":
+          if (selectedDate == this.today) {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "default-open"
+            );
+          } else {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "default-close"
+            );
+          }
+          break;
+        case "birthday":
+          if (selectedDate == this.today) {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "birthday-open"
+            );
+          } else {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "birthday-close"
+            );
+          }
+          break;
+        case "children":
+          if (selectedDate == this.today) {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "children-open"
+            );
+          } else {
+            document.documentElement.setAttribute(
+              "color-theme",
+              "children-close"
+            );
+          }
+          break;
+        default:
+          console.log(concept);
+          console.log("어떤 값인지 파악이 되지 않습니다.");
+
       }
     },
     ...mapMutations(presentStore, ["RESET_PRESENT_LIST"]),
     goToMainPage() {
-      if (localStorage.getItem("color-theme") === "light") {
-        localStorage.setItem("color-theme", "dark");
-        document.documentElement.setAttribute("color-theme", "dark");
-        // $checkbox.setAttribute('checked', true);
-      } else {
-        localStorage.setItem("color-theme", "light");
-        document.documentElement.setAttribute("color-theme", "light");
+      // test 용 입니다.
+      let concept = this.curUser.category;
+      console.log("concept : ", this.curUser.category);
+      switch (concept) {
+        case "default":
+          this.$store.commit("userStore/setCurUserCategory", "birthday");
+          this.data.category="birthday";
+          this.AC_UPDATE_CONCEPT(this.data,function(res){console.log(res)},function(){});
+          document.documentElement.setAttribute("color-theme", "birthday-close");
+          break;
+        case "birthday":
+          this.data.category="children";
+          this.$store.commit("userStore/setCurUserCategory", "children");
+          this.AC_UPDATE_CONCEPT(this.data,function(res){console.log(res)},function(){});
+          document.documentElement.setAttribute(
+            "color-theme",
+            "children-close"
+          );
+          break;
+        case "children":
+          this.data.category="default";
+          this.$store.commit("userStore/setCurUserCategory", "default");
+          this.AC_UPDATE_CONCEPT(this.data,function(res){console.log(res)},function(){});
+          document.documentElement.setAttribute("color-theme", "default-close");
+          break;
       }
+      
       // this.$router.push({ name: "eventRoom" }).catch(()=>{});
     },
     setUserData() {
@@ -541,9 +601,8 @@ export default {
         inputPlaceholder: "50자 이하, 4줄 이하로 작성해주세요.",
         inputAttributes: {
           maxlength: 50,
-          rows:4,
-          'spellcheck':'false'
-
+          rows: 4,
+          spellcheck: "false",
         },
         inputValidator: (value) => {
           if (!value) {
@@ -659,38 +718,18 @@ export default {
 };
 </script>
 
-<style scope>
-@import url("@/assets/css/reset.css");
-@import url("@/assets/css/style.css");
+<style scoped>
+/* @import url("@/assets/css/reset.css");
+@import url("@/assets/css/style.css"); */
 
 * {
-  font-family: "hiffy" !important;
+  font-family: "GangwonEdu_OTFBoldA" !important;
 }
 @font-face {
-  font-family: "hiffy";
-  src: url("@/assets/font/hiffy.ttf") format("truetype");
-  font-weight: 400;
-}
-
-:root[color-theme="default"] {
-  --background: var(--test2);
-  --profile : var(--pink-color);
-
-}
-:root[color-theme="birthday"] {
-  --background: var(--test2);
-  --profile : var(--pink-color);
-
-}
-:root[color-theme="light"] {
-  --background: var(--test2);
-  --profile : var(--pink-color);
-
-}
-
-:root[color-theme="dark"] {
-  --background: var(--test);
-  --profile : var(--yellow-color);
+    font-family: 'GangwonEdu_OTFBoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 .view {
@@ -752,10 +791,10 @@ export default {
 
 .speech-bubble {
   position: absolute;
-  bottom: 105px;
-  left: -30px;
+  bottom: 100px;
+  left: -50px;
   background: var(--speech-bubble-color);
-  color: white;
+  color: black;
   border-radius: 0.4em;
   padding: 0.3rem;
 }
@@ -824,7 +863,7 @@ export default {
   border: 1px solid #d9d9d9;
 }
 .mdi-camera::before {
-    color: grey;
+  color: grey;
 }
 .music-icon {
     float: right;

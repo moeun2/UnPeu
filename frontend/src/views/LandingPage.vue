@@ -1,4 +1,5 @@
 <template>
+<div class="view">
   <v-container>
     <div class="landing">
       <span style="font-size: 2em; font-weight: bold">
@@ -32,6 +33,7 @@
     </div>
     <router-view />
   </v-container>
+  </div>
 </template>
 
 <script>
@@ -66,17 +68,23 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .description {
   font-size: 0.9em;
   font-weight: bold;
   color: rgba(0, 0, 0, 0.789);
 }
-
+.landing{
+  margin-top : 10vh;
+}
 .landing_btn {
   background-color: #fff6ca !important;
 }
-
+.view {
+  background-image: url("https://i.imgur.com/EI9xcZH.png");
+  background-size: cover;
+  height: 100vh;
+}
 </style>
 
 

@@ -61,6 +61,18 @@ function updateUserImg(img, success, fail) {
   // console.log("updateUserImg 실행됨");
 }
 
+function updateUserConcept(data, success, fail) {
+  console.log("updateUserConcept 실행됨");
+  api
+    .patch(`/users/concept`, data, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      },
+    })
+    .then(success)
+    .catch(fail);
+}
+
 function updateUserInfo(userInfo, success, fail) {
   api
     .patch(
@@ -129,7 +141,7 @@ function increaseVisit(userId, success, fail) {
 
 function deleteUser(success, fail) {
   api
-    .delete(`/users`,{
+    .delete(`/users`, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
@@ -151,4 +163,5 @@ export {
   increaseVisit,
   deleteUser,
   updateUserMusic,
+  updateUserConcept,
 };

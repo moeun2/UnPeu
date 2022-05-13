@@ -133,7 +133,7 @@ public class UserController {
 
 	@ApiOperation(value = "유저 컨셉 등록/수정 Controller")
 	@RequestMapping(value = "/users/concept", method = RequestMethod.PATCH)
-	public ResponseEntity<Map<String, Object>> updateUserConcept(@ApiIgnore @NotNull @org.jetbrains.annotations.NotNull Authentication authentication,@RequestBody @NotNull UserPatchConceptReq userPatchConceptReq){
+	public ResponseEntity<Map<String, Object>> updateUserConcept(@ApiIgnore @NotNull Authentication authentication,@RequestBody @NotNull UserPatchConceptReq userPatchConceptReq){
 		logger.info("updateUserConcept - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();

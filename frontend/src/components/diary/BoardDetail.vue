@@ -13,7 +13,7 @@
       <v-divider class="mx-6"></v-divider>
       <v-card-text>
 
-        <div class="ql-container ql-snow yellow lighten-5">
+        <div class="output ql-snow">
           <div class= "ql-editor" v-html="boardInfo.content"></div>
         </div>
       </v-card-text>
@@ -107,7 +107,6 @@ export default {
         .then((result) => {
           if (result.isConfirmed) {
             this.AC_DELETE_BOARD(this.boardInfo.boardId);
-            this.$router.push({ name: "BoardList" });
           }
         });
     },
