@@ -1,12 +1,13 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row class="pb-1">
       <v-col cols="3" md="3" class="pa-0 pr-1">
         <v-text-field
           v-model="form.writer"
           :rules="rules.writer"
           label="nickName"
           type="text"
+          ref="writer"
           dense
           required
           outlined
@@ -21,6 +22,7 @@
           :rules="rules.password"
           label="password"
           type="password"
+          ref="password"
           dense
           required
           outlined
@@ -28,13 +30,21 @@
           :readonly="editFlag"
         ></v-text-field>
       </v-col>
+
       <v-spacer></v-spacer>
 
-      <v-col cols="2" md="2" class="pa-1">
-        <v-btn @click="submit" color="primary" :disabled="!formIsValid" depressed>
-          댓글 저장
-        </v-btn>
-      </v-col>
+      <v-btn color="var(--close-color)" class="mr-1" @click="cancel" outlined depressed>
+        취소
+      </v-btn>
+      <v-btn
+        color="primary"
+        class="ml-1"
+        :disabled="!formIsValid"
+        @click="submit"
+        depressed
+      >
+        등록
+      </v-btn>
     </v-row>
 
     <v-row>
@@ -69,6 +79,7 @@ export default {
         password: "",
         content: "",
       },
+
       rules: {
         writer: [(value) =>  (value && 2 <= value.length && value.length <= 8) || "2자 이상 8자 이하 작성"],
         password: [(value) => (value && 4 <= value.length) || "4자 이상 작성"],
@@ -90,10 +101,10 @@ export default {
   beforeUpdate() {
     // 수정 요청이 들어왔다면
     if (this.editFlag) {
-      this.form.writer = this.nonUser.writer
-      this.form.password = this.nonUser.password
+      this.form.writer = this.nonUser.writer;
+      this.form.password = this.nonUser.password;
 
-      this.$refs["myTextArea"].focus();
+      this.$refs.myTextArea.focus();
     }
   },
 
@@ -108,7 +119,9 @@ export default {
     formIsValid() {
       var writerLen = this.form.writer.length;
       var pwLen = this.form.password.length;
-      return (2 <= writerLen && writerLen <= 8) && (4 <= pwLen) && this.form.content;
+      return (
+        2 <= writerLen && writerLen <= 8 && 4 <= pwLen && this.form.content
+      );
     },
 
     /* 요청한 댓글 내용에 따라 댓글 내용 변경됨 */
@@ -126,7 +139,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(diaryStore, ["ACT_REGISTER_COMMENT", "ACT_EDIT_COMMENT", "ACT_SETTING_COMMENT"]),
+    ...mapActions(diaryStore, [
+      "ACT_REGISTER_COMMENT",
+      "ACT_EDIT_COMMENT",
+      "ACT_SETTING_COMMENT",
+    ]),
 
     /* 수정체크 플래그 초기화 */
     initEditFlag() {
@@ -138,7 +155,7 @@ export default {
     /* 댓글 수정 or 등록 */
     submit() {
       if (this.editFlag) {
-        this.edit()
+        this.edit();
       } else {
         this.save();
       }
@@ -162,6 +179,20 @@ export default {
         commentInfo: this.form,
       });
       this.$router.go();
+    },
+
+    cancel() {
+      if (this.editFlag) {
+        this.initEditFlag();
+      }
+      this.$refs.writer.reset();
+      this.$refs.password.reset();
+      this.$refs.myTextArea.reset();
+
+      // 단순히 reset만 하면 null값이 들어가므로 ""값 입력
+      this.form.writer = "";
+      this.form.password = "";
+      this.form.content = "";
     },
   },
 };
