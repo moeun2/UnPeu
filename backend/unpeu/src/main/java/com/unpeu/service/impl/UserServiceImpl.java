@@ -316,6 +316,7 @@ public class UserServiceImpl implements IUserService{
 		user.setTodayVisit(0L);
 		user.setTotalVisit(0L);
 		user.setIsAgree(true);
+		user.setUserMusic("none");
 
 		user.setCreatedAt(LocalDateTime.now());
 		return userRepository.save(user);
@@ -379,6 +380,20 @@ public class UserServiceImpl implements IUserService{
 	public User updateUserInfo(Long userId,String userInfo) {
 		User user= userRepository.findById(userId).get();
 		user.setUserInfo(userInfo);
+		return userRepository.save(user);
+	}
+	
+	/**
+	 * 유저의 Music 수정
+	 * @param userId
+	 * @param userMusic
+	 * @return
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public User updateUserMusic(Long userId, String userMusic) {
+		User user= userRepository.findById(userId).get();
+		user.setUserMusic(userMusic);
 		return userRepository.save(user);
 	}
 
@@ -452,5 +467,4 @@ public class UserServiceImpl implements IUserService{
 			throw new CustomException(DELETE_CONFLICT);
 		}
 	}
-
 }
