@@ -593,12 +593,13 @@ export default {
 @import url("@/assets/css/style.css");
 
 * {
-  font-family: "hiffy" !important;
+  font-family: "GangwonEdu_OTFBoldA" !important;
 }
 @font-face {
-  font-family: "hiffy";
-  src: url("@/assets/font/hiffy.ttf") format("truetype");
-  font-weight: 400;
+    font-family: 'GangwonEdu_OTFBoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 :root[color-theme="default"] {
