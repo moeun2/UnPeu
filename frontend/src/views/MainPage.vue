@@ -874,17 +874,7 @@ export default {
 .speech-bubble2-img {
   width: 100px;
 }
-.swal2-textarea {
-  height: 5.75em !important;
-  padding: 0.75em;
-  resize: none;
-  text-align: center;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.swal2-textarea::-webkit-scrollbar {
-  display: none;
-}
+
 .swal2-select{
   border: 1px solid #d9d9d9;
 }
