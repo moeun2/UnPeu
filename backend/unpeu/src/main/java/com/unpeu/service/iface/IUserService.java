@@ -2,12 +2,9 @@ package com.unpeu.service.iface;
 
 import java.util.Map;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.request.UserPatchConceptReq;
 import com.unpeu.domain.request.UserPatchEmailBirthReq;
-import com.unpeu.domain.request.UserPatchUserInfoReq;
 
 public interface IUserService {
 	User getUserByUserLogin(String userLogin);

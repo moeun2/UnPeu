@@ -57,6 +57,7 @@
             <span>X</span>
           </button>
         </a>
+
         <!-- 로그인한 user의 모달창 -->
         <div class="modal-content" id="modal-content" v-if="isMyPage">
           <img
@@ -68,6 +69,7 @@
           <p class="message-user">{{ sender }}</p>
           <div class="message-box">{{ content }}</div>
         </div>
+
         <!-- guest의 모달창 -->
         <div class="modal-non-message" v-else>
           <p>메세지의 주인만 확인할 수 있어요 🤐</p>
@@ -88,58 +90,26 @@
           <div class="mode-content">
             <h2 class="concept-h2">날짜 선택</h2>
             <p class="setDate-p">본 날짜는 매년 정기적으로 실행됩니다.</p>
-            <input
-              type="number"
-              name="month"
-              class="input-date"
-              id="month"
-              v-model="month"
-              placeholder="0"
-            />
-            월
-            <input
-              type="number"
-              name="date"
-              class="input-date"
-              id="date"
-              v-model="date"
-              placeholder="0"
-            />
-            일
+
+            <input type="number" name="month" class="input-date" id="month" v-model="month" placeholder="0" /> 월
+            <input type="number" name="date" class="input-date" id="date" v-model="date" placeholder="0" /> 일
+
             <p class="setDate-p">{{ this.month }} 월 {{ this.date }} 일</p>
           </div>
+
           <div class="mode-content">
             <h2 class="concept-h2">컨셉 모드 선택</h2>
             <p class="setDate-p">
               컨셉을 바꾸게 되면 이전 컨셉의 내용이 모두 초기화 됩니다. 신중히
               선택하세요!
             </p>
-            <input
-              type="radio"
-              name="concept"
-              id="default"
-              value="default"
-              v-model="category"
-              checked
-            />
-            기본
-            <input
-              type="radio"
-              name="concept"
-              id="birthday"
-              value="birthday"
-              v-model="category"
-            />
-            생일
-            <input
-              type="radio"
-              name="concept"
-              id="childrenDay"
-              value="children"
-              v-model="category"
-            />
-            어른이날
+
+            <input type="radio" name="concept" id="default" value="default" v-model="category" checked /> 기본
+            <input type="radio" name="concept" id="birthday" value="birthday" v-model="category" /> 생일
+            <input type="radio" name="concept" id="childrenDay" value="children" v-model="category" /> 어른이날
+
           </div>
+
           <button @click="setDate" type="submit" class="setDate-btn">
             설정
           </button>
@@ -195,7 +165,7 @@ export default {
       getUserDetailUseToken(
         window.localStorage.getItem("accessToken"),
         (res) => {
-          // // console.log(res.data.User);
+          // console.log(res.data.User);
           this.$store.commit("userStore/setUser", res.data.User);
           this.isLogin = true;
           if (this.$route.params.userid == res.data.User.id) {
@@ -203,7 +173,7 @@ export default {
           }
         },
         () => {
-          // // console.log("getUserDetailUseToken fail");
+          // console.log("getUserDetailUseToken fail");
           this.isLogin = false;
           window.localStorage.removeItem("accessToken");
           this.$router.go;
@@ -216,12 +186,12 @@ export default {
     getMessage(
       this.curUser.id,
       (res) => {
-        // // console.log(res.data.Message);
+        // console.log(res.data.Message);
         this.messages = res.data.Message;
-        // // console.log(this.messages);
+        // console.log(this.messages);
       },
       () => {
-        // // console.log("fail");
+        console.log("get Message fail");
       }
     );
   },
@@ -270,8 +240,8 @@ export default {
       if (this.curUser.selectedDate == this.today) {
         this.content = message.content;
         this.sender = message.sender;
-        if (message.present != null) {
-          this.imgUrl = message.present.presentImg;
+        if (message.presentId != null) {
+          this.imgUrl = message.presentImg;
         } else {
           this.imgUrl = "";
         }
@@ -305,12 +275,12 @@ export default {
                     // console.log(this.messages);
                   },
                   () => {
-                    // console.log("fail");
+                    console.log("get Message fail");
                   }
                 );
               },
               () => {
-                // console.log("fail");
+                console.log("Message reset fail");
               }
             );
           }
@@ -322,6 +292,7 @@ export default {
       this.$swal.fire(Alert.saveMessageCheck).then((result) => {
         if (result.dismiss === this.$swal.DismissReason.cancel) {
           Alert.saveMessageCancel(this);
+          console.log(this.messages);
         } else {
           if (this.messages.length == 0) {
             Alert.saveMessageFail(this);
@@ -339,12 +310,12 @@ export default {
                     // console.log(this.messages);
                   },
                   () => {
-                    console.log("fail");
+                    console.log("get Message fail");
                   }
                 );
               },
               () => {
-                console.log("fail");
+                console.log("save Message fail");
               }
             );
           }

@@ -138,7 +138,7 @@ public class PresentServiceImpl implements IPresentService {
 		logger.info("sendMessageAndPresent-호출");
 		Present present = null;
 		if (message.getPresentId() != null) {
-			Optional<Present> oPresent = presentRepository.findById(Long.parseLong(message.getPresentId()));
+			Optional<Present> oPresent = presentRepository.findById(message.getPresentId());
 			if (oPresent.isEmpty()) {
 				throw new CustomException(PRESENT_NOT_FOUND);
 			}
@@ -147,7 +147,7 @@ public class PresentServiceImpl implements IPresentService {
 			presentRepository.save(present);
 		}
 
-		Optional<User> user = userRepository.findById(Long.parseLong(message.getUserId()));
+		Optional<User> user = userRepository.findById(message.getUserId());
 		if (user.isEmpty()) {
 			throw new CustomException(MEMBER_NOT_FOUND);
 		}
