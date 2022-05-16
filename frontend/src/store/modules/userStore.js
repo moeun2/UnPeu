@@ -58,7 +58,7 @@ export const userStore = {
       api.updateUserConcept(
         data,
         (response) => {
-          console.log("AC_UPDATE_CONCEPT : ", response.data);
+          // console.log("AC_UPDATE_CONCEPT : ", response.data);
           const data = {
             category: response.data.User.category,
             selectedDate: dayjs(
@@ -76,12 +76,12 @@ export const userStore = {
     },
 
     AC_USER_DETAIL({ commit, dispatch }, userId) {
-      console.log("AC_USER_DETAIL-호출");
+      // console.log("AC_USER_DETAIL-호출");
       api.getUserDetail(
         userId,
         (response) => {
-          console.log("AC_USER_DETAIL", response.data);
-          
+          // console.log("AC_USER_DETAIL", response.data);
+
           let today = null;
           if (response.data.User.selectedDate != null) {
             today = dayjs(response.data.User.selectedDate.join("-")).format(
@@ -104,7 +104,7 @@ export const userStore = {
       );
     },
     AC_USER_PERMISSION({ commit, dispatch, state }, userId) {
-      console.log("AC_USER_PERMISSION-호출");
+      // console.log("AC_USER_PERMISSION-호출");
       if (localStorage.getItem("accessToken")) {
         dispatch("AC_USER_TOKEN_DETAIL").then(() => {
           //console.log("AC_USER_PERMISSION",state.user)
@@ -115,18 +115,18 @@ export const userStore = {
           } else {
             commit("MU_CUR_USER_PERMISSION", 0); //user
           }
-          console.log("AC_USER_PERMISSION", state.currentUser);
+          // console.log("AC_USER_PERMISSION", state.currentUser);
         });
       } else {
         commit("MU_CUR_USER_PERMISSION", 2); //guest
       }
     },
     AC_USER_TOKEN_DETAIL({ commit }) {
-      console.log("AC_USER_TOKEN_DETAIL- 호출");
+      // console.log("AC_USER_TOKEN_DETAIL- 호출");
       api.getUserDetailUseToken(
         localStorage.getItem("accessToken"),
         (response) => {
-          console.log("AC_USER_TOKEN_DETAIL", response.data);
+          // console.log("AC_USER_TOKEN_DETAIL", response.data);
           commit("MU_USER_DETAIL", response.data.User);
         },
         (err) => {
@@ -134,14 +134,14 @@ export const userStore = {
         }
       );
     },
-    AC_CHECK_CONCEPT({  state }) {
-      console.log("AC_CHECK_CONCEPT-호출")
+    AC_CHECK_CONCEPT({ state }) {
+      // console.log("AC_CHECK_CONCEPT-호출")
       let today = dayjs().format("YYYY-MM-DD");
       let concept = state.currentUser.category;
       let selectedDate = state.currentUser.selectedDate;
-      console.log("selectedDate : ", selectedDate);
-      console.log("today : ", this.today);
-      console.log("CheckConcept-Concept : ", concept);
+      // console.log("selectedDate : ", selectedDate);
+      // console.log("today : ", this.today);
+      // console.log("CheckConcept-Concept : ", concept);
       switch (concept) {
         case "default":
           if (selectedDate >= today) {

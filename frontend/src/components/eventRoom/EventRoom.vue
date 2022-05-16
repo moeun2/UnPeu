@@ -179,13 +179,13 @@ export default {
       month: "",
       date: "",
       today: dayjs().format("YYYY-MM-DD"),
-      category:'',
-      selectedData:'',
-      data:{
-        userId:'',
-        category:'',
-        selectedData:'',
-      }
+      category: "",
+      selectedData: "",
+      data: {
+        userId: "",
+        category: "",
+        selectedData: "",
+      },
     };
   },
 
@@ -382,27 +382,27 @@ export default {
       } else {
         let today = new Date();
         let year = today.getFullYear();
-        let month2 = '';
-        let date2 = '';
+        let month2 = "";
+        let date2 = "";
         // 한자리 수 일 경우
         if (this.month < 10) {
           month2 = "0" + this.month;
-        }else {
+        } else {
           month2 = this.month;
         }
 
         if (this.date < 10) {
           date2 = "0" + this.date;
-        }else {
+        } else {
           date2 = this.date;
         }
 
         this.selectedDate = year + "-" + month2 + "-" + date2;
 
-        if(this.category === 'children') {
-                  this.selectedDate = year + "-05-05";
-                  this.month = 5;
-                  this.date = 5;
+        if (this.category === "children") {
+          this.selectedDate = year + "-05-05";
+          this.month = 5;
+          this.date = 5;
         }
 
         let data = {};
@@ -411,28 +411,28 @@ export default {
         data.userId = this.curUser.id;
         //console.log(data);
 
-        this.$swal.fire({
-                  title: "컨셉 변경 저장",
-                  text: "설정된 날짜는 0시 정각에 실행됩니다.",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonText: "할래요!",
-                  cancelButtonText: "안할래요!",
-                  reverseButtons: false,
-                })
-                .then((result) => {
-                  if (result.isConfirmed) {
-                    this.AC_UPDATE_CONCEPT(
-                      data,
-                      function (res) {
-                        console.log(res);
-                      },
-                      function () {}
-                    );
-                    this.$router.go({ name: "eventRoom" }).catch(()=>{});
-                  }
-                });
-
+        this.$swal
+          .fire({
+            title: "컨셉 변경 저장",
+            text: "설정된 날짜는 0시 정각에 실행됩니다.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "할래요!",
+            cancelButtonText: "안할래요!",
+            reverseButtons: false,
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              this.AC_UPDATE_CONCEPT(
+                data,
+                function (res) {
+                  console.log(res);
+                },
+                function () {}
+              );
+              this.$router.go({ name: "eventRoom" }).catch(() => {});
+            }
+          });
       }
     },
   },
