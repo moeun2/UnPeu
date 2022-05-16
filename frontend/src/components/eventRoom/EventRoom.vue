@@ -93,8 +93,6 @@
 
             <input type="number" name="month" class="input-date" id="month" v-model="month" placeholder="0" /> 월
             <input type="number" name="date" class="input-date" id="date" v-model="date" placeholder="0" /> 일
-
-            <p class="setDate-p">{{ this.month }} 월 {{ this.date }} 일</p>
           </div>
 
           <div class="mode-content">
@@ -150,11 +148,11 @@ export default {
       date: "",
       today: dayjs().format("YYYY-MM-DD"),
       category: "",
-      selectedData: "",
+      selectedDate: "",
       data: {
         userId: "",
         category: "",
-        selectedData: "",
+        selectedDate: "",
       },
     };
   },
@@ -170,6 +168,9 @@ export default {
           this.isLogin = true;
           if (this.$route.params.userid == res.data.User.id) {
             this.isMyPage = true;
+            this.month = res.data.User.selectedDate[1];
+            this.date = res.data.User.selectedDate[2];
+            this.category = res.data.User.category;
           }
         },
         () => {
