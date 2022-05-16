@@ -88,6 +88,23 @@ function updateUserInfo(userInfo, success, fail) {
   // console.log("updateUserInfo 실행됨");
 }
 
+function updateUserMusic(userMusic, success, fail) {
+  api
+    .patch(
+      "/users/music",
+      {
+        userMusic: userMusic,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
+      }
+    )
+    .then(success)
+    .catch(fail);
+}
+
 function updateUserTitle(userTitle, success, fail) {
   api
     .patch(`/users/title?userTitle=` + userTitle, null, {
@@ -142,5 +159,6 @@ export {
   getUserIdUseToken,
   increaseVisit,
   deleteUser,
+  updateUserMusic,
   updateUserConcept,
 };

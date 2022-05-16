@@ -24,6 +24,7 @@ public class UserGetRes {
     private Long todayVisit;
     private Long totalVisit;
 	private String userImg;
+	private Boolean isAgree;
 	private String category;
 	private LocalDate selectedDate;
 
@@ -40,6 +41,7 @@ public class UserGetRes {
 		this.todayVisit = user.getTodayVisit();
 		this.totalVisit = user.getTotalVisit();
 		this.userImg = user.getUserImg();
+		this.isAgree= user.getIsAgree();
 		this.category = user.getCategory();
 		this.selectedDate = user.getSelectedDate();
 	}

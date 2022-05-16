@@ -74,7 +74,6 @@ export default {
   color: rgba(0, 0, 0, 0.789);
 }
 .landing {
-  margin-top: 10vh;
   text-align: center;
   justify-content: center;
 }
@@ -87,6 +86,7 @@ export default {
   height: 100vh;
   display: flex;
   align-items: center;
+
 }
 
 </style>
