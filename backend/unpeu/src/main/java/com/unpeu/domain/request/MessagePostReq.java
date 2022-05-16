@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MessagePostReq {
 	@ApiModelProperty(name = "user_id", example = "1")
-	private String userId;
+	private Long userId;
 	@ApiModelProperty(name = "sender", example = "guest")
 	private String sender;
 	@ApiModelProperty(name = "content", example = "Happy Adult's Day!")
@@ -28,7 +28,8 @@ public class MessagePostReq {
 	@ApiModelProperty(name = "create_at")
 	private LocalDateTime createdAt;
 	@ApiModelProperty(name = "present_id", example = "1")
-	private String presentId;
-
+	private Long presentId;
+	@ApiModelProperty(name = "present_img")
+	private String presentImg;
 
 }
