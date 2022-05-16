@@ -270,7 +270,6 @@ export default {
           }
         },
         () => {
-          // console.log("getUserDetailUseToken fail");
           this.isLogin = false;
           window.localStorage.removeItem("accessToken");
 
@@ -285,14 +284,19 @@ export default {
       window.location.href ==
       FRONT_URL + "/eventRoom/" + this.$route.params.userid
     ) {
-      increaseVisit(this.$route.params.userid, (res) => {
+      const nowVisit=this.$route.params.userid+ new Date().toLocaleDateString('en-US')
+      if(!sessionStorage.getItem("recentVisit")||sessionStorage.getItem("recentVisit")!=nowVisit){
+        increaseVisit(this.$route.params.userid, (res) => {
         if (res.data.User.todayVisit) {
           this.todayVisit = res.data.User.todayVisit;
         }
         if (res.data.User.totalVisit) {
           this.totalVisit = res.data.User.totalVisit;
         }
+        sessionStorage.setItem("recentVisit",nowVisit)
       });
+      }
+      
     }
   },
   components: {
@@ -874,7 +878,6 @@ export default {
 .speech-bubble2-img {
   width: 100px;
 }
-
 .swal2-select{
   border: 1px solid #d9d9d9;
 }
