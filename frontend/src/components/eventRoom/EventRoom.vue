@@ -155,13 +155,15 @@ import { API_BASE_URL } from "@/config/index.js";
 import { getUserDetailUseToken } from "@/api/user.js";
 import * as Alert from "@/api/alert";
 import { mapActions, mapGetters, mapMutations } from "vuex";
-
+import dayjs from "dayjs";
 const userStore = "userStore";
 const presentStore = "presentStore";
 
 export default {
   name: "EventRoom",
-
+  component: {
+    dayjs,
+  },
   data() {
     return {
       messages: [],
@@ -176,8 +178,14 @@ export default {
       isMyPage: false,
       month: "",
       date: "",
-      category: "",
-      selectedDate: "",
+      today: dayjs().format("YYYY-MM-DD"),
+      category:'',
+      selectedData:'',
+      data:{
+        userId:'',
+        category:'',
+        selectedData:'',
+      }
     };
   },
 
@@ -216,34 +224,11 @@ export default {
         // // console.log("fail");
       }
     );
-
-    let today = new Date();
-    let month = today.getMonth() + 1; // 월
-    let date = today.getDate(); // 일
-    let hours = today.getHours(); // 시
-    let minutes = today.getMinutes(); // 분
-    let seconds = today.getSeconds(); // 초
-    let setMonth = this.$store.state.eventStore.month;
-    let setDate = this.$store.state.eventStore.date;
-    // console.log("gmonth: " + setMonth);
-    // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
-    if (
-      month >= setMonth &&
-      date >= setDate &&
-      hours >= 0 &&
-      minutes >= 0 &&
-      seconds >= 0
-    ) {
-      let changeView = document.getElementById("main-room");
-      // // console.log(changeView.className);
-      changeView.className = "main-room2";
-    }
   },
 
   watch: {
     $route(to, from) {
       //라우터 파라미터 변경 감지
-      // // console.log("watch")
       if (to.path !== from.path) this.changeParams(this.$route.params.userid);
     },
   },
@@ -256,7 +241,6 @@ export default {
       let length = this.messages.length / this.perPage;
       return Math.ceil(length);
     },
-
     messagesFor() {
       const items = this.messages;
       return items.slice(
@@ -276,54 +260,14 @@ export default {
       getMessage(
         userId,
         (res) => {
-          // // console.log(res.data.Message);
           this.messages = res.data.Message;
-          // // console.log(this.messages);
         },
-        () => {
-          // // console.log("fail");
-        }
+        () => {}
       );
-
-      let today = new Date();
-      let month = today.getMonth() + 1; // 월
-      let date = today.getDate(); // 일
-      let hours = today.getHours(); // 시
-      let minutes = today.getMinutes(); // 분
-      let seconds = today.getSeconds(); // 초
-      let setMonth = this.$store.state.eventStore.month;
-      let setDate = this.$store.state.eventStore.date;
-      if (
-        month >= setMonth &&
-        date >= setDate &&
-        hours >= 0 &&
-        minutes >= 0 &&
-        seconds >= 0
-      ) {
-        let changeView = document.getElementById("main-room");
-        // // console.log(changeView.className);
-        changeView.className = "main-room2";
-      }
     },
 
     modal(message) {
-      // 날짜 처리 (5월 5일 00:00:00 열람)
-      let today = new Date();
-      let month = today.getMonth() + 1; // 월
-      let date = today.getDate(); // 일
-      let hours = today.getHours(); // 시
-      let minutes = today.getMinutes(); // 분
-      let seconds = today.getSeconds(); // 초
-      let setMonth = this.$store.state.eventStore.month;
-      let setDate = this.$store.state.eventStore.date;
-      if (
-        month >= setMonth &&
-        date >= setDate &&
-        hours >= 0 &&
-        minutes >= 0 &&
-        seconds >= 0
-      ) {
-        // // console.log("modal-message : ", message);
+      if (this.curUser.selectedDate == this.today) {
         this.content = message.content;
         this.sender = message.sender;
         if (message.present != null) {
@@ -446,13 +390,13 @@ export default {
           this.date = "0" + this.date;
         }
         this.selectedDate = year + "-" + this.month + "-" + this.date;
-        let data = {};
-        data.category = this.category;
-        data.selectedDate = this.selectedDate;
-        data.userId = this.curUser.id;
-        console.log(data);
+        
+        this.data.category = this.category;
+        this.data.selectedDate = this.selectedDate;
+        this.data.userId = this.curUser.id;
+
         this.AC_UPDATE_CONCEPT(
-          data,
+          this.data,
           function (res) {
             console.log(res);
           },
@@ -668,11 +612,7 @@ ul.myMenu > li ul.submenu > li:hover {
   padding-left: 12px;
   text-align: center;
 }
-.main-room2 {
-  background-image: var(--main);
-  background-size: cover;
-  border-radius: 15px;
-}
+
 .menu-a {
   color: black;
 }
