@@ -19,7 +19,7 @@ import Landing from "@/views/LandingPage.vue";
 import NotFound from "@/views/NotFoundPage.vue";
 
 import Store from "@/store";
-import { getUserDetailUseToken } from "@/api/user.js";
+import { getUserDetail,getUserDetailUseToken } from "@/api/user.js";
 Vue.use(VueRouter);
 
 const routes = [
@@ -100,16 +100,19 @@ const routes = [
         component: GoogleLogin,
       },
     ],
+    beforeEnter: setDefaultEmail,
   },
   {
     path: "/landing",
     name: "Landing",
     component: Landing,
+    beforeEnter: setDefaultEmail,
   },
   {
     path: "*",
     name: "NotFound",
     component: NotFound,
+    beforeEnter: setDefaultEmail,
   },
 ];
 const router = new VueRouter({
@@ -117,7 +120,13 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-
+function setDefaultEmail(to,from,next){
+  document.documentElement.setAttribute(
+    "color-theme",
+    "default-email"
+);
+next()
+}
 function getUserPresentAndCheckGuest(to, from, next) {
   let loginCheck = Store.state.userStore.user;
   if (loginCheck == null) {
@@ -144,14 +153,9 @@ function getUserInfo(to, from, next) {
   let userId = to.params.userid;
   let accessToken = localStorage.getItem("accessToken");
   Store.commit("userStore/MU_CUR_USER_ID", userId);
-
-  if (accessToken == null) {
-    /** Permission 설정  **/
-    Store.commit("userStore/MU_CUR_USER_PERMISSION", 2);
-  } else {
-    getUserDetailUseToken(accessToken, (res) => {
-      let compareId = res.data.User.id;
-
+  console.log("getUserInfo - CuruserId :",userId)
+  getUserDetail(userId,
+    (res)=>{
       /** Category, selectedDate 설정 **/
       Store.commit(
         "userStore/MU_CUR_USER_CONCEPT",
@@ -159,16 +163,36 @@ function getUserInfo(to, from, next) {
         res.data.User.selectedDate
       );
 
-      /** Permission 설정  **/
-      if (compareId != userId) {
-        Store.commit("userStore/MU_CUR_USER_PERMISSION", 1);
+      if (accessToken == null) {
+        /** Permission 설정  **/
+        Store.commit("userStore/MU_CUR_USER_PERMISSION", 2);
+        next();
       } else {
-        Store.commit("userStore/MU_CUR_USER_PERMISSION", 0);
+        getUserDetailUseToken(accessToken, (res) => {
+          let compareId = res.data.User.id;
+          /** Permission 설정  **/
+          if (compareId != userId) {
+            Store.commit("userStore/MU_CUR_USER_PERMISSION", 1);
+          } else {
+            Store.commit("userStore/MU_CUR_USER_PERMISSION", 0);
+          }
+          next();
+        });
       }
-    });
-  }
+      
+    },
+    (err)=>{
+      // 없는 유저의 url로 들어갔을 때 에러처리
+      if(err.response.status == 400) 
 
-  next();
+        next("/error")
+      // console.log(err)
+    })
+
+  
+  
+
+  
 }
 
 export default router;

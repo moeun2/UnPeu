@@ -85,8 +85,7 @@ export default {
   background-size: cover;
   height: 100vh;
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  align-items: center;
 }
 
 .test {
@@ -127,6 +126,6 @@ export default {
 .landing {
   text-align: center;
   justify-content: center;
-  align-items:center;
+  align-items: center;
 }
 </style>

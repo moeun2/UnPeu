@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-     <!-- @click.once="playMusic(userMusic)" -->
+    <!-- @click.once="playMusic(userMusic)" -->
     <div class="background">
       <main>
         <div class="holder hd1"></div>
@@ -20,9 +20,21 @@
                   <div class="text-today-is">
                     BGM IS .. <span v-text="userMusic"> </span>
                     <div class="music-icon">
-                    <v-icon small @click="playMusic(userMusic)" v-if="userMusic!='none'">mdi-play</v-icon>
-                    <v-icon small @click="pauseMusic" v-if="userMusic!='none'">mdi-pause</v-icon>
-                    <v-icon small @click="updateMusic" v-if="isMyPage">mdi-account-music</v-icon>
+                      <v-icon
+                        small
+                        @click="playMusic(userMusic)"
+                        v-if="userMusic != 'none'"
+                        >mdi-play</v-icon
+                      >
+                      <v-icon
+                        small
+                        @click="pauseMusic"
+                        v-if="userMusic != 'none'"
+                        >mdi-pause</v-icon
+                      >
+                      <v-icon small @click="updateMusic" v-if="isMyPage"
+                        >mdi-account-music</v-icon
+                      >
                     </div>
                   </div>
                   <v-file-input
@@ -57,10 +69,16 @@
                     </div>
 
                     <v-icon small @click="copyLink">mdi-link</v-icon>
-                    <a class="info-name" @click="copyLink"> {{ this.userName }}</a>
-                    <div class="info-birth" v-if="isAgree">{{ this.userBirth }}</div>
+                    <a class="info-name" @click="copyLink">
+                      {{ this.userName }}</a
+                    >
+                    <div class="info-birth" v-if="isAgree">
+                      {{ this.userBirth }}
+                    </div>
                     <br />
-                    <p class="text-email" v-if="isAgree">{{ this.userEmail }}</p>
+                    <p class="text-email" v-if="isAgree">
+                      {{ this.userEmail }}
+                    </p>
                     <p class="text-email" v-if="!isAgree">ㅤ</p>
                     <div style="display: flex; margin-top: 10px">
                       <router-link
@@ -69,7 +87,7 @@
                       >
                         <button class="item">
                           <v-icon>mdi-gift-open</v-icon>
-                          <p class="arrow_box">받고 싶은 선물 등록!</p>
+                          <p class="arrow_box">받고 싶은<br />선물 등록!</p>
                         </button>
                       </router-link>
 
@@ -135,7 +153,7 @@
                         name: 'eventRoom',
                         params: { userid: $route.params.userid },
                       }"
-                      >
+                    >
                       <li :class="[activeCheckClass]" @click="checkHome()">
                         홈
                       </li></router-link
@@ -212,7 +230,7 @@ export default {
       activeClass: "menu-item mi-3",
       userName: "김싸피",
       userInfo: "선물주는 사람\n차칸 사람",
-      userTitle: "오늘은 어른이날, 선물사주라주",
+      userTitle: "개성있는 타이틀을 설정해보세요 :)",
       userImg: "",
       userBirth: "1996.10.31",
       userEmail: "ssafykim@ssafy.com",
@@ -223,7 +241,7 @@ export default {
       totalVisit: 0,
       todayVisit: 0,
       showModal: false,
-      audio:null,
+      audio: null,
       rules: [
         (value) =>
           !value ||
@@ -232,7 +250,7 @@ export default {
       ],
       files: null,
       data: {
-        userId:"",
+        userId: "",
         category: "",
         selectedDate: "",
       },
@@ -255,7 +273,7 @@ export default {
     this.checkConcept();
   },
   created() {
-    
+    // this.checkConcept();
     if (window.localStorage.getItem("accessToken")) {
       //로그인 되어있는 상태 store inlogin true
       getUserDetailUseToken(
@@ -284,19 +302,22 @@ export default {
       window.location.href ==
       FRONT_URL + "/eventRoom/" + this.$route.params.userid
     ) {
-      const nowVisit=this.$route.params.userid+ new Date().toLocaleDateString('en-US')
-      if(!sessionStorage.getItem("recentVisit")||sessionStorage.getItem("recentVisit")!=nowVisit){
+      const nowVisit =
+        this.$route.params.userid + new Date().toLocaleDateString("en-US");
+      if (
+        !sessionStorage.getItem("recentVisit") ||
+        sessionStorage.getItem("recentVisit") != nowVisit
+      ) {
         increaseVisit(this.$route.params.userid, (res) => {
-        if (res.data.User.todayVisit) {
-          this.todayVisit = res.data.User.todayVisit;
-        }
-        if (res.data.User.totalVisit) {
-          this.totalVisit = res.data.User.totalVisit;
-        }
-        sessionStorage.setItem("recentVisit",nowVisit)
-      });
+          if (res.data.User.todayVisit) {
+            this.todayVisit = res.data.User.todayVisit;
+          }
+          if (res.data.User.totalVisit) {
+            this.totalVisit = res.data.User.totalVisit;
+          }
+          sessionStorage.setItem("recentVisit", nowVisit);
+        });
       }
-      
     }
   },
   components: {
@@ -304,36 +325,48 @@ export default {
   },
 
   methods: {
-    playMusic(music){
+    playMusic(music) {
       // alert("노래를 재생합니다.")
-      if(music!="none"){
-        if(this.audio){
-          if(!this.audio.paused){
+      if (music != "none") {
+        if (this.audio) {
+          if (!this.audio.paused) {
             this.audio.pause();
-            this.audio.currentTime=0
+            this.audio.currentTime = 0;
           }
           this.audio.play();
-        }else{
+        } else {
           // console.log(this.userMusic)
-          const audio = new Audio(require('@/assets/music/'+music+'.mp3'))
-          audio.loop=true
-          audio.volume=0.07
-          this.audio=audio
+          const audio = new Audio(require("@/assets/music/" + music + ".mp3"));
+          audio.loop = true;
+          audio.volume = 0.07;
+          this.audio = audio;
           this.audio.play();
         }
       }
     },
-    pauseMusic(){
-      if(this.audio){
-          this.audio.pause();
+    pauseMusic() {
+      if (this.audio) {
+        this.audio.pause();
       }
     },
 
     ...mapActions(userStore, ["AC_UPDATE_CONCEPT"]),
     checkConcept() {
+      // getUserDetail(this.$route.params.userid,
+      //   (res)=>{
+      //     /** Category, selectedDate 설정 **/
+      //     this.$store.commit(
+      //       "userStore/MU_CUR_USER_CONCEPT",
+      //       res.data.User.category,
+      //       res.data.User.selectedDate
+      //     );
+      //   },
+      //   (err)=>{
+      //     console.log(err)
+      //   })
       let concept = this.curUser.category;
       let selectedDate = this.curUser.selectedDate;
-      //console.log("Today : ", this.today);
+      console.log("CheckConcept-Concept : ", concept);
       switch (concept) {
         case "default":
           if (selectedDate == this.today) {
@@ -377,65 +410,64 @@ export default {
         default:
           console.log(concept);
           console.log("어떤 값인지 파악이 되지 않습니다.");
-
       }
     },
     ...mapMutations(presentStore, ["RESET_PRESENT_LIST"]),
     goToMainPage() {
-      // test 용 입니다.
-      let concept = this.curUser.category;
-      this.data.userId = this.curUser.id;
-      console.log("concept : ", this.curUser.category);
-      switch (concept) {
-        case "default":
-          this.data.category = "birthday";
-          this.AC_UPDATE_CONCEPT(
-            this.data,
-            function (res) {
-              console.log("AC_UPDATE_CONCEPT Success")
-              console.log(res);
-              console.log(this.curUser);
-            },
-            function () {}
-          );
-          document.documentElement.setAttribute(
-            "color-theme",
-            "birthday-close"
-          );
+      // test 용으로 놨둔 주석입니다. 삭제하지 말아주세요.
+      // let concept = this.curUser.category;
+      // this.data.userId = this.curUser.id;
+      // console.log("concept : ", this.curUser.category);
+      // switch (concept) {
+      //   case "default":
+      //     this.data.category = "birthday";
+      //     this.AC_UPDATE_CONCEPT(
+      //       this.data,
+      //       function (res) {
+      //         console.log("AC_UPDATE_CONCEPT Success")
+      //         console.log(res);
+      //         console.log(this.curUser);
+      //       },
+      //       function () {}
+      //     );
+      //     document.documentElement.setAttribute(
+      //       "color-theme",
+      //       "birthday-close"
+      //     );
 
-          break;
-        case "birthday":
-          this.data.category = "children";
-          this.AC_UPDATE_CONCEPT(
-            this.data,
-            function (res) {
-              console.log("AC_UPDATE_CONCEPT Success")
-              console.log(res);
-              console.log(this.curUser);
-            },
-            function () {}
-          );
-          document.documentElement.setAttribute(
-            "color-theme",
-            "children-close"
-          );
-          break;
-        case "children":
-          this.data.category = "default";
-          this.AC_UPDATE_CONCEPT(
-            this.data,
-            function (res) {
-              console.log("AC_UPDATE_CONCEPT Success")
-              console.log(res);
-              console.log(this.curUser);
-            },
-            function () {}
-          );
-          document.documentElement.setAttribute("color-theme", "default-close");
-          break;
-      }
+      //     break;
+      //   case "birthday":
+      //     this.data.category = "children";
+      //     this.AC_UPDATE_CONCEPT(
+      //       this.data,
+      //       function (res) {
+      //         console.log("AC_UPDATE_CONCEPT Success")
+      //         console.log(res);
+      //         console.log(this.curUser);
+      //       },
+      //       function () {}
+      //     );
+      //     document.documentElement.setAttribute(
+      //       "color-theme",
+      //       "children-close"
+      //     );
+      //     break;
+      //   case "children":
+      //     this.data.category = "default";
+      //     this.AC_UPDATE_CONCEPT(
+      //       this.data,
+      //       function (res) {
+      //         console.log("AC_UPDATE_CONCEPT Success")
+      //         console.log(res);
+      //         console.log(this.curUser);
+      //       },
+      //       function () {}
+      //     );
+      //     document.documentElement.setAttribute("color-theme", "default-close");
+      //     break;
+      // }
 
-      // this.$router.push({ name: "eventRoom" }).catch(()=>{});
+      this.$router.push({ name: "eventRoom" }).catch(() => {});
     },
     setUserData() {
       getUserDetail(
@@ -457,7 +489,7 @@ export default {
           if (res.data.User.userTitle) {
             this.userTitle = res.data.User.userTitle;
           } else {
-            this.userTitle = "오늘은 어른이날, 선물사주라주";
+            this.userTitle = "개성있는 타이틀을 설정해보세요 :)";
           }
           if (res.data.User.userEmail) {
             this.userEmail = res.data.User.userEmail;
@@ -476,12 +508,12 @@ export default {
           if (res.data.User.totalVisit) {
             this.totalVisit = res.data.User.totalVisit;
           }
-          this.isAgree=res.data.User.isAgree;
+          this.isAgree = res.data.User.isAgree;
 
-          if (res.data.User.userMusic){
-            if(this.audio&&this.userMusic!=res.data.User.userMusic){
-              this.pauseMusic()
-              this.audio=null
+          if (res.data.User.userMusic) {
+            if (this.audio && this.userMusic != res.data.User.userMusic) {
+              this.pauseMusic();
+              this.audio = null;
               // this.playMusic(res.data.User.userMusic)
             }
             this.userMusic = res.data.User.userMusic;
@@ -491,11 +523,9 @@ export default {
           this.$router.push({ name: "NotFound" });
         }
       );
-      
     },
 
     async changeParams(index) {
-
       if (window.localStorage.getItem("accessToken")) {
         //로그인 되어있는 상태 store inlogin true
         await getUserDetailUseToken(
@@ -516,7 +546,7 @@ export default {
         );
       }
       //지금 접속한 페이지유저의 정보
-      this.setUserData()
+      this.setUserData();
     },
 
     checkHome() {
@@ -562,35 +592,31 @@ export default {
           }
         });
     },
-    async updateMusic(){
-      const { value: music } = await  this.$swal.fire({
-        title: 'BGM🎵',
-        input: 'select',
+    async updateMusic() {
+      const { value: music } = await this.$swal.fire({
+        title: "BGM🎵",
+        input: "select",
         text: "원하는 노래를 선택해주세요!",
         inputOptions: {
-          'none':'노래를 재생하고 싶지 않아요',
-          'allthat': 'allthat',
-          'betterdays': 'betterdays',
-          'happiness': 'happiness',
-          'highoctane': 'highoctane',
-          'jazzcomedy': 'jazzcomedy',
-          'moose': 'moose',
+          none: "노래를 재생하고 싶지 않아요",
+          allthat: "allthat",
+          betterdays: "betterdays",
+          happiness: "happiness",
+          highoctane: "highoctane",
+          jazzcomedy: "jazzcomedy",
+          moose: "moose",
         },
-        inputPlaceholder: '노래를 선택해주세요',
+        inputPlaceholder: "노래를 선택해주세요",
         showCancelButton: true,
-
-      })
+      });
       if (music) {
-        updateUserMusic(music,
-        (res) => {
-            this.userMusic=res.data.User.userMusic
-            this.pauseMusic()
-            this.audio=null
-            this.playMusic(this.userMusic)
-          }
-        )
+        updateUserMusic(music, (res) => {
+          this.userMusic = res.data.User.userMusic;
+          this.pauseMusic();
+          this.audio = null;
+          this.playMusic(this.userMusic);
+        });
       }
-      
     },
 
     async updateUserTitle() {
@@ -604,7 +630,7 @@ export default {
         inputAttributes: {
           maxlength: 25,
           rows: 4,
-          'spellcheck':'false'
+          spellcheck: "false",
         },
 
         inputValidator: (value) => {
@@ -665,92 +691,108 @@ export default {
       this.showModal = true;
     },
 
-    async userSetting(){
+    async userSetting() {
       let flatpickrInstance;
 
-      await this.$swal.fire({
-        title: "회원 정보",
-        icon: 'info',
-        html:
-          '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="email" class="swal2-input" value='+this.userEmail+'></div>' +
-          '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="birth" value='+this.userBirth+'></div><br/>'+
-          '<label><input type="checkbox" id="isAgree" name="scales" '+(this.isAgree ? 'checked':'')+'>ㅤ생일과 이메일을 공개하는 것에 동의합니다.</label>',
+      await this.$swal
+        .fire({
+          title: "회원 정보",
+          icon: "info",
+          html:
+            '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="email" class="swal2-input" value=' +
+            this.userEmail +
+            "></div>" +
+            '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="birth" value=' +
+            this.userBirth +
+            "></div><br/>" +
+            '<label><input type="checkbox" id="isAgree" name="scales" ' +
+            (this.isAgree ? "checked" : "") +
+            ">ㅤ생일과 이메일을 공개하는 것에 동의합니다.</label>",
 
-        inputLabel:
-          "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
-        stopKeydownPropagation: false,
-        focusConfirm: true,
-        showDenyButton: true,
-        showCancelButton: true,
-        cancelButtonText:'취소',
-        confirmButtonText: '수정',
-        denyButtonText: `회원 탈퇴`,
-        preConfirm: () => {
-          var exptext = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-          if (!flatpickrInstance.selectedDates[0]) {
-            this.$swal.showValidationMessage(`생일을 입력해주세요`);
-          }else if (flatpickrInstance.selectedDates[0] > new Date()) {
-            this.$swal.showValidationMessage(`혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`)
-          }
-          if (!document.getElementById("email").value||!exptext.test(document.getElementById("email").value)) {
-            this.$swal.showValidationMessage(`이메일을 입력해주세요`);
-          }
-        },
-        willOpen: () => {
-          flatpickrInstance = flatpickr(
-            this.$swal.getPopup().querySelector("#birth"),
-            {
-              allowInput:true
+          inputLabel:
+            "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
+          stopKeydownPropagation: false,
+          focusConfirm: true,
+          showDenyButton: true,
+          showCancelButton: true,
+          cancelButtonText: "취소",
+          confirmButtonText: "수정",
+          denyButtonText: `회원 탈퇴`,
+          preConfirm: () => {
+            var exptext =
+              /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+            if (!flatpickrInstance.selectedDates[0]) {
+              this.$swal.showValidationMessage(`생일을 입력해주세요`);
+            } else if (flatpickrInstance.selectedDates[0] > new Date()) {
+              this.$swal.showValidationMessage(
+                `혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`
+              );
             }
-          );
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const data={
-            userEmail: document.getElementById("email").value,
-            userBirth: document.getElementById("birth").value,
-            isAgree: document.getElementById("isAgree").checked
-          }
-            updateUserEmailBirth(localStorage.getItem("accessToken"), data, (res) => {
-            // console.log("success change email and birth")
-            this.$swal.fire('수정을 성공했습니다!', '', 'success')
-            this.userEmail= res.data.User.userEmail
-            this.userBirth =
-              res.data.User.userBirth[0] +
-              "." +
-              res.data.User.userBirth[1] +
-              "." +
-              res.data.User.userBirth[2];
-            this.isAgree=res.data.User.isAgree
-          });
-        } else if (result.isDenied) {
-          this.$swal.fire({
-              title: '정말 회원을 탈퇴하시겠습니까?',
-              icon: 'question',
-              text: '탈퇴하면 소중한 메세지와 선물들이 사라집니다 그래도 탈퇴하시겠습니까?',
-              showCancelButton: true,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                deleteUser(() => {
-                  this.$swal.fire('회원 탈퇴되었습니다.', '', 'success')
-                  localStorage.removeItem("accessToken")
-                  this.$store.commit("userStore/setUSerNull")
-                  this.$router.push({name:"Landing"})
-                })
+            if (
+              !document.getElementById("email").value ||
+              !exptext.test(document.getElementById("email").value)
+            ) {
+              this.$swal.showValidationMessage(`이메일을 입력해주세요`);
+            }
+          },
+          willOpen: () => {
+            flatpickrInstance = flatpickr(
+              this.$swal.getPopup().querySelector("#birth"),
+              {
+                allowInput: true,
               }
-            })
-        }
-      })
+            );
+          },
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            const data = {
+              userEmail: document.getElementById("email").value,
+              userBirth: document.getElementById("birth").value,
+              isAgree: document.getElementById("isAgree").checked,
+            };
+            updateUserEmailBirth(
+              localStorage.getItem("accessToken"),
+              data,
+              (res) => {
+                // console.log("success change email and birth")
+                this.$swal.fire("수정을 성공했습니다!", "", "success");
+                this.userEmail = res.data.User.userEmail;
+                this.userBirth =
+                  res.data.User.userBirth[0] +
+                  "." +
+                  res.data.User.userBirth[1] +
+                  "." +
+                  res.data.User.userBirth[2];
+                this.isAgree = res.data.User.isAgree;
+              }
+            );
+          } else if (result.isDenied) {
+            this.$swal
+              .fire({
+                title: "정말 회원을 탈퇴하시겠습니까?",
+                icon: "question",
+                text: "탈퇴하면 소중한 메세지와 선물들이 사라집니다 그래도 탈퇴하시겠습니까?",
+                showCancelButton: true,
+              })
+              .then((result) => {
+                if (result.isConfirmed) {
+                  deleteUser(() => {
+                    this.$swal.fire("회원 탈퇴되었습니다.", "", "success");
+                    localStorage.removeItem("accessToken");
+                    this.$store.commit("userStore/setUSerNull");
+                    this.$router.push({ name: "Landing" });
+                  });
+                }
+              });
+          }
+        });
     },
-
   },
 };
 </script>
 
 <style scoped>
-/* @import url("@/assets/css/reset.css");
-@import url("@/assets/css/style.css"); */
-
 * {
   font-family: "GangwonEdu_OTFBoldA" !important;
 }
@@ -878,13 +920,13 @@ export default {
 .speech-bubble2-img {
   width: 100px;
 }
-.swal2-select{
+.swal2-select {
   border: 1px solid #d9d9d9;
 }
 .mdi-camera::before {
   color: grey;
 }
 .music-icon {
-    float: right;
+  float: right;
 }
 </style>
