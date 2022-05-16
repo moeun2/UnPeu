@@ -78,8 +78,8 @@ export default {
   },
 };
 </script>
-<style>
-@import url("https://fonts.googleapis.com/css?family=Roboto");
+<style scoped>
+
 
 .ba-we-love-subscribers {
   width: 290px;
@@ -87,7 +87,7 @@ export default {
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0px 12px 45px rgba(0, 0, 0, 0.15);
-  font-family: "Roboto", sans-serif;
+  font-family: "hiffy" !important;
   text-align: center;
   margin: 0 0 10px 0;
   overflow: hidden;
@@ -108,7 +108,7 @@ export default {
   padding: 25px 0;
   margin: 0;
   font-weight: 400;
-  font-family: "Roboto", sans-serif;
+  font-family: "hiffy" !important;
 }
 .ba-we-love-subscribers .love {
   width: 20px;
