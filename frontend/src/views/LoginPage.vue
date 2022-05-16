@@ -84,6 +84,9 @@ export default {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .test {

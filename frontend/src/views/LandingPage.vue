@@ -75,7 +75,7 @@ export default {
   color: rgba(0, 0, 0, 0.789);
 }
 .landing{
-  margin-top : 10vh;
+  /* margin-top : 10vh; */
   text-align: center;
   justify-content: center;
   align-items:center;
@@ -87,6 +87,9 @@ export default {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 </style>
 

@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,9 @@ public class UserServiceImpl implements IUserService{
 	private final IMessageRepository messageRepository;
 	private final IPresentRepository presentRepository;
 	private final IBoardRepository boardRepository;
+	
+	@Value("${spring.server.url}")
+	private String RedirectURL;
 
 	/**
 	 * userLogin정보로 사용자 조회
@@ -78,8 +82,7 @@ public class UserServiceImpl implements IUserService{
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=c0ad1801cdf80282754cf18e79556743");//kakao restapi키
-            // sb.append("&redirect_uri=http://k6b201.p.ssafy.io/login/kakao");//redirect 경로, server
-            sb.append("&redirect_uri=http://localhost:8081/login/kakao");//redirect 경로, local
+            sb.append("&redirect_uri="+RedirectURL+"/login/kakao");
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -134,8 +137,7 @@ public class UserServiceImpl implements IUserService{
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=530350751299-fbiks9onutpnvmgebr0fc5uvllj5fidn.apps.googleusercontent.com");//kakao restapi키
             sb.append("&client_secret=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");
-            // sb.append("&redirect_uri=http://k6b201.p.ssafy.io/login/google");//redirect 경로, server
-			sb.append("&redirect_uri=http://localhost:8081/login/google");//redirect 경로, local
+			sb.append("&redirect_uri="+RedirectURL+"/login/google");
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -313,6 +315,8 @@ public class UserServiceImpl implements IUserService{
 		user.setSocialDomain(socialDomain);
 		user.setTodayVisit(0L);
 		user.setTotalVisit(0L);
+		user.setIsAgree(true);
+		user.setUserMusic("none");
 		user.setCategory("default");
 		user.setSelectedDate(null);
 		user.setCreatedAt(LocalDateTime.now());
@@ -369,6 +373,20 @@ public class UserServiceImpl implements IUserService{
 		user.setUserInfo(userInfo);
 		return userRepository.save(user);
 	}
+	
+	/**
+	 * 유저의 Music 수정
+	 * @param userId
+	 * @param userMusic
+	 * @return
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public User updateUserMusic(Long userId, String userMusic) {
+		User user= userRepository.findById(userId).get();
+		user.setUserMusic(userMusic);
+		return userRepository.save(user);
+	}
 
 	
 	/**
@@ -396,6 +414,7 @@ public class UserServiceImpl implements IUserService{
 		User user= userRepository.findById(userId).get();
 		user.setUserBirth(userPatchEmailBirthReq.getUserBirth());
 		user.setUserEmail(userPatchEmailBirthReq.getUserEmail());
+		user.setIsAgree(userPatchEmailBirthReq.getIsAgree());
 		return userRepository.save(user);
 	}
 
@@ -411,7 +430,7 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	/**
-	 * 일일 방문자수 초기회
+	 * 일일 방문자수 증가
 	 * @param userId
 	 * @return
 	 */
@@ -422,7 +441,11 @@ public class UserServiceImpl implements IUserService{
 		return userRepository.findById(userId).get();
 	}
 
-
+	/**
+	 * 회원 삭제
+	 * @param userId
+	 * @return
+	 */
 	@Override
 	@Transactional(readOnly = false)
 	public void deleteUser(Long userId) {
@@ -435,5 +458,4 @@ public class UserServiceImpl implements IUserService{
 			throw new CustomException(DELETE_CONFLICT);
 		}
 	}
-
 }

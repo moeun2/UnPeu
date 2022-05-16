@@ -771,3 +771,15 @@ a.link {
 .btn_red_cancel {
   font-size: 25px;
 }
+
+.swal2-textarea {
+  height: 5.75em !important;
+  padding: 0.75em;
+  resize: none;
+  text-align: center;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.swal2-textarea::-webkit-scrollbar {
+  display: none;
+}
