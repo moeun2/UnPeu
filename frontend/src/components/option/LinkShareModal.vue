@@ -165,6 +165,7 @@ export default {
   width: auto;
   font-size: 14px;
   font-weight: 500;
+  font-family: hiffy;
   color: #333;
   /* margin-right: 10px; */
   padding-top: 50px;
@@ -298,5 +299,6 @@ input[type="radio"]:checked + label {
 
 .urlCopy {
   display: flex;
+  font-family: hiffy;
 }
 </style>

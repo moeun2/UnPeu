@@ -21,7 +21,7 @@ export default {
 @import url("@/assets/css/style.css");
 
 * {
-  font-family: "GangwonEdu_OTFBoldA" !important;
+  font-family: "GangwonEdu_OTFBoldA" ;
 }
 @font-face {
   font-family: "GangwonEdu_OTFBoldA";
@@ -29,6 +29,11 @@ export default {
     format("woff");
   font-weight: normal;
   font-style: normal;
+}
+@font-face {
+  font-family: "hiffy";
+  src: url("assets/font/hiffy.ttf") format("truetype");
+  font-weight: 400;
 }
 /** 공통 색상 표 지정 **/
 :root {
