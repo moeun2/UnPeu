@@ -57,6 +57,7 @@
             <span>X</span>
           </button>
         </a>
+
         <!-- 로그인한 user의 모달창 -->
         <div class="modal-content" id="modal-content" v-if="isMyPage">
           <img
@@ -68,6 +69,7 @@
           <p class="message-user">{{ sender }}</p>
           <div class="message-box">{{ content }}</div>
         </div>
+
         <!-- guest의 모달창 -->
         <div class="modal-non-message" v-else>
           <p>메세지의 주인만 확인할 수 있어요 🤐</p>
@@ -76,33 +78,46 @@
     </div>
 
     <!-- 컨셉 변경 modal 창 -->
-        <div id="setDate" class="modal-window">
-            <div class="modal-message">
-                <a href="#">
-                <button class="btn_red_cancel">
-                    <span>X</span>
-                </button>
-                </a>            
-                <!-- 날짜 입력 받기 -->
-                <div class="concept-content">
-                  <div class="mode-content">
-                    <h2 class="concept-h2">날짜 선택</h2>
-                    <p class="setDate-p">본 날짜는 매년 정기적으로 실행됩니다.</p>
-                    <input type="number" name="month" class="input-date" id="month" v-model="month" placeholder="0"> 월
-                    <input type="number" name="date" class="input-date" id="date" v-model="date" placeholder="0"> 일
-                    <p class="setDate-p">{{ this.month }} 월 {{ this.date }} 일 </p>
-                  </div>
-                  <div class="mode-content">
-                    <h2 class="concept-h2">컨셉 모드 선택</h2>
-                    <p class="setDate-p">컨셉을 바꾸게 되면 이전 컨셉의 내용이 모두 초기화 됩니다. 신중히 선택하세요! </p>
-                    <input type="radio" name="concept" id="default" value="default" v-model="category" checked> 기본
-                    <input type="radio" name="concept" id="birthday" value="birthday" v-model="category"> 생일
-                    <input type="radio" name="concept" id="childrenDay" value="childrenDay" v-model="category"> 어른이날
-                  </div>
-                  <button @click="setDate" type="submit" class="setDate-btn"> 설정 </button>
-                </div>
-            </div>
+    <div id="setDate" class="modal-window">
+      <div class="modal-message">
+
+        <a href="#">
+          <button class="btn_red_cancel">
+            <span>X</span>
+          </button>
+        </a>
+
+        <!-- 날짜 입력 받기 -->
+        <div class="concept-content">
+          <div class="mode-content">
+            <h2 class="concept-h2">날짜 선택</h2>
+            <p class="setDate-p">본 날짜는 매년 정기적으로 실행됩니다.</p>
+
+            <input type="number" name="month" class="input-date" id="month" v-model="month" placeholder="0" /> 월
+            <input type="number" name="date" class="input-date" id="date" v-model="date" placeholder="0" /> 일
+
+            <p class="setDate-p">{{ this.month }} 월 {{ this.date }} 일</p>
+          </div>
+
+          <div class="mode-content">
+            <h2 class="concept-h2">컨셉 모드 선택</h2>
+            <p class="setDate-p">
+              컨셉을 바꾸게 되면 이전 컨셉의 내용이 모두 초기화 됩니다. 신중히
+              선택하세요!
+            </p>
+
+            <input type="radio" name="concept" id="default" value="default" v-model="category" checked /> 기본
+            <input type="radio" name="concept" id="birthday" value="birthday" v-model="category" /> 생일
+            <input type="radio" name="concept" id="childrenDay" value="childrenDay" v-model="category" /> 어른이날
+
+          </div>
+
+          <button @click="setDate" type="submit" class="setDate-btn">
+            설정
+          </button>
         </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -131,10 +146,10 @@ export default {
       // 현재 페이지
       currentPage: 1,
       isMyPage: false,
-      month: '',
-      date: '',
-      category:'',
-      selectedDate:'',
+      month: "",
+      date: "",
+      category: "",
+      selectedDate: "",
     };
   },
 
@@ -144,7 +159,7 @@ export default {
       getUserDetailUseToken(
         window.localStorage.getItem("accessToken"),
         (res) => {
-          // // console.log(res.data.User);
+          // console.log(res.data.User);
           this.$store.commit("userStore/setUser", res.data.User);
           this.isLogin = true;
           if (this.$route.params.userid == res.data.User.id) {
@@ -152,7 +167,7 @@ export default {
           }
         },
         () => {
-          // // console.log("getUserDetailUseToken fail");
+          // console.log("getUserDetailUseToken fail");
           this.isLogin = false;
           window.localStorage.removeItem("accessToken");
           this.$router.go;
@@ -165,12 +180,12 @@ export default {
     getMessage(
       this.curUser.id,
       (res) => {
-        // // console.log(res.data.Message);
+        // console.log(res.data.Message);
         this.messages = res.data.Message;
-        // // console.log(this.messages);
+        // console.log(this.messages);
       },
       () => {
-        // // console.log("fail");
+        console.log("get Message fail");
       }
     );
 
@@ -183,10 +198,16 @@ export default {
     let setMonth = this.$store.state.eventStore.month;
     let setDate = this.$store.state.eventStore.date;
     // console.log("gmonth: " + setMonth);
-    // // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
-    if (month >= setMonth && date >= setDate && hours >= 0 && minutes >= 0 && seconds >= 0) {
+    // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
+    if (
+      month >= setMonth &&
+      date >= setDate &&
+      hours >= 0 &&
+      minutes >= 0 &&
+      seconds >= 0
+    ) {
       let changeView = document.getElementById("main-room");
-      // // console.log(changeView.className);
+      // console.log(changeView.className);
       changeView.className = "main-room2";
     }
   },
@@ -194,7 +215,7 @@ export default {
   watch: {
     $route(to, from) {
       //라우터 파라미터 변경 감지
-      // // console.log("watch")
+      // console.log("watch")
       if (to.path !== from.path) this.changeParams(this.$route.params.userid);
     },
   },
@@ -227,12 +248,12 @@ export default {
       getMessage(
         userId,
         (res) => {
-          // // console.log(res.data.Message);
+          // console.log(res.data.Message);
           this.messages = res.data.Message;
-          // // console.log(this.messages);
+          // console.log(this.messages);
         },
         () => {
-          // // console.log("fail");
+          console.log("get Message fail");
         }
       );
 
@@ -252,13 +273,12 @@ export default {
         seconds >= 0
       ) {
         let changeView = document.getElementById("main-room");
-        // // console.log(changeView.className);
+        // console.log(changeView.className);
         changeView.className = "main-room2";
       }
     },
 
     modal(message) {
-
       // 날짜 처리 (5월 5일 00:00:00 열람)
       let today = new Date();
       let month = today.getMonth() + 1; // 월
@@ -275,11 +295,11 @@ export default {
         minutes >= 0 &&
         seconds >= 0
       ) {
-        // // console.log("modal-message : ", message);
+        // console.log("modal-message : ", message);
         this.content = message.content;
         this.sender = message.sender;
-        if (message.present != null) {
-          this.imgUrl = message.present.presentImg;
+        if (message.presentId != null) {
+          this.imgUrl = message.presentImg;
         } else {
           this.imgUrl = "";
         }
@@ -313,23 +333,24 @@ export default {
                     // console.log(this.messages);
                   },
                   () => {
-                    // console.log("fail");
+                    console.log("get Message fail");
                   }
                 );
               },
               () => {
-                // console.log("fail");
+                console.log("Message reset fail");
               }
             );
           }
         }
       });
     },
-    
+
     saveMessage() {
       this.$swal.fire(Alert.saveMessageCheck).then((result) => {
         if (result.dismiss === this.$swal.DismissReason.cancel) {
           Alert.saveMessageCancel(this);
+          console.log(this.messages);
         } else {
           if (this.messages.length == 0) {
             Alert.saveMessageFail(this);
@@ -347,12 +368,12 @@ export default {
                     // console.log(this.messages);
                   },
                   () => {
-                    console.log("fail");
+                    console.log("get Message fail");
                   }
                 );
               },
               () => {
-                console.log("fail");
+                console.log("save Message fail");
               }
             );
           }
@@ -360,56 +381,59 @@ export default {
       });
     },
     setDate() {
-            if(this.month == null) {
-                this.$swal.fire("Oops...!", "Month를 적어주세요!", "error");
-            }
-            else if(this.date == null) {
-                this.$swal.fire("Oops...!", "date을 적어주세요!", "error");
-            }
-            else if(this.month < 1 || this.month > 12) {
-                this.$swal.fire("Oops...!", "Month는 1 ~ 12월까지 있어요!", "error");
-            }
-            else if(this.month == 2 && (this.date < 1 || this.date > 28)) {
-                this.$swal.fire("Oops...!", "2월의 일 범위를 벗어났어요!", "error");
-            }
-            else if((this.month == 1 ||
-                    this.month == 3 ||
-                    this.month == 5 ||
-                    this.month == 7 ||
-                    this.month == 8 ||
-                    this.month == 10 ||
-                    this.month == 12) &&
-                    (this.date < 1 || this.date > 31)) {
-                this.$swal.fire("Oops...!", "일 범위를 벗어났어요!", "error");
-            }
-            else if((this.month == 4 ||
-                    this.month == 6 ||
-                    this.month == 9 ||
-                    this.month == 11) &&
-                    (this.date < 1 || this.date > 30)) {
-                this.$swal.fire("Oops...!", "일 범위를 벗어났어요!", "error");
-            }
-            else {
-                let today = new Date();
-                let year = today.getFullYear();
-                // 한자리 수 일 경우
-                if(this.month < 10) {
-                  this.month = "0" + this.month;
-                }
-                if(this.date < 10) {
-                  this.date = "0" + this.date;
-                }
-                this.selectedDate = year + "-" + this.month + "-" + this.date;
-                let data = {};
-                data.category = this.category;
-                data.selectedDate = this.selectedDate;
-                data.userId = this.curUser.id;
-                console.log(data);
-                this.AC_UPDATE_CONCEPT(data, function(res) {console.log(res)}, function() {});
-                Alert.setMonthAndDate(this);
-            }
-            
-        },
+      if (this.month == null) {
+        this.$swal.fire("Oops...!", "Month를 적어주세요!", "error");
+      } else if (this.date == null) {
+        this.$swal.fire("Oops...!", "date을 적어주세요!", "error");
+      } else if (this.month < 1 || this.month > 12) {
+        this.$swal.fire("Oops...!", "Month는 1 ~ 12월까지 있어요!", "error");
+      } else if (this.month == 2 && (this.date < 1 || this.date > 28)) {
+        this.$swal.fire("Oops...!", "2월의 일 범위를 벗어났어요!", "error");
+      } else if (
+        (this.month == 1 ||
+          this.month == 3 ||
+          this.month == 5 ||
+          this.month == 7 ||
+          this.month == 8 ||
+          this.month == 10 ||
+          this.month == 12) &&
+        (this.date < 1 || this.date > 31)
+      ) {
+        this.$swal.fire("Oops...!", "일 범위를 벗어났어요!", "error");
+      } else if (
+        (this.month == 4 ||
+          this.month == 6 ||
+          this.month == 9 ||
+          this.month == 11) &&
+        (this.date < 1 || this.date > 30)
+      ) {
+        this.$swal.fire("Oops...!", "일 범위를 벗어났어요!", "error");
+      } else {
+        let today = new Date();
+        let year = today.getFullYear();
+        // 한자리 수 일 경우
+        if (this.month < 10) {
+          this.month = "0" + this.month;
+        }
+        if (this.date < 10) {
+          this.date = "0" + this.date;
+        }
+        this.selectedDate = year + "-" + this.month + "-" + this.date;
+        let data = {};
+        data.category = this.category;
+        data.selectedDate = this.selectedDate;
+        data.userId = this.curUser.id;
+        console.log(data);
+        this.AC_UPDATE_CONCEPT(
+          data,
+          function (res) {
+            console.log(res);
+          },
+          function () {}
+        );
+        Alert.setMonthAndDate(this);
+      }
+    },
   },
 };
 </script>
@@ -434,14 +458,13 @@ export default {
 .pocket {
   width: 85px;
   height: 80px;
-  content:var(--pocket);
+  content: var(--pocket);
 }
 .gift-img {
   width: 35px;
   height: 35px;
   float: left;
-  content:url("https://i.imgur.com/nupfePY.png");
-  
+  content: url("https://i.imgur.com/nupfePY.png");
 }
 .reg-gift {
   background-color: #fff;
@@ -627,34 +650,34 @@ ul.myMenu > li ul.submenu > li:hover {
   color: black;
 }
 .concept-room {
-    background-color: #ddefa5;
-    height: 435px;
-    padding: 23px;
+  background-color: #ddefa5;
+  height: 435px;
+  padding: 23px;
 }
 .concept-div {
-    background-color: #fff;
-    height: 390px;
-    border-radius: 5px;
+  background-color: #fff;
+  height: 390px;
+  border-radius: 5px;
 }
 .concept-content {
-    padding: 10px;
+  padding: 10px;
 }
 .setDate-p {
-    margin-bottom: 5px;
-    color: rgb(111, 111, 111);
+  margin-bottom: 5px;
+  color: rgb(111, 111, 111);
 }
 .input-date {
-    height: 30px;
-    width: 50px;
-    border-bottom: solid rgb(37, 37, 37) 1px;
+  height: 30px;
+  width: 50px;
+  border-bottom: solid rgb(37, 37, 37) 1px;
 }
 .setDate-btn {
-    float: right;
-    width: 60px;
-    height: 30px;
-    color: #fff;
-    border-radius: 15px;
-    background-color: #4caf50;
+  float: right;
+  width: 60px;
+  height: 30px;
+  color: #fff;
+  border-radius: 15px;
+  background-color: #4caf50;
 }
 .concept-h2 {
   font-size: 20px;
@@ -662,19 +685,19 @@ ul.myMenu > li ul.submenu > li:hover {
   font-weight: bold;
 }
 .mode-btn {
-    width: 70px;
-    height: 30px;
-    color: #000;
-    border-radius: 15px;
-    background-color: #DCE775;
-    margin-right: 5px;
-    margin-top: 10px;
+  width: 70px;
+  height: 30px;
+  color: #000;
+  border-radius: 15px;
+  background-color: #dce775;
+  margin-right: 5px;
+  margin-top: 10px;
 }
 .mode-content {
   margin-bottom: 30px;
 }
 .btn-p {
   font-size: 20px;
-  background-color: #DCE775;
+  background-color: #dce775;
 }
 </style>
