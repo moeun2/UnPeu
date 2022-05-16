@@ -2,7 +2,7 @@
   <div class="ba-we-love-subscribers-wrap">
     <div class="ba-we-love-subscribers popup-ani">
       <header>
-        <h1>당신을 위한 조그마한 기록 그리고 선물<br />UnPeu:앙뿌</h1>
+        <h1>당신을 위한 조그마한 기록 그리고 선물<br/>UnPeu:앙뿌</h1>
         <p>
           만약 더 디테일한 피드백을 주시고 싶다면
           <a href="https://forms.gle/uXoLCauCEHMNoPoo6"
@@ -92,6 +92,7 @@ export default {
   margin: 0 0 10px 0;
   overflow: hidden;
   opacity: 0;
+
 }
 .ba-we-love-subscribers.open {
   height: 350px;

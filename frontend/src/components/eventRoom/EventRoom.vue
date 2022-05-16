@@ -97,7 +97,7 @@
                     <p class="setDate-p">컨셉을 바꾸게 되면 이전 컨셉의 내용이 모두 초기화 됩니다. 신중히 선택하세요! </p>
                     <input type="radio" name="concept" id="default" value="default" v-model="category" checked> 기본
                     <input type="radio" name="concept" id="birthday" value="birthday" v-model="category"> 생일
-                    <input type="radio" name="concept" id="childrenDay" value="childrenDay" v-model="category"> 어른이날
+                    <input type="radio" name="concept" id="childrenDay" value="children" v-model="category"> 어른이날
                   </div>
                   <button @click="setDate" type="submit" class="setDate-btn"> 설정 </button>
                 </div>

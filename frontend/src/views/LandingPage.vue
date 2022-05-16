@@ -84,8 +84,9 @@ export default {
 .view {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
-  height: 10vh;
+  height: 100vh;
   display: flex;
   align-items: center;
 }
+
 </style>

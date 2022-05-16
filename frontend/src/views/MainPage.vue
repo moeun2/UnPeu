@@ -63,7 +63,7 @@
                         <button class="item">
                           <v-icon>mdi-gift-open</v-icon>
                           <!-- <img src="https://i.imgur.com/nupfePY.png" /> -->
-                          <p class="arrow_box">받고 싶은 선물 등록!</p>
+                          <p class="arrow_box">받고 싶은<br>선물 등록!</p>
                         </button>
                       </router-link>
 
@@ -249,7 +249,7 @@ export default {
     this.checkConcept();
   },
   created() {
-    
+    // this.checkConcept();
     if (window.localStorage.getItem("accessToken")) {
       //로그인 되어있는 상태 store inlogin true
       getUserDetailUseToken(
@@ -296,9 +296,21 @@ export default {
   methods: {
     ...mapActions(userStore, ["AC_UPDATE_CONCEPT"]),
     checkConcept() {
+  // getUserDetail(this.$route.params.userid,
+  //   (res)=>{
+  //     /** Category, selectedDate 설정 **/
+  //     this.$store.commit(
+  //       "userStore/MU_CUR_USER_CONCEPT",
+  //       res.data.User.category,
+  //       res.data.User.selectedDate
+  //     );
+  //   },
+  //   (err)=>{
+  //     console.log(err)
+  //   })
       let concept = this.curUser.category;
       let selectedDate = this.curUser.selectedDate;
-      //console.log("Today : ", this.today);
+      console.log("CheckConcept-Concept : ",concept);
       switch (concept) {
         case "default":
           if (selectedDate == this.today) {
@@ -346,60 +358,60 @@ export default {
     },
     ...mapMutations(presentStore, ["RESET_PRESENT_LIST"]),
     goToMainPage() {
-      // test 용 입니다.
-      let concept = this.curUser.category;
-      this.data.userId = this.curUser.id;
-      console.log("concept : ", this.curUser.category);
-      switch (concept) {
-        case "default":
-          this.data.category = "birthday";
-          this.AC_UPDATE_CONCEPT(
-            this.data,
-            function (res) {
-              console.log("AC_UPDATE_CONCEPT Success")
-              console.log(res);
-              console.log(this.curUser);
-            },
-            function () {}
-          );
-          document.documentElement.setAttribute(
-            "color-theme",
-            "birthday-close"
-          );
+      // test 용으로 놨둔 주석입니다. 삭제하지 말아주세요.
+      // let concept = this.curUser.category;
+      // this.data.userId = this.curUser.id;
+      // console.log("concept : ", this.curUser.category);
+      // switch (concept) {
+      //   case "default":
+      //     this.data.category = "birthday";
+      //     this.AC_UPDATE_CONCEPT(
+      //       this.data,
+      //       function (res) {
+      //         console.log("AC_UPDATE_CONCEPT Success")
+      //         console.log(res);
+      //         console.log(this.curUser);
+      //       },
+      //       function () {}
+      //     );
+      //     document.documentElement.setAttribute(
+      //       "color-theme",
+      //       "birthday-close"
+      //     );
 
-          break;
-        case "birthday":
-          this.data.category = "children";
-          this.AC_UPDATE_CONCEPT(
-            this.data,
-            function (res) {
-              console.log("AC_UPDATE_CONCEPT Success")
-              console.log(res);
-              console.log(this.curUser);
-            },
-            function () {}
-          );
-          document.documentElement.setAttribute(
-            "color-theme",
-            "children-close"
-          );
-          break;
-        case "children":
-          this.data.category = "default";
-          this.AC_UPDATE_CONCEPT(
-            this.data,
-            function (res) {
-              console.log("AC_UPDATE_CONCEPT Success")
-              console.log(res);
-              console.log(this.curUser);
-            },
-            function () {}
-          );
-          document.documentElement.setAttribute("color-theme", "default-close");
-          break;
-      }
+      //     break;
+      //   case "birthday":
+      //     this.data.category = "children";
+      //     this.AC_UPDATE_CONCEPT(
+      //       this.data,
+      //       function (res) {
+      //         console.log("AC_UPDATE_CONCEPT Success")
+      //         console.log(res);
+      //         console.log(this.curUser);
+      //       },
+      //       function () {}
+      //     );
+      //     document.documentElement.setAttribute(
+      //       "color-theme",
+      //       "children-close"
+      //     );
+      //     break;
+      //   case "children":
+      //     this.data.category = "default";
+      //     this.AC_UPDATE_CONCEPT(
+      //       this.data,
+      //       function (res) {
+      //         console.log("AC_UPDATE_CONCEPT Success")
+      //         console.log(res);
+      //         console.log(this.curUser);
+      //       },
+      //       function () {}
+      //     );
+      //     document.documentElement.setAttribute("color-theme", "default-close");
+      //     break;
+      // }
 
-      // this.$router.push({ name: "eventRoom" }).catch(()=>{});
+      this.$router.push({ name: "eventRoom" }).catch(()=>{});
     },
     setUserData() {
       getUserDetail(
@@ -422,7 +434,7 @@ export default {
           if (res.data.User.userTitle) {
             this.userTitle = res.data.User.userTitle;
           } else {
-            this.userTitle = "오늘은 어른이날, 선물사주라주";
+            this.userTitle = "개성있는 타이틀을 설정해보세요 :)";
           }
           if (res.data.User.userEmail) {
             this.userEmail = res.data.User.userEmail;

@@ -24,10 +24,11 @@ export default {
   font-family: "GangwonEdu_OTFBoldA" !important;
 }
 @font-face {
-    font-family: 'GangwonEdu_OTFBoldA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "GangwonEdu_OTFBoldA";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
 
 /* body {
@@ -55,13 +56,13 @@ export default {
   --children-main-close: url("https://i.imgur.com/yBs2YNe.jpg");
   --children-main-open: url("https://i.imgur.com/yBs2YNe.jpg");
   --children-pocket: url("https://i.ibb.co/Z26RYnw/pocket.png");
-  --children-color : #ffd232;
+  --children-color: #ffd232;
 
   --default-background: url("https://i.ibb.co/gS1SGcP/EI9xcZH.png");
   --default-main-close: url("https://i.ibb.co/G5sJTbF/default-1.png");
   --default-main-open: url("https://i.ibb.co/Y3bKFMs/default-2.png");
   --default-pocket: url("https://i.ibb.co/m8QySwB/default-pocket.png");
-  --default-color : #002060;
+  --default-color: #002060;
 }
 
 :root[color-theme="default-close"] {
@@ -100,5 +101,7 @@ export default {
   --main: var(--children-main-close);
   --pocket: var(--children-pocket);
 }
-
+:root[color-theme="default-email"] {
+  --profile: var(--children-color);
+}
 </style>
