@@ -19,7 +19,8 @@ import Landing from "@/views/LandingPage.vue";
 import NotFound from "@/views/NotFoundPage.vue";
 
 import Store from "@/store";
-import { getUserDetail,getUserDetailUseToken } from "@/api/user.js";
+import { getUserDetail, getUserDetailUseToken } from "@/api/user.js";
+import dayjs from "dayjs";
 Vue.use(VueRouter);
 
 const routes = [
@@ -120,12 +121,9 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-function setDefaultEmail(to,from,next){
-  document.documentElement.setAttribute(
-    "color-theme",
-    "default-email"
-);
-next()
+function setDefaultEmail(to, from, next) {
+  document.documentElement.setAttribute("color-theme", "default-email");
+  next();
 }
 function getUserPresentAndCheckGuest(to, from, next) {
   let loginCheck = Store.state.userStore.user;
@@ -150,18 +148,30 @@ function getUserPresent(to, from, next) {
 }
 
 function getUserInfo(to, from, next) {
+
   let userId = to.params.userid;
   let accessToken = localStorage.getItem("accessToken");
   Store.commit("userStore/MU_CUR_USER_ID", userId);
-  console.log("getUserInfo - CuruserId :",userId)
-  getUserDetail(userId,
-    (res)=>{
+  console.log("getUserInfo - CuruserId :", userId);
+
+  
+
+  getUserDetail(
+    userId,
+    (res) => {
+      let today = null
+      if(res.data.User.selectedDate != null){
+        today = dayjs(res.data.User.selectedDate.join("-")).format(
+          "YYYY-MM-DD"
+        );
+      }
+      
+      const data = {
+        category: res.data.User.category,
+        selectedDate: today,
+      };
       /** Category, selectedDate 설정 **/
-      Store.commit(
-        "userStore/MU_CUR_USER_CONCEPT",
-        res.data.User.category,
-        res.data.User.selectedDate
-      );
+      Store.commit("userStore/MU_CUR_USER_CONCEPT", data);
 
       if (accessToken == null) {
         /** Permission 설정  **/
@@ -179,20 +189,14 @@ function getUserInfo(to, from, next) {
           next();
         });
       }
-      
     },
-    (err)=>{
+    (err) => {
+      console.log(err)
       // 없는 유저의 url로 들어갔을 때 에러처리
-      if(err.response.status == 400) 
-
-        next("/error")
+      if (err.response.status == 400) next("/error");
       // console.log(err)
-    })
-
-  
-  
-
-  
+    }
+  );
 }
 
 export default router;

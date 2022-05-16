@@ -106,7 +106,7 @@
 
             <input type="radio" name="concept" id="default" value="default" v-model="category" checked /> 기본
             <input type="radio" name="concept" id="birthday" value="birthday" v-model="category" /> 생일
-            <input type="radio" name="concept" id="childrenDay" value="childrenDay" v-model="category" /> 어른이날
+            <input type="radio" name="concept" id="childrenDay" value="children" v-model="category" /> 어른이날
 
           </div>
 
@@ -125,13 +125,15 @@ import { API_BASE_URL } from "@/config/index.js";
 import { getUserDetailUseToken } from "@/api/user.js";
 import * as Alert from "@/api/alert";
 import { mapActions, mapGetters, mapMutations } from "vuex";
-
+import dayjs from "dayjs";
 const userStore = "userStore";
 const presentStore = "presentStore";
 
 export default {
   name: "EventRoom",
-
+  component: {
+    dayjs,
+  },
   data() {
     return {
       messages: [],
@@ -146,8 +148,14 @@ export default {
       isMyPage: false,
       month: "",
       date: "",
+      today: dayjs().format("YYYY-MM-DD"),
       category: "",
-      selectedDate: "",
+      selectedData: "",
+      data: {
+        userId: "",
+        category: "",
+        selectedData: "",
+      },
     };
   },
 
@@ -186,34 +194,11 @@ export default {
         console.log("get Message fail");
       }
     );
-
-    let today = new Date();
-    let month = today.getMonth() + 1; // 월
-    let date = today.getDate(); // 일
-    let hours = today.getHours(); // 시
-    let minutes = today.getMinutes(); // 분
-    let seconds = today.getSeconds(); // 초
-    let setMonth = this.$store.state.eventStore.month;
-    let setDate = this.$store.state.eventStore.date;
-    // console.log("gmonth: " + setMonth);
-    // console.log(month + "/" + date + " " + hours + ":" + minutes + ":" + seconds);
-    if (
-      month >= setMonth &&
-      date >= setDate &&
-      hours >= 0 &&
-      minutes >= 0 &&
-      seconds >= 0
-    ) {
-      let changeView = document.getElementById("main-room");
-      // console.log(changeView.className);
-      changeView.className = "main-room2";
-    }
   },
 
   watch: {
     $route(to, from) {
       //라우터 파라미터 변경 감지
-      // console.log("watch")
       if (to.path !== from.path) this.changeParams(this.$route.params.userid);
     },
   },
@@ -226,7 +211,6 @@ export default {
       let length = this.messages.length / this.perPage;
       return Math.ceil(length);
     },
-
     messagesFor() {
       const items = this.messages;
       return items.slice(
@@ -246,54 +230,14 @@ export default {
       getMessage(
         userId,
         (res) => {
-          // console.log(res.data.Message);
           this.messages = res.data.Message;
-          // console.log(this.messages);
         },
-        () => {
-          console.log("get Message fail");
-        }
+        () => {}
       );
-
-      let today = new Date();
-      let month = today.getMonth() + 1; // 월
-      let date = today.getDate(); // 일
-      let hours = today.getHours(); // 시
-      let minutes = today.getMinutes(); // 분
-      let seconds = today.getSeconds(); // 초
-      let setMonth = this.$store.state.eventStore.month;
-      let setDate = this.$store.state.eventStore.date;
-      if (
-        month >= setMonth &&
-        date >= setDate &&
-        hours >= 0 &&
-        minutes >= 0 &&
-        seconds >= 0
-      ) {
-        let changeView = document.getElementById("main-room");
-        // console.log(changeView.className);
-        changeView.className = "main-room2";
-      }
     },
 
     modal(message) {
-      // 날짜 처리 (5월 5일 00:00:00 열람)
-      let today = new Date();
-      let month = today.getMonth() + 1; // 월
-      let date = today.getDate(); // 일
-      let hours = today.getHours(); // 시
-      let minutes = today.getMinutes(); // 분
-      let seconds = today.getSeconds(); // 초
-      let setMonth = this.$store.state.eventStore.month;
-      let setDate = this.$store.state.eventStore.date;
-      if (
-        month >= setMonth &&
-        date >= setDate &&
-        hours >= 0 &&
-        minutes >= 0 &&
-        seconds >= 0
-      ) {
-        // console.log("modal-message : ", message);
+      if (this.curUser.selectedDate == this.today) {
         this.content = message.content;
         this.sender = message.sender;
         if (message.presentId != null) {
@@ -409,26 +353,27 @@ export default {
       } else {
         let today = new Date();
         let year = today.getFullYear();
-        let month2 = '';
-        let date2 = '';
+        let month2 = "";
+        let date2 = "";
         // 한자리 수 일 경우
         if (this.month < 10) {
           month2 = "0" + this.month;
-        }else {
+        } else {
           month2 = this.month;
         }
 
         if (this.date < 10) {
           date2 = "0" + this.date;
-        }else {
+        } else {
           date2 = this.date;
         }
+
         this.selectedDate = year + "-" + month2 + "-" + date2;
 
-        if(this.category === 'children') {
-                  this.selectedDate = year + "-05-05";
-                  this.month = 5;
-                  this.date = 5;
+        if (this.category === "children") {
+          this.selectedDate = year + "-05-05";
+          this.month = 5;
+          this.date = 5;
         }
 
         let data = {};
@@ -437,27 +382,28 @@ export default {
         data.userId = this.curUser.id;
         //console.log(data);
 
-        this.$swal.fire({
-                  title: "컨셉 변경 저장",
-                  text: "설정된 날짜는 0시 정각에 실행됩니다.",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonText: "할래요!",
-                  cancelButtonText: "안할래요!",
-                  reverseButtons: false,
-                })
-                .then((result) => {
-                  if (result.isConfirmed) {
-                    this.AC_UPDATE_CONCEPT(
-                      data,
-                      function (res) {
-                        console.log(res);
-                      },
-                      function () {}
-                    );
-                    this.$router.go({ name: "eventRoom" }).catch(()=>{});
-                  }
-                });
+        this.$swal
+          .fire({
+            title: "컨셉 변경 저장",
+            text: "설정된 날짜는 0시 정각에 실행됩니다.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "할래요!",
+            cancelButtonText: "안할래요!",
+            reverseButtons: false,
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              this.AC_UPDATE_CONCEPT(
+                data,
+                function (res) {
+                  console.log(res);
+                },
+                function () {}
+              );
+              this.$router.go({ name: "eventRoom" }).catch(() => {});
+            }
+          });
       }
     },
   },
@@ -667,11 +613,7 @@ ul.myMenu > li ul.submenu > li:hover {
   padding-left: 12px;
   text-align: center;
 }
-.main-room2 {
-  background-image: var(--main);
-  background-size: cover;
-  border-radius: 15px;
-}
+
 .menu-a {
   color: black;
 }

@@ -271,6 +271,7 @@ export default {
   },
   mounted() {
     this.checkConcept();
+    // this.AC_USER_DETAIL(this.curUser.id)
   },
   created() {
     // this.checkConcept();
@@ -350,8 +351,9 @@ export default {
       }
     },
 
-    ...mapActions(userStore, ["AC_UPDATE_CONCEPT"]),
+    ...mapActions(userStore, ["AC_UPDATE_CONCEPT","AC_USER_DETAIL"]),
     checkConcept() {
+      console.log("mainPage 입성")
       // getUserDetail(this.$route.params.userid,
       //   (res)=>{
       //     /** Category, selectedDate 설정 **/
@@ -366,10 +368,12 @@ export default {
       //   })
       let concept = this.curUser.category;
       let selectedDate = this.curUser.selectedDate;
+      console.log("selectedDate : ", selectedDate);
+      console.log("today : ", this.today);
       console.log("CheckConcept-Concept : ", concept);
       switch (concept) {
         case "default":
-          if (selectedDate == this.today) {
+          if (selectedDate >= this.today) {
             document.documentElement.setAttribute(
               "color-theme",
               "default-open"
@@ -382,7 +386,7 @@ export default {
           }
           break;
         case "birthday":
-          if (selectedDate == this.today) {
+          if (selectedDate >= this.today) {
             document.documentElement.setAttribute(
               "color-theme",
               "birthday-open"
@@ -395,7 +399,7 @@ export default {
           }
           break;
         case "children":
-          if (selectedDate == this.today) {
+          if (selectedDate >= this.today) {
             document.documentElement.setAttribute(
               "color-theme",
               "children-open"
@@ -547,6 +551,8 @@ export default {
       }
       //지금 접속한 페이지유저의 정보
       this.setUserData();
+      this.AC_USER_DETAIL(index)
+
     },
 
     checkHome() {
