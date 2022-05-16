@@ -438,14 +438,28 @@ export default {
       } else {
         let today = new Date();
         let year = today.getFullYear();
+        let month2 = '';
+        let date2 = '';
         // 한자리 수 일 경우
         if (this.month < 10) {
-          this.month = "0" + this.month;
+          month2 = "0" + this.month;
+        }else {
+          month2 = this.month;
         }
+
         if (this.date < 10) {
-          this.date = "0" + this.date;
+          date2 = "0" + this.date;
+        }else {
+          date2 = this.date;
         }
-        this.selectedDate = year + "-" + this.month + "-" + this.date;
+        this.selectedDate = year + "-" + month2 + "-" + date2;
+
+        if(this.category === 'children') {
+                  this.selectedDate = year + "-05-05";
+                  this.month = 5;
+                  this.date = 5;
+        }
+
         let data = {};
         data.category = this.category;
         data.selectedDate = this.selectedDate;
