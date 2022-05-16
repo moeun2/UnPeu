@@ -30,11 +30,6 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
-
-/* body {
-  background-image: url("https://user-images.githubusercontent.com/40678696/167977803-08d49118-a649-478f-9980-732f1724df1a.png");
-  background-size: cover;
-} */
 /** 공통 색상 표 지정 **/
 :root {
   --yellow-color: #ffd232;
@@ -53,7 +48,7 @@ export default {
   --birthday-color: #ff85b3;
 
   --children-background: url("https://i.imgur.com/EI9xcZH.png");
-  --children-main-close: url("https://i.imgur.com/yBs2YNe.jpg");
+  --children-main-close: url("https://i.imgur.com/TyYsFKh.jpg");
   --children-main-open: url("https://i.imgur.com/yBs2YNe.jpg");
   --children-pocket: url("https://i.ibb.co/Z26RYnw/pocket.png");
   --children-color: #ffd232;
@@ -74,7 +69,7 @@ export default {
 :root[color-theme="default-open"] {
   --background: var(--default-background);
   --profile: var(--default-color);
-  --main: var(--default-main-close);
+  --main: var(--default-main-open);
   --pocket: var(--default-pocket);
 }
 :root[color-theme="birthday-close"] {
@@ -86,7 +81,7 @@ export default {
 :root[color-theme="birthday-open"] {
   --background: var(--birthday-background);
   --profile: var(--birthday-color);
-  --main: var(--brithday-main-close);
+  --main: var(--brithday-main-open);
   --pocket: var(--birthday-pocket);
 }
 :root[color-theme="children-close"] {
@@ -98,7 +93,7 @@ export default {
 :root[color-theme="children-open"] {
   --background: var(--children-background);
   --profile: var(--children-color);
-  --main: var(--children-main-close);
+  --main: var(--children-main-open);
   --pocket: var(--children-pocket);
 }
 :root[color-theme="default-email"] {
