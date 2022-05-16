@@ -43,4 +43,11 @@ function sendMessage(message, success, fail) {
     .catch(fail);
 }
 
-export { register, update, remove, search, sendMessage };
+function peekMoney(success,fail){
+  api
+    .get(`/present/message/money`)
+    .then(success)
+    .catch(fail);
+}
+
+export { register, update, remove, search, sendMessage, peekMoney };

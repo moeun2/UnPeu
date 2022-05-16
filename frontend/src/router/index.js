@@ -146,6 +146,7 @@ function getUserPresentAndCheckGuest(to, from, next){
   else{
     let userId = to.params.userid;
     Store.dispatch("presentStore/searchList",userId);
+    Store.dispatch("presentStore/getMoney");
     next();
   }
 }

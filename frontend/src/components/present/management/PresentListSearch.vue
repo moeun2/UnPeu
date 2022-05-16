@@ -120,7 +120,7 @@ export default {
     };
   },
   watch: {
-    ...mapState(presentStore, ["presentList"]),
+    ...mapState(presentStore, ["presentList","money","appropriateValue"]),
     presentList: {
     deep: true,
     handler(newVal) {

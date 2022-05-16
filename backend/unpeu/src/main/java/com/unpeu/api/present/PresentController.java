@@ -125,7 +125,7 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "엿보기 Controller")
-	@RequestMapping(value = "/present/meesage/money", method = RequestMethod.POST)
+	@RequestMapping(value = "/present/message/money", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> peekMoney() {
 		logger.info("peekMoney - 호출");
 		User user = new User();
