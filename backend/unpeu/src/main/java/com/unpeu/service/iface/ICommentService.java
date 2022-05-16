@@ -1,7 +1,6 @@
 package com.unpeu.service.iface;
 
 import com.unpeu.domain.request.CommentPostReq;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface ICommentService {
 
