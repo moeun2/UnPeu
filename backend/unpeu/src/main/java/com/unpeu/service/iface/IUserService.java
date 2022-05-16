@@ -22,6 +22,8 @@ public interface IUserService {
 	User updateUserInfo(Long userId,String userInfo);
 	
 	User updateUserImg(Long userId,String userImg);
+	
+	User updateUserMusic(Long userId,String userMusic);
 
 	User updateUserEmailBirth(Long userId,UserPatchEmailBirthReq userPatchEmailBirthReq);
 	

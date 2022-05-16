@@ -84,6 +84,8 @@ export default {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
   background-size: cover;
   height: 100vh;
+  display: flex;
+  align-items: center;
 }
 
 .test {
@@ -124,6 +126,6 @@ export default {
 .landing {
   text-align: center;
   justify-content: center;
-  align-items:center;
+  align-items: center;
 }
 </style>

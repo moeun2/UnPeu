@@ -23,25 +23,37 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+	@NotNull
 	private String userLogin;
+	@NotNull
 	private String socialDomain;
 
+	@NotNull
     private String userName;
+	
     private String userTitle;
     private String userInfo;
+    
+    @NotNull
     private String userMusic;
     
     private LocalDate userBirth;
     private String userEmail;
     
+    @NotNull
     private Long todayVisit;
+    @NotNull
     private Long totalVisit;
 
 	private String userImg;
 
 	private String category;
 	private LocalDate selectedDate;
+	
+	@NotNull
+	private Boolean isAgree;
 
+	@NotNull
 	private LocalDateTime createdAt;
 }
 

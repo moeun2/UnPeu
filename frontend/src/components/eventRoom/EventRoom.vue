@@ -80,13 +80,11 @@
     <!-- 컨셉 변경 modal 창 -->
     <div id="setDate" class="modal-window">
       <div class="modal-message">
-
         <a href="#">
           <button class="btn_red_cancel">
             <span>X</span>
           </button>
         </a>
-
         <!-- 날짜 입력 받기 -->
         <div class="concept-content">
           <div class="mode-content">

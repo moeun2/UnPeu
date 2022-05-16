@@ -1,5 +1,6 @@
 <template>
   <div class="view">
+    <!-- @click.once="playMusic(userMusic)" -->
     <div class="background">
       <main>
         <div class="holder hd1"></div>
@@ -16,9 +17,26 @@
                   <p class="text-total" v-text="totalVisit"></p>
                 </div>
                 <div class="profile">
-                  <p class="text-today-is">
-                    BGM IS .. <span> Y - 프리스타일</span>
-                  </p>
+                  <div class="text-today-is">
+                    BGM IS .. <span v-text="userMusic"> </span>
+                    <div class="music-icon">
+                      <v-icon
+                        small
+                        @click="playMusic(userMusic)"
+                        v-if="userMusic != 'none'"
+                        >mdi-play</v-icon
+                      >
+                      <v-icon
+                        small
+                        @click="pauseMusic"
+                        v-if="userMusic != 'none'"
+                        >mdi-pause</v-icon
+                      >
+                      <v-icon small @click="updateMusic" v-if="isMyPage"
+                        >mdi-account-music</v-icon
+                      >
+                    </div>
+                  </div>
                   <v-file-input
                     class="img-update-icon"
                     v-if="isMyPage"
@@ -51,10 +69,17 @@
                     </div>
 
                     <v-icon small @click="copyLink">mdi-link</v-icon>
-                    <a class="info-name" href="#"> {{ this.userName }}</a>
-                    <div class="info-birth">{{ this.userBirth }}</div>
+                    <a class="info-name" @click="copyLink">
+                      {{ this.userName }}</a
+                    >
+                    <div class="info-birth" v-if="isAgree">
+                      {{ this.userBirth }}
+                    </div>
                     <br />
-                    <p class="text-email">{{ this.userEmail }}</p>
+                    <p class="text-email" v-if="isAgree">
+                      {{ this.userEmail }}
+                    </p>
+                    <p class="text-email" v-if="!isAgree">ㅤ</p>
                     <div style="display: flex; margin-top: 10px">
                       <router-link
                         :to="{ name: 'PresentManage' }"
@@ -62,15 +87,13 @@
                       >
                         <button class="item">
                           <v-icon>mdi-gift-open</v-icon>
-                          <!-- <img src="https://i.imgur.com/nupfePY.png" /> -->
-                          <p class="arrow_box">받고 싶은 선물 등록!</p>
+                          <p class="arrow_box">받고 싶은<br />선물 등록!</p>
                         </button>
                       </router-link>
 
                       <router-link :to="{ name: 'Login' }" v-if="!isLogin">
                         <button class="item">
                           <v-icon class="v-icon">mdi-login</v-icon>
-                          <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                           <p class="arrow_box">로그인</p>
                         </button>
                       </router-link>
@@ -83,7 +106,6 @@
                       >
                         <button class="item">
                           <v-icon>mdi-home</v-icon>
-                          <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                           <p class="arrow_box">마이페이지</p>
                         </button>
                       </router-link>
@@ -94,7 +116,6 @@
                         style="margin-left: 5px"
                       >
                         <v-icon>mdi-logout</v-icon>
-                        <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                         <p class="arrow_box">로그아웃</p>
                       </button>
                       <button
@@ -104,7 +125,6 @@
                         style="margin-left: 5px"
                       >
                         <v-icon>mdi-account-cog</v-icon>
-                        <!-- <img src="https://i.imgur.com/Fqfvown.png" /> -->
                         <p class="arrow_box">회원정보</p>
                       </button>
                     </div>
@@ -122,7 +142,6 @@
                 Here!👈)</a
               >
             </div>
-            <!-- <img class="speech-bubble2-img" src="@/assets/main_logo4.gif" /> -->
           </div>
           <div class="main-dot">
             <div class="main-paper">
@@ -134,7 +153,8 @@
                         name: 'eventRoom',
                         params: { userid: $route.params.userid },
                       }"
-                      ><li :class="[activeCheckClass]" @click="checkHome()">
+                    >
+                      <li :class="[activeCheckClass]" @click="checkHome()">
                         홈
                       </li></router-link
                     >
@@ -186,6 +206,7 @@ import {
   increaseVisit,
   updateUserEmailBirth,
   deleteUser,
+  updateUserMusic,
 } from "@/api/user.js";
 import { EVENT_URL, FRONT_URL, API_BASE_URL } from "@/config/index";
 import LinkShareModal from "@/components/option/LinkShareModal.vue";
@@ -209,15 +230,18 @@ export default {
       activeClass: "menu-item mi-3",
       userName: "김싸피",
       userInfo: "선물주는 사람\n차칸 사람",
-      userTitle: "오늘은 어른이날, 선물사주라주",
+      userTitle: "개성있는 타이틀을 설정해보세요 :)",
       userImg: "",
       userBirth: "1996.10.31",
       userEmail: "ssafykim@ssafy.com",
+      userMusic: "none",
       isLogin: false,
       isMyPage: false,
+      isAgree: false,
       totalVisit: 0,
       todayVisit: 0,
       showModal: false,
+      audio: null,
       rules: [
         (value) =>
           !value ||
@@ -226,7 +250,7 @@ export default {
       ],
       files: null,
       data: {
-        userId:"",
+        userId: "",
         category: "",
         selectedDate: "",
       },
@@ -249,7 +273,7 @@ export default {
     this.checkConcept();
   },
   created() {
-    
+    // this.checkConcept();
     if (window.localStorage.getItem("accessToken")) {
       //로그인 되어있는 상태 store inlogin true
       getUserDetailUseToken(
@@ -264,7 +288,6 @@ export default {
           }
         },
         () => {
-          // console.log("getUserDetailUseToken fail");
           this.isLogin = false;
           window.localStorage.removeItem("accessToken");
 
@@ -279,14 +302,22 @@ export default {
       window.location.href ==
       FRONT_URL + "/eventRoom/" + this.$route.params.userid
     ) {
-      increaseVisit(this.$route.params.userid, (res) => {
-        if (res.data.User.todayVisit) {
-          this.todayVisit = res.data.User.todayVisit;
-        }
-        if (res.data.User.totalVisit) {
-          this.totalVisit = res.data.User.totalVisit;
-        }
-      });
+      const nowVisit =
+        this.$route.params.userid + new Date().toLocaleDateString("en-US");
+      if (
+        !sessionStorage.getItem("recentVisit") ||
+        sessionStorage.getItem("recentVisit") != nowVisit
+      ) {
+        increaseVisit(this.$route.params.userid, (res) => {
+          if (res.data.User.todayVisit) {
+            this.todayVisit = res.data.User.todayVisit;
+          }
+          if (res.data.User.totalVisit) {
+            this.totalVisit = res.data.User.totalVisit;
+          }
+          sessionStorage.setItem("recentVisit", nowVisit);
+        });
+      }
     }
   },
   components: {
@@ -294,11 +325,48 @@ export default {
   },
 
   methods: {
+    playMusic(music) {
+      // alert("노래를 재생합니다.")
+      if (music != "none") {
+        if (this.audio) {
+          if (!this.audio.paused) {
+            this.audio.pause();
+            this.audio.currentTime = 0;
+          }
+          this.audio.play();
+        } else {
+          // console.log(this.userMusic)
+          const audio = new Audio(require("@/assets/music/" + music + ".mp3"));
+          audio.loop = true;
+          audio.volume = 0.07;
+          this.audio = audio;
+          this.audio.play();
+        }
+      }
+    },
+    pauseMusic() {
+      if (this.audio) {
+        this.audio.pause();
+      }
+    },
+
     ...mapActions(userStore, ["AC_UPDATE_CONCEPT"]),
     checkConcept() {
+      // getUserDetail(this.$route.params.userid,
+      //   (res)=>{
+      //     /** Category, selectedDate 설정 **/
+      //     this.$store.commit(
+      //       "userStore/MU_CUR_USER_CONCEPT",
+      //       res.data.User.category,
+      //       res.data.User.selectedDate
+      //     );
+      //   },
+      //   (err)=>{
+      //     console.log(err)
+      //   })
       let concept = this.curUser.category;
       let selectedDate = this.curUser.selectedDate;
-      //console.log("Today : ", this.today);
+      console.log("CheckConcept-Concept : ", concept);
       switch (concept) {
         case "default":
           if (selectedDate == this.today) {
@@ -346,66 +414,65 @@ export default {
     },
     ...mapMutations(presentStore, ["RESET_PRESENT_LIST"]),
     goToMainPage() {
-      // test 용 입니다.
-      let concept = this.curUser.category;
-      this.data.userId = this.curUser.id;
-      console.log("concept : ", this.curUser.category);
-      switch (concept) {
-        case "default":
-          this.data.category = "birthday";
-          this.AC_UPDATE_CONCEPT(
-            this.data,
-            function (res) {
-              console.log("AC_UPDATE_CONCEPT Success")
-              console.log(res);
-              console.log(this.curUser);
-            },
-            function () {}
-          );
-          document.documentElement.setAttribute(
-            "color-theme",
-            "birthday-close"
-          );
+      // test 용으로 놨둔 주석입니다. 삭제하지 말아주세요.
+      // let concept = this.curUser.category;
+      // this.data.userId = this.curUser.id;
+      // console.log("concept : ", this.curUser.category);
+      // switch (concept) {
+      //   case "default":
+      //     this.data.category = "birthday";
+      //     this.AC_UPDATE_CONCEPT(
+      //       this.data,
+      //       function (res) {
+      //         console.log("AC_UPDATE_CONCEPT Success")
+      //         console.log(res);
+      //         console.log(this.curUser);
+      //       },
+      //       function () {}
+      //     );
+      //     document.documentElement.setAttribute(
+      //       "color-theme",
+      //       "birthday-close"
+      //     );
 
-          break;
-        case "birthday":
-          this.data.category = "children";
-          this.AC_UPDATE_CONCEPT(
-            this.data,
-            function (res) {
-              console.log("AC_UPDATE_CONCEPT Success")
-              console.log(res);
-              console.log(this.curUser);
-            },
-            function () {}
-          );
-          document.documentElement.setAttribute(
-            "color-theme",
-            "children-close"
-          );
-          break;
-        case "children":
-          this.data.category = "default";
-          this.AC_UPDATE_CONCEPT(
-            this.data,
-            function (res) {
-              console.log("AC_UPDATE_CONCEPT Success")
-              console.log(res);
-              console.log(this.curUser);
-            },
-            function () {}
-          );
-          document.documentElement.setAttribute("color-theme", "default-close");
-          break;
-      }
+      //     break;
+      //   case "birthday":
+      //     this.data.category = "children";
+      //     this.AC_UPDATE_CONCEPT(
+      //       this.data,
+      //       function (res) {
+      //         console.log("AC_UPDATE_CONCEPT Success")
+      //         console.log(res);
+      //         console.log(this.curUser);
+      //       },
+      //       function () {}
+      //     );
+      //     document.documentElement.setAttribute(
+      //       "color-theme",
+      //       "children-close"
+      //     );
+      //     break;
+      //   case "children":
+      //     this.data.category = "default";
+      //     this.AC_UPDATE_CONCEPT(
+      //       this.data,
+      //       function (res) {
+      //         console.log("AC_UPDATE_CONCEPT Success")
+      //         console.log(res);
+      //         console.log(this.curUser);
+      //       },
+      //       function () {}
+      //     );
+      //     document.documentElement.setAttribute("color-theme", "default-close");
+      //     break;
+      // }
 
-      // this.$router.push({ name: "eventRoom" }).catch(()=>{});
+      this.$router.push({ name: "eventRoom" }).catch(() => {});
     },
     setUserData() {
       getUserDetail(
         this.$route.params.userid,
         (res) => {
-          // console.log(res.data.User);
           this.userName = res.data.User.userName;
           if (res.data.User.userImg) {
             this.userImg = API_BASE_URL + res.data.User.userImg;
@@ -422,7 +489,7 @@ export default {
           if (res.data.User.userTitle) {
             this.userTitle = res.data.User.userTitle;
           } else {
-            this.userTitle = "오늘은 어른이날, 선물사주라주";
+            this.userTitle = "개성있는 타이틀을 설정해보세요 :)";
           }
           if (res.data.User.userEmail) {
             this.userEmail = res.data.User.userEmail;
@@ -441,6 +508,16 @@ export default {
           if (res.data.User.totalVisit) {
             this.totalVisit = res.data.User.totalVisit;
           }
+          this.isAgree = res.data.User.isAgree;
+
+          if (res.data.User.userMusic) {
+            if (this.audio && this.userMusic != res.data.User.userMusic) {
+              this.pauseMusic();
+              this.audio = null;
+              // this.playMusic(res.data.User.userMusic)
+            }
+            this.userMusic = res.data.User.userMusic;
+          }
         },
         () => {
           this.$router.push({ name: "NotFound" });
@@ -448,14 +525,12 @@ export default {
       );
     },
 
-    changeParams(index) {
+    async changeParams(index) {
       if (window.localStorage.getItem("accessToken")) {
         //로그인 되어있는 상태 store inlogin true
-        getUserDetailUseToken(
+        await getUserDetailUseToken(
           window.localStorage.getItem("accessToken"),
           (res) => {
-            // console.log(res.data.User);
-
             this.$store.commit("userStore/setUser", res.data.User);
             this.isLogin = true;
             if (index == res.data.User.id) {
@@ -463,8 +538,6 @@ export default {
             }
           },
           () => {
-            // console.log("getUserDetailUseToken fail")
-
             this.isLogin = false;
             window.localStorage.removeItem("accessToken");
             this.$store.commit("userStore/setUserNull");
@@ -472,6 +545,7 @@ export default {
           }
         );
       }
+      //지금 접속한 페이지유저의 정보
       this.setUserData();
     },
 
@@ -503,7 +577,6 @@ export default {
           showCancelButton: true,
         })
         .then((result) => {
-          /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
             window.localStorage.removeItem("accessToken");
             this.RESET_PRESENT_LIST();
@@ -518,6 +591,32 @@ export default {
             this.$router.push({ name: "Landing" });
           }
         });
+    },
+    async updateMusic() {
+      const { value: music } = await this.$swal.fire({
+        title: "BGM🎵",
+        input: "select",
+        text: "원하는 노래를 선택해주세요!",
+        inputOptions: {
+          none: "노래를 재생하고 싶지 않아요",
+          allthat: "allthat",
+          betterdays: "betterdays",
+          happiness: "happiness",
+          highoctane: "highoctane",
+          jazzcomedy: "jazzcomedy",
+          moose: "moose",
+        },
+        inputPlaceholder: "노래를 선택해주세요",
+        showCancelButton: true,
+      });
+      if (music) {
+        updateUserMusic(music, (res) => {
+          this.userMusic = res.data.User.userMusic;
+          this.pauseMusic();
+          this.audio = null;
+          this.playMusic(this.userMusic);
+        });
+      }
     },
 
     async updateUserTitle() {
@@ -551,7 +650,6 @@ export default {
     async updateUserInfo() {
       const { value: info } = await this.$swal.fire({
         title: "소개글을 입력해주세요!",
-        // html:"<textarea placeholder />",
         input: "textarea",
         inputValue: this.userInfo,
         inputLabel: "프로필 사진 밑의 소개글입니다. 여러분을 소개해주세요 :)",
@@ -576,7 +674,6 @@ export default {
       if (info) {
         updateUserInfo(info.replace('"', ""), (res) => {
           this.userInfo = res.data.User.userInfo;
-          // console.log(res.data.User.userInfo)
         });
       }
     },
@@ -602,12 +699,16 @@ export default {
           title: "회원 정보",
           icon: "info",
           html:
-            '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="swal-input1" class="swal2-input" value=' +
+            '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="email" class="swal2-input" value=' +
             this.userEmail +
             "></div>" +
-            '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="expiry-date"value=' +
+            '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="birth" value=' +
             this.userBirth +
-            "></div>",
+            "></div><br/>" +
+            '<label><input type="checkbox" id="isAgree" name="scales" ' +
+            (this.isAgree ? "checked" : "") +
+            ">ㅤ생일과 이메일을 공개하는 것에 동의합니다.</label>",
+
           inputLabel:
             "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
           stopKeydownPropagation: false,
@@ -628,15 +729,15 @@ export default {
               );
             }
             if (
-              !document.getElementById("swal-input1").value ||
-              !exptext.test(document.getElementById("swal-input1").value)
+              !document.getElementById("email").value ||
+              !exptext.test(document.getElementById("email").value)
             ) {
               this.$swal.showValidationMessage(`이메일을 입력해주세요`);
             }
           },
           willOpen: () => {
             flatpickrInstance = flatpickr(
-              this.$swal.getPopup().querySelector("#expiry-date"),
+              this.$swal.getPopup().querySelector("#birth"),
               {
                 allowInput: true,
               }
@@ -646,14 +747,15 @@ export default {
         .then((result) => {
           if (result.isConfirmed) {
             const data = {
-              userEmail: document.getElementById("swal-input1").value,
-              userBirth: document.getElementById("expiry-date").value,
+              userEmail: document.getElementById("email").value,
+              userBirth: document.getElementById("birth").value,
+              isAgree: document.getElementById("isAgree").checked,
             };
             updateUserEmailBirth(
               localStorage.getItem("accessToken"),
               data,
               (res) => {
-                console.log("success change email and birth");
+                // console.log("success change email and birth")
                 this.$swal.fire("수정을 성공했습니다!", "", "success");
                 this.userEmail = res.data.User.userEmail;
                 this.userBirth =
@@ -662,12 +764,15 @@ export default {
                   res.data.User.userBirth[1] +
                   "." +
                   res.data.User.userBirth[2];
+                this.isAgree = res.data.User.isAgree;
               }
             );
           } else if (result.isDenied) {
             this.$swal
               .fire({
                 title: "정말 회원을 탈퇴하시겠습니까?",
+                icon: "question",
+                text: "탈퇴하면 소중한 메세지와 선물들이 사라집니다 그래도 탈퇴하시겠습니까?",
                 showCancelButton: true,
               })
               .then((result) => {
@@ -688,9 +793,6 @@ export default {
 </script>
 
 <style scoped>
-/* @import url("@/assets/css/reset.css");
-@import url("@/assets/css/style.css"); */
-
 * {
   font-family: "GangwonEdu_OTFBoldA" !important;
 }
@@ -818,18 +920,13 @@ export default {
 .speech-bubble2-img {
   width: 100px;
 }
-.swal2-textarea {
-  height: 5.75em !important;
-  padding: 0.75em;
-  resize: none;
-  text-align: center;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.swal2-textarea::-webkit-scrollbar {
-  display: none;
+.swal2-select {
+  border: 1px solid #d9d9d9;
 }
 .mdi-camera::before {
   color: grey;
+}
+.music-icon {
+  float: right;
 }
 </style>
