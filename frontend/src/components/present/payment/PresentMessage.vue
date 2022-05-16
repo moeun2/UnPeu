@@ -52,7 +52,7 @@ export default {
         nickname: [
           (v) => !!v || "닉네임은 필수 입력사항입니다.",
           (v) =>
-            !/[/\s/g]/.test(v) ||
+            !/[/\s/]/.test(v) ||
             "공백은 들어갈 수 없습니다. 띄어쓰기 사용 시 '-' 로 사용해주세요",
           (v) => !(v && v.length > 10) || this.lengthError(10, 1),
         ],
