@@ -376,12 +376,12 @@ export default {
           if (selectedDate >= this.today) {
             document.documentElement.setAttribute(
               "color-theme",
-              "default-open"
+              "default-close"
             );
           } else {
             document.documentElement.setAttribute(
               "color-theme",
-              "default-close"
+              "default-open"
             );
           }
           break;
@@ -389,12 +389,12 @@ export default {
           if (selectedDate >= this.today) {
             document.documentElement.setAttribute(
               "color-theme",
-              "birthday-open"
+              "birthday-close"
             );
           } else {
             document.documentElement.setAttribute(
               "color-theme",
-              "birthday-close"
+              "birthday-open"
             );
           }
           break;
@@ -402,12 +402,12 @@ export default {
           if (selectedDate >= this.today) {
             document.documentElement.setAttribute(
               "color-theme",
-              "children-open"
+              "children-close"
             );
           } else {
             document.documentElement.setAttribute(
               "color-theme",
-              "children-close"
+              "children-open"
             );
           }
           break;

@@ -96,7 +96,7 @@
 
             <input type="number" name="month" class="input-date" id="month" v-model="month" placeholder="0" /> 월
             <input type="number" name="date" class="input-date" id="date" v-model="date" placeholder="0" /> 일
-            <p class="setDate-p2">설정 날짜 : {{ this.year }}년 {{ this.month }}월 {{ this.date }}일 </p>
+            <p class="setDate-p2">설정 날짜 : {{ this.year }}년 {{ this.sMonth }}월 {{ this.sDate }}일 </p>
           </div>
 
           <div class="mode-content">
@@ -151,6 +151,8 @@ export default {
       month: "",
       date: "",
       year: "",
+      sMonth: "",
+      sDate: "",
       today: dayjs().format("YYYY-MM-DD"),
       category: "",
       selectedDate: "",
@@ -174,8 +176,8 @@ export default {
           if (this.$route.params.userid == res.data.User.id) {
             this.isMyPage = true;
             this.year = res.data.User.selectedDate[0];
-            this.month = res.data.User.selectedDate[1];
-            this.date = res.data.User.selectedDate[2];
+            this.sMonth = res.data.User.selectedDate[1];
+            this.sDate = res.data.User.selectedDate[2];
             this.category = res.data.User.category;
           }
         },
