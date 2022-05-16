@@ -464,15 +464,29 @@ export default {
         data.category = this.category;
         data.selectedDate = this.selectedDate;
         data.userId = this.curUser.id;
-        console.log(data);
-        this.AC_UPDATE_CONCEPT(
-          data,
-          function (res) {
-            console.log(res);
-          },
-          function () {}
-        );
-        Alert.setMonthAndDate(this);
+        //console.log(data);
+
+        this.$swal.fire({
+                  title: "컨셉 변경 저장",
+                  text: "설정된 날짜는 0시 정각에 실행됩니다.",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonText: "할래요!",
+                  cancelButtonText: "안할래요!",
+                  reverseButtons: false,
+                })
+                .then((result) => {
+                  if (result.isConfirmed) {
+                    this.AC_UPDATE_CONCEPT(
+                      data,
+                      function (res) {
+                        console.log(res);
+                      },
+                      function () {}
+                    );
+                    this.$router.go({ name: "eventRoom" }).catch(()=>{});
+                  }
+                });
       }
     },
   },
