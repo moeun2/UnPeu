@@ -360,7 +360,7 @@ export default {
       const path = this.$route.path;
       if(path.startsWith("/eventRoom")){
         this.checkHome()
-      }else{
+      }else if(path.startsWith("/diary")){
         this.checkDiary();
       }
     },
