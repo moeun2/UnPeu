@@ -6,16 +6,14 @@
         <span class="float-right">{{ boardInfo.createdAt }}</span>
       </v-card-subtitle>
 
-      <v-card-title class="pt-0 pb-0 text-h4 text--primary">
+      <v-card-title class="pt-0 pb-2 mytitle">
         {{ boardInfo.title }}
       </v-card-title>
 
       <v-divider class="mx-6"></v-divider>
-      <v-card-text>
 
-        <div class="output ql-snow">
-          <div class= "ql-editor" v-html="boardInfo.content"></div>
-        </div>
+      <v-card-text class="text--primary output ql-bubble">
+        <div class="ql-editor" v-html="boardInfo.content"></div>
       </v-card-text>
 
       <v-divider class="mx-4"></v-divider>
@@ -43,7 +41,10 @@
           @click="deleteDiary"
           ><v-icon dark left>mdi-delete</v-icon>delete</v-btn
         >
-        <v-btn color="var(--close-color)" class="ma-2 white--text" @click="backMovePage"
+        <v-btn
+          color="var(--close-color)"
+          class="ma-2 white--text"
+          @click="backMovePage"
           ><v-icon dark left>mdi-arrow-left</v-icon>back</v-btn
         >
       </v-card-actions>
@@ -122,4 +123,8 @@ export default {
 
 <style scoped>
 @import url("@/assets/css/editor.css");
+.mytitle {
+  font-size: 30px;
+  font-weight: 700;
+}
 </style>

@@ -91,8 +91,8 @@ export default {
   created() {
     this.initEditFlag();
 
-    // 이전에 작성했던 닉네임과 비밀먼호가 존재하는가?
-    if (this.nonUser.writer && this.nonUser.password) {
+    // 빈 객체가 아닌가?
+    if (Object.keys(this.nonUser).length) {
       this.form.writer = this.nonUser.writer;
       this.form.password = this.nonUser.password;
     }
@@ -168,7 +168,6 @@ export default {
         boardId: this.$route.params.boardId,
         commentInfo: this.form,
       });
-      this.$router.go(); // 새로고침
     },
 
     /* 댓글 수정하기 */
@@ -178,7 +177,6 @@ export default {
         commentId: this.nonUser.commentId,
         commentInfo: this.form,
       });
-      this.$router.go();
     },
 
     cancel() {
