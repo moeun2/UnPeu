@@ -187,7 +187,7 @@ export default {
         (res) => {
           const url = API_BASE_URL + res.data.url;
           Editor.insertEmbed(cursorLocation, "image", url);
-          console.log("이미지 등록 성공");
+          // console.log("이미지 등록 성공");
         },
         (error) => {
           console.log("등록 처리 시 문제가 발생했습니다");

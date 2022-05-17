@@ -284,7 +284,7 @@ export default {
       getUserDetailUseToken(
         window.localStorage.getItem("accessToken"),
         (res) => {
-          console.log("UserData : ", res.data.User);
+          // console.log("UserData : ", res.data.User);
           this.$store.commit("userStore/setUser", res.data.User);
 
           this.isLogin = true;
