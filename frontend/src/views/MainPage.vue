@@ -418,60 +418,8 @@ export default {
     },
     ...mapMutations(presentStore, ["RESET_PRESENT_LIST"]),
     goToMainPage() {
-      // test 용으로 놨둔 주석입니다. 삭제하지 말아주세요.
-      // let concept = this.curUser.category;
-      // this.data.userId = this.curUser.id;
-      // console.log("concept : ", this.curUser.category);
-      // switch (concept) {
-      //   case "default":
-      //     this.data.category = "birthday";
-      //     this.AC_UPDATE_CONCEPT(
-      //       this.data,
-      //       function (res) {
-      //         console.log("AC_UPDATE_CONCEPT Success")
-      //         console.log(res);
-      //         console.log(this.curUser);
-      //       },
-      //       function () {}
-      //     );
-      //     document.documentElement.setAttribute(
-      //       "color-theme",
-      //       "birthday-close"
-      //     );
-
-      //     break;
-      //   case "birthday":
-      //     this.data.category = "children";
-      //     this.AC_UPDATE_CONCEPT(
-      //       this.data,
-      //       function (res) {
-      //         console.log("AC_UPDATE_CONCEPT Success")
-      //         console.log(res);
-      //         console.log(this.curUser);
-      //       },
-      //       function () {}
-      //     );
-      //     document.documentElement.setAttribute(
-      //       "color-theme",
-      //       "children-close"
-      //     );
-      //     break;
-      //   case "children":
-      //     this.data.category = "default";
-      //     this.AC_UPDATE_CONCEPT(
-      //       this.data,
-      //       function (res) {
-      //         console.log("AC_UPDATE_CONCEPT Success")
-      //         console.log(res);
-      //         console.log(this.curUser);
-      //       },
-      //       function () {}
-      //     );
-      //     document.documentElement.setAttribute("color-theme", "default-close");
-      //     break;
-      // }
-
       this.$router.push({ name: "eventRoom" }).catch(() => {});
+      this.checkHome();
     },
     setUserData() {
       getUserDetail(
