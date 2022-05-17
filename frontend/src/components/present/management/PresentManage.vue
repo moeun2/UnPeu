@@ -59,10 +59,8 @@ export default {
     appropriatePresent: {
       deep: true,
       handler(newVal) {
-        console.log(newVal);
         if(newVal==null) return;
         this.present=newVal;
-        console.log(this.present);
       }
     },
   },
