@@ -656,7 +656,9 @@ ul.myMenu > li ul.submenu > li:hover {
   padding-top: 20px;
   padding-bottom: 20px;
 }
-.modal-content {
+
+#modal-content {
+  font-size: 22px;
   text-align: center;
 }
 
