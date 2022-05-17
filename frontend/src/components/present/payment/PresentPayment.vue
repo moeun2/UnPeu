@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="message-title">콩주머니 보내기</div>
+    <div class="message-title">메세지 & 선물 보내기</div>
     <v-checkbox
       v-if="numCheckbox == false"
       v-model="checkbox"
