@@ -5,7 +5,6 @@ import com.unpeu.domain.entity.User;
 import com.unpeu.domain.request.BoardPostReq;
 import com.unpeu.domain.response.BoardGetRes;
 import com.unpeu.domain.response.BoardInfoGetRes;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

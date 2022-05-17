@@ -14,13 +14,16 @@ public class UserPatchEmailBirthReq {
 	@ApiModelProperty(name = "userEmail", example = "ssafy123@ssafy.com")
     private String userEmail;
 	
-	@ApiModelProperty(name = "userBirth", example = "1997-12-9")
+	@ApiModelProperty(name = "userBirth", example = "1997-12-09")
     private LocalDate userBirth;
+	
+	@ApiModelProperty(name = "isAgree", example = "true")
+	private Boolean isAgree;
 
-    public UserPatchEmailBirthReq(String userEmail,LocalDate userBirth) {
+    public UserPatchEmailBirthReq(String userEmail,LocalDate userBirth, Boolean isAgree) {
         this.userEmail = userEmail;
         this.userBirth = userBirth;
-        
+        this.isAgree = isAgree;
     }
 
 }

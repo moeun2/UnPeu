@@ -4,12 +4,16 @@ import static com.unpeu.config.exception.ErrorCode.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.unpeu.domain.entity.Board;
+import com.unpeu.domain.entity.Present;
 import com.unpeu.domain.repository.IBoardRepository;
 import com.unpeu.domain.request.MessagePostReq;
+import com.unpeu.domain.response.MessageGetRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +35,9 @@ import lombok.RequiredArgsConstructor;
 public class MessageServiceImpl implements IMessageService {
 	private static final Logger logger = LoggerFactory.getLogger(MessageServiceImpl.class);
 
+	@Value("${spring.img.url}")
+	private String RedirectURL;
+
 	private final IMessageRepository messageRepository;
 	private final IPresentRepository presentRepository;
 	private final IBoardRepository boardRepository;
@@ -41,13 +48,16 @@ public class MessageServiceImpl implements IMessageService {
 	 * @return
 	 */
 	@Override
-	public List<Message> getMessageListByUserId(Long userId) {
+	public List<MessageGetRes> getMessageListByUserId(Long userId) {
 		logger.info("getMessageListByUserId-호출");
 		Optional<User> user = userRepository.findById(userId);
 		if (user.isEmpty()) {
 			throw new CustomException(MEMBER_NOT_FOUND);
 		}
-		return messageRepository.findMessageByUserId(userId);
+		List<Message> messages = messageRepository.findMessageByUserId(userId);
+		return messages.stream()
+				.map(MessageGetRes::new)
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -63,11 +73,11 @@ public class MessageServiceImpl implements IMessageService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void deleteAllMessageByUserId(long userId) {
+	public void deleteAllMessageByUserId(User user) {
 		logger.info("deleteAllMessageByUserId-호출");
 		try {
-			presentRepository.deleteAllByUserId(userId);
-			messageRepository.deleteAllByUserId(userId);
+			presentRepository.deleteAllByUserId(user.getId());
+			messageRepository.deleteAllByUserId(user.getId());
 		} catch (Exception e) {
 			throw new CustomException(DELETE_CONFLICT);
 		}
@@ -81,19 +91,26 @@ public class MessageServiceImpl implements IMessageService {
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void saveMessage(Long userId, List<MessagePostReq> messages) {
+	public void saveMessage(User user, List<MessagePostReq> messages) {
 		logger.info("saveMessage-호출");
-		Optional<User> user = userRepository.findById(userId);
-		if (user.isEmpty()) {
+
+		if (user == null) {
 			throw new CustomException(MEMBER_NOT_FOUND);
 		}
 
 		for(MessagePostReq message : messages) {
+			String imgTag = "";
+			if (message.getPresentId() != null) {
+				imgTag = "<p><img src='\'"+RedirectURL + message.getPresentImg() + "\"></p>";
+			}
+
+			String content = "<p>" + message.getContent() + " (" + message.getPrice() + "원 펀딩) </p>";
+
 			Board newBoard = Board.saveMessage()
-					.user(user.get())
+					.user(user)
 					.category(message.getCategory())
 					.title(message.getSender())
-					.content(message.getContent() + " (" + message.getPrice() + "원 펀딩)")
+					.content(imgTag + content)
 					.createdAt(message.getCreatedAt())
 					.build();
 			boardRepository.save(newBoard);

@@ -55,8 +55,9 @@ export default {
       const { value: data } = await this.$swal.fire({
         title: "이메일과 생일을 입력해주세요!",
         html:
-          '<input placeholder="이메일을 입력해주세요" id="swal-input1" class="swal2-input">' +
-          '<input placeholder="생일을 입력해주세요" class="swal2-input" id="expiry-date">',
+          '<div>이메일:<input input type="email" placeholder="이메일을 입력해주세요" id="email" class="swal2-input" ></div>' +
+          '<div>생 일 :<input placeholder="생일을 입력해주세요" class="swal2-input" id="birth"></div><br/>'+
+          '<label><input type="checkbox" id="isAgree" name="scales" checked>ㅤ생일과 이메일을 공개하는 것에 동의합니다.</label>',
         inputLabel:
           "여러분의 이메일과 생일을 입력해주세요. 드디어 마이페이지가 생성됩니다 :)",
         stopKeydownPropagation: false,
@@ -64,23 +65,29 @@ export default {
         showCancelButton: true,
         
         preConfirm: () => {
-          //validation 설정
+          var exptext = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
           if (!flatpickrInstance.selectedDates[0]) {
             this.$swal.showValidationMessage(`생일을 입력해주세요`);
+          }else if (flatpickrInstance.selectedDates[0] > new Date()) {
+            this.$swal.showValidationMessage(`혹시.. 아직 안태어나셨나요? 생일을 올바르게 입력해주세요 :)`)
           }
-          if (!document.getElementById("swal-input1").value) {
+          if (!document.getElementById("email").value||!exptext.test(document.getElementById("email").value)) {
             this.$swal.showValidationMessage(`이메일을 입력해주세요`);
           }
           return {
-            userEmail: document.getElementById("swal-input1").value,
-            userBirth: document.getElementById("expiry-date").value,
+            userEmail: document.getElementById("email").value,
+            userBirth: document.getElementById("birth").value,
+            isAgree: document.getElementById("isAgree").checked
           };
         },
 
         willOpen: () => {
           // 달력 날짜입력 추가 flatpickr
           flatpickrInstance = flatpickr(
-            this.$swal.getPopup().querySelector("#expiry-date")
+            this.$swal.getPopup().querySelector("#birth"),
+            {
+              allowInput:true
+            }
           );
         },
       });

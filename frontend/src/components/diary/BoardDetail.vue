@@ -1,29 +1,19 @@
 <template>
   <v-container fluid>
     <v-card outlined>
-      <v-card-title> View </v-card-title>
-
       <v-card-subtitle>
         <span>{{ boardInfo.category }}</span>
         <span class="float-right">{{ boardInfo.createdAt }}</span>
       </v-card-subtitle>
 
-      <v-card-text>
-        <v-text-field
-          v-model="boardInfo.title"
-          label="Title"
-          readonly
-        ></v-text-field>
-        <!-- CKEditor로 수정 예정 -->
-        <v-textarea
-          v-model="boardInfo.content"
-          label="Content"
-          readonly
-          rows="6"
-          auto-grow
-          required
-        >
-        </v-textarea>
+      <v-card-title class="pt-0 pb-2 mytitle">
+        {{ boardInfo.title }}
+      </v-card-title>
+
+      <v-divider class="mx-6"></v-divider>
+
+      <v-card-text class="text--primary output ql-bubble">
+        <div class="ql-editor" v-html="boardInfo.content"></div>
       </v-card-text>
 
       <v-divider class="mx-4"></v-divider>
@@ -38,20 +28,23 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-          text
-          color="warning"
-          @click="editDiary"
           v-if="loginUser && boardInfo.userId == loginUser.id"
+          color="var(--confirm-color)"
+          class="white--text"
+          @click="editDiary"
           ><v-icon dark left>mdi-pencil</v-icon>edit</v-btn
         >
         <v-btn
-          text
-          color="error"
-          @click="deleteDiary"
           v-if="loginUser && boardInfo.userId == loginUser.id"
+          color="var(--cancel-color)"
+          class="white--text"
+          @click="deleteDiary"
           ><v-icon dark left>mdi-delete</v-icon>delete</v-btn
         >
-        <v-btn text color="grey darken-1" @click="backMovePage"
+        <v-btn
+          color="var(--close-color)"
+          class="ma-2 white--text"
+          @click="backMovePage"
           ><v-icon dark left>mdi-arrow-left</v-icon>back</v-btn
         >
       </v-card-actions>
@@ -105,17 +98,18 @@ export default {
     /* 삭제하기 */
     deleteDiary() {
       // console.log("delete");
-      this.$swal.fire({
-          icon: 'question',
-          title: 'Delete',
-          html:'정말로 삭제하시겠습니까? ' ,
+      this.$swal
+        .fire({
+          icon: "question",
+          title: "Delete",
+          html: "정말로 삭제하시겠습니까? ",
           showCancelButton: true,
-        }).then((result) => {
+        })
+        .then((result) => {
           if (result.isConfirmed) {
             this.AC_DELETE_BOARD(this.boardInfo.boardId);
-            this.$router.push({ name: "BoardList" });
-          } 
-        })
+          }
+        });
     },
 
     /* 뒤로가기 */
@@ -127,5 +121,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@import url("@/assets/css/editor.css");
+.mytitle {
+  font-size: 30px;
+  font-weight: 700;
+}
 </style>

@@ -3,6 +3,7 @@ package com.unpeu.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -54,8 +55,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.addFilter(new JwtAuthenticationFilter(authenticationManager(), userService))
 			.authorizeRequests()
-			.antMatchers("/api/users/password").authenticated()
-			//                .antMatchers(HttpMethod.DELETE,"/api/users/{userEmail}").authenticated()
+			.antMatchers(HttpMethod.GET,"/api/users").authenticated()
+			.antMatchers(HttpMethod.DELETE,"/api/users").authenticated()
+			.antMatchers("/api/users/email/birth").authenticated()
+			.antMatchers("/api/users/img").authenticated()
+			.antMatchers("/api/users/info").authenticated()
+			.antMatchers("/api/users/music").authenticated()
+			.antMatchers("/api/users/title").authenticated()
+			.antMatchers(HttpMethod.POST,"/api/message/messageToDiary").authenticated()
+			.antMatchers(HttpMethod.DELETE,"/api/message").authenticated()
+			.antMatchers(HttpMethod.POST,"/api/present").authenticated()
+			.antMatchers(HttpMethod.POST,"/api/board").authenticated()
+			.antMatchers(HttpMethod.PUT,"/api/board/{boardId}").authenticated()
+			.antMatchers(HttpMethod.DELETE,"/api/board/{boardId}").authenticated()
 			.and().cors();
 	}
 }

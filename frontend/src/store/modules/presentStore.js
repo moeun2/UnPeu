@@ -1,12 +1,39 @@
-import { register, remove, search, sendMessage, update } from "@/api/present";
+import { register, remove, search, sendMessage, update, peekMoney } from "@/api/present";
 
 export const presentStore={
     namespaced : true,
     state:{
-        presentList:[]
+        presentList:[],
+        appropriatePresent:null,
+        money:0,
     },
     getters:{
-        
+        getNumberOfPresentList(state){
+            if(state.presentList == null)
+                return null
+            else
+                return state.presentList.Present.length;
+        },
+        GET_APPROPRIATE_VALUE_OF_PRESENT_LIST(state){
+            console.log(state.presentList);
+            if(state.presentList == null){
+                return null;
+            }
+            else{
+                let x=state.presentList.Present;
+                let n=Number(state.money);
+                state.appropriatePresent=null;
+                let max=0;
+                for (let index = 0; index < x.length; index++) {
+                    if(Number(x[index].presentPrice)<n){
+                            if(Number(x[index].presentPrice)>max){
+                            state.appropriatePresent=x[index];
+                            max=Number(x[index].presentPrice);
+                        }
+                    }
+                }
+            }
+        }
     },
     mutations:{
         SET_PRESENT_LIST(state, presentList){
@@ -30,6 +57,9 @@ export const presentStore={
         ,
         RESET_PRESENT_LIST(state){
             state.presentList=null;
+        },
+        SET_MONEY(state,money){
+            state.money=money;
         }
     },
     actions:{
@@ -80,6 +110,17 @@ export const presentStore={
                     //console.log(response.data);
                     commit("REMOVE_PRESENT_FROM_ARRAY",presentId);
                     return true;
+                },
+                ()=>{
+                    return false;
+                }
+            )
+        },
+        getMoney({commit}, id){
+            peekMoney(id,
+                (response)=>{
+                    console.log(response.data);
+                    commit("SET_MONEY",response.data.Money);
                 },
                 ()=>{
                     return false;

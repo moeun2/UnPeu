@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-card outlined>
+    <v-card outlined style="height: 515px">
       <v-card-title>
         <span>Diary</span>
       </v-card-title>
@@ -10,17 +10,17 @@
           <v-col>
             <span>{{ today }}</span>
             <v-btn
-              tile
-              class="float-right success"
-              @click="writeDiary"
               v-if="loginUser && userId == loginUser.id"
+              color="var(--confirm-color)"
+              class="float-right white--text"
+              @click="writeDiary"
               ><v-icon left>mdi-pencil</v-icon>글 작성
             </v-btn>
           </v-col>
         </v-row>
       </v-card-subtitle>
 
-      <v-card-text>
+      <v-card-text >
         <v-row>
           <v-col>
             <v-select
@@ -33,13 +33,19 @@
 
             <v-data-table
               class="elevation-1"
+              hide-default-footer
               :headers="headers"
               :items="boardList"
-              :items-per-page="10"
+              :page.sync="currentPage"
+              :items-per-page="5"
               item-key="title"
               @click:row="moveDetailPage"
+              @page-count="pageCount = $event"
             >
             </v-data-table>
+            <div class="text-center pt-2">
+              <v-pagination v-model="currentPage" :length="pageCount"></v-pagination>
+            </div>
           </v-col>
         </v-row>
       </v-card-text>
@@ -65,6 +71,8 @@ export default {
       loginUser: this.$store.state.userStore.user,
       userId: this.$route.params.userid,
       category: "Default",
+      currentPage: 1, // 현재 페이지
+      pageCount: 0,
     };
   },
 
@@ -79,16 +87,13 @@ export default {
       boardList: "GET_BOARD_LIST",
       categoryList: "GET_CATEGORY_LIST",
     }),
-    categories: function() {
-      // 빈 배열 체크
-      if (Array.isArray(this.categoryList) && this.categoryList.length === 0) {
-        return ["Default"];
-      } else if (this.categoryList.includes("Default")) {
-        return this.categoryList;
-      } else {
-        return ["Default"].concat(this.categoryList);
-      }
-    }
+
+    categories: function () {
+      var merged = ["Default"].concat(this.categoryList);
+      var unique = merged.filter((item, pos) => merged.indexOf(item) === pos); // 중복 제거
+      // console.log(unique);
+      return unique;
+    },
   },
 
   watch: {

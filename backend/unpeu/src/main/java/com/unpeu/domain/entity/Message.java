@@ -53,7 +53,6 @@ public class Message {
 	@ToString.Exclude
 	private User user;
 
-	
 	@NotNull(message = "sender를 입력해주세요")
 	private String sender;
 

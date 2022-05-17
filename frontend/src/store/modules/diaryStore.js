@@ -172,8 +172,8 @@ export const diaryStore = {
             '삭제가 완료되었습니다.',
             'success'
           )
-          
           commit;
+          router.push({ name: "BoardList" });
         },
         (error) => {
           Swal.fire(
@@ -199,6 +199,7 @@ export const diaryStore = {
           // console.log(res.data);
           // console.log("댓글 등록을 성공하였습니다.");
           commit("MU_COMMENT_DETAIL", value.commentInfo);
+          router.go(); // 새로고침
         },
         (error) => {
           // console.log("등록을 실패하였습니다.");
@@ -221,6 +222,7 @@ export const diaryStore = {
             'success'
           )
           commit;
+          router.go(); // 새로고침
         },
         (error) => {
           Swal.fire(

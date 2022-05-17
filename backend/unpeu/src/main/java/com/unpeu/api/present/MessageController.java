@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.unpeu.domain.response.MessageGetRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,7 @@ public class MessageController {
 	public ResponseEntity<Map<String, Object>> getMessageListByUserId(@NotNull @PathVariable("userId") Long userId) {
 		logger.info("getMessageListByUserId - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
-		List<Message> newMessage = messageService.getMessageListByUserId(userId);
+		List<MessageGetRes> newMessage = messageService.getMessageListByUserId(userId);
 		resultMap.put("Message", newMessage);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
@@ -69,33 +70,35 @@ public class MessageController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 
-
 	@ApiOperation(value = "메세지 초기화 Controller")
 	@RequestMapping(value = "/message", method = RequestMethod.DELETE)
 	public ResponseEntity<Map<String, Object>> deleteAllMessageByUserId(@ApiIgnore @NotNull Authentication authentication) {
 		logger.info("deleteAllMessageByUserId - 호출");
-		// test 시 userId : 1로 설정하고 테스트 했음
+		Map<String, Object> resultMap = new HashMap<>();
+
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
-		Map<String, Object> resultMap = new HashMap<>();
-		messageService.deleteAllMessageByUserId(user.getId());
+
+		messageService.deleteAllMessageByUserId(user);
 		resultMap.put("Message", "Delete Messages Success");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 
 	@ApiOperation(value = "메세지 다이어리에 저장 Controller")
-	@RequestMapping(value = "/message/messageToDiary", method = RequestMethod.POST/*, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}*/)
+	@RequestMapping(value = "/message/messageToDiary", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> saveMessage(@ApiIgnore @NotNull Authentication authentication,
 			@Valid @RequestBody @NotNull List<MessagePostReq> messages) {
 		logger.info("saveMessage - 호출");
-		// test 시 userId : 1로 설정하고 테스트 했음
+		Map<String, Object> resultMap = new HashMap<>();
+
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
 		// message 내용을 board에 저장
-		messageService.saveMessage(user.getId(), messages);
+		messageService.saveMessage(user, messages);
 		// message 내용 삭제
-		messageService.deleteAllMessageByUserId(user.getId());
-		return new ResponseEntity<Map<String, Object>>(HttpStatus.ACCEPTED);
+		messageService.deleteAllMessageByUserId(user);
+		resultMap.put("Message", "Success");
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 
 }

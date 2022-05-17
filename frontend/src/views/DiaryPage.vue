@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="background: #ddefa5">
+  <v-container fluid rounded-lg style="background: var(--profile)">
     <router-view></router-view>
   </v-container>
 </template>

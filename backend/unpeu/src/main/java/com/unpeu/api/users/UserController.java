@@ -3,9 +3,7 @@ package com.unpeu.api.users;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
@@ -29,8 +27,10 @@ import com.unpeu.config.auth.JwtTokenUtil;
 import com.unpeu.config.auth.UnpeuUserDetails;
 import com.unpeu.config.media.MediaService;
 import com.unpeu.domain.entity.User;
+import com.unpeu.domain.request.UserPatchConceptReq;
 import com.unpeu.domain.request.UserPatchEmailBirthReq;
 import com.unpeu.domain.request.UserPatchUserInfoReq;
+import com.unpeu.domain.request.UserPatchUserMusicReq;
 import com.unpeu.domain.response.UserGetRes;
 import com.unpeu.service.iface.IUserService;
 
@@ -130,8 +130,16 @@ public class UserController {
 		resultMap.put("User",new UserGetRes(user));
         return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
     }
-	
-	
+
+	@ApiOperation(value = "유저 컨셉 등록/수정 Controller")
+	@RequestMapping(value = "/users/concept", method = RequestMethod.PATCH)
+	public ResponseEntity<Map<String, Object>> updateUserConcept(@RequestBody @NotNull UserPatchConceptReq userPatchConceptReq){
+		logger.info("updateUserConcept - 호출");
+		Map<String, Object> resultMap = new HashMap<>();
+		User updateUser = userService.updateUserConcept(userPatchConceptReq);
+		resultMap.put("User", new UserGetRes(updateUser));
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+	}
 	
 	@ApiOperation(value = "유저 타이틀 수정 Controller")
 	@RequestMapping(value = "/users/title", method = RequestMethod.PATCH)
@@ -161,6 +169,20 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 	
+	@ApiOperation(value = "유저 Music 수정 Controller")
+	@RequestMapping(value = "/users/music", method = RequestMethod.PATCH)
+    public ResponseEntity<Map<String, Object>> updateUserMusic(@ApiIgnore @NotNull Authentication authentication,@RequestBody @NotNull UserPatchUserMusicReq userPatchReq){
+		logger.info("updateUserMusic - 호출");
+		Map<String, Object> resultMap = new HashMap<>();
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+
+		User updateUser = userService.updateUserMusic(user.getId(), userPatchReq.getUserMusic());
+
+		resultMap.put("User",  new UserGetRes(updateUser));
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+	}
+	
 	@ApiOperation(value = "유저 email, Birth 수정 Controller")
 	@RequestMapping(value = "/users/email/birth", method = RequestMethod.PATCH)
     public ResponseEntity<Map<String, Object>> updateUserEmailBirth(@ApiIgnore @NotNull Authentication authentication,@RequestBody @NotNull UserPatchEmailBirthReq userPatchEmailBirthReq){
@@ -178,7 +200,7 @@ public class UserController {
 	@ApiOperation(value = "유저 이미지 수정 Controller")
 	@RequestMapping(value = "/users/img", method = RequestMethod.PATCH)
     public ResponseEntity<Map<String, Object>> updateUserImg(@ApiIgnore @NotNull Authentication authentication,
-    		@RequestPart(value = "file") @NotNull final MultipartFile userImg){
+    		@RequestPart(value = "file") @NotNull MultipartFile userImg){
 		logger.info("updateUserImg - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
@@ -202,5 +224,20 @@ public class UserController {
 		resultMap.put("User",  new UserGetRes(user));
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
+	
+	@ApiOperation(value = "회원탈퇴 Controller")
+	@RequestMapping(value = "/users", method = RequestMethod.DELETE)
+    public ResponseEntity<Map<String, Object>> deleteUser(@ApiIgnore @NotNull Authentication authentication){
+		logger.info("deleteUser - 호출");
+		Map<String, Object> resultMap = new HashMap<>();
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+		
+		userService.deleteUser(user.getId());
+		resultMap.put("message", "success");
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+		
+	}
+	
 
 }

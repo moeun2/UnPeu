@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-0">
     <board-write type="edit" :value="boardInfo"></board-write>
   </v-container>
 </template>
