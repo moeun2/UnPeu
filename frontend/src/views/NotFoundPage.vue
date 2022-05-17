@@ -37,4 +37,7 @@
   display: flex;
   align-items: center;
 }
+.landing_btn {
+  background-color: #fff6ca !important;
+}
 </style>

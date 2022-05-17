@@ -879,9 +879,6 @@ a strong {
 .speech-bubble2-img {
   width: 100px;
 }
-.swal2-select {
-  border: 1px solid #d9d9d9;
-}
 .music-icon {
   float: right;
 }

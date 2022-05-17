@@ -54,7 +54,7 @@
               depressed
               color="primary"
               style="margin-right: 5px" 
-              @click="update()"> 보내기 </v-btn>
+              @click="update()"> 수정하기 </v-btn>
               <v-btn depressed color="warning" @click="$emit('close')">
                 닫기
               </v-btn>
@@ -118,7 +118,7 @@
               depressed
               color="primary"
               style="margin-right: 5px" 
-              @click="updateWithFile()"> 보내기 </v-btn>
+              @click="updateWithFile()"> 수정하기 </v-btn>
               <v-btn depressed color="warning" @click="$emit('close')">
                 닫기
               </v-btn>

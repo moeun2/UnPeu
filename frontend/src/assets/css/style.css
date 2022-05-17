@@ -812,3 +812,6 @@ a.link {
 .mdi-camera::before {
   color: grey;
 }
+.swal2-select {
+  border: 1px solid #d9d9d9;
+}
