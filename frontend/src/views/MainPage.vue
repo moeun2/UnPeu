@@ -138,8 +138,8 @@
           <div class="speech-bubble-div">
             <div class="speech-bubble2">
               <a :href="this.url" style="color: white">
-                더 상세한 사용방법과<br />이벤트를 알고싶다면?<br />(👉Click
-                Here!👈)</a
+                더 상세한 사용방법과<br />이벤트를 알고싶다면?<br /><strong>(👉Click
+                Here!👈)</strong></a
               >
             </div>
           </div>
@@ -373,7 +373,7 @@ export default {
       console.log("CheckConcept-Concept : ", concept);
       switch (concept) {
         case "default":
-          if (selectedDate >= this.today) {
+          if (selectedDate <= this.today) {
             document.documentElement.setAttribute(
               "color-theme",
               "default-open"
@@ -386,7 +386,7 @@ export default {
           }
           break;
         case "birthday":
-          if (selectedDate >= this.today) {
+          if (selectedDate <=  this.today) {
             document.documentElement.setAttribute(
               "color-theme",
               "birthday-open"
@@ -399,7 +399,7 @@ export default {
           }
           break;
         case "children":
-          if (selectedDate >= this.today) {
+          if (selectedDate <=  this.today) {
             document.documentElement.setAttribute(
               "color-theme",
               "children-open"
@@ -872,7 +872,7 @@ export default {
   bottom: 100px;
   left: -50px;
   background: var(--speech-bubble-color);
-  color: black;
+  color: white;
   border-radius: 0.4em;
   padding: 0.3rem;
 }
@@ -892,18 +892,24 @@ export default {
   margin-right: -10px;
 }
 
+a strong { 
+  font-weight: bold;
+  color: blue;
+}
 .speech-bubble2 {
   position: absolute;
   background: var(--speech-bubble-color);
   border-radius: 0.4em;
   padding: 0.3rem;
-  color: white;
+
   top: -20%;
   left: 120%;
   width: 150px;
   text-align: center;
 }
-
+.speech-bubble2 a{
+  color: white !important;
+}
 .speech-bubble-div {
   top: -3%;
   left: 105%;
