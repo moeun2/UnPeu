@@ -3,7 +3,7 @@
  */
 
 const API_BASE_URL = "http://k6b201.p.ssafy.io:8080";
-const FRONT_URL = "http://k6b201.p.ssafy.io";
+const FRONT_URL = "http://unpeu.co.kr";
 
 // const API_BASE_URL = "http://localhost:8080";
 // const FRONT_URL= "http://localhost:8081";

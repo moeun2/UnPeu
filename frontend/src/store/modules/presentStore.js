@@ -15,7 +15,7 @@ export const presentStore={
                 return state.presentList.Present.length;
         },
         GET_APPROPRIATE_VALUE_OF_PRESENT_LIST(state){
-            console.log(state.presentList);
+            // console.log(state.presentList);
             if(state.presentList == null){
                 return null;
             }
@@ -119,7 +119,7 @@ export const presentStore={
         getMoney({commit}, id){
             peekMoney(id,
                 (response)=>{
-                    console.log(response.data);
+                    // console.log(response.data);
                     commit("SET_MONEY",response.data.Money);
                 },
                 ()=>{

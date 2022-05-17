@@ -74,7 +74,7 @@ export default {
     lengthError(len, idx) {
       let current = "";
       if (idx == 1) {
-        console.log("!!!");
+        // console.log("!!!");
         // this.nickname = this.nickname.substring(0,len);
         current = this.nickname.length;
       } else {

@@ -91,7 +91,7 @@ export default {
       });
 
       if (data) {
-        console.log(data);
+        // console.log(data);
         //여기서 email, 생일 수정
         //axios 성공시에만 엑세스 토큰 저장/ vuex저장
         await updateUserEmailBirth(accessToken, data, (res) => {

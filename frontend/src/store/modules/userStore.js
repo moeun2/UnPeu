@@ -58,7 +58,7 @@ export const userStore = {
       api.updateUserConcept(
         data,
         (response) => {
-          console.log("AC_UPDATE_CONCEPT : ", response.data);
+          // console.log("AC_UPDATE_CONCEPT : ", response.data);
           const data = {
             category: response.data.User.category,
             selectedDate: dayjs(
@@ -74,11 +74,11 @@ export const userStore = {
     },
 
     AC_USER_DETAIL({ commit, dispatch }, userId) {
-      console.log("AC_USER_DETAIL-호출");
+      // console.log("AC_USER_DETAIL-호출");
       api.getUserDetail(
         userId,
         (response) => {
-          console.log("AC_USER_DETAIL", response.data);
+          // console.log("AC_USER_DETAIL", response.data);
           let today = null;
           if (response.data.User.selectedDate != null) {
             today = dayjs(response.data.User.selectedDate.join("-")).format(
