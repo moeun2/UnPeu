@@ -1,6 +1,6 @@
 <template>
   <v-progress-linear
-    v-model="computedPrice"
+    :value="computedPrice"
     color="amber"
     height="15"
     >
