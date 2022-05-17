@@ -28,13 +28,16 @@
             :editorOptions="editorSettings"
             @image-added="handleImageAdded"
             v-model="form.content"
-            class="vue_edeitor_height editor"
+            class="myeditor_css text--primary"
             ref="myQuillEditor"
           >
           </vue-editor>
         </v-form>
       </v-card-text>
-
+      
+      <!-- <v-card-text></v-card-text>
+      <v-card-text></v-card-text> -->
+      
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
@@ -99,6 +102,26 @@ export default {
       editorSettings: {
         modules: {
           imageResize: {},
+          toolbar: [
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            ["italic", "underline", "strike"],
+            ["blockquote", "code-block"],
+            [{ color: [] }, { background: [] }],
+            [
+              { align: "" },
+              { align: "center" },
+              { align: "right" },
+              { align: "justify" },
+            ],
+            [
+              { list: "ordered" },
+              { list: "bullet" },
+              { indent: "-1" },
+              { indent: "+1" },
+            ],
+
+            ["link", "image", "video"],
+          ],
         },
       },
     };
