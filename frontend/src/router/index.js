@@ -4,10 +4,7 @@ import Home from "@/views/MainPage.vue";
 import PresentPage from "@/views/PresentPage.vue";
 import PresentPayment from "@/components/present/payment/PresentPayment.vue";
 import PresentManage from "@/components/present/management/PresentManage.vue";
-
-import Event from "@/views/EventPage.vue";
 import eventRoom from "@/components/eventRoom/EventRoom.vue";
-import ConceptChange from "@/components/eventRoom/ConceptChange.vue";
 
 import Diary from "@/views/DiaryPage.vue";
 import BoardList from "@/components/diary/BoardList.vue";
@@ -22,7 +19,8 @@ import Landing from "@/views/LandingPage.vue";
 import NotFound from "@/views/NotFoundPage.vue";
 
 import Store from "@/store";
-import { getUserDetailUseToken } from "@/api/user.js";
+import { getUserDetail, getUserDetailUseToken } from "@/api/user.js";
+import dayjs from "dayjs";
 Vue.use(VueRouter);
 
 const routes = [
@@ -34,22 +32,9 @@ const routes = [
     children: [
       {
         path: "/eventRoom/:userid",
-        name: "Event",
-        component: Event,
+        name: "eventRoom",
+        component: eventRoom,
         beforeEnter: getUserInfo,
-        redirect: "/eventRoom/:userid",
-        children: [
-          {
-            path: "/",
-            name: "eventRoom",
-            component: eventRoom,
-          },
-          {
-            path: "conceptChange",
-            name: "ConceptChange",
-            component: ConceptChange,
-          }
-        ]
       },
       {
         path: "/diary/:userid",
@@ -116,16 +101,19 @@ const routes = [
         component: GoogleLogin,
       },
     ],
+    beforeEnter: setDefaultEmail,
   },
   {
     path: "/landing",
     name: "Landing",
     component: Landing,
+    beforeEnter: setDefaultEmail,
   },
   {
     path: "*",
     name: "NotFound",
     component: NotFound,
+    beforeEnter: setDefaultEmail,
   },
 ];
 const router = new VueRouter({
@@ -133,58 +121,83 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-
-function getUserPresentAndCheckGuest(to, from, next){
-  let loginCheck=Store.state.userStore.user;
-  if(loginCheck==null) {
-    alert("로그인을 하셔야 합니다!")
+function setDefaultEmail(to, from, next) {
+  document.documentElement.setAttribute("color-theme", "default-email");
+  next();
+}
+function getUserPresentAndCheckGuest(to, from, next) {
+  let loginCheck = Store.state.userStore.user;
+  if (loginCheck == null) {
+    alert("로그인을 하셔야 합니다!");
     router.push({
-      name:"eventRoom",
-      params: { userid: to.params.userid }
-    })
-  }
-  else{
+      name: "eventRoom",
+      params: { userid: to.params.userid },
+    });
+  } else {
     let userId = to.params.userid;
     Store.dispatch("presentStore/searchList",userId);
-    Store.dispatch("presentStore/getMoney");
+    Store.dispatch("presentStore/getMoney",userId);
     next();
   }
 }
 
-function getUserPresent(to, from, next){
+function getUserPresent(to, from, next) {
   let userId = to.params.userid;
-  Store.dispatch("presentStore/searchList",userId);
+  Store.dispatch("presentStore/searchList", userId);
   // console.log(userId)
   next();
 }
 
 function getUserInfo(to, from, next) {
-  let userId = to.params.userid;
-  // console.log("Router-indx.js-getUserInfo-현재 페이지의 userId:", userId);
-  Store.commit("userStore/setCurUserId", userId);
-  // const getCurUser = Store.getters["userStore/getCurUser"];
-  // console.log(getCurUser);
 
+  let userId = to.params.userid;
   let accessToken = localStorage.getItem("accessToken");
-  if (accessToken == null) {
-    // console.log("Permission : Guest"); //2
-    Store.commit("userStore/setCurUserPermission", 2);
-  } else {
-    getUserDetailUseToken(accessToken, (res) => {
-      // console.log("router-index.js-getUserInfo-getUserDetailUseToken 호출");
-      // console.log(res.data.User.id);
-      let compareId = res.data.User.id;
-      if (compareId != userId) {
-        // console.log("Permission : Guest(Logined User)"); //1
-        Store.commit("userStore/setCurUserPermission", 1);
-      } else {
-        // console.log("Permission : User"); //0
-        Store.commit("userStore/setCurUserPermission", 0);
+  Store.commit("userStore/MU_CUR_USER_ID", userId);
+  console.log("getUserInfo - CuruserId :", userId);
+
+
+
+  getUserDetail(
+    userId,
+    (res) => {
+      let today = null
+      if(res.data.User.selectedDate != null){
+        today = dayjs(res.data.User.selectedDate.join("-")).format(
+          "YYYY-MM-DD"
+        );
       }
-    });
-  }
-  
-  next();
+
+      const data = {
+        category: res.data.User.category,
+        selectedDate: today,
+      };
+      /** Category, selectedDate 설정 **/
+      Store.commit("userStore/MU_CUR_USER_CONCEPT", data);
+
+      if (accessToken == null) {
+        /** Permission 설정  **/
+        Store.commit("userStore/MU_CUR_USER_PERMISSION", 2);
+        next();
+      } else {
+        getUserDetailUseToken(accessToken, (res) => {
+          let compareId = res.data.User.id;
+          /** Permission 설정  **/
+          if (compareId != userId) {
+            Store.commit("userStore/MU_CUR_USER_PERMISSION", 1);
+          } else {
+            Store.commit("userStore/MU_CUR_USER_PERMISSION", 0);
+          }
+          next();
+        });
+      }
+    },
+    (err) => {
+      console.log(err)
+      // 없는 유저의 url로 들어갔을 때 에러처리
+      if (err.response.status == 400) next("/error");
+      // console.log(err)
+    }
+  );
 }
 
 export default router;

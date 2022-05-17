@@ -52,18 +52,16 @@ export default {
         nickname: [
           (v) => !!v || "닉네임은 필수 입력사항입니다.",
           (v) =>
-            !/[/\s/g]/.test(v) ||
+            !/[/\s/]/.test(v) ||
             "공백은 들어갈 수 없습니다. 띄어쓰기 사용 시 '-' 로 사용해주세요",
-          (v) =>
-            !(v && v.length > 10) ||
-            this.lengthError(10,1),
+          (v) => !(v && v.length > 10) || this.lengthError(10, 1),
         ],
         content: [
           (v) => !!v || "내용은 필수 입력사항입니다.",
           (v) =>
             !(v && v.length < 5) ||
             "내용은 5자 이상 500자 이하로 입력해주세요.",
-          (v) => !(v && v.length > 500) || this.lengthError(500,2),
+          (v) => !(v && v.length > 500) || this.lengthError(500, 2),
         ],
       },
     };
@@ -74,17 +72,19 @@ export default {
       this.$swal.fire("Oops...!", message, "error");
     },
     lengthError(len, idx) {
-      let current =''
-      if(idx == 1){
-        console.log("!!!")
+      let current = "";
+      if (idx == 1) {
+        console.log("!!!");
         // this.nickname = this.nickname.substring(0,len);
-        current =  this.nickname.length;
-      }else{
+        current = this.nickname.length;
+      } else {
         // this.content = this.content.substring(0, len);
         current = this.content.length;
       }
       //this.$swal.fire("Oops...!", len+"자 이하로 적어주세요!", "error");
-      return "("+ current + "/" + len + ")"+ " 글자수는 1자 이상 10자 이하입니다!";
+      return (
+        "(" + current + "/" + len + ")" + " 글자수는 1자 이상 10자 이하입니다!"
+      );
     },
 
     /**

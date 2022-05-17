@@ -4,7 +4,6 @@ export const presentStore={
     namespaced : true,
     state:{
         presentList:[],
-        appropriateValue:0,
         appropriatePresent:null,
         money:0,
     },
@@ -16,12 +15,22 @@ export const presentStore={
                 return state.presentList.Present.length;
         },
         GET_APPROPRIATE_VALUE_OF_PRESENT_LIST(state){
-            if(state.presentList == null)
+            console.log(state.presentList);
+            if(state.presentList == null){
                 return null;
+            }
             else{
                 let x=state.presentList.Present;
+                let n=Number(state.money);
+                state.appropriatePresent=null;
+                let max=0;
                 for (let index = 0; index < x.length; index++) {
-                    //if(state.appropriateValue<)
+                    if(Number(x[index].presentPrice)<n){
+                            if(Number(x[index].presentPrice)>max){
+                            state.appropriatePresent=x[index];
+                            max=Number(x[index].presentPrice);
+                        }
+                    }
                 }
             }
         }
@@ -107,11 +116,11 @@ export const presentStore={
                 }
             )
         },
-        getMoney({commit}){
-            peekMoney(
+        getMoney({commit}, id){
+            peekMoney(id,
                 (response)=>{
                     console.log(response.data);
-                    commit("SET_MONEY");
+                    commit("SET_MONEY",response.data.Money);
                 },
                 ()=>{
                     return false;

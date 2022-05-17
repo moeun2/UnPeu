@@ -14,21 +14,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserGetRes {
 	private Long id;
-	
 	private String socialDomain;
-
     private String userName;
     private String userTitle;
     private String userInfo;
     private String userMusic;
-    
     private LocalDate userBirth;
     private String userEmail;
-    
     private Long todayVisit;
     private Long totalVisit;
-
 	private String userImg;
+	private Boolean isAgree;
+	private String category;
+	private LocalDate selectedDate;
 
 	public UserGetRes(User user) {
 		super();
@@ -43,6 +41,9 @@ public class UserGetRes {
 		this.todayVisit = user.getTodayVisit();
 		this.totalVisit = user.getTotalVisit();
 		this.userImg = user.getUserImg();
+		this.isAgree= user.getIsAgree();
+		this.category = user.getCategory();
+		this.selectedDate = user.getSelectedDate();
 	}
 
 

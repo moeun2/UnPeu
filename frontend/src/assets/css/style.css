@@ -45,7 +45,7 @@
     background-color:rgba(225, 225, 225, 0.85); /*스크롤바 트랙 색상*/
     border-radius: 15px;
   }
-  
+
   .profile-section,
   .main-section {
     height: 600px;
@@ -736,7 +736,7 @@
   }
 
   .main-room {
-     background-image: url("https://i.imgur.com/TyYsFKh.jpg"); 
+     background-image: var(--main);
      background-size: cover;
      border-radius: 15px;
      
@@ -762,4 +762,24 @@ a.link {
   width: 100%;
   overflow: hidden;
   max-height: 30px;
+}
+
+.v-application a {
+  color: #000 !important;
+}
+
+.btn_red_cancel {
+  font-size: 25px;
+}
+
+.swal2-textarea {
+  height: 5.75em !important;
+  padding: 0.75em;
+  resize: none;
+  text-align: center;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.swal2-textarea::-webkit-scrollbar {
+  display: none;
 }

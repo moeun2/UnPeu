@@ -30,6 +30,7 @@ import com.unpeu.domain.entity.User;
 import com.unpeu.domain.request.UserPatchConceptReq;
 import com.unpeu.domain.request.UserPatchEmailBirthReq;
 import com.unpeu.domain.request.UserPatchUserInfoReq;
+import com.unpeu.domain.request.UserPatchUserMusicReq;
 import com.unpeu.domain.response.UserGetRes;
 import com.unpeu.service.iface.IUserService;
 
@@ -132,12 +133,10 @@ public class UserController {
 
 	@ApiOperation(value = "유저 컨셉 등록/수정 Controller")
 	@RequestMapping(value = "/users/concept", method = RequestMethod.PATCH)
-	public ResponseEntity<Map<String, Object>> updateUserConcept(@ApiIgnore @NotNull @org.jetbrains.annotations.NotNull Authentication authentication,@RequestBody @NotNull UserPatchConceptReq userPatchConceptReq){
+	public ResponseEntity<Map<String, Object>> updateUserConcept(@RequestBody @NotNull UserPatchConceptReq userPatchConceptReq){
 		logger.info("updateUserConcept - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
-		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
-		User user = userDetails.getUser();
-		User updateUser = userService.updateUserConcept(user.getId(), userPatchConceptReq);
+		User updateUser = userService.updateUserConcept(userPatchConceptReq);
 		resultMap.put("User", new UserGetRes(updateUser));
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
@@ -165,6 +164,20 @@ public class UserController {
 		User user = userDetails.getUser();
 
 		User updateUser = userService.updateUserInfo(user.getId(), userPatchReq.getUserInfo());
+
+		resultMap.put("User",  new UserGetRes(updateUser));
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+	}
+	
+	@ApiOperation(value = "유저 Music 수정 Controller")
+	@RequestMapping(value = "/users/music", method = RequestMethod.PATCH)
+    public ResponseEntity<Map<String, Object>> updateUserMusic(@ApiIgnore @NotNull Authentication authentication,@RequestBody @NotNull UserPatchUserMusicReq userPatchReq){
+		logger.info("updateUserMusic - 호출");
+		Map<String, Object> resultMap = new HashMap<>();
+		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+
+		User updateUser = userService.updateUserMusic(user.getId(), userPatchReq.getUserMusic());
 
 		resultMap.put("User",  new UserGetRes(updateUser));
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);

@@ -43,9 +43,9 @@ function sendMessage(message, success, fail) {
     .catch(fail);
 }
 
-function peekMoney(success,fail){
+function peekMoney(id,success,fail){
   api
-    .get(`/present/message/money`)
+    .get(`/present/message/money/${id}`)
     .then(success)
     .catch(fail);
 }

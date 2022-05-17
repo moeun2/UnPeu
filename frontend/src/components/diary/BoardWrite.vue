@@ -56,11 +56,11 @@
           edit
         </v-btn>
         <v-btn
-          @click="cancle"
+          @click="cancel"
           color="var(--cancel-color)"
           class="ma-2 white--text"
         >
-          cancle
+          cancel
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -135,14 +135,10 @@ export default {
     }),
 
     categories: function () {
-      // 빈 배열 체크
-      if (Array.isArray(this.categoryList) && this.categoryList.length === 0) {
-        return ["Default"];
-      } else if (this.categoryList.includes("Default")) {
-        return this.categoryList;
-      } else {
-        return ["Default"].concat(this.categoryList);
-      }
+      var merged = ["Default"].concat(this.categoryList);
+      var unique = merged.filter((item, pos) => merged.indexOf(item) === pos); // 중복 제거
+      // console.log(unique);
+      return unique;
     },
 
     /* 작성 폼 유효성 검사 */
@@ -210,8 +206,8 @@ export default {
     },
 
     /* 뒤로가기 */
-    cancle() {
-      // console.log("cancle");
+    cancel() {
+      // console.log("cancel");
       this.$router.go(-1); // 한 단계 뒤로
     },
   },

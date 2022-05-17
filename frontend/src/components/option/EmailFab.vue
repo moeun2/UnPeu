@@ -2,7 +2,7 @@
   <div class="ba-we-love-subscribers-wrap">
     <div class="ba-we-love-subscribers popup-ani">
       <header>
-        <h1>당신을 위한 조그마한 기록 그리고 선물<br />UnPeu:앙뿌</h1>
+        <h1>당신을 위한 조그마한 기록 그리고 선물<br/>UnPeu:앙뿌</h1>
         <p>
           만약 더 디테일한 피드백을 주시고 싶다면
           <a href="https://forms.gle/uXoLCauCEHMNoPoo6"
@@ -78,8 +78,8 @@ export default {
   },
 };
 </script>
-<style>
-@import url("https://fonts.googleapis.com/css?family=Roboto");
+<style scoped>
+
 
 .ba-we-love-subscribers {
   width: 290px;
@@ -87,11 +87,12 @@ export default {
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0px 12px 45px rgba(0, 0, 0, 0.15);
-  font-family: "Roboto", sans-serif;
+  font-family: "hiffy" !important;
   text-align: center;
   margin: 0 0 10px 0;
   overflow: hidden;
   opacity: 0;
+
 }
 .ba-we-love-subscribers.open {
   height: 350px;
@@ -107,7 +108,7 @@ export default {
   padding: 25px 0;
   margin: 0;
   font-weight: 400;
-  font-family: "Roboto", sans-serif;
+  font-family: "hiffy" !important;
 }
 .ba-we-love-subscribers .love {
   width: 20px;
@@ -167,12 +168,12 @@ export default {
   resize: none;
 }
 .ba-we-love-subscribers input[name="submit"] {
-  background-color: var(--speech-bubble-color);
+  background-color: var(--profile);
   cursor: pointer;
   color: #fff;
 }
 .ba-we-love-subscribers input[name="submit"]:hover {
-  background-color: var(--speech-bubble-color);
+  background-color:var(--profile);
 }
 .ba-we-love-subscribers .img {
   background-image: url("https://4.bp.blogspot.com/-1J75Et4_5vc/WAYhWRVuMiI/AAAAAAAAArE/gwa-mdtq0NIqOrlVvpLAqdPTV4VAahMsQCPcB/s1600/barrel-we-love-subscribers-img.png");
@@ -180,7 +181,7 @@ export default {
 .ba-we-love-subscribers-fab {
   width: 65px;
   height: 65px;
-  background-color: var(--speech-bubble-color);
+  background-color: var(--profile);
   border-radius: 30px;
   float: right;
   box-shadow: 0px 12px 45px rgba(0, 0, 0, 0.3);

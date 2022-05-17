@@ -14,7 +14,7 @@
       @present="getPresent"
       v-if="checkbox == false"
     />
-    <present-message @message="getMessage"/>
+    <present-message @message="getMessage" />
     <!-- <button @click="testAlert">getters Test</button> -->
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
   components: { PresentMessage, PresentSelectListSearch },
   data() {
     return {
-      numCheckbox : false,
+      numCheckbox: false,
       checkbox: false,
       message: {
         category: "2022_어른이날",
@@ -57,16 +57,16 @@ export default {
     }),
   },
   mounted() {
-    this.checkNumOfPresentList()
+    this.checkNumOfPresentList();
   },
   methods: {
     ...mapActions(presentStore, ["sendPresentMessage"]),
-    checkNumOfPresentList(){
+    checkNumOfPresentList() {
       // console.log(this.numOfPresentList)
-      if(this.numOfPresentList == null || this.numOfPresentList==0){
-        this.numCheckbox = true
-      }else{
-        this.numCheckbox = false
+      if (this.numOfPresentList == null || this.numOfPresentList == 0) {
+        this.numCheckbox = true;
+      } else {
+        this.numCheckbox = false;
       }
     },
     testAlert() {

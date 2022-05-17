@@ -148,7 +148,7 @@ export default {
      * PayModal Open시 실행되는 함수
      */
     openPayModal(card, idx) {
-      console.log("openPayModal",idx);
+      // console.log("openPayModal", idx);
       this.selectedPresentImg = API_BASE_URL + card.presentImg;
       this.selectedPresentName = card.presentName;
       this.selectedPresentId = card.presentId;
@@ -161,7 +161,7 @@ export default {
      */
     closePayModal() {
       this.selectedPresentPrice = 0;
-      this.selectedPresentId=null;
+      this.selectedPresentId = null;
       this.showModal = false;
       this.changeCardColor(false);
     },
@@ -185,15 +185,15 @@ export default {
      * 현재 노란색으로 지정해놓았으며, 나중에 색깔을 통일할 예정(style : .selectedCard 참고)
      */
     changeCardColor(reverse) {
-      console.log(this.currentIdx);
+      // console.log(this.currentIdx);
       const cardLength = document.getElementById("rootCards").children.length;
       for (let index = 0; index < cardLength; index++) {
-          const er =
-            document.getElementById("rootCards").children[index].children[0];
-          if (er != null)
-            document
-              .getElementById("rootCards")
-              .children[index].children[0].classList.remove("selectedCard");
+        const er =
+          document.getElementById("rootCards").children[index].children[0];
+        if (er != null)
+          document
+            .getElementById("rootCards")
+            .children[index].children[0].classList.remove("selectedCard");
       }
       if (reverse) {
         document

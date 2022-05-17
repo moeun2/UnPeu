@@ -125,11 +125,10 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "엿보기 Controller")
-	@RequestMapping(value = "/present/message/money", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> peekMoney() {
+	@RequestMapping(value = "/present/message/money/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> peekMoney(@NotNull @PathVariable("userId") Long userId) {
 		logger.info("peekMoney - 호출");
-		User user = new User();
-		String money = presentService.peekMoney(user.getId());
+		String money = presentService.peekMoney(userId);
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("Money", money);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
