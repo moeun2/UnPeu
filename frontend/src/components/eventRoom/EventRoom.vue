@@ -166,7 +166,7 @@
 <script>
 import { getMessage, saveMessage, resetMessage } from "@/api/event.js";
 import { API_BASE_URL } from "@/config/index.js";
-import { getUserDetailUseToken } from "@/api/user.js";
+// import { getUserDetailUseToken } from "@/api/user.js";
 import * as Alert from "@/api/alert";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import dayjs from "dayjs";
@@ -206,40 +206,27 @@ export default {
     };
   },
 
-  created() {
-    if (window.localStorage.getItem("accessToken")) {
-      //로그인 되어있는 상태 store inlogin true
-      getUserDetailUseToken(
-        window.localStorage.getItem("accessToken"),
-        (res) => {
-          // console.log(res.data.User);
-          this.$store.commit("userStore/setUser", res.data.User);
-          this.isLogin = true;
-          if (this.$route.params.userid == res.data.User.id) {
-            this.isMyPage = true;
-            this.year = res.data.User.selectedDate[0];
-            this.sMonth = res.data.User.selectedDate[1];
-            this.sDate = res.data.User.selectedDate[2];
-            this.category = res.data.User.category;
-          }
-        },
-        () => {
-          // console.log("getUserDetailUseToken fail");
-          this.isLogin = false;
-          window.localStorage.removeItem("accessToken");
-          this.$router.go;
-        }
-      );
-    }
-  },
-
   mounted() {
+    if (this.curUser.permission == 0) {
+      this.isMyPage = true;
+
+      if (this.curUser.selectedDate == null) {
+        this.year = 0;
+        this.sMonth = 0;
+        this.sDate = 0;
+      } else {
+        this.year = dayjs(this.curUser.selectedDate).get("year");
+        this.sMonth = dayjs(this.curUser.selectedDate).get("month") + 1;
+        this.sDate = dayjs(this.curUser.selectedDate).get("date");
+      }
+      this.category = this.curUser.category;
+      console.log(this.year, this.sMonth, this.sDate);
+    }
+
     getMessage(
       this.curUser.id,
       (res) => {
-        // console.log(res.data.Message);
         this.messages = res.data.Message;
-        // console.log(this.messages);
       },
       () => {
         console.log("get Message fail");
@@ -278,17 +265,13 @@ export default {
     changeParams(userId) {
       //파라미터 변경시 실행
       this.isMyPage = true;
-      getMessage(
-        userId,
-        (res) => {
-          this.messages = res.data.Message;
-        },
-        () => {}
-      );
+      getMessage(userId, (res) => {
+        this.messages = res.data.Message;
+      });
     },
 
     modal(message) {
-      if (this.curUser.selectedDate == this.today) {
+      if (this.curUser.selectedDate <= this.today) {
         this.content = message.content;
         this.sender = message.sender;
         if (message.presentId != null) {
@@ -461,43 +444,47 @@ export default {
           .then((result) => {
             if (result.isConfirmed) {
               this.AC_UPDATE_CONCEPT(data);
-              resetMessage(
-                () => {
-                  console.log("reset Message Success");
-                  // console.log(res);
-                  Alert.resetMessageSuccess(vm);
-                  getMessage(
-                    this.curUser.id,
-                    (res) => {
-                      // console.log(res.data.Message);
-                      this.RESET_PRESENT_LIST();
-                      this.messages = res.data.Message;
+              if (this.messages.length != 0) {
+                resetMessage(
+                  () => {
+                    console.log("reset Message Success");
+                    // console.log(res);
+                    Alert.resetMessageSuccess(vm);
+                    getMessage(
+                      this.curUser.id,
+                      (res) => {
+                        // console.log(res.data.Message);
+                        this.RESET_PRESENT_LIST();
+                        this.messages = res.data.Message;
 
-                      this.$swal
-                        .fire({
-                          title: "초기화 성공!",
-                          text: "초기화가 완료되었습니다! ",
-                          icon: "success",
-                        })
-                        .then((result) => {
-                          if (result.isConfirmed) {
-                            this.$router
-                              .go({ name: "eventRoom" })
-                              .catch(() => {});
-                          }
-                        });
+                        this.$swal
+                          .fire({
+                            title: "초기화 성공!",
+                            text: "초기화가 완료되었습니다! ",
+                            icon: "success",
+                          })
+                          .then((result) => {
+                            if (result.isConfirmed) {
+                              this.$router
+                                .go({ name: "eventRoom" })
+                                .catch(() => {});
+                            }
+                          });
 
-                      // console.log(this.messages);
-                    },
-                    () => {
-                      console.log("get Message fail");
-                    }
-                  );
-                },
-                () => {
-                  console.log("Message reset fail");
-                }
-              );
+                        // console.log(this.messages);
+                      },
+                      () => {
+                        console.log("get Message fail");
+                      }
+                    );
+                  },
+                  () => {
+                    console.log("Message reset fail");
+                  }
+                );
+              } else {
+                this.$router.go({ name: "eventRoom" }).catch(() => {});
+              }
               //
             }
           });

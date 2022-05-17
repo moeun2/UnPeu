@@ -20,7 +20,7 @@
         </v-row>
       </v-card-subtitle>
 
-      <v-card-text>
+      <v-card-text >
         <v-row>
           <v-col>
             <v-select

@@ -217,7 +217,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+strong { 
+  font-weight: bolder;
+  color: blue;
+}
 .card {
   margin: 5px;
   background-color: white !important;
@@ -241,7 +245,7 @@ export default {
   top: calc(50% - 20px);
 }
 .modal-img {
-  height: 35px;
-  width: 35px;
+  height: 150px;
+  width: 150px;
 }
 </style>

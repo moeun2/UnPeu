@@ -137,7 +137,7 @@
         <section class="main-section">
           <div class="speech-bubble-div">
             <div class="speech-bubble2">
-              <a :href="this.url" style="color: white">
+              <a :href="this.url" target='_blank' style="color: white">
                 더 상세한 사용방법과<br />이벤트를 알고싶다면?<br /><strong>(👉Click
                 Here!👈)</strong></a
               >
@@ -261,7 +261,10 @@ export default {
       this.updateUserImg();
     },
     $route(to, form) {
-      if (to.path !== form.path) this.changeParams(this.$route.params.userid);
+      if (to.path !== form.path) {
+        this.checkPath();
+        this.changeParams(this.$route.params.userid);
+      }
     },
   },
   computed: {
@@ -271,9 +274,10 @@ export default {
   },
   mounted() {
     this.checkConcept();
-    // this.AC_USER_DETAIL(this.curUser.id)
+    
   },
   created() {
+    
     // this.checkConcept();
     if (window.localStorage.getItem("accessToken")) {
       //로그인 되어있는 상태 store inlogin true
@@ -297,6 +301,7 @@ export default {
       );
     }
     this.setUserData();
+    this.checkPath();
 
     //조회수 증가
     if (
@@ -326,6 +331,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(userStore, ["AC_UPDATE_CONCEPT","AC_USER_DETAIL"]),
     playMusic(music) {
       // alert("노래를 재생합니다.")
       if (music != "none") {
@@ -350,27 +356,20 @@ export default {
         this.audio.pause();
       }
     },
-
-    ...mapActions(userStore, ["AC_UPDATE_CONCEPT","AC_USER_DETAIL"]),
+    checkPath(){
+      const path = this.$route.path;
+      if(path.startsWith("/eventRoom")){
+        this.checkHome()
+      }else{
+        this.checkDiary();
+      }
+    },
     checkConcept() {
-      console.log("mainPage 입성")
-      // getUserDetail(this.$route.params.userid,
-      //   (res)=>{
-      //     /** Category, selectedDate 설정 **/
-      //     this.$store.commit(
-      //       "userStore/MU_CUR_USER_CONCEPT",
-      //       res.data.User.category,
-      //       res.data.User.selectedDate
-      //     );
-      //   },
-      //   (err)=>{
-      //     console.log(err)
-      //   })
       let concept = this.curUser.category;
       let selectedDate = this.curUser.selectedDate;
-      console.log("selectedDate : ", selectedDate);
-      console.log("today : ", this.today);
-      console.log("CheckConcept-Concept : ", concept);
+      // console.log("selectedDate : ", selectedDate);
+      // console.log("today : ", this.today);
+      // console.log("CheckConcept-Concept : ", concept);
       switch (concept) {
         case "default":
           if (selectedDate <= this.today) {
@@ -418,60 +417,8 @@ export default {
     },
     ...mapMutations(presentStore, ["RESET_PRESENT_LIST"]),
     goToMainPage() {
-      // test 용으로 놨둔 주석입니다. 삭제하지 말아주세요.
-      // let concept = this.curUser.category;
-      // this.data.userId = this.curUser.id;
-      // console.log("concept : ", this.curUser.category);
-      // switch (concept) {
-      //   case "default":
-      //     this.data.category = "birthday";
-      //     this.AC_UPDATE_CONCEPT(
-      //       this.data,
-      //       function (res) {
-      //         console.log("AC_UPDATE_CONCEPT Success")
-      //         console.log(res);
-      //         console.log(this.curUser);
-      //       },
-      //       function () {}
-      //     );
-      //     document.documentElement.setAttribute(
-      //       "color-theme",
-      //       "birthday-close"
-      //     );
-
-      //     break;
-      //   case "birthday":
-      //     this.data.category = "children";
-      //     this.AC_UPDATE_CONCEPT(
-      //       this.data,
-      //       function (res) {
-      //         console.log("AC_UPDATE_CONCEPT Success")
-      //         console.log(res);
-      //         console.log(this.curUser);
-      //       },
-      //       function () {}
-      //     );
-      //     document.documentElement.setAttribute(
-      //       "color-theme",
-      //       "children-close"
-      //     );
-      //     break;
-      //   case "children":
-      //     this.data.category = "default";
-      //     this.AC_UPDATE_CONCEPT(
-      //       this.data,
-      //       function (res) {
-      //         console.log("AC_UPDATE_CONCEPT Success")
-      //         console.log(res);
-      //         console.log(this.curUser);
-      //       },
-      //       function () {}
-      //     );
-      //     document.documentElement.setAttribute("color-theme", "default-close");
-      //     break;
-      // }
-
       this.$router.push({ name: "eventRoom" }).catch(() => {});
+      this.checkHome();
     },
     setUserData() {
       getUserDetail(
@@ -934,9 +881,6 @@ a strong {
 }
 .swal2-select {
   border: 1px solid #d9d9d9;
-}
-.mdi-camera::before {
-  color: grey;
 }
 .music-icon {
   float: right;
