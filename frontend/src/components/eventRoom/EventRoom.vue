@@ -485,7 +485,7 @@ export default {
               } else {
                 this.$router.go({ name: "eventRoom" }).catch(() => {});
               }
-              //
+              
             }
           });
       }
