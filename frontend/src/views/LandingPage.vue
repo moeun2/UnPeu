@@ -76,6 +76,7 @@ export default {
 .landing {
   text-align: center;
   justify-content: center;
+  font-family: "GangwonEdu_OTFBoldA";
 }
 .landing_btn {
   background-color: #fff6ca !important;

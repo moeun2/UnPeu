@@ -21,7 +21,7 @@ export default {
 @import url("@/assets/css/style.css");
 
 * {
-  font-family: "GangwonEdu_OTFBoldA" ;
+  font-family: "GangwonEdu_OTFBoldA"  ;
 }
 @font-face {
   font-family: "GangwonEdu_OTFBoldA";

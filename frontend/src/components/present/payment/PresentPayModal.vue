@@ -197,9 +197,7 @@ export default {
   transition: all 0.3s ease;
   /* font-family: "Dancing Script", cursive; */
 }
-.modal-footer {
-  font-family: sans-serif;
-}
+
 .modal-header {
   display: flex;
   align-items: center;

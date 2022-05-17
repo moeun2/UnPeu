@@ -127,5 +127,6 @@ export default {
   text-align: center;
   justify-content: center;
   align-items: center;
+  font-family: "GangwonEdu_OTFBoldA"
 }
 </style>

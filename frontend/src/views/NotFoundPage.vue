@@ -28,6 +28,7 @@
   margin-top: 10vh;
   text-align: center;
   justify-content: center;
+  font-family: "GangwonEdu_OTFBoldA"
 }
 .view {
   background-image: url("https://i.imgur.com/EI9xcZH.png");
