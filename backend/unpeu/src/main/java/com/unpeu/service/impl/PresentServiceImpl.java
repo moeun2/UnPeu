@@ -171,7 +171,7 @@ public class PresentServiceImpl implements IPresentService {
 	@Override
 	public String peekMoney(Long userId) {
 		logger.info("peekMoney-호출");
-		Optional<User> user = userRepository.findById(Long.parseLong(/*message.getUserId())*/"1"));
+		Optional<User> user = userRepository.findById(userId);
 		if (user.isEmpty()) {
 			throw new CustomException(MEMBER_NOT_FOUND);
 		}

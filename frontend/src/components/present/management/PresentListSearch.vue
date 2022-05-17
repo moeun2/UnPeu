@@ -95,7 +95,7 @@ import PresentUpdateModal from "@/components/present/management/PresentUpdateMod
 import { API_BASE_URL } from "@/config/index.js";
 import PresentProgressBar from "@/components/present/PresentProgressBar.vue";
 
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 const presentStore = "presentStore";
 
@@ -126,11 +126,13 @@ export default {
     handler(newVal) {
       if(newVal==null) return;
       this.cardList=newVal.Present;
+      this.GET_APPROPRIATE_VALUE_OF_PRESENT_LIST;
     }
   }
   },
 
   computed: {
+    ...mapGetters(presentStore, ["GET_APPROPRIATE_VALUE_OF_PRESENT_LIST"]),
     ...mapState(presentStore, ["presentList"]),
     columns() {
       // 카드 개수 3개로 고정
@@ -140,7 +142,6 @@ export default {
 
   methods: {
     ...mapActions(presentStore, ["deletePresent"]),
-
     openDialog(index) {
       this.dialog = true;
       this.selectedCardList = this.cardList[index];

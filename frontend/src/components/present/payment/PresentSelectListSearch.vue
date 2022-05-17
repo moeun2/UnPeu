@@ -46,9 +46,10 @@
                       </v-card-title>
                       <v-card-text>
                         <p>가격 : {{ cardList[+index + i].presentPrice }}</p>
-                        <p>
-                          모인 금액 : {{ cardList[+index + i].receivedPrice }}
-                        </p>
+                        <present-progress-bar 
+                          :presentPrice="cardList[+index + i].presentPrice"
+                          :receivedPrice="cardList[+index + i].receivedPrice"
+                          ></present-progress-bar>
                       </v-card-text>
                     </v-card>
                   </v-col>
@@ -78,11 +79,14 @@
 import { API_BASE_URL } from "@/config/index.js";
 import { mapGetters, mapActions, mapState } from "vuex";
 import PresentPayModal from "@/components/present/payment/PresentPayModal";
+import PresentProgressBar from "@/components/present/PresentProgressBar.vue";
+
 const presentStore = "presentStore";
 const userStore = "userStore";
 export default {
   components: {
     PresentPayModal,
+    PresentProgressBar,
   },
   data() {
     return {

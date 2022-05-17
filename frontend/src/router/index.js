@@ -135,7 +135,8 @@ function getUserPresentAndCheckGuest(to, from, next) {
     });
   } else {
     let userId = to.params.userid;
-    Store.dispatch("presentStore/searchList", userId);
+    Store.dispatch("presentStore/searchList",userId);
+    Store.dispatch("presentStore/getMoney",userId);
     next();
   }
 }
@@ -154,7 +155,7 @@ function getUserInfo(to, from, next) {
   Store.commit("userStore/MU_CUR_USER_ID", userId);
   console.log("getUserInfo - CuruserId :", userId);
 
-  
+
 
   getUserDetail(
     userId,
@@ -165,7 +166,7 @@ function getUserInfo(to, from, next) {
           "YYYY-MM-DD"
         );
       }
-      
+
       const data = {
         category: res.data.User.category,
         selectedDate: today,
