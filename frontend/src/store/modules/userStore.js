@@ -58,7 +58,7 @@ export const userStore = {
       api.updateUserConcept(
         data,
         (response) => {
-          // console.log("AC_UPDATE_CONCEPT : ", response.data);
+          console.log("AC_UPDATE_CONCEPT : ", response.data);
           const data = {
             category: response.data.User.category,
             selectedDate: dayjs(
@@ -66,21 +66,19 @@ export const userStore = {
             ).format("YYYY-MM-DD"),
           };
           commit("MU_CUR_USER_CONCEPT", data);
-          return response.data;
         },
         (err) => {
           console.log(err);
-          return false;
         }
       );
     },
 
     AC_USER_DETAIL({ commit, dispatch }, userId) {
-      // console.log("AC_USER_DETAIL-호출");
+      console.log("AC_USER_DETAIL-호출");
       api.getUserDetail(
         userId,
         (response) => {
-          // console.log("AC_USER_DETAIL", response.data);
+          console.log("AC_USER_DETAIL", response.data);
 
           let today = null;
           if (response.data.User.selectedDate != null) {
@@ -144,7 +142,7 @@ export const userStore = {
       // console.log("CheckConcept-Concept : ", concept);
       switch (concept) {
         case "default":
-          if (selectedDate >= today) {
+          if (selectedDate <= today) {
             document.documentElement.setAttribute(
               "color-theme",
               "default-open"
@@ -157,7 +155,7 @@ export const userStore = {
           }
           break;
         case "birthday":
-          if (selectedDate >= today) {
+          if (selectedDate <= today) {
             document.documentElement.setAttribute(
               "color-theme",
               "birthday-open"
@@ -170,7 +168,7 @@ export const userStore = {
           }
           break;
         case "children":
-          if (selectedDate >= today) {
+          if (selectedDate <= today) {
             document.documentElement.setAttribute(
               "color-theme",
               "children-open"

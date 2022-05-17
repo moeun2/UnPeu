@@ -89,14 +89,35 @@
         <div class="concept-content">
           <div class="mode-content">
             <h2 class="concept-h2">날짜 선택</h2>
-            <p class="setDate-p">본 날짜는 매년 정기적으로 실행됩니다.
-              <br/>
-              현재 날짜를 기준으로 이미 지난 날짜를 설정할 경우 다음해로 이월됩니다.
+            <p class="setDate-p">
+              본 날짜는 매년 정기적으로 실행됩니다.
+              <br />
+              현재 날짜를 기준으로 이미 지난 날짜를 설정할 경우 다음해로
+              이월됩니다.
             </p>
 
-            <input type="number" name="month" class="input-date" id="month" v-model="month" placeholder="0" /> 월
-            <input type="number" name="date" class="input-date" id="date" v-model="date" placeholder="0" /> 일
-            <p class="setDate-p2">설정 날짜 : {{ this.year }}년 {{ this.sMonth }}월 {{ this.sDate }}일 </p>
+            <input
+              type="number"
+              name="month"
+              class="input-date"
+              id="month"
+              v-model="month"
+              placeholder="0"
+            />
+            월
+            <input
+              type="number"
+              name="date"
+              class="input-date"
+              id="date"
+              v-model="date"
+              placeholder="0"
+            />
+            일
+            <p class="setDate-p2">
+              설정 날짜 : {{ this.year }}년 {{ this.sMonth }}월
+              {{ this.sDate }}일
+            </p>
           </div>
 
           <div class="mode-content">
@@ -106,10 +127,31 @@
               선택하세요!
             </p>
 
-            <input type="radio" name="concept" id="default" value="default" v-model="category" checked /> 기본
-            <input type="radio" name="concept" id="birthday" value="birthday" v-model="category" /> 생일
-            <input type="radio" name="concept" id="childrenDay" value="children" v-model="category" /> 어른이날
-
+            <input
+              type="radio"
+              name="concept"
+              id="default"
+              value="default"
+              v-model="category"
+              checked
+            />
+            기본
+            <input
+              type="radio"
+              name="concept"
+              id="birthday"
+              value="birthday"
+              v-model="category"
+            />
+            생일
+            <input
+              type="radio"
+              name="concept"
+              id="childrenDay"
+              value="children"
+              v-model="category"
+            />
+            어른이날
           </div>
 
           <button @click="setDate" type="submit" class="setDate-btn">
@@ -363,10 +405,10 @@ export default {
         let today = new Date();
         let year = today.getFullYear();
         // 현재 날짜와 비교해서 적은 날짜이면 연도 + 1
-        if(this.month < today.getMonth()+1) {
+        if (this.month < today.getMonth() + 1) {
           year = year + 1;
-        }else if(this.month == today.getMonth() +1) {
-          if(this.date < today.getDate()) {
+        } else if (this.month == today.getMonth() + 1) {
+          if (this.date < today.getDate()) {
             year = year + 1;
           }
         }
@@ -386,10 +428,10 @@ export default {
         }
 
         if (this.category === "children") {
-          if(this.month > 5) {
+          if (this.month > 5) {
             year = year + 1;
-          }else if(this.month == 5) {
-            if(this.date > 5) {
+          } else if (this.month == 5) {
+            if (this.date > 5) {
               year = year + 1;
             }
           }
@@ -403,8 +445,9 @@ export default {
         data.category = this.category;
         data.selectedDate = this.selectedDate;
         data.userId = this.curUser.id;
-        //console.log(data);
+        //console.log("data: ", data);
 
+        const vm = this;
         this.$swal
           .fire({
             title: "컨셉 변경 저장",
@@ -417,35 +460,45 @@ export default {
           })
           .then((result) => {
             if (result.isConfirmed) {
-              this.AC_UPDATE_CONCEPT(
-                data,
-                function (res) {
-                  console.log(res);
-                },
-                function () {}
-              );
+              this.AC_UPDATE_CONCEPT(data);
               resetMessage(
-              () => {
-                // console.log(res);
-                Alert.resetMessageSuccess(this);
-                getMessage(
-                  this.curUser.id,
-                  (res) => {
-                    // console.log(res.data.Message);
-                    this.RESET_PRESENT_LIST();
-                    this.messages = res.data.Message;
-                    // console.log(this.messages);
-                  },
-                  () => {
-                    console.log("get Message fail");
-                  }
-                );
-              },
-              () => {
-                console.log("Message reset fail");
-              }
-            );
-              this.$router.go({ name: "eventRoom" }).catch(() => {});
+                () => {
+                  console.log("reset Message Success");
+                  // console.log(res);
+                  Alert.resetMessageSuccess(vm);
+                  getMessage(
+                    this.curUser.id,
+                    (res) => {
+                      // console.log(res.data.Message);
+                      this.RESET_PRESENT_LIST();
+                      this.messages = res.data.Message;
+
+                      this.$swal
+                        .fire({
+                          title: "초기화 성공!",
+                          text: "초기화가 완료되었습니다! ",
+                          icon: "success",
+                        })
+                        .then((result) => {
+                          if (result.isConfirmed) {
+                            this.$router
+                              .go({ name: "eventRoom" })
+                              .catch(() => {});
+                          }
+                        });
+
+                      // console.log(this.messages);
+                    },
+                    () => {
+                      console.log("get Message fail");
+                    }
+                  );
+                },
+                () => {
+                  console.log("Message reset fail");
+                }
+              );
+              //
             }
           });
       }

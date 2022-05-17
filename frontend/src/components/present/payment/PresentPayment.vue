@@ -36,7 +36,7 @@ export default {
       numCheckbox: false,
       checkbox: false,
       message: {
-        category: "2022_어른이날",
+        category: "",
         presentId: null,
         price: null,
         sender: "",
@@ -78,6 +78,7 @@ export default {
     createMessage() {
       const vm = this;
       this.message.userId = this.curUser.id;
+      this.message.category = this.curUser.category;
       // console.log(this.curUser.id)
       // console.log(this.message)
       sendMessage(
