@@ -153,7 +153,7 @@ function getUserInfo(to, from, next) {
   let userId = to.params.userid;
   let accessToken = localStorage.getItem("accessToken");
   Store.commit("userStore/MU_CUR_USER_ID", userId);
-  console.log("getUserInfo - CuruserId :", userId);
+  // console.log("getUserInfo - CuruserId :", userId);
 
 
 

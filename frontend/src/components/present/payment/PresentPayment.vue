@@ -16,7 +16,6 @@
       v-if="checkbox == false"
     />
     <present-message @message="getMessage" />
-    <!-- <button @click="testAlert">getters Test</button> -->
   </div>
 </template>
 
@@ -69,12 +68,6 @@ export default {
       } else {
         this.numCheckbox = false;
       }
-    },
-    testAlert() {
-      // console.log("Getters TEST : getCurUser " , this.curUser.id)
-      //alert(this.userTest);
-      //this.$router.push({ name: "eventRoom" });
-      console.log(this.userInfo);
     },
     createMessage() {
       const vm = this;

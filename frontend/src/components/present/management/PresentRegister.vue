@@ -90,7 +90,7 @@ export default {
     ...mapActions(presentStore, ["registerPresent"]),
     
     regist() {
-      console.log(this.files)
+      // console.log(this.files)
       if(this.files==null || this.files.length==0){
         this.errorAlert("파일을 넣어주세요");
         return;

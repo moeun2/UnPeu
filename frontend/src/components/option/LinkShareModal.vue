@@ -86,10 +86,10 @@ export default {
       //https 적용시
       if (navigator.clipboard && window.isSecureContext) {
         // navigator clipboard api method'
-        console.log("https 적용 시 copy")
+        // console.log("https 적용 시 copy")
         navigator.clipboard.writeText(`${copiedText}`);
       } else { //https 미적용시
-        console.log("https 미적용 시 copy")
+        // console.log("https 미적용 시 copy")
         // text area method
         let textArea = document.createElement("textarea");
         textArea.value = `${copiedText}`;
@@ -127,8 +127,8 @@ export default {
     },
 
     shareKakao() {
-      // // // // // console.log("shareKakao-호출");
-      // // // // // console.log(this.url);
+      // console.log("shareKakao-호출");
+      // console.log(this.url);
 
       if (window.Kakao) {
         const kakao = window.Kakao;

@@ -326,7 +326,7 @@ export default {
       this.$swal.fire(Alert.saveMessageCheck).then((result) => {
         if (result.dismiss === this.$swal.DismissReason.cancel) {
           Alert.saveMessageCancel(this);
-          console.log(this.messages);
+          // console.log(this.messages);
         } else {
           if (this.messages.length == 0) {
             Alert.saveMessageFail(this);
@@ -447,7 +447,7 @@ export default {
               if (this.messages.length != 0) {
                 resetMessage(
                   () => {
-                    console.log("reset Message Success");
+                    // console.log("reset Message Success");
                     // console.log(res);
                     Alert.resetMessageSuccess(vm);
                     getMessage(

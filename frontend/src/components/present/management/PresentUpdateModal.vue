@@ -253,7 +253,7 @@ export default {
     },
 
     updateWithFile() {
-      console.log(this.files.length);
+      // console.log(this.files.length);
       if(this.files==null || this.files.length==0)
         this.errorAlert("파일을 넣어주세요");
       if(this.files.type.indexOf("image/")==-1){
