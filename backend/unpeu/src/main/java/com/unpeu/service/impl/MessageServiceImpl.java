@@ -101,7 +101,7 @@ public class MessageServiceImpl implements IMessageService {
 		for(MessagePostReq message : messages) {
 			String imgTag = "";
 			if (message.getPresentId() != null) {
-				imgTag = "<p><img src='\'"+RedirectURL + message.getPresentImg() + "\"></p>";
+				imgTag = "<p><img src=\""+RedirectURL + message.getPresentImg() + "\"></p>";
 			}
 
 			String content = "<p>" + message.getContent() + " (" + message.getPrice() + "원 펀딩) </p>";
