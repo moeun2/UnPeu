@@ -882,9 +882,6 @@ a strong {
 .swal2-select {
   border: 1px solid #d9d9d9;
 }
-.mdi-camera::before {
-  color: grey;
-}
 .music-icon {
   float: right;
 }

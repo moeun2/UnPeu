@@ -809,3 +809,6 @@ a.link {
 .swal2-textarea::-webkit-scrollbar {
   display: none;
 }
+.mdi-camera::before {
+  color: grey;
+}
