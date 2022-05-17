@@ -13,6 +13,7 @@ import com.unpeu.domain.request.MessagePostReq;
 import com.unpeu.domain.response.MessageGetRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MessageServiceImpl implements IMessageService {
 	private static final Logger logger = LoggerFactory.getLogger(MessageServiceImpl.class);
+
+	@Value("${spring.img.url}")
+	private String RedirectURL;
 
 	private final IMessageRepository messageRepository;
 	private final IPresentRepository presentRepository;
@@ -97,7 +101,7 @@ public class MessageServiceImpl implements IMessageService {
 		for(MessagePostReq message : messages) {
 			String imgTag = "";
 			if (message.getPresentId() != null) {
-				imgTag = "<p><img src=\"http://localhost:8080" + message.getPresentImg() + "\"></p>";
+				imgTag = "<p><img src='\'"+RedirectURL + message.getPresentImg() + "\"></p>";
 			}
 
 			String content = "<p>" + message.getContent() + " (" + message.getPrice() + "원 펀딩) </p>";
