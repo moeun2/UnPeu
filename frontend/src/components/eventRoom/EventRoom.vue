@@ -220,7 +220,7 @@ export default {
         this.sDate = dayjs(this.curUser.selectedDate).get("date");
       }
       this.category = this.curUser.category;
-      console.log(this.year, this.sMonth, this.sDate);
+      // console.log(this.year, this.sMonth, this.sDate);
     }
 
     getMessage(
