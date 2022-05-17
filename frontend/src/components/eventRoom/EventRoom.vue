@@ -430,7 +430,7 @@ export default {
         data.userId = this.curUser.id;
         //console.log("data: ", data);
 
-        const vm = this;
+        // const vm = this;
         this.$swal
           .fire({
             title: "컨셉 변경 저장",
@@ -444,47 +444,47 @@ export default {
           .then((result) => {
             if (result.isConfirmed) {
               this.AC_UPDATE_CONCEPT(data);
-              if (this.messages.length != 0) {
-                resetMessage(
-                  () => {
-                    console.log("reset Message Success");
-                    // console.log(res);
-                    Alert.resetMessageSuccess(vm);
-                    getMessage(
-                      this.curUser.id,
-                      (res) => {
-                        // console.log(res.data.Message);
-                        this.RESET_PRESENT_LIST();
-                        this.messages = res.data.Message;
+              // if (this.messages.length != 0) {
+              //   resetMessage(
+              //     () => {
+              //       console.log("reset Message Success");
+              //       // console.log(res);
+              //       Alert.resetMessageSuccess(vm);
+              //       getMessage(
+              //         this.curUser.id,
+              //         (res) => {
+              //           // console.log(res.data.Message);
+              //           this.RESET_PRESENT_LIST();
+              //           this.messages = res.data.Message;
 
-                        this.$swal
-                          .fire({
-                            title: "초기화 성공!",
-                            text: "초기화가 완료되었습니다! ",
-                            icon: "success",
-                          })
-                          .then((result) => {
-                            if (result.isConfirmed) {
-                              this.$router
-                                .go({ name: "eventRoom" })
-                                .catch(() => {});
-                            }
-                          });
+              //           this.$swal
+              //             .fire({
+              //               title: "초기화 성공!",
+              //               text: "초기화가 완료되었습니다! ",
+              //               icon: "success",
+              //             })
+              //             .then((result) => {
+              //               if (result.isConfirmed) {
+              //                 this.$router
+              //                   .go({ name: "eventRoom" })
+              //                   .catch(() => {});
+              //               }
+              //             });
 
-                        // console.log(this.messages);
-                      },
-                      () => {
-                        console.log("get Message fail");
-                      }
-                    );
-                  },
-                  () => {
-                    console.log("Message reset fail");
-                  }
-                );
-              } else {
-                this.$router.go({ name: "eventRoom" }).catch(() => {});
-              }
+              //           // console.log(this.messages);
+              //         },
+              //         () => {
+              //           console.log("get Message fail");
+              //         }
+              //       );
+              //     },
+              //     () => {
+              //       console.log("Message reset fail");
+              //     }
+              //   );
+              // } else {
+              //   this.$router.go({ name: "eventRoom" }).catch(() => {});
+              // }
               //
             }
           });
