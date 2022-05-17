@@ -79,7 +79,9 @@ export default {
 };
 </script>
 <style scoped>
-
+*{
+  font-family: "hiffy" !important;
+}
 
 .ba-we-love-subscribers {
   width: 290px;
@@ -143,6 +145,7 @@ export default {
   width: 100%;
   box-sizing: border-box;
   line-height: normal;
+  font-family: "hiffy" !important;
 }
 .ba-we-love-subscribers input {
   font-size: 16px;

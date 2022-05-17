@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="message-title">콩주머니 보내기</div>
+    <div class="message-title">메세지 & 선물 보내기</div>
     <v-checkbox
       v-if="numCheckbox == false"
       v-model="checkbox"
@@ -9,6 +9,7 @@
           ? '선물 없이 메세지로만 마음을 전할래요!'
           : '선물도 보내고 싶다면 한 번 더 클릭!'
       "
+      
     ></v-checkbox>
     <present-select-list-search
       @present="getPresent"
@@ -219,8 +220,7 @@ export default {
   },
 };
 </script>
-
-<style>
+<style scoped>
 h2 {
   border-bottom: none !important;
 }
