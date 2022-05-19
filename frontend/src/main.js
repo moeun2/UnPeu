@@ -8,6 +8,7 @@ import { library as faLibrary } from "@fortawesome/fontawesome-svg-core";
 import { faHome, faSearch, faPlus } from "@fortawesome/free-solid-svg-icons";
 import VueSweetalert2 from "vue-sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
+import VueGtag from 'vue-gtag'
 
 faLibrary.add(faHome, faSearch, faPlus);
 // Vue.component("font-awesome-icon", FontAwesomeIcon);
@@ -18,6 +19,11 @@ const options = {
 };
 
 Vue.use(VueSweetalert2, options);
+Vue.use(VueGtag, {
+  config: {
+      id: 'G-VFRLJ3ZJWQ' 
+  }
+});
 Vue.config.productionTip = false;
 
 new Vue({
