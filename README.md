@@ -360,10 +360,10 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 |구분|이름|역할|깃헙 주소|
 | ------ | ------ | ------ | ------ |
 |팀장| 황보라 | 유저 관리 Full Stack | https://github.com/yellow-purple |
-|팀원| 김정윤 | 다이어리 관리 Full Stack | |
+|팀원| 김정윤 | 다이어리 관리 Full Stack | https://github.com/KJY97 |
 |팀원| 손모은 | 선물 관리 Full Stack | https://github.com/moeun2 |
 |팀원| 안세연 | 메인 화면 관리 Full Stack | https://github.com/seyeonn |
-|팀원| 정희연 | 선물 관리 Full Stack | |
+|팀원| 정희연 | 선물 관리 Full Stack | https://github.com/recul12 |
 
 ### 역할 상세
 
