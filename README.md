@@ -1,6 +1,7 @@
 # 🎁UNPEU : 당신을 위한 작은 선물과 기록
 
-![앙뿌로고](https://user-images.githubusercontent.com/38287375/169250173-01fa3c9a-dc40-416d-9cd7-2ab11df5924f.PNG)
+<img src="https://user-images.githubusercontent.com/38287375/169250173-01fa3c9a-dc40-416d-9cd7-2ab11df5924f.PNG"  width="400px" height="400px"/>
+
 
 사용자 지정 이벤트에 따라 테마를 변경할 수 있는 기프트 레지스트리 웹 서비스
 
@@ -38,10 +39,9 @@
     
 
 1. **공정거래 위원회의 온라인 선물하기 시장 규모 그래프**
-    
-    ![조사결과2](https://user-images.githubusercontent.com/38287375/169251058-e10c0845-b431-44e5-9ff3-a2d7ddf81880.PNG)
 
-    
+    <img src="https://user-images.githubusercontent.com/38287375/169251058-e10c0845-b431-44e5-9ff3-a2d7ddf81880.PNG"  width="500px" height="400px"/>
+
 
 위 그래프를 보면 최근 들어 점점 더 큰 폭으로 시장의 규모가 상승했다는 것을 알 수 있습니다.
 
@@ -55,7 +55,7 @@
 
 ### Wedding Registry
 
-![웨딩](https://user-images.githubusercontent.com/38287375/169251245-8a03f4ba-b771-4b94-820e-56392a23a73c.PNG)
+<img src="https://user-images.githubusercontent.com/38287375/169251245-8a03f4ba-b771-4b94-820e-56392a23a73c.PNG"  width="500px" height="400px"/>
 
 
 **웨딩 레지스트리란?**
@@ -107,9 +107,8 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 **피드백 이슈 해결**
 
-![이슈2](https://user-images.githubusercontent.com/38287375/169251372-e6d6ce72-7a28-46d8-9bb1-04bbab162a27.PNG)
-
-![이슈1](https://user-images.githubusercontent.com/38287375/169251339-bf656a8f-23fd-408d-9a2d-1445a099330d.PNG)
+<img src="https://user-images.githubusercontent.com/38287375/169251339-bf656a8f-23fd-408d-9a2d-1445a099330d.PNG"  width="400px" height="300px"/>
+<img src="https://user-images.githubusercontent.com/38287375/169251372-e6d6ce72-7a28-46d8-9bb1-04bbab162a27.PNG"  width="400px" height="300px"/>
 
 
 - 폰트 이슈
@@ -124,10 +123,16 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
     - URL 및 SNS공유를 통해 자신의 이벤트룸을 공유할 수 있습니다.
 2. 선물 위시리스트 기능
 - 자신의 이벤트룸에 사용자가 원하는 선물들을 등록할 수 있습니다.
+<img src="https://user-images.githubusercontent.com/38287375/169311481-ad720bb7-8670-4ddf-8b94-7391e3ba731b.gif"  width="800px" height="500px"/>
+
 3. 축하 메세지와 선물 보내기 기능
 - 해당 페이지의 사용자가 등록해놓은 선물과 함께 따뜻한 마음을 전하는 메세지를 보낼 수 있습니다.
+<img src="https://user-images.githubusercontent.com/38287375/169312337-6ce0d53a-fe0f-4522-b411-a17f7c499f01.gif"  width="800px" height="500px"/>
+
 4. 이벤트 추억하기 기능
 - 해당 이벤트가 끝나도 메세지를 저장 해놓으면 다이어리에서 이전 이벤트들의 기록들을 계속 볼 수 있습니다.
+<img src="https://user-images.githubusercontent.com/38287375/169312237-7ad807ec-a923-4239-9e1d-47a90451b154.gif"  width="800px" height="500px"/>
+
 
 <br />
 
@@ -189,7 +194,7 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 ### ⚙ Architecture
 
-![Image Pasted at 2022-4-21 11-58](https://user-images.githubusercontent.com/38287375/169251743-c4714143-b42e-4564-8374-af399b712a30.png)
+<img src="https://user-images.githubusercontent.com/38287375/169251743-c4714143-b42e-4564-8374-af399b712a30.png"  width="800px" height="400px"/>
 
 
 ### 🎮Tech Stack
@@ -305,7 +310,7 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 |구분|설명| 비고 |
 | ------ | ------ | ------ |
-|Mattermost| 주제별 팀 채널 생성하여 관리한다. | B201 : 공지, QnA / B201 자료 공유 : File 공유, 사이트 Link는 Notion에 정리 / B201 진행사항(JIRA) : Jira에서 발생하는 상황 실시간 업데이트 공유 / B201 진행사항(Git) : Gitlab에서 발생하는 상황 실시간 업데이트 공유 |
+|Mattermost| 주제별 팀 채널 생성하여 관리한다. | B201 / B201 자료 공유 / B201 진행사항(JIRA) / B201 진행사항(Git) |
 |Webex| 오전(10:30 ~ 11:30) 회의 및 스크럼하기 위한 용도 | |
 |Discord| 업무 시간 동안(09:00 ~ 18:00) 연락 팀 내 수단 | |
 |Notion| 학습 자료 공유, 회의록, 개인 일정 공유, 팀 규칙 | |
@@ -317,11 +322,13 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 ## 7️⃣ 개발 일정
 
-![Image Pasted at 2022-5-18 11-18](https://user-images.githubusercontent.com/38287375/169252185-a33e6434-7cb6-4916-942b-1c6b6b3e9941.png)
+<img src="https://user-images.githubusercontent.com/38287375/169252185-a33e6434-7cb6-4916-942b-1c6b6b3e9941.png"  width="750px" height="300px"/>
 
 <br />
 
 ## 8️⃣ 기능 명세 요구 사항 정의서
+
+[요구사항 정의서](https://docs.google.com/spreadsheets/d/1_tWZr0V-rfleziy4Cy8klIURG-jpgstYkVAXTtd4MNg/edit#gid=315745956)
 
 
 <br />
@@ -330,13 +337,17 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 ### REST API
 
+[REST API](https://docs.google.com/spreadsheets/d/1_tWZr0V-rfleziy4Cy8klIURG-jpgstYkVAXTtd4MNg/edit#gid=1506950209)
+
 ### ERD
 
-![erd](https://user-images.githubusercontent.com/38287375/169252368-e94b2f4d-02eb-4766-af4b-66e475e8fdfe.PNG)
+<img src="https://user-images.githubusercontent.com/38287375/169252368-e94b2f4d-02eb-4766-af4b-66e475e8fdfe.PNG"  width="600px" height="500px"/>
+
 
 ### Wire Frame (Figma)
 
-![와이어프레임](https://user-images.githubusercontent.com/38287375/169252623-be1f8c9c-8efd-448a-b9d1-ada3514a5188.PNG)
+<img src="https://user-images.githubusercontent.com/38287375/169252623-be1f8c9c-8efd-448a-b9d1-ada3514a5188.PNG"  width="600px" height="500px"/>
+
 
 <br />
 
@@ -424,7 +435,7 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 ### 소감
 
 - 황보라 : MVP로 빠른 개발을 목표로 진행했는데, 실제로 사용자들에게 홍보도 해보고, 사용자들의 의견을 받아보니 개발을 진행한 사람과 실 사용자의 관점이 다르다는 것을 느낄 수 있었습니다. 이번 프로젝트는 워라밸을 챙기면서 진행하자고 다짐했지만 돌아보니 그러지 못한 것 같아 팀원들에게 조금 미안했다고 사과해야할 것 같네용...ㅎㅎ 다들 너무 열심히 프로젝트를 참여해 주셔서 감사합니다!
-- 김정윤 :
+- 김정윤 : 이번 프로젝트에서는 그동안 하고 싶었던 MVP(Minimum Viable Product)를 목표로 빠른 기능 개발, 실사용자 받기, TDD를 모두 경험할 수 있어 좋았습니다. 특히 배포 후 실사용자의 피드백을 받았는데 개발자와 실사용자의 관점의 차이를 알 수 있었습니다. 좋은 팀원분들을 만나서 정말 좋았고 모두 6주간 수고하셨습니다!
 - 손모은 : MVP 로 빠른 개발과 배포를 경험할 수 있어서 좋은 경험이었습니다. 또한 Exception Handler를 그 전에는 알지 못하고 다른 분의 코드만 보았는데 공부하고 더 발전되게 코드를 짤 수 있어서 좋았습니다. 마지막으로 머지 리퀘스트를 보낼 때마다 코드 리뷰를 진행하였는데 이 부분 덕분에 많이 성장한 것 같습니다. 같이 하신 팀원 분들 너무 고생하셨고 감사합니다 :)
 - 안세연 : 이번 프로젝트를 통해 처음 경험해본 것들이 많았는데 이 경험을 통해 개발자로서 더 성장할 수 있었던 것 같습니다. 사전 조사와 피드백 수집, MVP 방식의 빠른 개발과 배포 경험, 코드리뷰를 통한 리팩토링 등 서비스를 만들어가는 과정이 순간순간 모두 뜻깊었습니다. 같이 좋은 환경을 만들어준 팀원들께 너무 감사하고 모두 고생하셨습니다!!
 - 정희연 : 이번 프로젝트에서 주로 프론트엔드를 구현했는데, 경험이 거의 없어서 배우면서 하느라 많이 느리게 진행되고, 에러를 많이 만들기도 했습니다. 좋은 팀원들의 도움을 받아서 점차적으로 지식을 쌓아 나가면서 프론트엔드에 익숙해질 수 있었고, 프로젝트 중 처음으로 팀원들과 코드리뷰, 테스트를 해보면서 내가 아닌 다른 사람들의 코드가 어떻게 진행되고 있는지도 배울 수 있었습니다. 또한 MVP 방식으로 개발하면서 사용자들의 직접적인 피드백도 받아서 사용자 관점으로도 프로젝트를 생각할 수 있게 되어 뜻 깊은 프로젝트 경험을 쌓을 수 있었습니다. 모든 팀원분들 고생하셨고 감사합니다!
