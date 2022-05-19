@@ -20,10 +20,10 @@ const options = {
 
 Vue.use(VueSweetalert2, options);
 Vue.use(VueGtag, {
-  config: {
-      id: 'G-GVRMS51PYC' 
-  }
-});
+  config: { 
+    id: 'G-GVRMS51PYC',
+  },
+}, router);
 Vue.config.productionTip = false;
 
 new Vue({
