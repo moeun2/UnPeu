@@ -21,7 +21,7 @@ const options = {
 Vue.use(VueSweetalert2, options);
 Vue.use(VueGtag, {
   config: {
-      id: 'G-VFRLJ3ZJWQ' 
+      id: 'G-GVRMS51PYC' 
   }
 });
 Vue.config.productionTip = false;
