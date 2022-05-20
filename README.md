@@ -330,7 +330,7 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 ## 8️⃣ 기능 명세 요구 사항 정의서
 
-[요구사항 정의서](https://docs.google.com/spreadsheets/d/1_tWZr0V-rfleziy4Cy8klIURG-jpgstYkVAXTtd4MNg/edit#gid=315745956)
+[요구사항 정의서](https://user-images.githubusercontent.com/40678696/169429543-230843a0-ea86-497c-aa16-0bd425e058f0.png)
 
 
 <br />
@@ -339,7 +339,7 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 ### REST API
 
-[REST API](https://docs.google.com/spreadsheets/d/1_tWZr0V-rfleziy4Cy8klIURG-jpgstYkVAXTtd4MNg/edit#gid=1506950209)
+[REST API](https://user-images.githubusercontent.com/40678696/169429376-94804139-7e79-4129-b500-e52192e383da.png)
 
 ### ERD
 
