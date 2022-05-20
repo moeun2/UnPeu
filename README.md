@@ -346,7 +346,7 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 ### Wire Frame (Figma)
 
-<img src="exec/기획/와이어프레임_초안.jpg"  width="600px" height="500px"/>
+<img src="https://user-images.githubusercontent.com/38287375/169252623-be1f8c9c-8efd-448a-b9d1-ada3514a5188.PNG"  width="600px" height="500px"/>
 
 
 <br />
