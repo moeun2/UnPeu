@@ -17,7 +17,7 @@
 
 ## 📽 UCC
 
-[![](https://user-images.githubusercontent.com/40678696/169236031-02d5b94d-de7f-4425-93b4-194c5123e2b4.png)](https://www.youtube.com/watch?v=jwAzELtf8x0)
+[![](https://user-images.githubusercontent.com/40678696/169236031-02d5b94d-de7f-4425-93b4-194c5123e2b4.png)](https://youtu.be/YyDjVzV1OHw)
 
 <br />
 
@@ -26,18 +26,17 @@
 ### 📊 조사 분석
 
 1. **서비스 출시 사용자 의견 조사** 
-    
+   
    ![조사 결과](https://user-images.githubusercontent.com/38287375/169250924-7e7f5af9-a5ff-427c-a40e-09b387d71891.PNG)
 
     ([~~https://docs.google.com/forms/d/e/1FAIpQLSdmQawne1ysFW2VS_ss1AF_GEs6u5R-FDgDkDAFuy3Yo252Vg/viewform~~](https://docs.google.com/forms/d/e/1FAIpQLSdmQawne1ysFW2VS_ss1AF_GEs6u5R-FDgDkDAFuy3Yo252Vg/viewform) - 지금은 받지 않고 있습니다!)
-    
+   
     Q. 여러분들은 이벤트(어린이날, 생일, 결혼식 등)가 있을 때 축하를 어떤 방식으로 하시고 계신가요? 
-    
+   
     A. 온라인 축하 인삿말 & 온라인 선물 → **84%**
-    
+   
     설문에 참여해주신 분들 중 무려 **84%** 가량이 sns, 카카오 선물하기와 같은 **온라인 축하 인사말과 온라인 선물**로 축하를 한다고 답변해주셨습니다.
-    
-
+   
 1. **공정거래 위원회의 온라인 선물하기 시장 규모 그래프**
 
     <img src="https://user-images.githubusercontent.com/38287375/169251058-e10c0845-b431-44e5-9ff3-a2d7ddf81880.PNG"  width="500px" height="400px"/>
@@ -121,7 +120,7 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 ### 1. 이벤트 날짜, 테마 지정 및 공유 기능
 - 사용자가 원하는 이벤트의 날짜를 설정하고 기본, 생일, 어린이날 카테고리를 통해 테마를 변경할 수 있습니다.
     - URL 및 SNS공유를 통해 자신의 이벤트룸을 공유할 수 있습니다.
-<img src="https://user-images.githubusercontent.com/40678696/169427940-65bf23c0-26ad-4065-9e3d-430079e5f93f.gif" width="800px" height="500px"/>
+    <img src="https://user-images.githubusercontent.com/40678696/169427940-65bf23c0-26ad-4065-9e3d-430079e5f93f.gif" width="800px" height="500px"/>
 
 ### 2. 선물 위시리스트 기능
 - 자신의 이벤트룸에 사용자가 원하는 선물들을 등록할 수 있습니다.
@@ -330,8 +329,7 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 ## 8️⃣ 기능 명세 요구 사항 정의서
 
-[요구사항 정의서](https://user-images.githubusercontent.com/40678696/169429543-230843a0-ea86-497c-aa16-0bd425e058f0.png)
-
+[요구사항 정의서](exec/기획/Unpeu_요구사항_목록.png)
 
 <br />
 
@@ -339,7 +337,7 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 ### REST API
 
-[REST API](https://user-images.githubusercontent.com/40678696/169429376-94804139-7e79-4129-b500-e52192e383da.png)
+[REST API](exec/기획/Unpeu_REST_API_명세서.png)
 
 ### ERD
 
@@ -348,7 +346,7 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 ### Wire Frame (Figma)
 
-<img src="https://user-images.githubusercontent.com/38287375/169252623-be1f8c9c-8efd-448a-b9d1-ada3514a5188.PNG"  width="600px" height="500px"/>
+<img src="exec/기획/와이어프레임_초안.jpg"  width="600px" height="500px"/>
 
 
 <br />
