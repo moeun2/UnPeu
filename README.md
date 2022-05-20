@@ -118,18 +118,20 @@ Wedding Registry의 선물 나누기 장점을 결혼이라는 이벤트 뿐만�
 
 ## 3️⃣ 서비스 소개
 
-1. 이벤트 날짜, 테마 지정 및 공유 기능
+### 1. 이벤트 날짜, 테마 지정 및 공유 기능
 - 사용자가 원하는 이벤트의 날짜를 설정하고 기본, 생일, 어린이날 카테고리를 통해 테마를 변경할 수 있습니다.
     - URL 및 SNS공유를 통해 자신의 이벤트룸을 공유할 수 있습니다.
-2. 선물 위시리스트 기능
+<img src="https://user-images.githubusercontent.com/40678696/169427118-0b8940d8-7f41-4c00-8676-56228c3afddd.gif" width="800px" height="500px"/>
+
+### 2. 선물 위시리스트 기능
 - 자신의 이벤트룸에 사용자가 원하는 선물들을 등록할 수 있습니다.
 <img src="https://user-images.githubusercontent.com/38287375/169311481-ad720bb7-8670-4ddf-8b94-7391e3ba731b.gif"  width="800px" height="500px"/>
 
-3. 축하 메세지와 선물 보내기 기능
+### 3. 축하 메세지와 선물 보내기 기능
 - 해당 페이지의 사용자가 등록해놓은 선물과 함께 따뜻한 마음을 전하는 메세지를 보낼 수 있습니다.
 <img src="https://user-images.githubusercontent.com/38287375/169312337-6ce0d53a-fe0f-4522-b411-a17f7c499f01.gif"  width="800px" height="500px"/>
 
-4. 이벤트 추억하기 기능
+### 4. 이벤트 추억하기 기능
 - 해당 이벤트가 끝나도 메세지를 저장 해놓으면 다이어리에서 이전 이벤트들의 기록들을 계속 볼 수 있습니다.
 <img src="https://user-images.githubusercontent.com/38287375/169312237-7ad807ec-a923-4239-9e1d-47a90451b154.gif"  width="800px" height="500px"/>
 
