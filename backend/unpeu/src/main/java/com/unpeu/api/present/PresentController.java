@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,36 +43,30 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api("Present 관련 기능")
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/present")
+@RequiredArgsConstructor
 public class PresentController {
 	public static final Logger logger = LoggerFactory.getLogger(PresentController.class);
 
-	private IPresentService presentService;
-	private MediaService mediaService;
+	private final IPresentService presentService;
+	private final MediaService mediaService;
 
-	@Autowired
-	public PresentController(IPresentService presentService, MediaService mediaService) {
-		Assert.notNull(presentService, "presentService 객체가 반드시 필요!");
-		this.presentService = presentService;
-		this.mediaService = mediaService;
-	}
 
 	@ApiOperation(value = "선물 등록 Controller")
-	@RequestMapping(value = "/present", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<Map<String, Object>> createPresent(@ApiIgnore @NotNull Authentication authentication,
 		@Valid @ModelAttribute @NotNull PresentPostReq present) {
 		logger.info("createPresent - 호출");
-		if(present.getPresentImg() == null || present.getPresentName()==null || present.getPresentPrice() == null){
-			throw new CustomException(PRESENT_NOT_FOUND);
-		}
-		// userId 설정 -> 현재 userId: 1로만 테스트 중
+
+		// get user_info by auth
 		UnpeuUserDetails userDetails = (UnpeuUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
 		present.setUserId(String.valueOf(user.getId()));
-		// 이미지 -> url로 변경 설정
+
+		// img to url path using mediaService Controller
 		String url = mediaService.save(present.getPresentImg());
-		logger.info("media Saved Url : " + url);
 		present.setPresentImgUrl(url);
+
 		Map<String, Object> resultMap = new HashMap<>();
 		Present newPresent = this.presentService.createPresent(present);
 		resultMap.put("Present", newPresent);
@@ -79,7 +74,7 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "선물 수정 Controller")
-	@RequestMapping(value = "/present/{presentId}", method = RequestMethod.PUT, consumes = {
+	@RequestMapping(value = "/{presentId}", method = RequestMethod.PUT, consumes = {
 		MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<Map<String, Object>> updatePresent(@NotNull @PathVariable("presentId") Long presentId,
 		@Valid @ModelAttribute @NotNull PresentPostReq present) {
@@ -105,7 +100,7 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "선물 리스트 조회 Controller")
-	@RequestMapping(value = "/present/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getPresent(@NotNull @PathVariable("userId") Long userId) {
 		logger.info("getPresent - 호출");
 		List<Present> presentList = presentService.getPresentListByUserId(userId);
@@ -115,7 +110,7 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "선물 & 메세지 보내기 Controller")
-	@RequestMapping(value = "/present/message", method = RequestMethod.POST)
+	@RequestMapping(value = "/message", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> sendMessageAndPresent(@Valid @RequestBody MessagePostReq message) {
 		logger.info("sendMessageAndPresent - 호출");
 		Map<String, Object> resultMap = new HashMap<>();
@@ -125,7 +120,7 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "엿보기 Controller")
-	@RequestMapping(value = "/present/message/money/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/message/money/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> peekMoney(@NotNull @PathVariable("userId") Long userId) {
 		logger.info("peekMoney - 호출");
 		String money = presentService.peekMoney(userId);
