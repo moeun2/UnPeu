@@ -63,7 +63,7 @@ public class PresentController {
 		User user = userDetails.getUser();
 		present.setUserId(String.valueOf(user.getId()));
 
-		// img to url path using mediaService Controller
+		// img to url path using mediaService
 		String url = mediaService.save(present.getPresentImg());
 		present.setPresentImgUrl(url);
 
@@ -74,15 +74,17 @@ public class PresentController {
 	}
 
 	@ApiOperation(value = "선물 수정 Controller")
-	@RequestMapping(value = "/{presentId}", method = RequestMethod.PUT, consumes = {
+	@RequestMapping(value = "/{presentId}", method = RequestMethod.PATCH, consumes = {
 		MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<Map<String, Object>> updatePresent(@NotNull @PathVariable("presentId") Long presentId,
 		@Valid @ModelAttribute @NotNull PresentPostReq present) {
 		logger.info("updatePresent - 호출");
+
 		if (present.getPresentImg() != null) {
 			String url = mediaService.save(present.getPresentImg());
 			present.setPresentImgUrl(url);
 		}
+
 		Map<String, Object> resultMap = new HashMap<>();
 		Present newPresent = this.presentService.updatePresent(presentId, present);
 		resultMap.put("Present", newPresent);
@@ -93,9 +95,10 @@ public class PresentController {
 	@RequestMapping(value = "/present/{presentId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Map<String, Object>> deletePresent(@NotNull @PathVariable("presentId") Long presentId) {
 		logger.info("deletePresent - 호출");
+
 		this.presentService.deletePresent(presentId);
 		Map<String, Object> resultMap = new HashMap<>();
-		resultMap.put("Message", "Delete Present Success");
+		resultMap.put("Present", "Delete Present Success");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 
@@ -103,6 +106,7 @@ public class PresentController {
 	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getPresent(@NotNull @PathVariable("userId") Long userId) {
 		logger.info("getPresent - 호출");
+
 		List<Present> presentList = presentService.getPresentListByUserId(userId);
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("Present", presentList);
@@ -113,16 +117,18 @@ public class PresentController {
 	@RequestMapping(value = "/message", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> sendMessageAndPresent(@Valid @RequestBody MessagePostReq message) {
 		logger.info("sendMessageAndPresent - 호출");
+
 		Map<String, Object> resultMap = new HashMap<>();
 		Message newMessage = presentService.sendMessageAndPresent(message);
-		resultMap.put("Message", newMessage);
+		resultMap.put("Present", newMessage);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 	}
 
-	@ApiOperation(value = "엿보기 Controller")
+	@ApiOperation(value = "금액 엿보기 Controller")
 	@RequestMapping(value = "/message/money/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> peekMoney(@NotNull @PathVariable("userId") Long userId) {
 		logger.info("peekMoney - 호출");
+
 		String money = presentService.peekMoney(userId);
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("Money", money);

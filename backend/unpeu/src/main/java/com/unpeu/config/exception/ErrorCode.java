@@ -20,6 +20,7 @@ public enum ErrorCode {
 	INVALID_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰이 유효하지 않습니다"),
 	MISMATCH_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰의 유저 정보가 일치하지 않습니다"),
 	VALID_BAD_REQUEST(BAD_REQUEST, "Validation 확인이 실패하였습니다"),
+	BOARD_UPDATE_BAD_REQUEST(BAD_REQUEST, "작성한 유저와 요청한 유저가 다르기에 수정할 수 없습니다."),
 
 	/* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
 	INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),

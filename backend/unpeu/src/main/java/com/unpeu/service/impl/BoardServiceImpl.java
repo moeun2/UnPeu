@@ -1,6 +1,6 @@
 package com.unpeu.service.impl;
 
-import com.unpeu.config.exception.ApplicationException;
+import com.unpeu.config.exception.CustomException;
 import com.unpeu.domain.entity.Board;
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.repository.IBoardRepository;
@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.unpeu.config.exception.ErrorCode.BOARD_UPDATE_BAD_REQUEST;
 
 /**
  * BoardService를 implements하여 구현합니다.
@@ -106,8 +108,7 @@ public class BoardServiceImpl implements IBoardService {
         }
 
         if(!user.getId().equals(oBoard.get().getUser().getId())) {
-            throw new ApplicationException("작성한 유저 " + oBoard.get().getUser().getUserLogin() + "와 요청한 유저 "
-                    + user.getUserLogin() + "가 서로 다르기 때문에 수정할 수 없습니다.");
+            throw new CustomException(BOARD_UPDATE_BAD_REQUEST);
         }
 
         Board prevBoard = oBoard.get();
@@ -133,10 +134,8 @@ public class BoardServiceImpl implements IBoardService {
             throw new NoSuchElementException("boardId가 " + boardId + " 인 게시글을 찾을 수 없습니다.");
         }
 
-        if(!user.getId().equals(oBoard.get().getUser().getId())) {
-            throw new ApplicationException("작성한 유저 " + oBoard.get().getUser().getUserLogin() + "와 요청한 유저 "
-                    + user.getUserLogin() + "가 서로 다르기 때문에 삭제할 수 없습니다.");
-        }
+        if(!user.getId().equals(oBoard.get().getUser().getId()))
+            throw new CustomException(BOARD_UPDATE_BAD_REQUEST);
 
         boardRepository.delete(oBoard.get());
     }

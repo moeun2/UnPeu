@@ -1,7 +1,6 @@
 package com.unpeu.api.diary;
 
 import com.unpeu.config.auth.UnpeuUserDetails;
-import com.unpeu.config.exception.ApplicationException;
 import com.unpeu.config.media.MediaService;
 import com.unpeu.domain.entity.User;
 import com.unpeu.domain.request.BoardPostReq;

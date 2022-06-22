@@ -3,6 +3,7 @@ package com.unpeu.config.exception;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,7 +22,7 @@ public class ErrorResponse {
 	private final String code;
 	private final String message;
 
-	public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode) {
+	public static @NotNull ResponseEntity<ErrorResponse> toResponseEntity(@NotNull ErrorCode errorCode) {
 		return ResponseEntity
 			.status(errorCode.getHttpStatus())
 			.body(ErrorResponse.builder()
@@ -32,7 +33,7 @@ public class ErrorResponse {
 				.build()
 			);
 	}
-	public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode, String message) {
+	public static @NotNull ResponseEntity<ErrorResponse> toResponseEntity(@NotNull ErrorCode errorCode, String message) {
 		return ResponseEntity
 			.status(errorCode.getHttpStatus())
 			.body(ErrorResponse.builder()
@@ -44,7 +45,7 @@ public class ErrorResponse {
 			);
 	}
 
-	public static ResponseEntity<Object> toObjResponseEntity(ErrorCode errorCode, List<String> errorList) {
+	public static @NotNull ResponseEntity<Object> toObjResponseEntity(@NotNull ErrorCode errorCode, @NotNull List<String> errorList) {
 		return ResponseEntity
 			.status(errorCode.getHttpStatus())
 			.body(ErrorResponse.builder()

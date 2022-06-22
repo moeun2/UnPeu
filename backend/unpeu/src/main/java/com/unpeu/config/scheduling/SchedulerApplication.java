@@ -9,6 +9,9 @@ import com.unpeu.service.iface.IUserService;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 매일 0시 0분에 일일조회수 초기화를 위한 Scheduler Class 입니다.
+ */
 @RequiredArgsConstructor
 @Component
 public class SchedulerApplication {
